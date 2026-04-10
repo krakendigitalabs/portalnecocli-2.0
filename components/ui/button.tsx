@@ -17,7 +17,7 @@ const buttonSizes = {
 } as const;
 
 const baseButtonClassName =
-  "inline-flex items-center justify-center rounded-full border font-semibold transition";
+  "inline-flex items-center justify-center rounded-full border font-semibold transition disabled:cursor-not-allowed disabled:opacity-60";
 
 type ButtonVariant = keyof typeof buttonVariants;
 type ButtonSize = keyof typeof buttonSizes;
@@ -25,6 +25,7 @@ type ButtonSize = keyof typeof buttonSizes;
 type ButtonProps = {
   children: React.ReactNode;
   className?: string;
+  disabled?: boolean;
   href?: string;
   size?: ButtonSize;
   type?: "button" | "submit" | "reset";
@@ -34,6 +35,7 @@ type ButtonProps = {
 export function Button({
   children,
   className,
+  disabled = false,
   href,
   size = "md",
   type = "button",
@@ -57,6 +59,7 @@ export function Button({
 
       return (
         <a
+          aria-disabled={disabled}
           className={classes}
           href={href}
           rel={shouldOpenInNewTab ? "noreferrer" : undefined}
@@ -75,7 +78,7 @@ export function Button({
   }
 
   return (
-    <button className={classes} type={type}>
+    <button className={classes} disabled={disabled} type={type}>
       {children}
     </button>
   );

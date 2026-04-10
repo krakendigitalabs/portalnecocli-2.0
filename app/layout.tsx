@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
 import { AppShell } from "@/components/layout/app-shell";
+import { AppProviders } from "@/components/providers/app-providers";
 import { brand, siteMetadata } from "@/lib/constants/site";
 
 export const metadata: Metadata = {
@@ -46,12 +47,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="es">
       <body>
-        <AppShell
-          announcement="Reservas, afiliaciones y soporte local"
-          brandName={brand.name}
-        >
-          {children}
-        </AppShell>
+        <AppProviders>
+          <AppShell
+            announcement="Reservas, afiliaciones y soporte local"
+            brandName={brand.name}
+          >
+            {children}
+          </AppShell>
+        </AppProviders>
       </body>
     </html>
   );

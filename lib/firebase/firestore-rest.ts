@@ -95,6 +95,10 @@ export async function fetchFirestoreDocument<T>(
     return null;
   }
 
+  if (response.status === 401 || response.status === 403) {
+    return null;
+  }
+
   if (!response.ok) {
     throw new Error(`Firestore request failed with status ${response.status}`);
   }

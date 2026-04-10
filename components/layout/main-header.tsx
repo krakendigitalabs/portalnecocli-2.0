@@ -1,3 +1,4 @@
+import { AuthEntry } from "@/components/layout/auth-entry";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -66,6 +67,7 @@ export function MainHeader({ announcement, brandName }: MainHeaderProps) {
                 <Badge className="hidden sm:inline-flex" variant="accent">
                   Directorio premium
                 </Badge>
+                <AuthEntry />
                 <Button className="w-full sm:w-auto" href="/negocios" size="md" variant="primary">
                   Ver negocios
                 </Button>
