@@ -9,7 +9,8 @@ import {
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
 import {
-  firebaseConfig,
+  assertFirebasePublicConfig,
+  getFirebasePublicConfigDiagnostics,
   getMissingFirebasePublicConfig,
   hasFirebasePublicConfig,
 } from "@/lib/firebase/config";
@@ -41,9 +42,17 @@ export function getFirebaseApp(): FirebaseApp | null {
     return firebaseAppInstance;
   }
 
+  if (process.env.NODE_ENV !== "production") {
+    const diagnostics = getFirebasePublicConfigDiagnostics();
+
+    if (!diagnostics.authDomainMatchesProject) {
+      console.warn("Firebase public config mismatch detected.", diagnostics);
+    }
+  }
+
   firebaseAppInstance = getApps().length
     ? getApp()
-    : initializeApp(firebaseConfig);
+    : initializeApp(assertFirebasePublicConfig());
 
   return firebaseAppInstance;
 }

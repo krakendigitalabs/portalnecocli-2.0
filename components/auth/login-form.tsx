@@ -9,33 +9,23 @@ import {
   signInWithEmailPassword,
   signInWithGoogle,
 } from "@/lib/firebase/auth";
-import { getMissingFirebasePublicConfig } from "@/lib/firebase/config";
+import {
+  firebaseConfig,
+  getFirebasePublicConfigDiagnostics,
+  getMissingFirebasePublicConfig,
+} from "@/lib/firebase/config";
+import {
+  getFirebaseAuthErrorDetails,
+  getFirebaseConfigurationWarning,
+} from "@/lib/firebase/errors";
 import { useAuthSession } from "@/hooks/use-auth-session";
 
 function getErrorMessage(error: unknown): string {
-  if (
-    typeof error === "object" &&
-    error !== null &&
-    "code" in error &&
-    typeof error.code === "string"
-  ) {
-    switch (error.code) {
-      case "auth/popup-closed-by-user":
-        return "Cerraste la ventana de Google antes de completar el acceso.";
-      case "auth/popup-blocked":
-        return "El navegador bloqueó la ventana de Google. Permite popups e intenta de nuevo.";
-      case "auth/account-exists-with-different-credential":
-        return "Esta cuenta ya existe con otro método de acceso en Firebase.";
-      default:
-        break;
-    }
-  }
+  const details = getFirebaseAuthErrorDetails(error, firebaseConfig);
 
-  if (error instanceof Error && error.message.length > 0) {
-    return error.message;
-  }
-
-  return "No fue posible completar la operación con Firebase.";
+  return details.action
+    ? `${details.message} ${details.action}`
+    : details.message;
 }
 
 const fieldClassName =
@@ -55,6 +45,8 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const firebaseDiagnostics = getFirebasePublicConfigDiagnostics();
+  const configurationWarning = getFirebaseConfigurationWarning();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -199,6 +191,11 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
             </span>
             <div className="h-px flex-1 bg-ink/10" />
           </div>
+          {process.env.NODE_ENV !== "production" && configurationWarning ? (
+            <p className="rounded-[18px] border border-amber-400/30 bg-amber-50 px-4 py-3 text-sm text-amber-700">
+              Diagnóstico dev: {configurationWarning}
+            </p>
+          ) : null}
         </div>
 
         <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
@@ -239,6 +236,13 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
           {errorMessage ? (
             <p className="rounded-[18px] border border-coral/18 bg-coral/8 px-4 py-3 text-sm text-coral">
               {errorMessage}
+            </p>
+          ) : null}
+
+          {process.env.NODE_ENV !== "production" && errorMessage ? (
+            <p className="rounded-[18px] border border-ink/10 bg-ink/[0.03] px-4 py-3 text-xs leading-6 text-ink/70">
+              Proyecto Firebase: {firebaseDiagnostics.projectId || "sin projectId"} ·
+              authDomain: {firebaseDiagnostics.authDomain || "sin authDomain"}
             </p>
           ) : null}
 

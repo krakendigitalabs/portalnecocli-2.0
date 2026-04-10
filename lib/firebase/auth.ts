@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  type Auth,
 } from "firebase/auth";
 import { clearServerSession, syncServerSession } from "@/lib/auth/session-client";
 import { getFirebaseAuth } from "@/lib/firebase/client";
@@ -20,23 +21,29 @@ function requireFirebaseAuth() {
   return auth;
 }
 
-async function persistServerSession(user: User) {
+async function persistServerSession(auth: Auth, user: User) {
   const idToken = await user.getIdToken();
 
-  await syncServerSession(idToken);
+  try {
+    await syncServerSession(idToken);
+  } catch (error) {
+    await signOut(auth);
+    throw error;
+  }
 }
 
 export async function signInWithEmailPassword(
   email: string,
   password: string,
 ) {
+  const auth = requireFirebaseAuth();
   const credentials = await signInWithEmailAndPassword(
-    requireFirebaseAuth(),
+    auth,
     email,
     password,
   );
 
-  await persistServerSession(credentials.user);
+  await persistServerSession(auth, credentials.user);
 
   return credentials;
 }
@@ -48,9 +55,10 @@ export async function signInWithGoogle() {
     prompt: "select_account",
   });
 
-  const credentials = await signInWithPopup(requireFirebaseAuth(), provider);
+  const auth = requireFirebaseAuth();
+  const credentials = await signInWithPopup(auth, provider);
 
-  await persistServerSession(credentials.user);
+  await persistServerSession(auth, credentials.user);
 
   return credentials;
 }

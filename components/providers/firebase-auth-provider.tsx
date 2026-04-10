@@ -2,7 +2,7 @@
 
 import { createContext, useEffect, useMemo, useState } from "react";
 import type { IdTokenResult, User } from "firebase/auth";
-import { onIdTokenChanged } from "firebase/auth";
+import { onIdTokenChanged, signOut } from "firebase/auth";
 import { syncServerSession, clearServerSession } from "@/lib/auth/session-client";
 import { getPrimaryRole, resolveAuthorizationFromClaims } from "@/lib/auth/roles";
 import { getFirebaseAuth } from "@/lib/firebase/client";
@@ -75,36 +75,42 @@ export function FirebaseAuthProvider({
       return undefined;
     }
 
-    const unsubscribe = onIdTokenChanged(auth, async (firebaseUser) => {
-      if (!firebaseUser) {
-        try {
-          await clearServerSession();
-        } catch (error) {
-          console.error("Failed to clear server session.", { error });
+    const unsubscribe = onIdTokenChanged(auth, (firebaseUser) => {
+      void (async () => {
+        if (!firebaseUser) {
+          try {
+            await clearServerSession();
+          } catch (error) {
+            console.error("Failed to clear server session.", { error });
+          }
+
+          setSession({
+            status: "unauthenticated",
+            user: null,
+            hasFirebaseConfig: true,
+          });
+
+          return;
         }
 
-        setSession({
-          status: "unauthenticated",
-          user: null,
-          hasFirebaseConfig: true,
-        });
+        try {
+          const tokenResult = await firebaseUser.getIdTokenResult();
 
-        return;
-      }
+          await syncServerSession(tokenResult.token);
 
-      const tokenResult = await firebaseUser.getIdTokenResult();
+          setSession({
+            status: "authenticated",
+            user: mapAuthUser(tokenResult, firebaseUser),
+            hasFirebaseConfig: true,
+          });
+        } catch (error) {
+          console.error("Failed to refresh authenticated server session.", {
+            error,
+          });
 
-      try {
-        await syncServerSession(tokenResult.token);
-      } catch (error) {
-        console.error("Failed to sync server session.", { error });
-      }
-
-      setSession({
-        status: "authenticated",
-        user: mapAuthUser(tokenResult, firebaseUser),
-        hasFirebaseConfig: true,
-      });
+          await signOut(auth);
+        }
+      })();
     });
 
     return unsubscribe;

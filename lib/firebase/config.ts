@@ -20,6 +20,14 @@ function normalizeEnvValue(value: string | undefined): string {
   return value?.trim() ?? "";
 }
 
+function normalizeHost(value: string): string {
+  return value
+    .trim()
+    .replace(/^https?:\/\//i, "")
+    .replace(/\/.*$/, "")
+    .toLowerCase();
+}
+
 export const firebaseConfig: FirebaseWebConfig = {
   apiKey: normalizeEnvValue(publicFirebaseEnv.apiKey),
   authDomain: normalizeEnvValue(publicFirebaseEnv.authDomain),
@@ -63,4 +71,41 @@ export function assertFirebasePublicConfig(): FirebaseWebConfig {
   }
 
   return firebaseConfig;
+}
+
+export function getProjectIdFromAuthDomain(authDomain: string): string | null {
+  const normalizedAuthDomain = normalizeHost(authDomain);
+
+  if (!normalizedAuthDomain) {
+    return null;
+  }
+
+  const firebaseAppSuffix = ".firebaseapp.com";
+  const webAppSuffix = ".web.app";
+
+  if (normalizedAuthDomain.endsWith(firebaseAppSuffix)) {
+    return normalizedAuthDomain.slice(0, -firebaseAppSuffix.length);
+  }
+
+  if (normalizedAuthDomain.endsWith(webAppSuffix)) {
+    return normalizedAuthDomain.slice(0, -webAppSuffix.length);
+  }
+
+  return null;
+}
+
+export function getFirebasePublicConfigDiagnostics() {
+  const missingEnv = getMissingFirebasePublicConfig();
+  const inferredProjectId = getProjectIdFromAuthDomain(firebaseConfig.authDomain);
+  const authDomainMatchesProject =
+    inferredProjectId === null || inferredProjectId === firebaseConfig.projectId;
+
+  return {
+    hasConfig: missingEnv.length === 0,
+    missingEnv,
+    projectId: firebaseConfig.projectId,
+    authDomain: firebaseConfig.authDomain,
+    inferredProjectId,
+    authDomainMatchesProject,
+  };
 }

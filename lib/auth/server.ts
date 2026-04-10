@@ -1,7 +1,10 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { getFirebaseAdminAuth } from "@/lib/firebase/admin";
+import {
+  getFirebaseAdminAuth,
+  hasFirebaseAdminConfig,
+} from "@/lib/firebase/admin";
 import {
   getPrimaryRole,
   hasRequiredRole,
@@ -25,6 +28,12 @@ type AuthorizationOptions = {
 type RedirectOptions = {
   nextPath?: string;
 };
+
+function buildLoginHref(nextPath?: string) {
+  const query = nextPath ? `?next=${encodeURIComponent(nextPath)}` : "";
+
+  return `/ingresar${query}`;
+}
 
 function buildUnauthorizedHref(nextPath?: string) {
   const query = nextPath ? `?next=${encodeURIComponent(nextPath)}` : "";
@@ -74,6 +83,16 @@ function mapServerUser(
 export async function getServerAuthSession(): Promise<ServerAuthSession | null> {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+
+  if (!hasFirebaseAdminConfig()) {
+    if (process.env.NODE_ENV !== "production") {
+      console.error(
+        "Firebase Admin config is missing. Server auth session cannot be verified.",
+      );
+    }
+
+    return null;
+  }
 
   if (!sessionCookie) {
     return null;
@@ -138,7 +157,7 @@ export async function requireAuth(options: RedirectOptions = {}) {
   const authorization = await authorizeServerAccess();
 
   if (!authorization.ok) {
-    redirect(buildUnauthorizedHref(options.nextPath));
+    redirect(buildLoginHref(options.nextPath));
   }
 
   return authorization.session;
@@ -152,7 +171,7 @@ export async function requireRole(
 
   if (!authorization.ok) {
     if (authorization.status === 401) {
-      redirect(buildUnauthorizedHref(options.nextPath));
+      redirect(buildLoginHref(options.nextPath));
     }
 
     redirect(buildForbiddenHref(options.nextPath));
@@ -169,7 +188,7 @@ export async function requireScope(
 
   if (!authorization.ok) {
     if (authorization.status === 401) {
-      redirect(buildUnauthorizedHref(options.nextPath));
+      redirect(buildLoginHref(options.nextPath));
     }
 
     redirect(buildForbiddenHref(options.nextPath));

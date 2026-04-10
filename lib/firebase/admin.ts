@@ -27,6 +27,10 @@ function normalizePrivateKey(value: string): string {
   return value.replace(/\\n/g, "\n");
 }
 
+export function getFirebaseAdminProjectId(): string {
+  return firebaseAdminEnv.projectId;
+}
+
 export function getFirebaseAdminConfig(): FirebaseAdminConfig {
   const privateKey = normalizePrivateKey(firebaseAdminEnv.privateKey);
 
@@ -53,6 +57,15 @@ export function hasFirebaseAdminConfig(): boolean {
     firebaseAdminEnv.clientEmail.length > 0 &&
     firebaseAdminEnv.privateKey.length > 0
   );
+}
+
+export function getFirebaseAdminDiagnostics() {
+  return {
+    hasConfig: hasFirebaseAdminConfig(),
+    projectId: firebaseAdminEnv.projectId,
+    hasClientEmail: firebaseAdminEnv.clientEmail.length > 0,
+    hasPrivateKey: firebaseAdminEnv.privateKey.length > 0,
+  };
 }
 
 export function getFirebaseAdminApp(): App {
