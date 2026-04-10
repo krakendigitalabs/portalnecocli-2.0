@@ -18,7 +18,7 @@ export const commercialHomeContent: CommercialHomeContent = {
     },
     secondaryCta: {
       label: "Explorar directorio",
-      href: "#directory",
+      href: "/negocios",
     },
     stats: [
       { value: "5", label: "verticales comerciales prioritarias" },
@@ -62,7 +62,7 @@ export const commercialHomeContent: CommercialHomeContent = {
           "Explora hoteles, restaurantes, rutas y experiencias locales desde una portada más ordenada y orientada a decisión.",
         cta: {
           label: "Ver directorio",
-          href: "#directory",
+          href: "/negocios",
         },
       },
       {

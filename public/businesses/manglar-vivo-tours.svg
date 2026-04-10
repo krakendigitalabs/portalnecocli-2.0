@@ -1,0 +1,10 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#F2F7F7"/>
+  <rect x="76" y="78" width="1048" height="744" rx="48" fill="#F9F4EA"/>
+  <circle cx="908" cy="208" r="104" fill="#0F5C5C" fill-opacity="0.12"/>
+  <path d="M132 674C262 598 378 562 486 566C594 570 692 616 804 614C902 612 995 575 1074 520V822H132V674Z" fill="#0F5C5C"/>
+  <path d="M232 630C318 492 404 426 490 430C576 434 662 514 748 628" stroke="#DD6B42" stroke-width="28" stroke-linecap="round"/>
+  <circle cx="488" cy="412" r="58" fill="#DD6B42"/>
+  <text x="220" y="276" fill="#18202A" font-family="Arial, sans-serif" font-size="60" font-weight="700">MANGLAR VIVO TOURS</text>
+  <text x="220" y="330" fill="#18202A" font-family="Arial, sans-serif" font-size="28">Experiencias guiadas en Necocli</text>
+</svg>

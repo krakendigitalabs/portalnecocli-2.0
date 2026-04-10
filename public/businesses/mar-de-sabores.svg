@@ -1,0 +1,14 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#F5EFE5"/>
+  <rect x="76" y="80" width="1048" height="740" rx="50" fill="#FFFDF9"/>
+  <circle cx="952" cy="222" r="114" fill="#F4C66F"/>
+  <rect x="182" y="202" width="372" height="424" rx="36" fill="#0F5C5C"/>
+  <circle cx="370" cy="340" r="104" fill="#FFF8EE"/>
+  <circle cx="370" cy="340" r="74" fill="#DD6B42"/>
+  <circle cx="370" cy="340" r="28" fill="#F4C66F"/>
+  <rect x="626" y="280" width="374" height="28" rx="14" fill="#18202A" fill-opacity="0.12"/>
+  <rect x="626" y="332" width="326" height="22" rx="11" fill="#18202A" fill-opacity="0.1"/>
+  <rect x="626" y="378" width="290" height="22" rx="11" fill="#18202A" fill-opacity="0.08"/>
+  <text x="182" y="712" fill="#18202A" font-family="Arial, sans-serif" font-size="62" font-weight="700">MAR DE SABORES</text>
+  <text x="182" y="768" fill="#18202A" font-family="Arial, sans-serif" font-size="30">Cocina costera y reservas rapidas</text>
+</svg>

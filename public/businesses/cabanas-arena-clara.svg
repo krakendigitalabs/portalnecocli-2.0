@@ -1,0 +1,11 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#FCFAF6"/>
+  <rect x="70" y="76" width="1060" height="748" rx="48" fill="#FFF5E7"/>
+  <circle cx="923" cy="240" r="98" fill="#DD6B42" fill-opacity="0.16"/>
+  <path d="M138 665C250 558 378 508 504 516C630 523 704 602 837 610C934 616 1017 580 1084 536V824H138V665Z" fill="#E0B169"/>
+  <path d="M224 582L442 380L660 582V766H224V582Z" fill="#0F5C5C"/>
+  <rect x="308" y="616" width="86" height="150" rx="18" fill="#FCFAF6"/>
+  <rect x="472" y="616" width="110" height="76" rx="16" fill="#FCFAF6"/>
+  <text x="224" y="300" fill="#18202A" font-family="Arial, sans-serif" font-size="58" font-weight="700">CABANAS ARENA CLARA</text>
+  <text x="224" y="352" fill="#18202A" font-family="Arial, sans-serif" font-size="28">Escapadas boutique en Necocli</text>
+</svg>

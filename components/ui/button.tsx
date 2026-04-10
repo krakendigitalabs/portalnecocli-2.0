@@ -47,11 +47,21 @@ export function Button({
   );
 
   if (href) {
-    const isExternalHref = href.startsWith("http");
+    const isExternalHref =
+      href.startsWith("http") ||
+      href.startsWith("mailto:") ||
+      href.startsWith("tel:");
 
     if (isExternalHref) {
+      const shouldOpenInNewTab = href.startsWith("http");
+
       return (
-        <a className={classes} href={href} rel="noreferrer" target="_blank">
+        <a
+          className={classes}
+          href={href}
+          rel={shouldOpenInNewTab ? "noreferrer" : undefined}
+          target={shouldOpenInNewTab ? "_blank" : undefined}
+        >
           {children}
         </a>
       );

@@ -13,6 +13,6 @@ export const navigationLinks = [
   { href: "/", label: "Inicio" },
   { href: "/#tourists", label: "Turistas" },
   { href: "/#businesses", label: "Afiliados" },
-  { href: "/#directory", label: "Directorio" },
+  { href: "/negocios", label: "Negocios" },
   { href: "/#contact", label: "Contacto" },
 ] as const;
