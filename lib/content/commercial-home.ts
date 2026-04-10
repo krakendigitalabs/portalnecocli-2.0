@@ -22,6 +22,8 @@ function isCommercialHomeContent(
     "touristSection",
     "merchantSection",
     "directorySection",
+    "showcaseSection",
+    "bonusSection",
     "reservationCta",
     "contactSection",
   ].every((key) => key in value);

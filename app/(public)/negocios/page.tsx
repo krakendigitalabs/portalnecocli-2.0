@@ -86,6 +86,7 @@ export default async function BusinessesDirectoryPage({
               <SearchBar
                 actionLabel="Buscar negocios"
                 actionPath="/negocios"
+                defaultValue={query}
                 placeholder="Busca por nombre, categoría, barrio o servicio"
               />
             </div>
@@ -107,13 +108,14 @@ export default async function BusinessesDirectoryPage({
         </div>
       </Card>
 
-      <section className="space-y-5">
+      <section aria-label="Listado y filtros del directorio" className="space-y-5">
         <div className="flex flex-col gap-3">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-coral">
             Filtros básicos
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
+              aria-current={activeCategory === "all" ? "page" : undefined}
               className={`inline-flex items-center rounded-full border px-4 py-2 text-sm font-semibold transition ${
                 activeCategory === "all"
                   ? "border-teal bg-teal text-white"
@@ -125,6 +127,7 @@ export default async function BusinessesDirectoryPage({
             </Link>
             {categoryOptions.map((option) => (
               <Link
+                aria-current={activeCategory === option ? "page" : undefined}
                 key={option}
                 className={`inline-flex items-center rounded-full border px-4 py-2 text-sm font-semibold transition ${
                   activeCategory === option
@@ -140,7 +143,14 @@ export default async function BusinessesDirectoryPage({
         </div>
 
         {businesses.length > 0 ? (
-          <FeaturedBusinessGrid businesses={businesses} />
+          <div className="space-y-4">
+            <p className="text-sm text-ink/62">
+              {businesses.length} negocio{businesses.length === 1 ? "" : "s"} encontrado
+              {businesses.length === 1 ? "" : "s"}
+              {query ? ` para "${query}"` : ""}.
+            </p>
+            <FeaturedBusinessGrid businesses={businesses} />
+          </div>
         ) : (
           <Card className="rounded-[30px] border-ink/10 p-8">
             <h2 className="text-2xl font-semibold tracking-tight text-ink">

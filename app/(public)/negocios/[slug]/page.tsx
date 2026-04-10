@@ -238,7 +238,7 @@ export default async function BusinessDetailPage({
         </div>
       </section>
 
-      <section className="space-y-6">
+      <section aria-label="Negocios relacionados" className="space-y-6">
         <div className="space-y-3">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-coral">
             Otros negocios relacionados
@@ -247,7 +247,15 @@ export default async function BusinessDetailPage({
             Sigue explorando negocios cercanos a esta necesidad.
           </h2>
         </div>
-        <FeaturedBusinessGrid businesses={relatedBusinesses} />
+        {relatedBusinesses.length > 0 ? (
+          <FeaturedBusinessGrid businesses={relatedBusinesses} />
+        ) : (
+          <Card className="rounded-[28px] border-ink/10 p-6">
+            <p className="text-base leading-7 text-ink/70">
+              Aún no hay más negocios relacionados visibles en esta categoría.
+            </p>
+          </Card>
+        )}
       </section>
     </div>
   );

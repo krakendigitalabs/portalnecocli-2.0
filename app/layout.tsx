@@ -17,6 +17,14 @@ export const metadata: Metadata = {
     siteName: siteMetadata.title,
     locale: "es_CO",
     type: "website",
+    images: [
+      {
+        url: siteMetadata.ogImage,
+        width: 1600,
+        height: 900,
+        alt: "Portal Necoclí con enfoque en turismo, hotelería y negocios locales",
+      },
+    ],
   },
   robots: {
     index: true,
@@ -26,6 +34,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteMetadata.title,
     description: siteMetadata.description,
+    images: [siteMetadata.ogImage],
   },
 };
 

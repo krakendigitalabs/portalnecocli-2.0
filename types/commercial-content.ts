@@ -9,6 +9,13 @@ export type HeroStat = {
   label: string;
 };
 
+export type HeroSlide = {
+  image: string;
+  alt: string;
+  title: string;
+  label: string;
+};
+
 export type ValuePoint = {
   title: string;
   description: string;
@@ -50,6 +57,17 @@ export type SocialLink = {
   href: string;
 };
 
+export type PromoBanner = {
+  id: string;
+  image: string;
+  alt: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  href: string;
+  label: string;
+};
+
 export type CommercialHomeContent = {
   hero: {
     eyebrow: string;
@@ -58,6 +76,7 @@ export type CommercialHomeContent = {
     primaryCta: ContentLink;
     secondaryCta: ContentLink;
     stats: HeroStat[];
+    slides: HeroSlide[];
   };
   valueProposition: {
     eyebrow: string;
@@ -72,6 +91,18 @@ export type CommercialHomeContent = {
     title: string;
     description: string;
     listings: RecommendedListing[];
+  };
+  showcaseSection: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    items: PromoBanner[];
+  };
+  bonusSection: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    items: PromoBanner[];
   };
   reservationCta: {
     eyebrow: string;
