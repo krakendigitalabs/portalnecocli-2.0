@@ -19,7 +19,7 @@ export function MainHeader({ announcement, brandName }: MainHeaderProps) {
   return (
     <header className="sticky top-0 z-50">
       <div className="border-b border-white/60 bg-white/72 backdrop-blur-xl">
-        <Container className="flex flex-wrap items-center justify-between gap-3 py-2 text-[11px] font-medium uppercase tracking-[0.2em] text-teal">
+        <Container className="flex flex-col gap-2 py-2 text-[11px] font-medium uppercase tracking-[0.2em] text-teal sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           <span>{announcement}</span>
           <div className="flex items-center gap-3">
             <span className="hidden sm:inline">Necoclí, Antioquia</span>
@@ -33,7 +33,7 @@ export function MainHeader({ announcement, brandName }: MainHeaderProps) {
         </Container>
       </div>
       <Container className="mt-3">
-        <Card className="rounded-[30px] border-white/60 bg-white/82 px-4 py-4 shadow-soft backdrop-blur-xl md:px-5">
+        <Card className="rounded-[24px] border-white/60 bg-white/82 px-4 py-4 shadow-soft backdrop-blur-xl md:rounded-[30px] md:px-5">
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
             <div className="flex items-center justify-between gap-4">
               <Link href="/" className="flex flex-col">
@@ -50,29 +50,34 @@ export function MainHeader({ announcement, brandName }: MainHeaderProps) {
             </div>
 
             <div className="flex flex-col gap-4 xl:flex-row xl:items-center">
-              <nav className="flex flex-wrap items-center gap-4 md:gap-6">
+              <nav className="-mx-1 flex flex-nowrap items-center gap-4 overflow-x-auto px-1 pb-1 text-sm md:flex-wrap md:overflow-visible md:pb-0 md:gap-6">
                 {navigationLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="text-sm font-medium text-ink/80 transition hover:text-teal"
+                    className="whitespace-nowrap font-medium text-ink/80 transition hover:text-teal"
                   >
                     {link.label}
                   </Link>
                 ))}
               </nav>
 
-              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap xl:items-center">
+              <div className="grid gap-3 sm:grid-cols-2 xl:flex xl:flex-wrap xl:items-center">
                 <Badge className="hidden sm:inline-flex" variant="accent">
                   Directorio premium
                 </Badge>
-                <Button href="/negocios" size="md" variant="primary">
+                <Button className="w-full sm:w-auto" href="/negocios" size="md" variant="primary">
                   Ver negocios
                 </Button>
-                <Button href={reservationHref} size="md" variant="accent">
+                <Button className="w-full sm:w-auto" href={reservationHref} size="md" variant="accent">
                   Reservar ahora
                 </Button>
-                <Button href={affiliateHref} size="md" variant="secondary">
+                <Button
+                  className="w-full sm:col-span-2 sm:w-auto"
+                  href={affiliateHref}
+                  size="md"
+                  variant="secondary"
+                >
                   Afiliar mi negocio
                 </Button>
               </div>

@@ -13,7 +13,7 @@ export default async function PublicHomePage() {
   const featuredBusinesses = getFeaturedBusinesses(4);
 
   return (
-    <div className="space-y-10 pb-14 pt-6 md:space-y-14 md:pt-10">
+    <div className="space-y-10 pb-14 pt-4 md:space-y-14 md:pt-8">
       <HomeHero content={commercialHomeContent.hero} />
       <PromoBannerSection content={commercialHomeContent.showcaseSection} />
       <ValuePropositionSection content={commercialHomeContent.valueProposition} />

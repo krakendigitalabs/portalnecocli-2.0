@@ -33,7 +33,7 @@ export function PromoBannerSection({
   };
 
   return (
-    <section id={id} className="space-y-6 scroll-mt-32">
+    <section id={id} className="space-y-6 scroll-mt-32 md:space-y-7">
       <SectionHeader
         eyebrow={content.eyebrow}
         title={content.title}
@@ -57,7 +57,7 @@ export function PromoBannerSection({
             />
             <div
               className={[
-                "relative flex h-full min-h-[22rem] flex-col justify-end p-6 md:p-8",
+                "relative flex h-full min-h-[18rem] flex-col justify-end p-5 md:min-h-[22rem] md:p-8",
                 isDark ? "text-white" : "text-white",
               ].join(" ")}
             >
@@ -65,16 +65,16 @@ export function PromoBannerSection({
                 {item.eyebrow}
               </Badge>
               <div className="max-w-xl space-y-3">
-                <h3 className="text-2xl font-semibold tracking-tight md:text-3xl">
+                <h3 className="text-xl font-semibold tracking-tight md:text-3xl">
                   {item.title}
                 </h3>
-                <p className="text-sm leading-7 text-white/76 md:text-base">
+                <p className="text-sm leading-6 text-white/76 md:text-base md:leading-7">
                   {item.description}
                 </p>
               </div>
               <div className="mt-6">
                 <Button
-                  className="border-white/20 bg-white/12 text-white hover:border-white/36 hover:text-white"
+                  className="w-full border-white/20 bg-white/12 text-white hover:border-white/36 hover:text-white sm:w-auto"
                   href={item.href}
                   size="lg"
                   variant="secondary"
