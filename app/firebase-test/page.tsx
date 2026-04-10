@@ -55,8 +55,13 @@ export default function FirebaseTestPage() {
             <li>Estado: {session.status}</li>
             <li>UID: {session.user?.uid ?? "Sin sesión"}</li>
             <li>Correo: {session.user?.email ?? "Sin sesión"}</li>
+            <li>Correo verificado: {session.user?.emailVerified ? "Sí" : "No"}</li>
+            <li>Rol principal: {session.user?.primaryRole ?? "Sin rol"}</li>
             <li>
               Roles: {session.user?.roles.length ? session.user.roles.join(", ") : "Sin roles"}
+            </li>
+            <li>
+              Claim usado: {session.user?.claimsSource ?? "Sin custom claims detectados"}
             </li>
           </ul>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">

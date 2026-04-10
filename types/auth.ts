@@ -13,6 +13,8 @@ export type AuthUser = {
   photoURL: string | null;
   emailVerified: boolean;
   roles: UserRole[];
+  primaryRole: UserRole | null;
+  claimsSource: string | null;
 };
 
 export type AuthSession = {

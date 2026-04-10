@@ -72,6 +72,12 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
   }
 
   if (session.status === "authenticated") {
+    const authenticatedUser = session.user;
+
+    if (!authenticatedUser) {
+      return null;
+    }
+
     return (
       <SurfaceCard className="rounded-[30px] p-8">
         <p className="text-xs font-semibold uppercase tracking-[0.26em] text-coral">
@@ -83,6 +89,11 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
         <p className="mt-4 text-base leading-7 text-ink/72">
           Continúa hacia tu siguiente paso dentro del portal.
         </p>
+        <div className="mt-5 rounded-[20px] border border-ink/10 bg-ink/[0.03] px-4 py-4 text-sm leading-7 text-ink/70">
+          <p>Correo: {authenticatedUser.email ?? "Sin correo visible"}</p>
+          <p>Rol principal: {authenticatedUser.primaryRole ?? "Sin rol asignado"}</p>
+          <p>Origen del claim: {authenticatedUser.claimsSource ?? "Sin custom claims"}</p>
+        </div>
         <div className="mt-6">
           <Button href={nextPath} size="lg">
             Continuar

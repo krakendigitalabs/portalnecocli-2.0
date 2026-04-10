@@ -100,6 +100,9 @@ export function AuthGuard({
         <p className="mt-4 text-sm leading-7 text-ink/68">
           Roles requeridos: {allowedRoles.join(", ")}
         </p>
+        <p className="mt-2 text-sm leading-7 text-ink/68">
+          Roles detectados en claims: {session.user?.roles.join(", ") || "ninguno"}
+        </p>
         <div className="mt-6">
           <Link
             className="text-sm font-semibold text-teal transition hover:text-teal/80"

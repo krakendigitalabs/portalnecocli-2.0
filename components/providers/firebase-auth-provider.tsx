@@ -3,7 +3,7 @@
 import { createContext, useEffect, useMemo, useState } from "react";
 import type { IdTokenResult, User } from "firebase/auth";
 import { onIdTokenChanged } from "firebase/auth";
-import { normalizeUserRoles } from "@/lib/auth/roles";
+import { getPrimaryRole, resolveUserRolesFromClaims } from "@/lib/auth/roles";
 import { getFirebaseAuth } from "@/lib/firebase/client";
 import { hasFirebasePublicConfig } from "@/lib/firebase/config";
 import type { AuthSession, AuthUser } from "@/types/auth";
@@ -21,7 +21,8 @@ type FirebaseAuthProviderProps = {
 };
 
 function mapAuthUser(tokenResult: IdTokenResult, firebaseUser: User): AuthUser {
-  const roleClaim = tokenResult.claims.roles ?? tokenResult.claims.role;
+  const claims = tokenResult.claims as Record<string, unknown>;
+  const roleResolution = resolveUserRolesFromClaims(claims);
 
   return {
     uid: firebaseUser.uid,
@@ -29,7 +30,9 @@ function mapAuthUser(tokenResult: IdTokenResult, firebaseUser: User): AuthUser {
     displayName: firebaseUser.displayName,
     photoURL: firebaseUser.photoURL,
     emailVerified: firebaseUser.emailVerified,
-    roles: normalizeUserRoles(roleClaim),
+    roles: roleResolution.roles,
+    primaryRole: getPrimaryRole(roleResolution.roles),
+    claimsSource: roleResolution.source,
   };
 }
 
