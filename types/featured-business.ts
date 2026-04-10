@@ -27,6 +27,7 @@ export type BusinessHoursEntry = {
 export type FeaturedBusiness = {
   id: string;
   slug: string;
+  tenantId: string;
   name: string;
   category: string;
   shortDescription: string;

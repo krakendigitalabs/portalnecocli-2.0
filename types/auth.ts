@@ -1,3 +1,5 @@
+import type { BusinessServiceType } from "@/types/featured-business";
+
 export type UserRole = "admin" | "business" | "operator" | "customer";
 
 export type AuthStatus =
@@ -15,10 +17,19 @@ export type AuthUser = {
   roles: UserRole[];
   primaryRole: UserRole | null;
   claimsSource: string | null;
+  tenantId: string | null;
+  scope: AuthScope;
 };
 
 export type AuthSession = {
   status: AuthStatus;
   user: AuthUser | null;
   hasFirebaseConfig: boolean;
+};
+
+export type AuthScope = {
+  global: boolean;
+  tenantId: string | null;
+  businessIds: string[];
+  serviceTypes: BusinessServiceType[];
 };

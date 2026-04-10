@@ -5,6 +5,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
   createBusinessSeed({
     id: "hotel-brisa-marina",
     slug: "hotel-brisa-marina",
+    tenantId: "tenant-hospitality-coast",
     name: "Hotel Brisa Marina",
     category: "Hospedaje frente al mar",
     shortDescription:
@@ -46,6 +47,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
   createBusinessSeed({
     id: "cabanas-arena-clara",
     slug: "cabanas-arena-clara",
+    tenantId: "tenant-hospitality-coast",
     name: "Cabanas Arena Clara",
     category: "Alojamiento boutique",
     shortDescription:
@@ -80,6 +82,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
   createBusinessSeed({
     id: "mar-de-sabores",
     slug: "mar-de-sabores",
+    tenantId: "tenant-mar-de-sabores",
     name: "Mar de Sabores",
     category: "Cocina costera",
     shortDescription:
@@ -125,6 +128,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
   createBusinessSeed({
     id: "manglar-vivo-tours",
     slug: "manglar-vivo-tours",
+    tenantId: "tenant-manglar-vivo",
     name: "Manglar Vivo Tours",
     category: "Experiencias guiadas",
     shortDescription:
@@ -165,6 +169,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
   createBusinessSeed({
     id: "golfo-transfer",
     slug: "golfo-transfer",
+    tenantId: "tenant-golfo-transfer",
     name: "Golfo Transfer",
     category: "Traslados turisticos",
     shortDescription:
@@ -197,6 +202,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
   createBusinessSeed({
     id: "mercado-costero",
     slug: "mercado-costero",
+    tenantId: "tenant-mercado-costero",
     name: "Mercado Costero",
     category: "Comercio local y domicilios",
     shortDescription:

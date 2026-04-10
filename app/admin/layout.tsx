@@ -1,10 +1,13 @@
+import { requireRole } from "@/lib/auth/server";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 
 type AdminLayoutProps = Readonly<{
   children: React.ReactNode;
 }>;
 
-export default function AdminLayout({ children }: AdminLayoutProps) {
+export default async function AdminLayout({ children }: AdminLayoutProps) {
+  await requireRole(["admin"], { nextPath: "/admin" });
+
   return (
     <DashboardShell
       eyebrow="Backoffice"

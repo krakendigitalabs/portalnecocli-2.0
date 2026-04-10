@@ -3,7 +3,8 @@
 import { createContext, useEffect, useMemo, useState } from "react";
 import type { IdTokenResult, User } from "firebase/auth";
 import { onIdTokenChanged } from "firebase/auth";
-import { getPrimaryRole, resolveUserRolesFromClaims } from "@/lib/auth/roles";
+import { syncServerSession, clearServerSession } from "@/lib/auth/session-client";
+import { getPrimaryRole, resolveAuthorizationFromClaims } from "@/lib/auth/roles";
 import { getFirebaseAuth } from "@/lib/firebase/client";
 import { hasFirebasePublicConfig } from "@/lib/firebase/config";
 import type { AuthSession, AuthUser } from "@/types/auth";
@@ -22,7 +23,7 @@ type FirebaseAuthProviderProps = {
 
 function mapAuthUser(tokenResult: IdTokenResult, firebaseUser: User): AuthUser {
   const claims = tokenResult.claims as Record<string, unknown>;
-  const roleResolution = resolveUserRolesFromClaims(claims);
+  const authorization = resolveAuthorizationFromClaims(claims);
 
   return {
     uid: firebaseUser.uid,
@@ -30,9 +31,11 @@ function mapAuthUser(tokenResult: IdTokenResult, firebaseUser: User): AuthUser {
     displayName: firebaseUser.displayName,
     photoURL: firebaseUser.photoURL,
     emailVerified: firebaseUser.emailVerified,
-    roles: roleResolution.roles,
-    primaryRole: getPrimaryRole(roleResolution.roles),
-    claimsSource: roleResolution.source,
+    roles: authorization.roles,
+    primaryRole: getPrimaryRole(authorization.roles),
+    claimsSource: authorization.source,
+    tenantId: authorization.scope.tenantId,
+    scope: authorization.scope,
   };
 }
 
@@ -74,6 +77,12 @@ export function FirebaseAuthProvider({
 
     const unsubscribe = onIdTokenChanged(auth, async (firebaseUser) => {
       if (!firebaseUser) {
+        try {
+          await clearServerSession();
+        } catch (error) {
+          console.error("Failed to clear server session.", { error });
+        }
+
         setSession({
           status: "unauthenticated",
           user: null,
@@ -84,6 +93,12 @@ export function FirebaseAuthProvider({
       }
 
       const tokenResult = await firebaseUser.getIdTokenResult();
+
+      try {
+        await syncServerSession(tokenResult.token);
+      } catch (error) {
+        console.error("Failed to sync server session.", { error });
+      }
 
       setSession({
         status: "authenticated",

@@ -4,11 +4,33 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { SurfaceCard } from "@/components/ui/surface-card";
-import { sendPasswordReset, signInWithEmailPassword } from "@/lib/firebase/auth";
+import {
+  sendPasswordReset,
+  signInWithEmailPassword,
+  signInWithGoogle,
+} from "@/lib/firebase/auth";
 import { getMissingFirebasePublicConfig } from "@/lib/firebase/config";
 import { useAuthSession } from "@/hooks/use-auth-session";
 
 function getErrorMessage(error: unknown): string {
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    typeof error.code === "string"
+  ) {
+    switch (error.code) {
+      case "auth/popup-closed-by-user":
+        return "Cerraste la ventana de Google antes de completar el acceso.";
+      case "auth/popup-blocked":
+        return "El navegador bloqueó la ventana de Google. Permite popups e intenta de nuevo.";
+      case "auth/account-exists-with-different-credential":
+        return "Esta cuenta ya existe con otro método de acceso en Firebase.";
+      default:
+        break;
+    }
+  }
+
   if (error instanceof Error && error.message.length > 0) {
     return error.message;
   }
@@ -42,6 +64,22 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
 
     try {
       await signInWithEmailPassword(email.trim(), password);
+      router.push(nextPath);
+      router.refresh();
+    } catch (error) {
+      setErrorMessage(getErrorMessage(error));
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handleGoogleSignIn() {
+    setIsSubmitting(true);
+    setErrorMessage(null);
+    setFeedbackMessage(null);
+
+    try {
+      await signInWithGoogle();
       router.push(nextPath);
       router.refresh();
     } catch (error) {
@@ -137,6 +175,7 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
           Usa tu cuenta autorizada para entrar al backoffice, al hub de negocios y a futuros módulos operativos del portal.
         </p>
         <ul className="mt-6 space-y-3 text-sm leading-7 text-ink/68">
+          <li>Acceso rápido con Google.</li>
           <li>Correo y contraseña sobre Firebase Auth.</li>
           <li>Roles leídos desde claims del token.</li>
           <li>Base lista para crecer hacia sesiones más robustas.</li>
@@ -144,7 +183,25 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
       </SurfaceCard>
 
       <SurfaceCard className="rounded-[30px] p-8">
-        <form className="space-y-5" onSubmit={handleSubmit}>
+        <div className="space-y-4">
+          <button
+            className="inline-flex w-full items-center justify-center rounded-full border border-ink/12 bg-white px-6 py-3.5 text-sm font-semibold text-ink transition hover:border-teal/30 hover:text-teal disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={isSubmitting}
+            onClick={handleGoogleSignIn}
+            type="button"
+          >
+            {isSubmitting ? "Conectando..." : "Continuar con Google"}
+          </button>
+          <div className="flex items-center gap-3">
+            <div className="h-px flex-1 bg-ink/10" />
+            <span className="text-xs font-semibold uppercase tracking-[0.22em] text-ink/46">
+              o sigue con correo
+            </span>
+            <div className="h-px flex-1 bg-ink/10" />
+          </div>
+        </div>
+
+        <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <label className="text-sm font-semibold text-ink" htmlFor="email">
               Correo
