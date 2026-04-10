@@ -41,6 +41,9 @@ export async function generateMetadata({
   return {
     title: `${business.name} en Necocli | Portal Necocli 2.0`,
     description: `${business.shortDescription} Contacta ${business.name} por WhatsApp, llamada o mapa desde el directorio de negocios de Necocli.`,
+    alternates: {
+      canonical: `${siteMetadata.siteUrl}/negocios/${business.slug}`,
+    },
     openGraph: {
       title: `${business.name} en Necocli | Portal Necocli 2.0`,
       description: business.shortDescription,
@@ -51,6 +54,12 @@ export async function generateMetadata({
           alt: business.name,
         },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${business.name} en Necocli | Portal Necocli 2.0`,
+      description: business.shortDescription,
+      images: [business.image],
     },
   };
 }
@@ -84,12 +93,42 @@ export default async function BusinessDetailPage({
     url: `${siteMetadata.siteUrl}/negocios/${business.slug}`,
     sameAs: business.socialLinks?.map((link) => link.href),
   };
+  const breadcrumbStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Inicio",
+        item: siteMetadata.siteUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Negocios",
+        item: `${siteMetadata.siteUrl}/negocios`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: business.name,
+        item: `${siteMetadata.siteUrl}/negocios/${business.slug}`,
+      },
+    ],
+  };
 
   return (
     <div className="space-y-8 pb-14 pt-6 md:space-y-10 md:pt-10">
       <script
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(structuredData),
+        }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbStructuredData),
         }}
         type="application/ld+json"
       />

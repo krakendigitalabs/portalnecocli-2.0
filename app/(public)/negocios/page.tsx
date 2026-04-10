@@ -4,6 +4,7 @@ import { FeaturedBusinessGrid } from "@/components/marketplace/featured-business
 import { BusinessCategoryBadge } from "@/components/marketplace/business-category-badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { SearchBar } from "@/components/ui/search-bar";
 import {
   getBusinessServiceTypeOptions,
   getBusinessesByFilters,
@@ -14,6 +15,9 @@ export const metadata: Metadata = {
   title: "Negocios en Necocli | Portal Necocli 2.0",
   description:
     "Explora hoteles, restaurantes, tours, transporte y comercios destacados en Necocli con accesos directos a WhatsApp, llamada y mapa.",
+  alternates: {
+    canonical: "https://portalnecocli.com/negocios",
+  },
   openGraph: {
     title: "Negocios en Necocli | Portal Necocli 2.0",
     description:
@@ -78,10 +82,17 @@ export default async function BusinessesDirectoryPage({
                 Buscando: "{query}"
               </p>
             ) : null}
+            <div className="max-w-2xl pt-2">
+              <SearchBar
+                actionLabel="Buscar negocios"
+                actionPath="/negocios"
+                placeholder="Busca por nombre, categoría, barrio o servicio"
+              />
+            </div>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <Card className="rounded-[26px] border-ink/10 p-5">
-              <p className="text-sm text-ink/68">Categorias activas</p>
+              <p className="text-sm text-ink/68">Categorías activas</p>
               <p className="mt-2 text-3xl font-semibold text-ink">
                 {categoryOptions.length}
               </p>

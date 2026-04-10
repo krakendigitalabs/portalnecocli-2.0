@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: siteMetadata.title,
   description: siteMetadata.description,
   metadataBase: new URL(siteMetadata.siteUrl),
+  alternates: {
+    canonical: siteMetadata.siteUrl,
+  },
   openGraph: {
     url: siteMetadata.siteUrl,
     title: siteMetadata.title,
@@ -14,6 +17,10 @@ export const metadata: Metadata = {
     siteName: siteMetadata.title,
     locale: "es_CO",
     type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
   twitter: {
     card: "summary_large_image",
