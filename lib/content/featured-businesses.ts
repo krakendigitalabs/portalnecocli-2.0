@@ -33,6 +33,43 @@ export function getBusinessesByServiceType(serviceType?: string) {
   );
 }
 
+export function getBusinessesByFilters(filters?: {
+  serviceType?: string;
+  query?: string;
+}) {
+  const serviceType = filters?.serviceType;
+  const query = filters?.query?.trim().toLowerCase();
+
+  return featuredBusinessesSeed.filter((business) => {
+    const matchesServiceType =
+      !serviceType || serviceType === "all"
+        ? true
+        : business.serviceType === serviceType;
+
+    if (!matchesServiceType) {
+      return false;
+    }
+
+    if (!query) {
+      return true;
+    }
+
+    const searchableFields = [
+      business.name,
+      business.category,
+      business.shortDescription,
+      business.city,
+      business.neighborhood,
+      ...business.tags,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+
+    return searchableFields.includes(query);
+  });
+}
+
 export function getBusinessServiceTypeOptions() {
   return getBusinessFilterOptions(featuredBusinessesSeed);
 }

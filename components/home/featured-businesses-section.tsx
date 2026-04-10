@@ -16,8 +16,8 @@ export function FeaturedBusinessesSection({
       <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <SectionHeader
           eyebrow="Comercios destacados"
-          title="Explora negocios en Necocli con accesos claros y una presentacion lista para convertir."
-          description="Una capa premium para descubrir hospedaje, gastronomia, tours, transporte y comercios aliados con CTAs directos, informacion clave y fichas listas para crecer."
+          title="Explora negocios en Necoclí con accesos claros y una presentación lista para convertir."
+          description="Una capa premium para descubrir hospedaje, gastronomía, tours, transporte y comercios aliados con CTAs directos, información clave y fichas listas para crecer."
         />
         <div className="flex gap-3">
           <Button href="/negocios" size="lg">

@@ -12,6 +12,7 @@ import {
   getBusinessBySlug,
   getRelatedBusinessesForDetail,
 } from "@/lib/content/featured-businesses";
+import { siteMetadata } from "@/lib/constants/site";
 
 type BusinessDetailPageProps = {
   params: Promise<{
@@ -40,6 +41,17 @@ export async function generateMetadata({
   return {
     title: `${business.name} en Necocli | Portal Necocli 2.0`,
     description: `${business.shortDescription} Contacta ${business.name} por WhatsApp, llamada o mapa desde el directorio de negocios de Necocli.`,
+    openGraph: {
+      title: `${business.name} en Necocli | Portal Necocli 2.0`,
+      description: business.shortDescription,
+      url: `${siteMetadata.siteUrl}/negocios/${business.slug}`,
+      images: [
+        {
+          url: business.image,
+          alt: business.name,
+        },
+      ],
+    },
   };
 }
 
@@ -54,9 +66,33 @@ export default async function BusinessDetailPage({
   }
 
   const relatedBusinesses = getRelatedBusinessesForDetail(business);
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: business.name,
+    description: business.shortDescription,
+    image: `${siteMetadata.siteUrl}${business.image}`,
+    telephone: business.phone,
+    email: business.email,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: business.address,
+      addressLocality: business.city,
+      addressRegion: "Antioquia",
+      addressCountry: "CO",
+    },
+    url: `${siteMetadata.siteUrl}/negocios/${business.slug}`,
+    sameAs: business.socialLinks?.map((link) => link.href),
+  };
 
   return (
     <div className="space-y-8 pb-14 pt-6 md:space-y-10 md:pt-10">
+      <script
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
+        type="application/ld+json"
+      />
       <div className="space-y-4">
         <Link
           className="inline-flex items-center text-sm font-semibold text-teal transition hover:text-coral"
@@ -64,6 +100,9 @@ export default async function BusinessDetailPage({
         >
           Volver al directorio
         </Link>
+        <p className="text-sm text-ink/58">
+          Negocios en Necoclí / {business.category} / {business.name}
+        </p>
         <BusinessCategoryBadge
           category={business.category}
           serviceType={business.serviceType}
@@ -107,7 +146,10 @@ export default async function BusinessDetailPage({
                     rel="noreferrer"
                     target="_blank"
                   >
-                    {link.platform}
+                    {link.platform === "website"
+                      ? "Sitio"
+                      : link.platform.charAt(0).toUpperCase() +
+                        link.platform.slice(1)}
                   </a>
                 ))}
               </div>
@@ -120,7 +162,7 @@ export default async function BusinessDetailPage({
       {business.gallery?.length ? (
         <section className="space-y-4">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-coral">
-            Galeria referencial
+            Galería referencial
           </p>
           <div className="grid gap-4 md:grid-cols-2">
             {business.gallery.map((image) => (

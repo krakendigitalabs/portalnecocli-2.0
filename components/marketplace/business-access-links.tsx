@@ -16,28 +16,35 @@ export function BusinessAccessLinks({
 }: BusinessAccessLinksProps) {
   const quickLinks = [
     {
-      label: "WhatsApp",
+      label: "Escribenos por WhatsApp",
       href: createWhatsAppHref(business.whatsapp),
+      external: true,
     },
     {
-      label: "Llamar",
+      label: "Llamar ahora",
       href: createPhoneHref(business.phone),
+      external: false,
     },
     {
-      label: "Mapa",
+      label: "Como llegar",
       href: business.mapLink,
+      external: true,
     },
   ];
 
   return (
-    <div className={cn("flex flex-wrap gap-2", className)}>
+    <div
+      aria-label={`Accesos rapidos para ${business.name}`}
+      className={cn("flex flex-wrap gap-2", className)}
+      role="group"
+    >
       {quickLinks.map((link) => (
         <a
           key={link.label}
           className="inline-flex items-center rounded-full border border-ink/10 bg-white px-3 py-2 text-xs font-semibold text-ink/75 transition hover:border-teal/30 hover:text-teal"
           href={link.href}
-          rel="noreferrer"
-          target="_blank"
+          rel={link.external ? "noreferrer" : undefined}
+          target={link.external ? "_blank" : undefined}
         >
           {link.label}
         </a>

@@ -21,7 +21,10 @@ export function FeaturedBusinessCard({ business }: FeaturedBusinessCardProps) {
           />
         </div>
       </Link>
-      <div className="flex flex-1 flex-col gap-5 p-6">
+      <article
+        aria-label={`Ficha de ${business.name}`}
+        className="flex flex-1 flex-col gap-5 p-6"
+      >
         <div className="space-y-4">
           <BusinessCategoryBadge
             category={business.category}
@@ -52,7 +55,7 @@ export function FeaturedBusinessCard({ business }: FeaturedBusinessCardProps) {
         <div className="mt-auto">
           <BusinessCTAGroup business={business} compact />
         </div>
-      </div>
+      </article>
     </Card>
   );
 }
