@@ -1,6 +1,12 @@
+import { notFound } from "next/navigation";
 import { DashboardPreview } from "@/components/dashboards/dashboard-preview";
+import { dashboardPreviewsEnabled } from "@/lib/config/feature-flags";
 
 export default function AdminPage() {
+  if (!dashboardPreviewsEnabled) {
+    notFound();
+  }
+
   return (
     <DashboardPreview
       title="Panel administrativo"

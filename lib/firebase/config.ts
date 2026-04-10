@@ -15,3 +15,14 @@ export const firebaseConfig: FirebaseWebConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? "",
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID ?? "",
 };
+
+export const firestoreCommercialHomePath =
+  process.env.FIRESTORE_COMMERCIAL_HOME_PATH ?? "portal/content/home";
+
+export function hasFirebasePublicConfig() {
+  return (
+    firebaseConfig.apiKey.length > 0 &&
+    firebaseConfig.projectId.length > 0 &&
+    firebaseConfig.appId.length > 0
+  );
+}

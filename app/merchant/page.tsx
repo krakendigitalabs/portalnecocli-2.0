@@ -1,6 +1,12 @@
+import { notFound } from "next/navigation";
 import { DashboardPreview } from "@/components/dashboards/dashboard-preview";
+import { dashboardPreviewsEnabled } from "@/lib/config/feature-flags";
 
 export default function MerchantPage() {
+  if (!dashboardPreviewsEnabled) {
+    notFound();
+  }
+
   return (
     <DashboardPreview
       title="Panel de comercio"

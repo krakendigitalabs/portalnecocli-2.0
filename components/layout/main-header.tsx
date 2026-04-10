@@ -51,8 +51,8 @@ export function MainHeader({ announcement, brandName }: MainHeaderProps) {
                 <Badge className="hidden sm:inline-flex" variant="accent">
                   Portal 2.0
                 </Badge>
-                <Button href="/merchant" size="md" variant="secondary">
-                  Acceso negocios
+                <Button href="/#businesses" size="md" variant="secondary">
+                  Afiliar mi negocio
                 </Button>
               </div>
             </div>

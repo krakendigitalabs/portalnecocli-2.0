@@ -22,11 +22,11 @@ export function MarketplaceHero() {
           </div>
           <SearchBar />
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Button href="/merchant" size="lg">
-              Ver base de comercios
+            <Button href="/#businesses" size="lg">
+              Ver propuesta para afiliados
             </Button>
-            <Button href="/admin" size="lg" variant="secondary">
-              Ver panel inicial
+            <Button href="/#directory" size="lg" variant="secondary">
+              Explorar directorio
             </Button>
           </div>
         </div>

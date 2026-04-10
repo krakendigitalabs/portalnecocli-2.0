@@ -1,12 +1,20 @@
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { getCommercialHomeContent } from "@/lib/content/commercial-home";
 
 type MainFooterProps = {
   brandName: string;
 };
 
-export function MainFooter({ brandName }: MainFooterProps) {
+export async function MainFooter({ brandName }: MainFooterProps) {
+  const commercialHomeContent = await getCommercialHomeContent();
+  const { contactItems, socialLinks } = commercialHomeContent.contactSection;
+  const whatsappItem = contactItems.find((item) => item.label === "WhatsApp");
+  const emailItem = contactItems.find(
+    (item) => item.label === "Correo principal",
+  );
+
   return (
     <footer className="py-10 md:py-14">
       <Container>
@@ -29,8 +37,21 @@ export function MainFooter({ brandName }: MainFooterProps) {
             </div>
             <div className="grid gap-2 text-sm text-white/72">
               <p>Necoclí, Antioquia</p>
-              <p>Base de producción en construcción</p>
-              <p>Diseño mobile-first y modular</p>
+              {whatsappItem ? <p>WhatsApp: {whatsappItem.value}</p> : null}
+              {emailItem ? <p>{emailItem.value}</p> : null}
+              <div className="flex flex-wrap gap-2 pt-2">
+                {socialLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    className="text-white/72 transition hover:text-white"
+                    href={link.href}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </Card>

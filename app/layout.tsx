@@ -6,6 +6,20 @@ import { brand, siteMetadata } from "@/lib/constants/site";
 export const metadata: Metadata = {
   title: siteMetadata.title,
   description: siteMetadata.description,
+  metadataBase: new URL(siteMetadata.siteUrl),
+  openGraph: {
+    url: siteMetadata.siteUrl,
+    title: siteMetadata.title,
+    description: siteMetadata.description,
+    siteName: siteMetadata.title,
+    locale: "es_CO",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteMetadata.title,
+    description: siteMetadata.description,
+  },
 };
 
 type RootLayoutProps = Readonly<{
@@ -17,7 +31,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="es">
       <body>
         <AppShell
-          announcement="Portal en construcción por fases"
+          announcement="Reservas, afiliaciones y soporte local"
           brandName={brand.name}
         >
           {children}

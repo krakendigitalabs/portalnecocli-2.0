@@ -47,6 +47,16 @@ export function Button({
   );
 
   if (href) {
+    const isExternalHref = href.startsWith("http");
+
+    if (isExternalHref) {
+      return (
+        <a className={classes} href={href} rel="noreferrer" target="_blank">
+          {children}
+        </a>
+      );
+    }
+
     return (
       <Link href={href} className={classes}>
         {children}
