@@ -4,6 +4,9 @@ type DirectoryAliasPageProps = {
   searchParams?: Promise<{
     category?: string;
     q?: string;
+    location?: string;
+    price?: string;
+    rating?: string;
   }>;
 };
 
@@ -19,6 +22,18 @@ export default async function DirectoryAliasPage({
 
   if (resolvedSearchParams?.q) {
     params.set("q", resolvedSearchParams.q);
+  }
+
+  if (resolvedSearchParams?.location) {
+    params.set("location", resolvedSearchParams.location);
+  }
+
+  if (resolvedSearchParams?.price) {
+    params.set("price", resolvedSearchParams.price);
+  }
+
+  if (resolvedSearchParams?.rating) {
+    params.set("rating", resolvedSearchParams.rating);
   }
 
   const suffix = params.toString();

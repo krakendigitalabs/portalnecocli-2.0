@@ -12,6 +12,7 @@ import {
   getBusinessBySlug,
   getRelatedBusinessesForDetail,
 } from "@/lib/content/featured-businesses";
+import { getMarketplaceListingHref } from "@/lib/content/marketplace";
 import { siteMetadata } from "@/lib/constants/site";
 
 type BusinessDetailPageProps = {
@@ -75,6 +76,7 @@ export default async function BusinessDetailPage({
   }
 
   const relatedBusinesses = getRelatedBusinessesForDetail(business);
+  const listingHref = getMarketplaceListingHref(business.serviceType);
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -135,9 +137,9 @@ export default async function BusinessDetailPage({
       <div className="space-y-4">
         <Link
           className="inline-flex items-center text-sm font-semibold text-teal transition hover:text-coral"
-          href="/negocios"
+          href={listingHref}
         >
-          Volver al directorio
+          Volver al listado
         </Link>
         <p className="text-sm text-ink/58">
           Negocios en Necoclí / {business.category} / {business.name}
