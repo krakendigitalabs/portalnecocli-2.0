@@ -13,7 +13,13 @@ export type ScopeRequirement = {
   serviceTypes?: BusinessServiceType[];
 };
 
-const userRoles: UserRole[] = ["admin", "business", "operator", "customer"];
+const userRoles: UserRole[] = [
+  "super_admin",
+  "admin",
+  "business",
+  "operator",
+  "customer",
+];
 const businessServiceTypes: BusinessServiceType[] = [
   "hotel",
   "restaurante",
@@ -162,6 +168,7 @@ export function resolveScopeFromClaims(
   );
 
   const global =
+    roles.includes("super_admin") ||
     roles.includes("admin") ||
     normalizeBoolean(claims.global_access) ||
     normalizeBoolean(claims.globalAccess) ||

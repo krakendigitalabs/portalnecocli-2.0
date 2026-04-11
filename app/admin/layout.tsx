@@ -6,13 +6,13 @@ type AdminLayoutProps = Readonly<{
 }>;
 
 export default async function AdminLayout({ children }: AdminLayoutProps) {
-  await requireRole(["admin"], { nextPath: "/admin" });
+  await requireRole(["super_admin", "admin"], { nextPath: "/admin" });
 
   return (
     <DashboardShell
       eyebrow="Backoffice"
       title="Administración central"
-      description="Base operativa para gobierno del marketplace, supervisión y evolución de módulos internos."
+      description="Supervisión global de comercios, moderación, usuarios y control operativo del ecosistema."
     >
       {children}
     </DashboardShell>

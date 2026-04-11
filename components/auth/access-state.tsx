@@ -8,6 +8,8 @@ type AccessStateProps = {
   nextPath?: string;
   primaryHref: string;
   primaryLabel: string;
+  secondaryHref?: string;
+  secondaryLabel?: string;
 };
 
 export function AccessState({
@@ -17,6 +19,8 @@ export function AccessState({
   nextPath,
   primaryHref,
   primaryLabel,
+  secondaryHref = "/",
+  secondaryLabel = "Volver al portal",
 }: AccessStateProps) {
   return (
     <div className="space-y-6 pb-14 pt-6 md:space-y-8 md:pt-10">
@@ -39,8 +43,8 @@ export function AccessState({
           <Button href={primaryHref} size="lg">
             {primaryLabel}
           </Button>
-          <Button href="/" size="lg" variant="secondary">
-            Volver al portal
+          <Button href={secondaryHref} size="lg" variant="secondary">
+            {secondaryLabel}
           </Button>
         </div>
       </SurfaceCard>

@@ -1,6 +1,11 @@
 import type { BusinessServiceType } from "@/types/featured-business";
 
-export type UserRole = "admin" | "business" | "operator" | "customer";
+export type UserRole =
+  | "super_admin"
+  | "admin"
+  | "business"
+  | "operator"
+  | "customer";
 
 export type AuthStatus =
   | "loading"

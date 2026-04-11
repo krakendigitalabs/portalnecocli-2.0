@@ -44,6 +44,15 @@ describe("auth roles and scopes", () => {
     ).toBe(true);
   });
 
+  it("treats super admins as global operators", () => {
+    const authorization = resolveAuthorizationFromClaims({
+      roles: ["super_admin"],
+    });
+
+    expect(authorization.roles).toEqual(["super_admin"]);
+    expect(authorization.scope.global).toBe(true);
+  });
+
   it("blocks managers from accessing data outside their business scope", () => {
     expect(
       hasRequiredScope(
@@ -64,6 +73,7 @@ describe("auth roles and scopes", () => {
 
   it("keeps role checks centralized", () => {
     expect(hasRequiredRole(["business"], ["admin", "business"])).toBe(true);
+    expect(hasRequiredRole(["super_admin"], ["super_admin", "admin"])).toBe(true);
     expect(hasRequiredRole(["customer"], ["admin", "operator"])).toBe(false);
   });
 });

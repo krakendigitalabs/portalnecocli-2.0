@@ -6,7 +6,7 @@ type MerchantLayoutProps = Readonly<{
 }>;
 
 export default async function MerchantLayout({ children }: MerchantLayoutProps) {
-  await requireRole(["admin", "business", "operator"], {
+  await requireRole(["business"], {
     nextPath: "/merchant",
   });
   await requireScope(
@@ -21,8 +21,8 @@ export default async function MerchantLayout({ children }: MerchantLayoutProps) 
   return (
     <DashboardShell
       eyebrow="Merchant Hub"
-      title="Espacio de negocios"
-      description="Base lista para hoteles, restaurantes, tours y operadores que gestionarán su presencia en la plataforma."
+      title="Centro de operación del negocio"
+      description="Gestión privada del perfil comercial, servicios, horarios y operación diaria del comercio."
     >
       {children}
     </DashboardShell>

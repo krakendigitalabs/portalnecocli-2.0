@@ -4,7 +4,7 @@ import { getAdminDashboardData } from "@/lib/dashboards/data";
 
 export async function GET() {
   const authorization = await requireApiAccess({
-    roles: ["admin"],
+    roles: ["super_admin", "admin"],
   });
 
   if (authorization instanceof NextResponse) {

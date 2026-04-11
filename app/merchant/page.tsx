@@ -3,7 +3,7 @@ import { requireRole } from "@/lib/auth/server";
 import { getMerchantDashboardData } from "@/lib/dashboards/data";
 
 export default async function MerchantPage() {
-  const session = await requireRole(["admin", "business", "operator"], {
+  const session = await requireRole(["business"], {
     nextPath: "/merchant",
   });
 

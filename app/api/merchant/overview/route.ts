@@ -4,7 +4,7 @@ import { getMerchantDashboardData } from "@/lib/dashboards/data";
 
 export async function GET() {
   const authorization = await requireApiAccess({
-    roles: ["admin", "business", "operator"],
+    roles: ["business"],
     scope: {
       requireAssignedScope: true,
     },

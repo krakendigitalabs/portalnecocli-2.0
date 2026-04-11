@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import "@/app/globals.css";
 import { AppShell } from "@/components/layout/app-shell";
 import { AppProviders } from "@/components/providers/app-providers";
 import { brand, siteMetadata } from "@/lib/constants/site";
+import { PORTAL_APP_HEADER } from "@/lib/routing/subdomains";
 
 export const metadata: Metadata = {
   title: siteMetadata.title,
@@ -43,17 +45,25 @@ type RootLayoutProps = Readonly<{
   children: React.ReactNode;
 }>;
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({ children }: RootLayoutProps) {
+  const requestHeaders = await headers();
+  const portalApp = requestHeaders.get(PORTAL_APP_HEADER) ?? "public";
+  const isDashboardApp = portalApp === "admin" || portalApp === "business";
+
   return (
     <html lang="es">
       <body>
         <AppProviders>
-          <AppShell
-            announcement="Reservas, afiliaciones y soporte local"
-            brandName={brand.name}
-          >
-            {children}
-          </AppShell>
+          {isDashboardApp ? (
+            children
+          ) : (
+            <AppShell
+              announcement="Reservas, afiliaciones y soporte local"
+              brandName={brand.name}
+            >
+              {children}
+            </AppShell>
+          )}
         </AppProviders>
       </body>
     </html>

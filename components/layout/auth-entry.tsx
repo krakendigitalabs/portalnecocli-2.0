@@ -5,14 +5,26 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { signOutCurrentUser } from "@/lib/firebase/auth";
+import { buildPortalUrl } from "@/lib/routing/subdomains";
 
 function getDashboardHref(roles: string[]): string {
-  if (roles.includes("admin")) {
-    return "/admin";
+  const host =
+    typeof window !== "undefined" ? window.location.host : undefined;
+  const protocol =
+    typeof window !== "undefined" ? window.location.protocol.replace(":", "") : undefined;
+
+  if (roles.includes("super_admin") || roles.includes("admin")) {
+    return buildPortalUrl("admin", "/", {
+      host,
+      protocol,
+    });
   }
 
-  if (roles.includes("business") || roles.includes("operator")) {
-    return "/merchant";
+  if (roles.includes("business")) {
+    return buildPortalUrl("business", "/", {
+      host,
+      protocol,
+    });
   }
 
   return "/negocios";
