@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { FeaturedBusinessGrid } from "@/components/marketplace/featured-business-grid";
+import { PropertyTypeFilter } from "@/components/marketplace/property-type-filter";
+import { BookingBusinessCard } from "@/components/marketplace/booking-business-card";
 import { UniversalSearch } from "@/components/marketplace/universal-search";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -103,11 +104,17 @@ export function MarketplaceListingPage({ data }: MarketplaceListingPageProps) {
 
         {data.businesses.length > 0 ? (
           <div className="space-y-4">
-            <p className="text-sm text-ink/62">
-              {data.totalCount} resultado{data.totalCount === 1 ? "" : "s"} disponible
-              {data.totalCount === 1 ? "" : "s"} en esta vista.
+            <p className="text-sm font-semibold text-ink/62">
+              Necoclí: {data.totalCount} alojamiento{data.totalCount === 1 ? "" : "s"} encontrado{data.totalCount === 1 ? "" : "s"}
             </p>
-            <FeaturedBusinessGrid businesses={data.businesses} />
+            
+            <PropertyTypeFilter baseHref={data.category.href} />
+
+            <div className="flex flex-col gap-4">
+              {data.businesses.map((business) => (
+                <BookingBusinessCard key={business.id} business={business} />
+              ))}
+            </div>
           </div>
         ) : (
           <Card className="rounded-[30px] border-ink/10 p-8">

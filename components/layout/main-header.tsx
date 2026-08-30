@@ -69,10 +69,10 @@ export function MainHeader({ announcement, brandName }: MainHeaderProps) {
                 </Badge>
                 <AuthEntry />
                 <Button className="w-full sm:w-auto" href="/negocios" size="md" variant="primary">
-                  Ver negocios
+                  Explorar directorio
                 </Button>
                 <Button className="w-full sm:w-auto" href={reservationHref} size="md" variant="accent">
-                  Reservar ahora
+                  Soporte WhatsApp
                 </Button>
                 <Button
                   className="w-full sm:col-span-2 sm:w-auto"

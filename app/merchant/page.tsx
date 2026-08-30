@@ -7,5 +7,8 @@ export default async function MerchantPage() {
     nextPath: "/merchant",
   });
 
-  return <MerchantDashboard data={getMerchantDashboardData(session.user.scope)} />;
+  const data = await getMerchantDashboardData(session.user.scope);
+
+  return <MerchantDashboard data={data} />;
 }
+

@@ -1,0 +1,122 @@
+/**
+ * Servicio de Reservas para Portal Necoclí.
+ * ARQUITECTURA: Usa el Admin SDK de Firebase (server-only).
+ */
+import "server-only";
+import { getFirestore } from "firebase-admin/firestore";
+import { getFirebaseAdminApp } from "@/lib/firebase/admin";
+import type { Reservation, ReservationLead, ReservationStatus } from '@/types/reservation';
+
+function getDb() {
+  return getFirestore(getFirebaseAdminApp());
+}
+
+/** Genera un código de referencia único legible para el cliente. */
+function generateReferenceCode(): string {
+  const date = new Date();
+  const datePart = date.toISOString().slice(0, 10).replace(/-/g, '');
+  const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase();
+  return `NEC-${datePart}-${randomPart}`;
+}
+
+/**
+ * Crea una nueva reserva en Firestore con estado PENDING_PAYMENT.
+ */
+export async function createReservation(params: {
+  businessId: string;
+  businessName: string;
+  lead: ReservationLead;
+  totalAmount: number;
+  customerId?: string;
+}): Promise<Reservation> {
+  const db = getDb();
+  const ref = db.collection('reservations').doc();
+  const now = new Date().toISOString();
+
+  const reservation: Reservation = {
+    id: ref.id,
+    business_id: params.businessId,
+    business_name: params.businessName,
+    lead: params.lead,
+    status: 'PENDING_PAYMENT',
+    total_amount: params.totalAmount,
+    created_at: now,
+    updated_at: now,
+    reference_code: generateReferenceCode(),
+    ...(params.customerId ? { customer_id: params.customerId } : {}),
+  };
+
+  await ref.set(reservation);
+  return reservation;
+}
+
+/**
+ * Vincula una transacción Escrow a una reserva y la marca como PAID.
+ */
+export async function markReservationAsPaid(
+  reservationId: string,
+  escrowTransactionId: string
+): Promise<void> {
+  const db = getDb();
+  await db.collection('reservations').doc(reservationId).update({
+    status: 'PAID' as ReservationStatus,
+    escrow_transaction_id: escrowTransactionId,
+    updated_at: new Date().toISOString(),
+  });
+}
+
+/**
+ * Marca la reserva como COMPLETED.
+ * El llamador debe luego ejecutar releaseFunds() en el escrowService.
+ */
+export async function completeReservation(reservationId: string): Promise<Reservation> {
+  const db = getDb();
+  const ref = db.collection('reservations').doc(reservationId);
+  const snap = await ref.get();
+
+  if (!snap.exists) {
+    throw new Error(`Reserva ${reservationId} no encontrada.`);
+  }
+
+  const reservation = snap.data() as Reservation;
+
+  if (reservation.status !== 'PAID' && reservation.status !== 'CONFIRMED') {
+    throw new Error(
+      `La reserva ${reservationId} no puede completarse desde el estado: ${reservation.status}`
+    );
+  }
+
+  await ref.update({
+    status: 'COMPLETED' as ReservationStatus,
+    updated_at: new Date().toISOString(),
+  });
+
+  return { ...reservation, status: 'COMPLETED' };
+}
+
+/** Obtiene una reserva por ID. */
+export async function getReservationById(reservationId: string): Promise<Reservation> {
+  const db = getDb();
+  const snap = await db.collection('reservations').doc(reservationId).get();
+
+  if (!snap.exists) {
+    throw new Error(`Reserva ${reservationId} no encontrada.`);
+  }
+
+  return snap.data() as Reservation;
+}
+
+/**
+ * Obtiene todas las reservas de un cliente ordenadas por fecha (más reciente primero).
+ */
+export async function getReservationsByCustomer(customerId: string): Promise<Reservation[]> {
+  const db = getDb();
+  const snap = await db
+    .collection('reservations')
+    .where('customer_id', '==', customerId)
+    .orderBy('created_at', 'desc')
+    .limit(20)
+    .get();
+
+  return snap.docs.map((doc) => doc.data() as Reservation);
+}
