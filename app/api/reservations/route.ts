@@ -109,14 +109,20 @@ async function sendConfirmationEmail(
         <p style="color: #5A6475; line-height: 1.7; margin: 0 0 24px;">
           También puedes contactarnos directamente por WhatsApp para cualquier consulta o cambio.
         </p>
-        <a href="https://wa.me/57${params.whatsapp.replace(/\D/g, '')}" 
-           style="display: inline-block; background: #25D366; color: white; padding: 14px 28px; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: 14px;">
-          Chatear por WhatsApp
-        </a>
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <a href="https://wa.me/57${params.whatsapp.replace(/\D/g, '')}" 
+             style="display: inline-block; background: #25D366; color: white; padding: 14px 28px; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: 14px;">
+            Chatear por WhatsApp
+          </a>
+          <a href="https://tours.portalnecocli.com/pago/${params.referenceCode}" 
+             style="display: inline-block; background: #C49A45; color: white; padding: 14px 28px; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: 14px;">
+            Reserve y pague
+          </a>
+        </div>
         <hr style="border: none; border-top: 1px solid #E8EEF0; margin: 32px 0;" />
         <p style="margin: 0; font-size: 12px; color: #9BA3AF; text-align: center;">
           Portal Necoclí · Necoclí, Antioquia · 
-          <a href="https://portal-necocli.vercel.app" style="color: #0F5C5C;">portal-necocli.vercel.app</a>
+          <a href="https://tours.portalnecocli.com" style="color: #1B5E20;">tours.portalnecocli.com</a>
         </p>
       </div>
     </div>

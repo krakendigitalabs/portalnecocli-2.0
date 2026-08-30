@@ -134,25 +134,28 @@ export default async function BusinessDetailPage({
         }}
         type="application/ld+json"
       />
-      <div className="space-y-4">
+      <div className="flex flex-col items-center text-center space-y-6 mb-8 md:mb-16">
         <Link
           className="inline-flex items-center text-sm font-semibold text-teal transition hover:text-coral"
           href={listingHref}
         >
           Volver al listado
         </Link>
-        <p className="text-sm text-ink/58">
+        <p className="text-sm font-medium tracking-wide text-ink/50 uppercase">
           Negocios en Necoclí / {business.category} / {business.name}
         </p>
-        <BusinessCategoryBadge
-          category={business.category}
-          serviceType={business.serviceType}
-        />
-        <div className="space-y-4">
-          <h1 className="max-w-4xl text-4xl font-semibold tracking-tight text-ink md:text-5xl">
+        <div className="pt-2">
+          <BusinessCategoryBadge
+            category={business.category}
+            serviceType={business.serviceType}
+          />
+        </div>
+        
+        <div className="space-y-8 pt-6 w-full flex flex-col items-center">
+          <h1 className="max-w-5xl text-5xl font-bold tracking-tighter text-ink md:text-7xl lg:text-[5rem] leading-[1.1]">
             {business.name}
           </h1>
-          <p className="max-w-3xl text-base leading-8 text-ink/72 md:text-lg">
+          <p className="max-w-4xl text-lg leading-loose text-ink/70 md:text-2xl text-justify hyphens-auto mt-4 px-4">
             {business.longDescription}
           </p>
         </div>
@@ -199,6 +202,39 @@ export default async function BusinessDetailPage({
           <BusinessMetaList business={business} />
         </div>
       </div>
+
+      {relatedBusinesses.length > 0 ? (
+        <div className="space-y-8 pt-16 border-t border-ink/5 mt-16">
+          <h2 className="text-2xl font-bold tracking-tight text-ink md:text-3xl">
+            Otras opciones similares
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {relatedBusinesses.map((related) => (
+              <Link 
+                key={related.id} 
+                href={`/negocios/${related.slug}`}
+                className="group flex items-center gap-4 p-3 rounded-2xl border border-ink/5 bg-white/50 hover:bg-white hover:shadow-md hover:border-gold/30 transition-all"
+              >
+                <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-sand">
+                  <img 
+                    src={related.image} 
+                    alt={related.name} 
+                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-ink group-hover:text-gold transition-colors line-clamp-1">
+                    {related.name}
+                  </span>
+                  <span className="text-xs text-ink/60 line-clamp-1 mt-0.5">
+                    {related.shortDescription}
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
       {business.gallery?.length ? (
         <section className="space-y-4">

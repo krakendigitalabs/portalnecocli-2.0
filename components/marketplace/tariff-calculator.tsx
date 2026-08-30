@@ -120,16 +120,8 @@ function ServiceRow({
           <div className="min-w-0">
             <p className="text-sm font-semibold text-ink">{service.name}</p>
             <p className="text-xs text-ink/55 leading-snug mt-0.5">{service.description}</p>
-            {isPriceToAgree ? (
-              <p className="text-xs font-medium text-coral mt-1">Precio a convenir</p>
-            ) : hasRange ? (
-              <p className="text-xs text-ink/45 mt-1">
-                {formatCOP(service.priceMin ?? 0)} – {formatCOP(service.priceMax!)} / {service.unit}
-              </p>
-            ) : (
-              <p className="text-xs font-semibold text-teal mt-1">
-                {formatCOP(service.priceFixed!)} / {service.unit}
-              </p>
+            {isPriceToAgree && (
+              <p className="text-[11px] font-medium text-coral mt-1">Sujeto a cotización final</p>
             )}
             {service.note && (
               <p className="text-[11px] text-ink/40 mt-1 italic">{service.note}</p>
@@ -160,28 +152,7 @@ function ServiceRow({
       {/* Controles expandidos cuando está seleccionado */}
       {isSelected && selected && (
         <div className="mt-4 space-y-3 border-t border-ink/8 pt-4">
-          {/* Slider de precio para rangos */}
-          {hasRange && (
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-xs font-medium text-ink/60">Precio por {service.unit}</span>
-                <span className="text-sm font-bold text-teal">{formatCOP(selected.unitPrice)}</span>
-              </div>
-              <input
-                type="range"
-                min={service.priceMin ?? 0}
-                max={service.priceMax}
-                step={isHospedaje ? 10_000 : 1_000}
-                value={selected.unitPrice}
-                onChange={(e) => onPriceChange(service.id, Number(e.target.value))}
-                className="w-full accent-teal cursor-pointer"
-              />
-              <div className="flex justify-between text-[11px] text-ink/40 mt-1">
-                <span>{formatCOP(service.priceMin ?? 0)}</span>
-                <span>{formatCOP(service.priceMax!)}</span>
-              </div>
-            </div>
-          )}
+          {/* Oculto el slider de precio por solicitud de no mostrar precios individuales */}
 
           {/* Noches (solo hospedaje) */}
           {isHospedaje && (

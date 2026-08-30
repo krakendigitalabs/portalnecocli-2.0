@@ -5,61 +5,63 @@ type BusinessMetaListProps = {
 };
 
 export function BusinessMetaList({ business }: BusinessMetaListProps) {
-  const locationLabel = [business.address, business.neighborhood, business.city]
-    .filter(Boolean)
-    .join(", ");
+  // Generar un texto de beneficios dinámico basado en la categoría
+  const getBenefits = () => {
+    switch (business.serviceType) {
+      case "hotel":
+        return "Descanso asegurado, atención prioritaria y ubicación estratégica para tu estadía en el golfo.";
+      case "turismo":
+        return "Conexión directa con la naturaleza, guías expertos locales y rutas seguras.";
+      case "restaurante":
+        return "Ingredientes frescos de la región, ambiente acogedor y servicio de alta calidad.";
+      case "transporte":
+        return "Movilidad garantizada, puntualidad y vehículos preparados para el terreno local.";
+      default:
+        return "Atención premium, validado por la plataforma y listo para ofrecer la mejor experiencia en Necoclí.";
+    }
+  };
+
+  const amenities = business.tags?.length > 0 ? business.tags.join(" • ") : "Múltiples comodidades disponibles.";
+  
   const hoursLabel = business.businessHours
     ?.map((entry) =>
       entry.closed
         ? `${entry.day}: Cerrado`
         : `${entry.day}: ${entry.open} - ${entry.close}`,
     )
-    .join(" | ");
+    .join(" | ") || "Sujeto a disponibilidad y reserva previa.";
 
   const items = [
-    { label: "Ubicación", value: locationLabel },
-    { label: "Teléfono", value: business.phone, href: `tel:${business.phone.replace(/\D/g, "")}` },
-    {
-      label: "WhatsApp",
-      value: business.whatsapp,
-      href: `https://wa.me/${business.whatsapp.replace(/\D/g, "")}`,
+    { 
+      label: "Comodidades del sitio", 
+      value: amenities 
     },
-    business.email
-      ? { label: "Correo", value: business.email, href: `mailto:${business.email}` }
+    { 
+      label: "Experiencia y Beneficios", 
+      value: getBenefits() 
+    },
+    business.rating 
+      ? { label: "Reputación y Calidad", value: `${business.rating}/5 - Calificación basada en experiencia de usuarios.` } 
       : null,
-    business.website
-      ? { label: "Sitio web", value: business.website, href: business.website }
-      : null,
-    business.rating ? { label: "Calificación", value: `${business.rating}/5` } : null,
-    business.priceRange
-      ? { label: "Rango de precio", value: business.priceRange }
-      : null,
-    hoursLabel ? { label: "Horario", value: hoursLabel } : null,
+    { 
+      label: "Disponibilidad Operativa", 
+      value: hoursLabel 
+    },
   ].filter(Boolean) as Array<{ label: string; value: string; href?: string }>;
 
   return (
-    <dl className="grid gap-3" aria-label={`Informacion de ${business.name}`}>
+    <dl className="grid gap-4 mt-6" aria-label={`Informacion de ${business.name}`}>
       {items.map((item) => (
         <div
           key={item.label}
-          className="rounded-2xl border border-ink/10 bg-white/86 px-4 py-3"
+          className="group relative overflow-hidden rounded-[24px] border border-ink/5 bg-gradient-to-br from-white to-sand/20 p-5 transition-all hover:border-gold/30 hover:shadow-md"
         >
-          <dt className="text-[11px] font-semibold uppercase tracking-[0.2em] text-coral">
+          <div className="absolute top-0 right-0 h-16 w-16 -translate-y-8 translate-x-8 rounded-full bg-gold/5 blur-2xl group-hover:bg-gold/10 transition-colors" />
+          <dt className="text-[10px] font-bold uppercase tracking-[0.25em] text-ink/40 mb-3 group-hover:text-gold transition-colors">
             {item.label}
           </dt>
-          <dd className="mt-2 text-sm leading-6 text-ink/74">
-            {item.href ? (
-              <a
-                className="transition hover:text-teal"
-                href={item.href}
-                rel={item.href.startsWith("http") ? "noreferrer" : undefined}
-                target={item.href.startsWith("http") ? "_blank" : undefined}
-              >
-                {item.value}
-              </a>
-            ) : (
-              item.value
-            )}
+          <dd className="relative z-10 text-[15px] font-medium leading-relaxed text-ink/80">
+            {item.value}
           </dd>
         </div>
       ))}
