@@ -8,27 +8,18 @@ import { signOutCurrentUser } from "@/lib/firebase/auth";
 import { buildPortalUrl } from "@/lib/routing/subdomains";
 
 function getDashboardHref(roles: string[]): string {
-  const host =
-    typeof window !== "undefined" ? window.location.host : undefined;
-  const protocol =
-    typeof window !== "undefined" ? window.location.protocol.replace(":", "") : undefined;
-
   if (roles.includes("super_admin") || roles.includes("admin")) {
-    return buildPortalUrl("admin", "/", {
-      host,
-      protocol,
-    });
+    return "/admin";
   }
 
-  if (roles.includes("business")) {
-    return buildPortalUrl("business", "/", {
-      host,
-      protocol,
-    });
+  if (roles.includes("business") || roles.includes("operator")) {
+    return "/merchant";
   }
 
-  return "/negocios";
+  // Cualquier usuario autenticado puede ver su panel personal
+  return "/customer";
 }
+
 
 export function AuthEntry() {
   const session = useAuthSession();
@@ -69,6 +60,9 @@ export function AuthEntry() {
         </div>
       </div>
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <Button className="w-full sm:w-auto" href="/customer" size="md" variant="ghost">
+          Mi panel
+        </Button>
         <Button className="w-full sm:w-auto" href={dashboardHref} size="md" variant="ghost">
           Mi cuenta
         </Button>

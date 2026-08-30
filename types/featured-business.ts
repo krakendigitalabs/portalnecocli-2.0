@@ -24,6 +24,17 @@ export type BusinessHoursEntry = {
   closed?: boolean;
 };
 
+export type PropertyType = 
+  | "Hotel"
+  | "Apartamento"
+  | "Resort"
+  | "Villa"
+  | "Hostal"
+  | "Casa Hotel"
+  | "Restaurante"
+  | "Operador"
+  | "Transporte";
+
 export type FeaturedBusiness = {
   id: string;
   slug: string;
@@ -53,4 +64,9 @@ export type FeaturedBusiness = {
   mapLink: string;
   featured: boolean;
   serviceType: BusinessServiceType;
+  propertyType?: PropertyType;
+  reviewCount?: number;
+  ratingLabel?: string;
+  isGenius?: boolean;
+  numericPrice?: number;
 };

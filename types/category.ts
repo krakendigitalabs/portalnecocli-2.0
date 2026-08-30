@@ -10,4 +10,6 @@ export type Category = {
   label: string;
   shortLabel: string;
   description: string;
+  href?: string;
+  metric?: string;
 };

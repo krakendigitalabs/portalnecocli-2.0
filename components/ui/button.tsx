@@ -30,6 +30,7 @@ type ButtonProps = {
   size?: ButtonSize;
   type?: "button" | "submit" | "reset";
   variant?: ButtonVariant;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
 
 export function Button({
@@ -40,6 +41,7 @@ export function Button({
   size = "md",
   type = "button",
   variant = "primary",
+  onClick,
 }: ButtonProps) {
   const classes = cn(
     baseButtonClassName,
@@ -78,7 +80,7 @@ export function Button({
   }
 
   return (
-    <button className={classes} disabled={disabled} type={type}>
+    <button className={classes} disabled={disabled} type={type} onClick={onClick}>
       {children}
     </button>
   );

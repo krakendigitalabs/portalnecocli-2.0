@@ -7,19 +7,103 @@ type MerchantDashboardProps = {
   data: MerchantDashboardData;
 };
 
+/** Formatea un número como pesos colombianos (COP) */
+function formatCOP(amount: number): string {
+  return new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+
 export function MerchantDashboard({ data }: MerchantDashboardProps) {
+  const { wallet } = data;
+  const totalManaged = wallet.available_balance + wallet.held_balance;
+
   return (
     <section className="space-y-8">
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {data.metrics.map((metric) => (
-          <MetricCard
-            key={metric.label}
-            label={metric.label}
-            value={metric.value}
-          />
-        ))}
+
+      {/* ─── Módulo Escrow: Saldos financieros ─── */}
+      <div>
+        <p className="mb-5 text-xs font-semibold uppercase tracking-[0.26em] text-coral">
+          Módulo Escrow · Saldos en tiempo real
+        </p>
+        <div className="grid gap-4 sm:grid-cols-3">
+
+          {/* Saldo Disponible */}
+          <SurfaceCard className="relative overflow-hidden rounded-[28px] p-7">
+            <div className="absolute inset-0 bg-gradient-to-br from-teal/10 via-transparent to-transparent" />
+            <div className="relative">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-teal/12 text-lg">
+                ✓
+              </span>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-teal/70">
+                Saldo disponible
+              </p>
+              <p className="mt-2 text-3xl font-bold tracking-tight text-teal">
+                {formatCOP(wallet.available_balance)}
+              </p>
+              <p className="mt-1 text-xs text-ink/50">Listo para retirar</p>
+            </div>
+          </SurfaceCard>
+
+          {/* Saldo Retenido */}
+          <SurfaceCard className="relative overflow-hidden rounded-[28px] p-7">
+            <div className="absolute inset-0 bg-gradient-to-br from-coral/10 via-transparent to-transparent" />
+            <div className="relative">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-coral/12 text-lg">
+                ⏳
+              </span>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-coral/80">
+                En garantía (Escrow)
+              </p>
+              <p className="mt-2 text-3xl font-bold tracking-tight text-coral">
+                {formatCOP(wallet.held_balance)}
+              </p>
+              <p className="mt-1 text-xs text-ink/50">Fondos en proceso de liberación</p>
+            </div>
+          </SurfaceCard>
+
+          {/* Total Gestionado */}
+          <SurfaceCard className="relative overflow-hidden rounded-[28px] p-7">
+            <div className="absolute inset-0 bg-gradient-to-br from-ink/6 via-transparent to-transparent" />
+            <div className="relative">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-ink/8 text-lg">
+                💼
+              </span>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-ink/50">
+                Total gestionado
+              </p>
+              <p className="mt-2 text-3xl font-bold tracking-tight text-ink">
+                {formatCOP(totalManaged)}
+              </p>
+              <p className="mt-1 text-xs text-ink/50">Disponible + En garantía</p>
+            </div>
+          </SurfaceCard>
+        </div>
       </div>
 
+      {/* ─── Separador visual ─── */}
+      <div className="h-px w-full bg-ink/8" />
+
+      {/* ─── Métricas de operación ─── */}
+      <div>
+        <p className="mb-5 text-xs font-semibold uppercase tracking-[0.26em] text-ink/45">
+          Métricas de operación
+        </p>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {data.metrics.map((metric) => (
+            <MetricCard
+              key={metric.label}
+              label={metric.label}
+              value={metric.value}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* ─── Scope y negocios ─── */}
       <div className="grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
         <SurfaceCard className="rounded-[28px] p-8">
           <p className="text-xs font-semibold uppercase tracking-[0.26em] text-coral">

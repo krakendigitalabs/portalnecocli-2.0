@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { featuredBusinessesSeed } from "@/data/featured-businesses";
 import {
   getAdminDashboardData,
   getMerchantDashboardData,
@@ -11,7 +12,7 @@ describe("dashboard data", () => {
     const data = getAdminDashboardData();
 
     expect(data.metrics.find((metric) => metric.label === "Negocios totales")?.value).toBe(
-      "6",
+      String(featuredBusinessesSeed.length),
     );
     expect(data.topBusinesses.length).toBeGreaterThan(0);
   });

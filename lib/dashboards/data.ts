@@ -2,6 +2,8 @@ import "server-only";
 import { featuredBusinessesSeed } from "@/data/featured-businesses";
 import type { AuthScope } from "@/types/auth";
 import type { FeaturedBusiness } from "@/types/featured-business";
+import type { MerchantWallet } from "@/types/escrow";
+import { getMerchantBalance } from "@/data/escrowService";
 
 type DashboardMetric = {
   label: string;
@@ -23,6 +25,8 @@ export type MerchantDashboardData = {
   metrics: DashboardMetric[];
   businesses: FeaturedBusiness[];
   serviceTypeSummary: ServiceTypeSummary[];
+  /** Billetera del comercio con saldos retenidos y disponibles del modelo Escrow */
+  wallet: MerchantWallet;
 };
 
 function formatAverageRating(businesses: FeaturedBusiness[]) {
@@ -110,10 +114,30 @@ export function getAdminDashboardData(): AdminDashboardData {
   };
 }
 
-export function getMerchantDashboardData(scope: AuthScope): MerchantDashboardData {
+/** Billetera en cero por defecto cuando el comercio no tiene historial Escrow aún */
+function buildEmptyWallet(merchantId: string): MerchantWallet {
+  return {
+    merchant_id: merchantId,
+    available_balance: 0,
+    held_balance: 0,
+    payout_method: {
+      type: "NEQUI",
+      account_number: "",
+      account_holder_name: "",
+      document_id: "",
+    },
+  };
+}
+
+export async function getMerchantDashboardData(scope: AuthScope): Promise<MerchantDashboardData> {
   const businesses = getScopedBusinesses(scope);
   const featuredBusinesses = businesses.filter((business) => business.featured);
   const contactReadyBusinesses = businesses.filter(hasContactCoverage);
+
+  // Usamos el tenantId como merchantId. Si no existe en Firestore, retornamos wallet en cero
+  // para no bloquear el dashboard durante el onboarding de nuevos comercios.
+  const merchantId = scope.tenantId ?? "unknown";
+  const wallet = await getMerchantBalance(merchantId).catch(() => buildEmptyWallet(merchantId));
 
   return {
     metrics: [
@@ -127,5 +151,6 @@ export function getMerchantDashboardData(scope: AuthScope): MerchantDashboardDat
     ],
     businesses,
     serviceTypeSummary: getServiceTypeSummary(businesses),
+    wallet,
   };
 }

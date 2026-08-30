@@ -14,6 +14,7 @@ export const siteMetadata = {
 export const navigationLinks = [
   { href: "/", label: "Inicio" },
   { href: "/negocios", label: "Explora negocios" },
+  { href: "/tarifario", label: "Tarifario" },
   { href: "/#tourists", label: "Turistas" },
   { href: "/#bonos", label: "Bonos" },
   { href: "/#businesses", label: "Afiliados" },
