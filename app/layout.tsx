@@ -5,6 +5,13 @@ import { AppShell } from "@/components/layout/app-shell";
 import { AppProviders } from "@/components/providers/app-providers";
 import { brand, siteMetadata } from "@/lib/constants/site";
 import { PORTAL_APP_HEADER } from "@/lib/routing/subdomains";
+import { Permanent_Marker } from "next/font/google";
+
+const tropicalFont = Permanent_Marker({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-tropical",
+});
 
 export const metadata: Metadata = {
   title: siteMetadata.title,
@@ -52,7 +59,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="es">
-      <body>
+      <body className={tropicalFont.variable}>
         <AppProviders>
           {isDashboardApp ? (
             children

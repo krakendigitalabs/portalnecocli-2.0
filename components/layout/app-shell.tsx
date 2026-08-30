@@ -16,9 +16,7 @@ export function AppShell({
   return (
     <div className="min-h-screen">
       <MainHeader announcement={announcement} brandName={brandName} />
-      <main className="pb-10">
-        <Container>{children}</Container>
-      </main>
+      <main className="pb-10">{children}</main>
       <MainFooter brandName={brandName} />
     </div>
   );
