@@ -131,7 +131,7 @@ export function LuxuryHero() {
                 </div>
               </div>
               
-              <Button type="submit" size="icon" className="h-12 w-12 rounded-full bg-gold hover:bg-gold/90 text-white shadow-lg transition-transform hover:scale-105 active:scale-95 flex-shrink-0 z-20 relative">
+              <Button type="submit" className="h-12 w-12 p-0 flex items-center justify-center rounded-full bg-gold hover:bg-gold/90 text-white shadow-lg transition-transform hover:scale-105 active:scale-95 flex-shrink-0 z-20 relative">
                 <Search className="w-5 h-5" />
               </Button>
             </div>
