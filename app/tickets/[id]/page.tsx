@@ -8,10 +8,12 @@ import { ArrowLeft } from "lucide-react";
 import crypto from "crypto";
 
 function generateWompiSignature(reference: string, amountInCents: number, currency: string) {
-  // Autoselección de secreto según el entorno
+  // En desarrollo (pruebas) Wompi suele fallar si se envía una firma pero la cuenta test no la tiene habilitada, 
+  // o si el secreto de prueba no coincide. La desactivamos localmente para evitar que se quede pensando.
   const isDev = process.env.NODE_ENV !== "production";
-  const secret = isDev ? process.env.WOMPI_TEST_INTEGRITY_SECRET : process.env.WOMPI_INTEGRITY_SECRET;
-  
+  if (isDev) return undefined;
+
+  const secret = process.env.WOMPI_INTEGRITY_SECRET;
   if (!secret) return undefined;
 
   const concatenated = `${reference}${amountInCents}${currency}${secret}`;
@@ -34,7 +36,7 @@ export default async function TicketPage(props: Props) {
   const reservation = await ReservationRepo.getReservation(escrow.reservationId);
   if (!reservation) return notFound();
   
-  const amountInCents = escrow.amountCollected * 100;
+  const amountInCents = Math.round(escrow.amountCollected * 100);
   const signature = generateWompiSignature(escrow.id!, amountInCents, "COP");
 
   return (

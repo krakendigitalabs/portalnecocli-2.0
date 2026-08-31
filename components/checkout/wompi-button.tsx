@@ -1,7 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Loader2, ShieldCheck } from "lucide-react";
+
+declare global {
+  interface Window {
+    WidgetCheckout: any;
+  }
+}
 
 type WompiButtonProps = {
   reference: string;
@@ -12,54 +18,100 @@ type WompiButtonProps = {
 };
 
 export function WompiButton({ reference, amountInCents, currency = "COP", redirectUrl, signature }: WompiButtonProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [checkout, setCheckout] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
-    
-    // Evitar montar el script dos veces en React Strict Mode
-    if (containerRef.current.innerHTML !== "") return;
-
-    // Autoselección de llave según el entorno
     const isDev = process.env.NODE_ENV !== "production";
     const pubKey = isDev 
       ? (process.env.NEXT_PUBLIC_WOMPI_TEST_KEY || "pub_test_Q5yDA9xoKdePzhSGeVe9HAez7HgGORGf")
       : (process.env.NEXT_PUBLIC_WOMPI_KEY || "");  
       
     if (!pubKey) {
-      console.error("Wompi Error: Falta la llave pública (NEXT_PUBLIC_WOMPI_KEY)");
-      containerRef.current.innerHTML = "<div class='text-red-500 text-sm font-medium p-4 border border-red-200 rounded-lg bg-red-50'>⚠️ Error de configuración: Llave de pagos no encontrada en Vercel.</div>";
-      setIsLoaded(true);
+      setError("Falta la llave pública de Wompi.");
       return;
     }
 
-    const script = document.createElement("script");
-    script.src = "https://checkout.wompi.co/widget.js";
-    script.setAttribute("data-render", "button");
-    script.setAttribute("data-public-key", pubKey);
-    script.setAttribute("data-currency", currency);
-    script.setAttribute("data-amount-in-cents", amountInCents.toString());
-    script.setAttribute("data-reference", reference);
-    script.setAttribute("data-redirect-url", redirectUrl);
-    
-    if (signature) {
-      script.setAttribute("data-signature:integrity", signature);
+    function initCheckout(pubKey: string) {
+      try {
+        const widgetConfig: any = {
+          currency,
+          amountInCents,
+          reference,
+          publicKey: pubKey,
+          // ELIMINAMOS redirectUrl de aquí porque Wompi a veces bloquea localhost
+          // o URLs no-HTTPS internamente en su iframe, causando el bucle infinito.
+          // Lo manejaremos manualmente en el callback de success.
+        };
+
+        if (signature) {
+          widgetConfig.signature = { integrity: signature };
+        }
+
+        const widget = new window.WidgetCheckout(widgetConfig);
+        setCheckout(widget);
+        setIsLoaded(true);
+      } catch (err) {
+        console.error("Error inicializando Wompi:", err);
+        setError("Error al cargar la pasarela.");
+      }
     }
 
-    script.onload = () => setIsLoaded(true);
+    if (!document.getElementById("wompi-script")) {
+      const script = document.createElement("script");
+      script.id = "wompi-script";
+      script.src = "https://checkout.wompi.co/widget.js";
+      script.onload = () => {
+        initCheckout(pubKey);
+      };
+      document.body.appendChild(script);
+    } else {
+      // Script ya cargado
+      const checkInterval = setInterval(() => {
+        if (window.WidgetCheckout) {
+          clearInterval(checkInterval);
+          initCheckout(pubKey);
+        }
+      }, 100);
+    }
+  }, [reference, amountInCents, currency, redirectUrl, signature]);
 
-    containerRef.current.appendChild(script);
-  }, [reference, amountInCents, currency, redirectUrl]);
+  if (error) {
+    return (
+      <div className="w-full flex justify-center py-2">
+        <div className="text-red-500 text-sm font-medium p-4 border border-red-200 rounded-lg bg-red-50">
+          ⚠️ {error}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex flex-col items-center justify-center py-2 min-h-[60px]">
-      {!isLoaded && (
+      {!isLoaded ? (
         <div className="flex items-center text-ink/50 text-sm font-medium">
-          <Loader2 className="w-4 h-4 animate-spin mr-2" /> Cargando pasarela segura...
+          <Loader2 className="w-4 h-4 animate-spin mr-2" /> Preparando pasarela...
         </div>
+      ) : (
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            checkout?.open((result: any) => {
+              console.log("Wompi Result:", result);
+              // Wompi devuelve la transacción aquí. 
+              // Redirigimos manualmente al usuario a su ticket!
+              if (result && result.transaction) {
+                  window.location.href = redirectUrl;
+              }
+            });
+          }}
+          className="w-full max-w-sm bg-[#002A54] hover:bg-[#001D38] text-white font-bold py-4 px-6 rounded-2xl flex items-center justify-center transition-all shadow-lg shadow-[#002A54]/20 hover:scale-[1.02] active:scale-95 border-b-4 border-[#00152B]"
+        >
+          <ShieldCheck className="w-6 h-6 mr-3 text-[#00E5FF]" />
+          Pagar Protegido con Wompi
+        </button>
       )}
-      <div ref={containerRef} className={!isLoaded ? "hidden" : "w-full flex justify-center scale-110 transform-gpu transition-all"} />
     </div>
   );
 }
