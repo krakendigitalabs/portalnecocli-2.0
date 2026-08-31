@@ -18,7 +18,13 @@ function generateWompiSignature(reference: string, amountInCents: number, curren
   return crypto.createHash('sha256').update(concatenated).digest('hex');
 }
 
-export default async function TicketPage({ params }: { params: { id: string } }) {
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export default async function TicketPage(props: Props) {
+  const params = await props.params;
+  
   // Aseguramos que id existe para evitar errores
   if (!params.id) return notFound();
 
