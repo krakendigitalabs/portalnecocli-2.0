@@ -26,6 +26,13 @@ export function WompiButton({ reference, amountInCents, currency = "COP", redire
     const pubKey = isDev 
       ? (process.env.NEXT_PUBLIC_WOMPI_TEST_KEY || "pub_test_Q5yDA9xoKdePzhSGeVe9HAez7HgGORGf")
       : (process.env.NEXT_PUBLIC_WOMPI_KEY || "");  
+      
+    if (!pubKey) {
+      console.error("Wompi Error: Falta la llave pública (NEXT_PUBLIC_WOMPI_KEY)");
+      containerRef.current.innerHTML = "<div class='text-red-500 text-sm font-medium p-4 border border-red-200 rounded-lg bg-red-50'>⚠️ Error de configuración: Llave de pagos no encontrada en Vercel.</div>";
+      setIsLoaded(true);
+      return;
+    }
 
     const script = document.createElement("script");
     script.src = "https://checkout.wompi.co/widget.js";
