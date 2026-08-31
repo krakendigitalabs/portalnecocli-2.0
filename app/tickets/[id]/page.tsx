@@ -35,7 +35,7 @@ export default async function TicketPage(props: Props) {
   if (!reservation) return notFound();
   
   const amountInCents = escrow.amountCollected * 100;
-  const signature = generateWompiSignature(escrow.id, amountInCents, "COP");
+  const signature = generateWompiSignature(escrow.id!, amountInCents, "COP");
 
   return (
     <div className="min-h-screen bg-sand/30 py-12 md:py-24">

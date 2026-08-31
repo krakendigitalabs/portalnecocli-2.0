@@ -25,7 +25,7 @@ export function WompiButton({ reference, amountInCents, currency = "COP", redire
     const isDev = process.env.NODE_ENV !== "production";
     const pubKey = isDev 
       ? (process.env.NEXT_PUBLIC_WOMPI_TEST_KEY || "pub_test_Q5yDA9xoKdePzhSGeVe9HAez7HgGORGf")
-      : process.env.NEXT_PUBLIC_WOMPI_KEY; 
+      : (process.env.NEXT_PUBLIC_WOMPI_KEY || "");  
 
     const script = document.createElement("script");
     script.src = "https://checkout.wompi.co/widget.js";
