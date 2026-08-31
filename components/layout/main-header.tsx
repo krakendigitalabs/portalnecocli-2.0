@@ -2,6 +2,7 @@ import { AuthEntry } from "@/components/layout/auth-entry";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { navigationLinks } from "@/lib/constants/site";
+import { MobileNav } from "./mobile-nav";
 
 type MainHeaderProps = {
   brandName: string;
@@ -66,32 +67,35 @@ export function MainHeader({ brandName }: MainHeaderProps) {
       {/* Main Bar - Logo and Navigation */}
       <div className="w-full bg-white/95 backdrop-blur-xl shadow-sm">
         <div className="max-w-[1600px] mx-auto px-4 xl:px-8 py-3 lg:py-5">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-row items-center justify-between">
             
             {/* Logo & Brand (Solo Imagen, Más Protagonista) */}
-            <Link href="/" className="flex items-center group flex-shrink-0 self-center lg:self-start">
+            <Link href="/" className="flex items-center group flex-shrink-0">
               <img 
                 src="https://res.cloudinary.com/dr50ioh9h/image/upload/v1746587440/Dise%C3%B1o_sin_t%C3%ADtulo_pvwjh9.png" 
                 alt="Logo Portal Necocli" 
-                className="h-16 md:h-20 lg:h-24 w-auto object-contain transition-transform duration-500 hover:scale-105 hover:drop-shadow-lg"
+                className="h-10 sm:h-12 md:h-16 lg:h-20 w-auto object-contain transition-transform duration-500 hover:scale-105 hover:drop-shadow-lg"
               />
             </Link>
 
-            {/* Navegación Central Elegante */}
-            <nav className="flex overflow-x-auto lg:overflow-visible gap-4 lg:gap-8 justify-center scrollbar-hide items-center h-full">
+            {/* Navegación Central Elegante (Desktop XL+) */}
+            <nav className="hidden xl:flex flex-1 justify-center items-center gap-4 2xl:gap-8 h-full">
               {navigationLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="whitespace-nowrap px-3 py-2 text-base lg:text-lg font-tropical font-bold text-ink/80 hover:text-green transition-all duration-300 uppercase tracking-widest hover:scale-105"
+                  className="whitespace-nowrap px-2 py-2 text-sm 2xl:text-base font-tropical font-bold text-ink/80 hover:text-green transition-all duration-300 uppercase tracking-wide hover:scale-105"
                 >
                   {link.label}
                 </Link>
               ))}
             </nav>
             
-            {/* Espaciador invisible para balancear el logo gigante en desktop */}
-            <div className="hidden lg:block w-[120px] lg:w-[200px]" />
+            {/* Espaciador invisible para balancear el logo (solo visible en pantallas extra grandes) */}
+            <div className="hidden xl:block w-[150px] 2xl:w-[200px]" />
+
+            {/* Menú Sándwich para Móviles y Tablets/Laptops Pequeñas */}
+            <MobileNav />
           </div>
         </div>
       </div>

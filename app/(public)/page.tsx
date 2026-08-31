@@ -13,6 +13,8 @@ import {
 } from "@/lib/content/marketplace";
 
 import { LuxuryHero } from "@/components/marketplace/luxury-hero";
+import { PackagesSection } from "@/components/marketplace/packages-section";
+import { LogoMarquee } from "@/components/marketplace/logo-marquee";
 
 import { Container } from "@/components/ui/container";
 
@@ -55,25 +57,11 @@ export default function PublicHomePage() {
         </div>
       </section>
 
-      <Container className="space-y-16 md:space-y-24">
-        <MarketplaceFeaturedSection
-          businesses={featuredBusinesses}
-          ctaHref="/negocios"
-          ctaLabel="Ver todos los negocios"
-          description="Una selección inicial del marketplace para validar descubrimiento, comparación y contacto directo con comercios reales."
-          eyebrow="Negocios destacados"
-          title="Fichas comerciales listas para convertir"
-        />
+      <PackagesSection />
+      
+      <LogoMarquee />
 
-        <MarketplaceFeaturedSection
-          businesses={featuredExperiences}
-          ctaHref="/tours"
-          ctaLabel="Ver experiencias"
-          description="Operadores con salidas guiadas, contacto directo y contexto suficiente para reservar con menos fricción."
-          eyebrow="Experiencias destacadas"
-          title="Actividades y recorridos que venden mejor con contexto"
-        />
-
+      <Container className="space-y-16 md:space-y-24 mt-16">
         <section className="space-y-6">
           <SectionHeader
             description="La capa pública no solo muestra negocios: también prepara el terreno para reservas, pedidos y dashboards operativos."
