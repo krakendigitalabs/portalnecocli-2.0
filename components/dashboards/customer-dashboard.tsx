@@ -216,11 +216,21 @@ export function CustomerDashboard({
                         {formatDate(reservation.created_at)} · {reservation.reference_code}
                       </p>
                     </div>
+                  <div className="flex flex-col items-end gap-2">
                     <span
                       className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold ${RESERVATION_STATUS_COLOR[reservation.status] ?? "text-ink/50"}`}
                     >
                       {RESERVATION_STATUS_LABEL[reservation.status] ?? reservation.status}
                     </span>
+                    {reservation.escrow_transaction_id && (
+                      <Link
+                        href={`/tickets/${reservation.escrow_transaction_id}`}
+                        className="text-[10px] font-bold uppercase tracking-wider text-teal hover:underline"
+                      >
+                        Ver Ticket Escrow →
+                      </Link>
+                    )}
+                  </div>
                   </div>
                 </div>
               ))}
