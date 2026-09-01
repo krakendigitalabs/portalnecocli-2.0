@@ -166,8 +166,9 @@ export function CustomerDashboard({
             </p>
             <h3 className="mt-2 text-xl font-bold text-ink">Acumula 5 experiencias → 6ta al 50%</h3>
             <p className="mt-1 text-sm text-ink/60">
-              Cada reserva completada te da una estrella dorada. Al completar 5, recibes un bono
-              especial del 50% para tu próximo viaje a Necoclí.
+              Cada reserva oficial te otorga una estrella dorada. Al juntar 5, Portal Necoclí te regala 
+              un bono del <strong>50% de descuento</strong> (subvencionado por nosotros y nuestros aliados premium) 
+              para tu próximo viaje a Urabá.
             </p>
           </div>
           <div className="shrink-0 text-5xl">🌴</div>
@@ -216,11 +217,21 @@ export function CustomerDashboard({
                         {formatDate(reservation.created_at)} · {reservation.reference_code}
                       </p>
                     </div>
+                  <div className="flex flex-col items-end gap-2">
                     <span
                       className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold ${RESERVATION_STATUS_COLOR[reservation.status] ?? "text-ink/50"}`}
                     >
                       {RESERVATION_STATUS_LABEL[reservation.status] ?? reservation.status}
                     </span>
+                    {reservation.escrow_transaction_id && (
+                      <Link
+                        href={`/tickets/${reservation.escrow_transaction_id}`}
+                        className="text-[10px] font-bold uppercase tracking-wider text-teal hover:underline"
+                      >
+                        Ver Ticket Escrow →
+                      </Link>
+                    )}
+                  </div>
                   </div>
                 </div>
               ))}

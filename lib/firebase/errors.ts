@@ -17,9 +17,17 @@ function getFirebaseErrorCode(error: unknown): string | undefined {
     typeof error === "object" &&
     error !== null &&
     "code" in error &&
-    typeof error.code === "string"
+    typeof (error as { code: unknown }).code === "string"
   ) {
-    return error.code;
+    return (error as { code: string }).code;
+  }
+
+  // Fallback: sometimes the code is embedded in the message e.g. "Firebase: Error (auth/invalid-credential)."
+  if (error instanceof Error && error.message.includes("(auth/")) {
+    const match = error.message.match(/\((auth\/[^)]+)\)/);
+    if (match && match[1]) {
+      return match[1];
+    }
   }
 
   return undefined;
@@ -94,6 +102,7 @@ export function getFirebaseAuthErrorDetails(
     case "auth/user-not-found":
     case "auth/wrong-password":
     case "auth/invalid-credential":
+    case "auth/invalid-login-credentials":
       return {
         code,
         title: "Credenciales inválidas",

@@ -1,9 +1,10 @@
 import "server-only";
-import { getMerchantBalance } from "@/data/escrowService";
+import { EscrowRepo } from "@/lib/data/repositories/escrow-repo";
 import { featuredBusinessesSeed } from "@/data/featured-businesses";
 import type { AuthScope } from "@/types/auth";
 import type { MerchantWallet } from "@/types/escrow";
 import type { FeaturedBusiness } from "@/types/featured-business";
+import type { EscrowTransaction } from "@/lib/validations/schemas";
 
 type DashboardMetric = {
   label: string;
@@ -27,6 +28,8 @@ export type MerchantDashboardData = {
   serviceTypeSummary: ServiceTypeSummary[];
   /** Billetera del comercio con saldos retenidos y disponibles del modelo Escrow */
   wallet: MerchantWallet;
+  /** Historial transaccional Escrow real */
+  escrowTransactions: EscrowTransaction[];
 };
 
 function formatAverageRating(businesses: FeaturedBusiness[]) {
@@ -126,7 +129,17 @@ export async function getMerchantDashboardData(scope: AuthScope): Promise<Mercha
   // Usamos el tenantId como merchantId. Si no existe en Firestore, retornamos wallet en cero
   // para no bloquear el dashboard durante el onboarding de nuevos comercios.
   const merchantId = scope.tenantId ?? "unknown";
-  const wallet = await getMerchantBalance(merchantId).catch(() => buildEmptyWallet(merchantId));
+  
+  const walletPromise = EscrowRepo.getMerchantBalance(merchantId).then((w) => ({
+    merchant_id: merchantId,
+    available_balance: w.available_balance,
+    held_balance: w.held_balance,
+    payout_method: { type: "NEQUI", account_number: "", account_holder_name: "", document_id: "" } as const
+  })).catch(() => buildEmptyWallet(merchantId));
+  
+  const transactionsPromise = EscrowRepo.getTransactionsByBusiness(merchantId).catch(() => []);
+
+  const [wallet, escrowTransactions] = await Promise.all([walletPromise, transactionsPromise]);
 
   return {
     metrics: [
@@ -141,5 +154,6 @@ export async function getMerchantDashboardData(scope: AuthScope): Promise<Mercha
     businesses,
     serviceTypeSummary: getServiceTypeSummary(businesses),
     wallet,
+    escrowTransactions,
   };
 }

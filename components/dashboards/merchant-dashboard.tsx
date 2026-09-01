@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { MetricCard } from "@/components/ui/metric-card";
 import { SurfaceCard } from "@/components/ui/surface-card";
+import { ReleaseFundsButton } from "@/components/dashboards/release-funds-button";
 import type { MerchantDashboardData } from "@/lib/dashboards/data";
 
 type MerchantDashboardProps = {
@@ -85,6 +86,66 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
       {/* ─── Separador visual ─── */}
       <div className="h-px w-full bg-ink/8" />
 
+      {/* ─── Historial de Transacciones Escrow ─── */}
+      <SurfaceCard className="rounded-[28px] p-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.26em] text-coral">
+          Flujo de Caja · Historial Escrow
+        </p>
+        <h2 className="mt-4 text-2xl font-semibold tracking-tight text-ink">
+          Gestión de tus reservas y garantías
+        </h2>
+        
+        {data.escrowTransactions && data.escrowTransactions.length > 0 ? (
+          <div className="mt-6 space-y-4">
+            {data.escrowTransactions.map((tx) => (
+              <div
+                key={tx.id}
+                className="flex flex-col gap-4 rounded-[22px] border border-ink/8 bg-white px-5 py-4 md:flex-row md:items-center md:justify-between"
+              >
+                <div>
+                  <p className="text-lg font-semibold text-ink">
+                    Boleto #{tx.reservationId.slice(-6).toUpperCase()}
+                  </p>
+                  <p className="text-sm text-ink/68">
+                    Pago Neto: {formatCOP(tx.netAmountToBusiness)} · Fecha: {tx.createdAt.toLocaleDateString("es-CO")}
+                  </p>
+                  {tx.officialTicketUrl && (
+                    <a href={tx.officialTicketUrl} target="_blank" rel="noreferrer" className="text-xs font-medium text-coral hover:underline">
+                      Ver Ticket Wompi
+                    </a>
+                  )}
+                </div>
+                <div className="flex items-center gap-4">
+                  {tx.status === "held" ? (
+                    <div className="flex items-center gap-4">
+                      <span className="rounded-full bg-coral/10 px-3 py-1 text-xs font-semibold uppercase text-coral">
+                        Retenido en Garantía
+                      </span>
+                      <ReleaseFundsButton transactionId={tx.id || ""} />
+                    </div>
+                  ) : tx.status === "released" ? (
+                    <span className="rounded-full bg-teal/10 px-3 py-1 text-xs font-semibold uppercase text-teal">
+                      Liberado ✓
+                    </span>
+                  ) : (
+                    <span className="rounded-full bg-ink/10 px-3 py-1 text-xs font-semibold uppercase text-ink">
+                      {tx.status}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="mt-6 text-base leading-7 text-ink/70">
+            Aún no tienes transacciones Escrow procesadas.
+          </p>
+        )}
+      </SurfaceCard>
+
+      {/* ─── Separador visual ─── */}
+      <div className="h-px w-full bg-ink/8" />
+
       {/* ─── Métricas de operación ─── */}
       <div>
         <p className="mb-5 text-xs font-semibold uppercase tracking-[0.26em] text-ink/45">
@@ -163,6 +224,30 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
           )}
         </SurfaceCard>
       </div>
+
+      {/* ─── Centro de Crecimiento (Modelo de Negocio Ads) ─── */}
+      <div className="h-px w-full bg-ink/8" />
+      <SurfaceCard className="relative overflow-hidden rounded-[28px] p-8">
+        <div className="absolute inset-0 bg-gradient-to-r from-teal/5 to-transparent" />
+        <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-teal">
+              Centro de Crecimiento · Freemium a Premium
+            </p>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight text-ink">
+              Destaca tu negocio en Portal Necoclí
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-ink/70">
+              Nuestro modelo te permite estar visible <strong>sin costo fijo anual</strong>. Solo pagas
+              comisión cuando generas ventas reales. Si deseas captar más turistas este fin de semana,
+              adquiere un <strong>Boost de Posicionamiento</strong> y aparece de primero en las búsquedas.
+            </p>
+          </div>
+          <button className="shrink-0 rounded-full bg-teal px-6 py-3 font-semibold text-white shadow-soft transition hover:bg-teal/90">
+            Impulsar Ficha (Boost)
+          </button>
+        </div>
+      </SurfaceCard>
     </section>
   );
 }

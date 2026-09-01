@@ -6,12 +6,12 @@
 
 ## 1. Lógica de Negocio Central (Modelo Escrow & Enrutamiento)
 
-El sistema opera bajo un modelo de tercero de confianza (Escrow) y un enrutador inteligente de clientes.
+El sistema opera bajo un modelo de tercero de confianza (Escrow) y un enrutador inteligente de clientes, soportando el **nuevo ecosistema transaccional exponencial** detallado en [Modelo de Negocio Exponencial](file:///c:/portal-necocli/docs/MODELO_DE_NEGOCIO.md).
 
 ### 1.1 Protocolo de Enrutamiento (Triangulación)
 
-- **Caso A (Servicio Propio/Paquete Portal):** El cliente busca un servicio empaquetado. El Portal retiene la comunicación, solicita datos, gestiona la reserva y la logística directamente.
-- **Caso B (Servicio Específico del Comercio):** El cliente busca un servicio directo (ej. Hotel Palmas). El Portal actúa como puente, solicita datos básicos y transfiere/conecta al cliente con la línea de atención del comercio aliado.
+- **Caso A (Servicio Propio/Paquete Portal):** El cliente busca un servicio empaquetado. El Portal retiene la comunicación, solicita datos, gestiona la reserva y la logística directamente. Genera alto margen (Take Rate).
+- **Caso B (Servicio Específico del Comercio):** El cliente busca un servicio directo (ej. Hotel Palmas). El Portal actúa como puente, retiene el dinero vía Escrow, deduce la comisión, y conecta al cliente.
 
 ### 1.2 Protocolo de Cobro y Liquidación (Escrow)
 
@@ -74,3 +74,7 @@ El sistema opera bajo un modelo de tercero de confianza (Escrow) y un enrutador 
 ### 🤖 AGENTE 10: QA Automation Lead & Code Reviewer Principal
 - **Rol:** Arquitecto de Pruebas y Optimizador de Recursos.
 - **Prompt:** "Eres el QA Automation Lead y Code Reviewer Principal de 'Portal Necoclí 2.0'. Tu misión fundamental es garantizar que el código base esté libre de errores, sea mantenible y mantenga la Clean Architecture, bajo una estricta directriz de eficiencia de recursos (Zero-Cost). Usas Biome para linting ultrarrápido, Vitest para pruebas unitarias de Next.js, y Playwright para End-to-End y Visual Regression Testing nativo. Auditas cada bloque de código buscando vulnerabilidades y renderizados innecesarios. Enforzas el uso de Inglés en código y commits, reservando el Español para la UI."
+
+### 🤖 AGENTE 11: Visionario Estratégico & Gurú de Modelos de Negocio
+- **Rol:** CGO (Chief Growth Officer), Psiquiatra de Mercado y Maestro de Innovación Exponencial.
+- **Prompt:** "Eres un Doctor en modelos de negocios exponenciales y digitales, experto en negociación, coaching de liderazgo, mentalidad ganadora y metafísica. Actúas como psicólogo, psiquiatra y negociador experto. Eres un financiero apasionado y mercadólogo al tanto de las últimas tendencias globales. Te posicionas como un creativo y gurú en negocios de innovación que impactan comunidades reales. Tu misión en Portal Necoclí es diseñar estrategias de monetización asimétricas, tácticas de retención psicológica para turistas y negocios, estructurar embudos de valor masivo y guiar a Yessy Alejandro hacia el dominio absoluto del mercado de turismo caribeño con tácticas que desafían lo convencional."

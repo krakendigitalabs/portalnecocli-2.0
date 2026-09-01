@@ -87,4 +87,27 @@ export const EscrowRepo = {
 
     await db.collection(COLLECTION_NAME).doc(id).update(updateData);
   },
+
+  /**
+   * Obtiene los saldos retenidos y disponibles de un comercio calculados en tiempo real.
+   */
+  async getMerchantBalance(businessId: string) {
+    const transactions = await this.getTransactionsByBusiness(businessId);
+    
+    let heldBalance = 0;
+    let availableBalance = 0;
+
+    for (const tx of transactions) {
+      if (tx.status === "held") {
+        heldBalance += tx.netAmountToBusiness;
+      } else if (tx.status === "released") {
+        availableBalance += tx.netAmountToBusiness;
+      }
+    }
+
+    return {
+      available_balance: availableBalance,
+      held_balance: heldBalance,
+    };
+  },
 };
