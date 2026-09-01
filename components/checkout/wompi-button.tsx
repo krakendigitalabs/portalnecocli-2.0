@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 
 declare global {
   interface Window {
-    WidgetCheckout: unknown;
+    // biome-ignore lint/suspicious/noExplicitAny: Wompi SDK injection
+    WidgetCheckout: any;
   }
 }
 
