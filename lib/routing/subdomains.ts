@@ -35,10 +35,7 @@ export function resolvePortalAppFromHost(host: string): PortalApp {
     return "admin";
   }
 
-  if (
-    normalizedHost === "negocio.localhost" ||
-    normalizedHost.startsWith("negocio.")
-  ) {
+  if (normalizedHost === "negocio.localhost" || normalizedHost.startsWith("negocio.")) {
     return "business";
   }
 
@@ -149,11 +146,7 @@ export function getDashboardHomePath(app: Exclude<PortalApp, "public">) {
   return DASHBOARD_BASE_PATHS[app];
 }
 
-export function buildPortalUrl(
-  app: PortalApp,
-  pathname: string,
-  options: PortalUrlOptions = {},
-) {
+export function buildPortalUrl(app: PortalApp, pathname: string, options: PortalUrlOptions = {}) {
   const normalizedPath = pathname.startsWith("/") ? pathname : `/${pathname}`;
   const targetHost = resolveTargetHost(app, options.host);
 
@@ -169,8 +162,7 @@ export function buildPortalUrl(
     return `${getDashboardHomePath(app)}${normalizedPath}`;
   }
 
-  const protocol =
-    options.protocol ?? (targetHost.includes("localhost") ? "http" : "https");
+  const protocol = options.protocol ?? (targetHost.includes("localhost") ? "http" : "https");
 
   return `${protocol}://${targetHost}${normalizedPath}`;
 }

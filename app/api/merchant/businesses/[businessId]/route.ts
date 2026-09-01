@@ -8,10 +8,7 @@ type MerchantBusinessRouteContext = {
   }>;
 };
 
-export async function GET(
-  _request: Request,
-  context: MerchantBusinessRouteContext,
-) {
+export async function GET(_request: Request, context: MerchantBusinessRouteContext) {
   const params = await context.params;
   const businessId = params.businessId.toLowerCase();
   const business = featuredBusinessesSeed.find((item) => item.id === businessId);

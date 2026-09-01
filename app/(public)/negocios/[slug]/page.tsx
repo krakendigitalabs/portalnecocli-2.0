@@ -1,5 +1,5 @@
-import Link from "next/link";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BusinessAccessLinks } from "@/components/marketplace/business-access-links";
 import { BusinessCategoryBadge } from "@/components/marketplace/business-category-badge";
@@ -7,13 +7,13 @@ import { BusinessCTAGroup } from "@/components/marketplace/business-cta-group";
 import { BusinessMetaList } from "@/components/marketplace/business-meta-list";
 import { FeaturedBusinessGrid } from "@/components/marketplace/featured-business-grid";
 import { Card } from "@/components/ui/card";
+import { siteMetadata } from "@/lib/constants/site";
 import {
   getAllBusinesses,
   getBusinessBySlug,
   getRelatedBusinessesForDetail,
 } from "@/lib/content/featured-businesses";
 import { getMarketplaceListingHref } from "@/lib/content/marketplace";
-import { siteMetadata } from "@/lib/constants/site";
 
 type BusinessDetailPageProps = {
   params: Promise<{
@@ -27,9 +27,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({
-  params,
-}: BusinessDetailPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: BusinessDetailPageProps): Promise<Metadata> {
   const resolvedParams = await params;
   const business = getBusinessBySlug(resolvedParams.slug);
 
@@ -65,9 +63,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function BusinessDetailPage({
-  params,
-}: BusinessDetailPageProps) {
+export default async function BusinessDetailPage({ params }: BusinessDetailPageProps) {
   const resolvedParams = await params;
   const business = getBusinessBySlug(resolvedParams.slug);
 
@@ -145,12 +141,9 @@ export default async function BusinessDetailPage({
           Negocios en Necoclí / {business.category} / {business.name}
         </p>
         <div className="pt-2">
-          <BusinessCategoryBadge
-            category={business.category}
-            serviceType={business.serviceType}
-          />
+          <BusinessCategoryBadge category={business.category} serviceType={business.serviceType} />
         </div>
-        
+
         <div className="space-y-8 pt-6 w-full flex flex-col items-center">
           <h1 className="max-w-5xl text-5xl font-bold tracking-tighter text-ink md:text-7xl lg:text-[5rem] leading-[1.1]">
             {business.name}
@@ -164,11 +157,7 @@ export default async function BusinessDetailPage({
       <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
         <Card className="overflow-hidden rounded-[34px] border-ink/10">
           <div className="aspect-[1.35/1] overflow-hidden bg-sand">
-            <img
-              alt={business.name}
-              className="h-full w-full object-cover"
-              src={business.image}
-            />
+            <img alt={business.name} className="h-full w-full object-cover" src={business.image} />
           </div>
         </Card>
         <div className="space-y-4">
@@ -192,8 +181,7 @@ export default async function BusinessDetailPage({
                   >
                     {link.platform === "website"
                       ? "Sitio"
-                      : link.platform.charAt(0).toUpperCase() +
-                        link.platform.slice(1)}
+                      : link.platform.charAt(0).toUpperCase() + link.platform.slice(1)}
                   </a>
                 ))}
               </div>
@@ -210,15 +198,15 @@ export default async function BusinessDetailPage({
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {relatedBusinesses.map((related) => (
-              <Link 
-                key={related.id} 
+              <Link
+                key={related.id}
                 href={`/negocios/${related.slug}`}
                 className="group flex items-center gap-4 p-3 rounded-2xl border border-ink/5 bg-white/50 hover:bg-white hover:shadow-md hover:border-gold/30 transition-all"
               >
                 <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-sand">
-                  <img 
-                    src={related.image} 
-                    alt={related.name} 
+                  <img
+                    src={related.image}
+                    alt={related.name}
                     className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                 </div>
@@ -243,10 +231,7 @@ export default async function BusinessDetailPage({
           </p>
           <div className="grid gap-4 md:grid-cols-2">
             {business.gallery.map((image) => (
-              <Card
-                key={image}
-                className="overflow-hidden rounded-[28px] border-ink/10"
-              >
+              <Card key={image} className="overflow-hidden rounded-[28px] border-ink/10">
                 <div className="aspect-[1.3/1] overflow-hidden bg-sand">
                   <img
                     alt={`${business.name} referencia visual`}

@@ -13,20 +13,22 @@ export const ReservationRepo = {
   /**
    * Crea una nueva reserva (CASE_A o CASE_B)
    */
-  async createReservation(data: Omit<Reservation, "id" | "createdAt" | "updatedAt">): Promise<string> {
+  async createReservation(
+    data: Omit<Reservation, "id" | "createdAt" | "updatedAt">,
+  ): Promise<string> {
     const db = getDb();
     const newDocRef = db.collection(COLLECTION_NAME).doc();
-    
+
     const reservationData: Reservation = {
       ...data,
       id: newDocRef.id,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    
+
     // Validar esquema estructuralmente
     const validatedData = ReservationSchema.parse(reservationData);
-    
+
     await newDocRef.set(validatedData);
     return newDocRef.id;
   },
@@ -38,7 +40,7 @@ export const ReservationRepo = {
     const db = getDb();
     const docSnap = await db.collection(COLLECTION_NAME).doc(id).get();
     if (!docSnap.exists) return null;
-    
+
     const data = docSnap.data();
     return ReservationSchema.parse({
       ...data,
@@ -53,9 +55,12 @@ export const ReservationRepo = {
    */
   async getReservationsByCustomer(customerId: string): Promise<Reservation[]> {
     const db = getDb();
-    const querySnapshot = await db.collection(COLLECTION_NAME).where("customerId", "==", customerId).get();
-    
-    return querySnapshot.docs.map(doc => {
+    const querySnapshot = await db
+      .collection(COLLECTION_NAME)
+      .where("customerId", "==", customerId)
+      .get();
+
+    return querySnapshot.docs.map((doc) => {
       const data = doc.data();
       return ReservationSchema.parse({
         ...data,
@@ -71,9 +76,12 @@ export const ReservationRepo = {
    */
   async getReservationsByBusiness(businessId: string): Promise<Reservation[]> {
     const db = getDb();
-    const querySnapshot = await db.collection(COLLECTION_NAME).where("businessId", "==", businessId).get();
-    
-    return querySnapshot.docs.map(doc => {
+    const querySnapshot = await db
+      .collection(COLLECTION_NAME)
+      .where("businessId", "==", businessId)
+      .get();
+
+    return querySnapshot.docs.map((doc) => {
       const data = doc.data();
       return ReservationSchema.parse({
         ...data,
@@ -87,11 +95,17 @@ export const ReservationRepo = {
   /**
    * Actualiza el estado o datos de la reserva
    */
-  async updateReservation(id: string, data: Partial<Omit<Reservation, "id" | "createdAt">>): Promise<void> {
+  async updateReservation(
+    id: string,
+    data: Partial<Omit<Reservation, "id" | "createdAt">>,
+  ): Promise<void> {
     const db = getDb();
-    await db.collection(COLLECTION_NAME).doc(id).update({
-      ...data,
-      updatedAt: new Date(),
-    });
-  }
+    await db
+      .collection(COLLECTION_NAME)
+      .doc(id)
+      .update({
+        ...data,
+        updatedAt: new Date(),
+      });
+  },
 };

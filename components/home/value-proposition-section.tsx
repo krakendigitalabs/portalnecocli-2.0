@@ -6,9 +6,7 @@ type ValuePropositionSectionProps = {
   content: CommercialHomeContent["valueProposition"];
 };
 
-export function ValuePropositionSection({
-  content,
-}: ValuePropositionSectionProps) {
+export function ValuePropositionSection({ content }: ValuePropositionSectionProps) {
   return (
     <section className="space-y-6">
       <SectionHeader
@@ -22,12 +20,8 @@ export function ValuePropositionSection({
             key={point.title}
             className="rounded-[28px] border-ink/10 p-6 transition hover:-translate-y-0.5"
           >
-            <h3 className="text-xl font-semibold tracking-tight text-ink">
-              {point.title}
-            </h3>
-            <p className="mt-3 text-sm leading-7 text-ink/70">
-              {point.description}
-            </p>
+            <h3 className="text-xl font-semibold tracking-tight text-ink">{point.title}</h3>
+            <p className="mt-3 text-sm leading-7 text-ink/70">{point.description}</p>
           </Card>
         ))}
       </div>

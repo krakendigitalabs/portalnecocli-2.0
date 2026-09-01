@@ -87,9 +87,7 @@ export function HomeHero({ content }: HomeHeroProps) {
                       <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/58">
                         {slide.label}
                       </p>
-                      <p className="mt-2 text-sm font-semibold leading-6">
-                        {slide.title}
-                      </p>
+                      <p className="mt-2 text-sm font-semibold leading-6">{slide.title}</p>
                     </div>
                   ))}
                 </div>
@@ -101,10 +99,12 @@ export function HomeHero({ content }: HomeHeroProps) {
                     Portada inmersiva
                   </p>
                   <p className="mt-4 text-2xl font-semibold tracking-tight xl:text-3xl">
-                    Necoclí se vende mejor cuando combina emoción visual, accesos rápidos y fichas listas para reservar.
+                    Necoclí se vende mejor cuando combina emoción visual, accesos rápidos y fichas
+                    listas para reservar.
                   </p>
                   <p className="mt-4 text-sm leading-7 text-white/72">
-                    Esta capa prioriza descubrimiento, intención comercial y conexión inmediata con negocios, reservas y aliados.
+                    Esta capa prioriza descubrimiento, intención comercial y conexión inmediata con
+                    negocios, reservas y aliados.
                   </p>
                 </div>
                 <div className="grid gap-4 sm:grid-cols-3 xl:grid-cols-1">
@@ -123,9 +123,7 @@ export function HomeHero({ content }: HomeHeroProps) {
                         <Badge className="bg-white/12 text-white" variant="neutral">
                           {slide.label}
                         </Badge>
-                        <p className="text-lg font-semibold tracking-tight">
-                          {slide.title}
-                        </p>
+                        <p className="text-lg font-semibold tracking-tight">{slide.title}</p>
                       </div>
                     </div>
                   ))}
@@ -142,9 +140,7 @@ export function HomeHero({ content }: HomeHeroProps) {
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/58">
                     {slide.label}
                   </p>
-                  <p className="mt-3 text-base font-semibold leading-6">
-                    {slide.title}
-                  </p>
+                  <p className="mt-3 text-base font-semibold leading-6">{slide.title}</p>
                 </div>
               ))}
             </div>

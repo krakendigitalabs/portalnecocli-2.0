@@ -1,13 +1,10 @@
 import Link from "next/link";
-import { PropertyTypeFilter } from "@/components/marketplace/property-type-filter";
 import { BookingBusinessCard } from "@/components/marketplace/booking-business-card";
+import { PropertyTypeFilter } from "@/components/marketplace/property-type-filter";
 import { UniversalSearch } from "@/components/marketplace/universal-search";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  getMarketplaceCategories,
-  getMarketplaceSearchSummary,
-} from "@/lib/content/marketplace";
+import { getMarketplaceCategories, getMarketplaceSearchSummary } from "@/lib/content/marketplace";
 import type { MarketplaceListingData } from "@/types/marketplace";
 
 type MarketplaceListingPageProps = {
@@ -50,9 +47,7 @@ export function MarketplaceListingPage({ data }: MarketplaceListingPageProps) {
             </Card>
             <Card className="rounded-[26px] border-ink/10 p-5">
               <p className="text-sm text-ink/68">Categoria activa</p>
-              <p className="mt-2 text-2xl font-semibold text-ink">
-                {data.category.label}
-              </p>
+              <p className="mt-2 text-2xl font-semibold text-ink">{data.category.label}</p>
             </Card>
           </div>
         </div>
@@ -61,9 +56,7 @@ export function MarketplaceListingPage({ data }: MarketplaceListingPageProps) {
       <UniversalSearch
         actionPath={data.category.href}
         categoryOptions={categoryOptions}
-        defaultCategory={
-          data.category.key === "all" ? data.category.key : undefined
-        }
+        defaultCategory={data.category.key === "all" ? data.category.key : undefined}
         defaultLocation={data.filters.location}
         defaultPrice={data.filters.priceRange}
         defaultQuery={data.filters.query}
@@ -105,9 +98,10 @@ export function MarketplaceListingPage({ data }: MarketplaceListingPageProps) {
         {data.businesses.length > 0 ? (
           <div className="space-y-4">
             <p className="text-sm font-semibold text-ink/62">
-              Necoclí: {data.totalCount} alojamiento{data.totalCount === 1 ? "" : "s"} encontrado{data.totalCount === 1 ? "" : "s"}
+              Necoclí: {data.totalCount} alojamiento{data.totalCount === 1 ? "" : "s"} encontrado
+              {data.totalCount === 1 ? "" : "s"}
             </p>
-            
+
             <PropertyTypeFilter baseHref={data.category.href} />
 
             <div className="flex flex-col gap-4">
@@ -122,8 +116,8 @@ export function MarketplaceListingPage({ data }: MarketplaceListingPageProps) {
               No encontramos resultados para estos filtros.
             </h2>
             <p className="mt-3 max-w-2xl text-base leading-7 text-ink/70">
-              Ajusta la ubicacion, el rango de precio o el rating para ampliar
-              la busqueda dentro del marketplace publico.
+              Ajusta la ubicacion, el rango de precio o el rating para ampliar la busqueda dentro
+              del marketplace publico.
             </p>
             <div className="mt-5">
               <Button href={data.category.href} size="lg" variant="secondary">

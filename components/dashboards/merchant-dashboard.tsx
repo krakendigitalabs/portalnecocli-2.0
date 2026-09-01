@@ -23,14 +23,12 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
 
   return (
     <section className="space-y-8">
-
       {/* ─── Módulo Escrow: Saldos financieros ─── */}
       <div>
         <p className="mb-5 text-xs font-semibold uppercase tracking-[0.26em] text-coral">
           Módulo Escrow · Saldos en tiempo real
         </p>
         <div className="grid gap-4 sm:grid-cols-3">
-
           {/* Saldo Disponible */}
           <SurfaceCard className="relative overflow-hidden rounded-[28px] p-7">
             <div className="absolute inset-0 bg-gradient-to-br from-teal/10 via-transparent to-transparent" />
@@ -94,11 +92,7 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
         </p>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {data.metrics.map((metric) => (
-            <MetricCard
-              key={metric.label}
-              label={metric.label}
-              value={metric.value}
-            />
+            <MetricCard key={metric.label} label={metric.label} value={metric.value} />
           ))}
         </div>
       </div>
@@ -118,9 +112,7 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
                 key={item.label}
                 className="flex items-center justify-between rounded-[20px] border border-ink/8 bg-ink/[0.03] px-4 py-3"
               >
-                <span className="text-sm font-medium capitalize text-ink/72">
-                  {item.label}
-                </span>
+                <span className="text-sm font-medium capitalize text-ink/72">{item.label}</span>
                 <span className="text-lg font-semibold text-ink">{item.value}</span>
               </div>
             ))}

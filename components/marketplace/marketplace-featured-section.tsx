@@ -24,11 +24,7 @@ export function MarketplaceFeaturedSection({
   return (
     <section className="space-y-6">
       <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-        <SectionHeader
-          description={description}
-          eyebrow={eyebrow}
-          title={title}
-        />
+        <SectionHeader description={description} eyebrow={eyebrow} title={title} />
         <Button href={ctaHref} size="lg" variant="secondary">
           {ctaLabel}
         </Button>

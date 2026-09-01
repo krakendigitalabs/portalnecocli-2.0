@@ -8,11 +8,7 @@ type AppShellProps = {
   children: React.ReactNode;
 };
 
-export function AppShell({
-  announcement,
-  brandName,
-  children,
-}: AppShellProps) {
+export function AppShell({ announcement, brandName, children }: AppShellProps) {
   return (
     <div className="min-h-screen">
       <MainHeader announcement={announcement} brandName={brandName} />

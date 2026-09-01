@@ -21,31 +21,34 @@ export function BusinessMetaList({ business }: BusinessMetaListProps) {
     }
   };
 
-  const amenities = business.tags?.length > 0 ? business.tags.join(" • ") : "Múltiples comodidades disponibles.";
-  
-  const hoursLabel = business.businessHours
-    ?.map((entry) =>
-      entry.closed
-        ? `${entry.day}: Cerrado`
-        : `${entry.day}: ${entry.open} - ${entry.close}`,
-    )
-    .join(" | ") || "Sujeto a disponibilidad y reserva previa.";
+  const amenities =
+    business.tags?.length > 0 ? business.tags.join(" • ") : "Múltiples comodidades disponibles.";
+
+  const hoursLabel =
+    business.businessHours
+      ?.map((entry) =>
+        entry.closed ? `${entry.day}: Cerrado` : `${entry.day}: ${entry.open} - ${entry.close}`,
+      )
+      .join(" | ") || "Sujeto a disponibilidad y reserva previa.";
 
   const items = [
-    { 
-      label: "Comodidades del sitio", 
-      value: amenities 
+    {
+      label: "Comodidades del sitio",
+      value: amenities,
     },
-    { 
-      label: "Experiencia y Beneficios", 
-      value: getBenefits() 
+    {
+      label: "Experiencia y Beneficios",
+      value: getBenefits(),
     },
-    business.rating 
-      ? { label: "Reputación y Calidad", value: `${business.rating}/5 - Calificación basada en experiencia de usuarios.` } 
+    business.rating
+      ? {
+          label: "Reputación y Calidad",
+          value: `${business.rating}/5 - Calificación basada en experiencia de usuarios.`,
+        }
       : null,
-    { 
-      label: "Disponibilidad Operativa", 
-      value: hoursLabel 
+    {
+      label: "Disponibilidad Operativa",
+      value: hoursLabel,
     },
   ].filter(Boolean) as Array<{ label: string; value: string; href?: string }>;
 

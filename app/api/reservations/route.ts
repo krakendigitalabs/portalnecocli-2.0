@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import { createReservation } from '@/data/reservationService';
-import type { ReservationLead } from '@/types/reservation';
+import { NextResponse } from "next/server";
+import { createReservation } from "@/data/reservationService";
+import type { ReservationLead } from "@/types/reservation";
 
 interface CreateReservationRequestBody {
   business_id: string;
@@ -27,8 +27,11 @@ export async function POST(req: Request) {
       !body.lead?.whatsapp
     ) {
       return NextResponse.json(
-        { error: 'Faltan campos obligatorios: business_id, lead.full_name, lead.email, lead.phone, lead.whatsapp' },
-        { status: 400 }
+        {
+          error:
+            "Faltan campos obligatorios: business_id, lead.full_name, lead.email, lead.phone, lead.whatsapp",
+        },
+        { status: 400 },
       );
     }
 
@@ -48,7 +51,7 @@ export async function POST(req: Request) {
       referenceCode: reservation.reference_code,
       whatsapp: reservation.lead.whatsapp,
     }).catch((emailError) => {
-      console.error('[Reservations API] Error sending confirmation email:', emailError);
+      console.error("[Reservations API] Error sending confirmation email:", emailError);
     });
 
     return NextResponse.json(
@@ -58,11 +61,14 @@ export async function POST(req: Request) {
         reference_code: reservation.reference_code,
         status: reservation.status,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
-    console.error('[Reservations API] Internal error:', error);
-    return NextResponse.json({ error: error instanceof Error ? error.message : 'Error interno del servidor' }, { status: 500 });
+    console.error("[Reservations API] Internal error:", error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }
 
@@ -78,14 +84,11 @@ interface ConfirmationEmailParams {
  * Envía el correo de confirmación de reserva al cliente usando la API de Resend.
  * Requiere RESEND_API_KEY en variables de entorno.
  */
-async function sendConfirmationEmail(
-  to: string,
-  params: ConfirmationEmailParams
-): Promise<void> {
+async function sendConfirmationEmail(to: string, params: ConfirmationEmailParams): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
 
   if (!apiKey) {
-    console.warn('[Email] RESEND_API_KEY no configurada. Correo de confirmación omitido.');
+    console.warn("[Email] RESEND_API_KEY no configurada. Correo de confirmación omitido.");
     return;
   }
 
@@ -110,7 +113,7 @@ async function sendConfirmationEmail(
           También puedes contactarnos directamente por WhatsApp para cualquier consulta o cambio.
         </p>
         <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-          <a href="https://wa.me/57${params.whatsapp.replace(/\D/g, '')}" 
+          <a href="https://wa.me/57${params.whatsapp.replace(/\D/g, "")}" 
              style="display: inline-block; background: #25D366; color: white; padding: 14px 28px; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: 14px;">
             Chatear por WhatsApp
           </a>
@@ -128,14 +131,14 @@ async function sendConfirmationEmail(
     </div>
   `;
 
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: 'Portal Necoclí <reservas@portalnecocli.com>',
+      from: "Portal Necoclí <reservas@portalnecocli.com>",
       to: [to],
       subject: `✅ Reserva recibida: ${params.referenceCode} - ${params.businessName}`,
       html: htmlBody,

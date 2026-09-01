@@ -1,10 +1,10 @@
 "use client";
 
+import { motion } from "framer-motion";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import type { Business } from "@/types/business";
-import { motion } from "framer-motion";
-import Link from "next/link";
 
 type BusinessCardProps = {
   business: Business;
@@ -32,9 +32,7 @@ export function BusinessCard({ business }: BusinessCardProps) {
                 {business.name}
               </h3>
             </div>
-            <Badge variant={business.status === "active" ? "teal" : "neutral"}>
-              {statusLabel}
-            </Badge>
+            <Badge variant={business.status === "active" ? "teal" : "neutral"}>{statusLabel}</Badge>
           </div>
           <p className="mt-4 text-sm leading-6 text-ink/70">{business.summary}</p>
           <div className="mt-6 flex items-center justify-between text-sm text-ink/65">

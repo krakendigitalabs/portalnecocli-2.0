@@ -1,12 +1,6 @@
 import "server-only";
-import {
-  cert,
-  getApp,
-  getApps,
-  initializeApp,
-  type App,
-} from "firebase-admin/app";
-import { getAuth, type Auth } from "firebase-admin/auth";
+import { type App, cert, getApp, getApps, initializeApp } from "firebase-admin/app";
+import { type Auth, getAuth } from "firebase-admin/auth";
 
 type FirebaseAdminConfig = {
   projectId: string;
@@ -34,11 +28,7 @@ export function getFirebaseAdminProjectId(): string {
 export function getFirebaseAdminConfig(): FirebaseAdminConfig {
   const privateKey = normalizePrivateKey(firebaseAdminEnv.privateKey);
 
-  if (
-    !firebaseAdminEnv.projectId ||
-    !firebaseAdminEnv.clientEmail ||
-    !privateKey
-  ) {
+  if (!firebaseAdminEnv.projectId || !firebaseAdminEnv.clientEmail || !privateKey) {
     throw new Error(
       "Missing Firebase Admin config: FIREBASE_ADMIN_PROJECT_ID, FIREBASE_ADMIN_CLIENT_EMAIL, FIREBASE_ADMIN_PRIVATE_KEY",
     );

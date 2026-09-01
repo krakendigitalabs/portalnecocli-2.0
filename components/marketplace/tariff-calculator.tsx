@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import {
-  TARIFF_CATEGORIES,
   LOCAL_SHOPS,
   PORTAL_COMMISSION_RATE,
+  TARIFF_CATEGORIES,
   type TariffService,
 } from "@/data/tariffData";
 
@@ -16,7 +16,7 @@ interface SelectedItem {
   service: TariffService;
   quantity: number;
   unitPrice: number; // precio elegido (puede ser el del rango)
-  nights?: number;   // solo para hospedaje
+  nights?: number; // solo para hospedaje
 }
 
 interface TariffCalculatorProps {
@@ -66,9 +66,7 @@ function Stepper({
       >
         −
       </button>
-      <span className="w-5 text-center text-sm font-semibold text-ink">
-        {value}
-      </span>
+      <span className="w-5 text-center text-sm font-semibold text-ink">{value}</span>
       <button
         type="button"
         onClick={() => onChange(Math.min(max, value + 1))}
@@ -123,9 +121,7 @@ function ServiceRow({
             {isPriceToAgree && (
               <p className="text-[11px] font-medium text-coral mt-1">Sujeto a cotización final</p>
             )}
-            {service.note && (
-              <p className="text-[11px] text-ink/40 mt-1 italic">{service.note}</p>
-            )}
+            {service.note && <p className="text-[11px] text-ink/40 mt-1 italic">{service.note}</p>}
           </div>
         </div>
 
@@ -135,14 +131,19 @@ function ServiceRow({
             type="button"
             onClick={() => onToggle(service, categoryId)}
             className={`shrink-0 flex h-6 w-6 items-center justify-center rounded-full border-2 transition-all ${
-              isSelected
-                ? "border-teal bg-teal text-white"
-                : "border-ink/25 hover:border-teal/50"
+              isSelected ? "border-teal bg-teal text-white" : "border-ink/25 hover:border-teal/50"
             }`}
           >
             {isSelected && (
               <svg viewBox="0 0 12 12" className="h-3 w-3" fill="currentColor">
-                <path d="M10 3L5 8.5 2 5.5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                <path
+                  d="M10 3L5 8.5 2 5.5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             )}
           </button>
@@ -171,9 +172,13 @@ function ServiceRow({
           {!isHospedaje && (
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-ink/60">
-                {service.unit === "persona" ? "Personas" :
-                 service.unit === "hora" ? "Horas" :
-                 service.unit === "carrera" ? "Carreras" : "Cantidad"}
+                {service.unit === "persona"
+                  ? "Personas"
+                  : service.unit === "hora"
+                    ? "Horas"
+                    : service.unit === "carrera"
+                      ? "Carreras"
+                      : "Cantidad"}
               </span>
               <Stepper
                 value={selected.quantity}
@@ -209,45 +214,42 @@ export function TariffCalculator({
 
   /* ─ Handlers ─ */
 
-  const toggleService = useCallback(
-    (service: TariffService, categoryId: string) => {
-      setSelectedItems((prev) => {
-        if (prev[service.id]) {
-          const next = { ...prev };
-          delete next[service.id];
-          return next;
-        }
-        return {
-          ...prev,
-          [service.id]: {
-            serviceId: service.id,
-            categoryId,
-            service,
-            quantity: 1,
-            unitPrice: getDefaultPrice(service),
-            nights: categoryId === "hospedaje" ? 1 : undefined,
-          },
-        };
-      });
-    },
-    []
-  );
+  const toggleService = useCallback((service: TariffService, categoryId: string) => {
+    setSelectedItems((prev) => {
+      if (prev[service.id]) {
+        const next = { ...prev };
+        delete next[service.id];
+        return next;
+      }
+      return {
+        ...prev,
+        [service.id]: {
+          serviceId: service.id,
+          categoryId,
+          service,
+          quantity: 1,
+          unitPrice: getDefaultPrice(service),
+          nights: categoryId === "hospedaje" ? 1 : undefined,
+        },
+      };
+    });
+  }, []);
 
   const updateQuantity = useCallback((serviceId: string, quantity: number) => {
     setSelectedItems((prev) =>
-      prev[serviceId] ? { ...prev, [serviceId]: { ...prev[serviceId], quantity } } : prev
+      prev[serviceId] ? { ...prev, [serviceId]: { ...prev[serviceId], quantity } } : prev,
     );
   }, []);
 
   const updatePrice = useCallback((serviceId: string, unitPrice: number) => {
     setSelectedItems((prev) =>
-      prev[serviceId] ? { ...prev, [serviceId]: { ...prev[serviceId], unitPrice } } : prev
+      prev[serviceId] ? { ...prev, [serviceId]: { ...prev[serviceId], unitPrice } } : prev,
     );
   }, []);
 
   const updateNights = useCallback((serviceId: string, nights: number) => {
     setSelectedItems((prev) =>
-      prev[serviceId] ? { ...prev, [serviceId]: { ...prev[serviceId], nights } } : prev
+      prev[serviceId] ? { ...prev, [serviceId]: { ...prev[serviceId], nights } } : prev,
     );
   }, []);
 
@@ -295,7 +297,10 @@ export function TariffCalculator({
             <div>
               <h1 className="text-2xl font-bold text-ink">Portal Necoclí 🌴</h1>
               <p className="text-sm text-ink/60">Cotización de Servicios Turísticos</p>
-              <p className="text-xs text-ink/40 mt-1">Kraken Digital Labs · NIT: _____ · {new Date().toLocaleDateString("es-CO", { dateStyle: "long" })}</p>
+              <p className="text-xs text-ink/40 mt-1">
+                Kraken Digital Labs · NIT: _____ ·{" "}
+                {new Date().toLocaleDateString("es-CO", { dateStyle: "long" })}
+              </p>
             </div>
             {initialBusinessName && (
               <div className="text-right">
@@ -310,9 +315,7 @@ export function TariffCalculator({
         <div className="no-print mb-8">
           <div className="flex items-start justify-between flex-wrap gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-ink sm:text-3xl">
-                Cotiza tu Estadía 🌴
-              </h1>
+              <h1 className="text-2xl font-bold text-ink sm:text-3xl">Cotiza tu Estadía 🌴</h1>
               <p className="mt-1 text-sm text-ink/60">
                 {initialBusinessName
                   ? `Armando tu plan para ${initialBusinessName}`
@@ -379,9 +382,7 @@ export function TariffCalculator({
           {/* ── Columna derecha: Resumen ── */}
           <aside className="lg:sticky lg:top-6 h-fit">
             <div className="rounded-2xl border border-ink/10 bg-white p-5 shadow-soft">
-              <h3 className="mb-4 text-base font-bold text-ink">
-                Resumen de tu Plan
-              </h3>
+              <h3 className="mb-4 text-base font-bold text-ink">Resumen de tu Plan</h3>
 
               {items.length === 0 ? (
                 <div className="py-8 text-center">
@@ -400,11 +401,16 @@ export function TariffCalculator({
                           ? item.unitPrice * (item.nights ?? 1)
                           : item.unitPrice * item.quantity;
                       return (
-                        <li key={item.serviceId} className="flex items-start justify-between gap-2 text-sm">
+                        <li
+                          key={item.serviceId}
+                          className="flex items-start justify-between gap-2 text-sm"
+                        >
                           <div className="flex items-start gap-2 min-w-0">
                             <span className="shrink-0">{item.service.icon}</span>
                             <div className="min-w-0">
-                              <p className="font-medium text-ink leading-snug">{item.service.name}</p>
+                              <p className="font-medium text-ink leading-snug">
+                                {item.service.name}
+                              </p>
                               <p className="text-xs text-ink/45">
                                 {item.categoryId === "hospedaje"
                                   ? `${item.nights} noche(s) × ${formatCOP(item.unitPrice)}`
@@ -428,7 +434,9 @@ export function TariffCalculator({
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-ink/60">Comisión Portal (10%)</span>
-                      <span className="font-semibold text-coral">{formatCOP(portalCommission)}</span>
+                      <span className="font-semibold text-coral">
+                        {formatCOP(portalCommission)}
+                      </span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-ink/60">Escrow al comercio</span>
@@ -449,7 +457,8 @@ export function TariffCalculator({
                   <div className="mt-3 rounded-lg bg-teal/5 border border-teal/15 px-3 py-2">
                     <p className="text-[11px] text-teal/80 leading-relaxed">
                       🔒 <strong>Pago seguro:</strong> El Portal retiene el{" "}
-                      {formatCOP(escrowAmount)} y lo libera al comercio cuando tu estadía sea efectiva.
+                      {formatCOP(escrowAmount)} y lo libera al comercio cuando tu estadía sea
+                      efectiva.
                     </p>
                   </div>
                 </>
@@ -509,26 +518,37 @@ export function TariffCalculator({
                       <td className="py-2 text-ink">{item.service.name}</td>
                       <td className="py-2 text-right text-ink">{formatCOP(item.unitPrice)}</td>
                       <td className="py-2 text-right text-ink">
-                        {item.categoryId === "hospedaje" ? `${item.nights} noche(s)` : item.quantity}
+                        {item.categoryId === "hospedaje"
+                          ? `${item.nights} noche(s)`
+                          : item.quantity}
                       </td>
-                      <td className="py-2 text-right font-semibold text-ink">{formatCOP(subtotal)}</td>
+                      <td className="py-2 text-right font-semibold text-ink">
+                        {formatCOP(subtotal)}
+                      </td>
                     </tr>
                   );
                 })}
               </tbody>
               <tfoot>
                 <tr>
-                  <td colSpan={3} className="pt-4 text-right font-semibold text-ink">Comisión Portal (10%)</td>
-                  <td className="pt-4 text-right font-semibold text-coral">{formatCOP(portalCommission)}</td>
+                  <td colSpan={3} className="pt-4 text-right font-semibold text-ink">
+                    Comisión Portal (10%)
+                  </td>
+                  <td className="pt-4 text-right font-semibold text-coral">
+                    {formatCOP(portalCommission)}
+                  </td>
                 </tr>
                 <tr>
-                  <td colSpan={3} className="text-right font-bold text-lg text-ink">TOTAL</td>
+                  <td colSpan={3} className="text-right font-bold text-lg text-ink">
+                    TOTAL
+                  </td>
                   <td className="text-right font-bold text-lg text-ink">{formatCOP(total)}</td>
                 </tr>
               </tfoot>
             </table>
             <p className="mt-6 text-xs text-ink/40 text-center">
-              Portal Necoclí · portalnecocli.com · reservas@portalnecocli.com · Necoclí, Antioquia, Colombia
+              Portal Necoclí · portalnecocli.com · reservas@portalnecocli.com · Necoclí, Antioquia,
+              Colombia
             </p>
           </div>
         )}

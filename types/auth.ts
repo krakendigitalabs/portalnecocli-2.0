@@ -1,17 +1,8 @@
 import type { BusinessServiceType } from "@/types/featured-business";
 
-export type UserRole =
-  | "super_admin"
-  | "admin"
-  | "business"
-  | "operator"
-  | "customer";
+export type UserRole = "super_admin" | "admin" | "business" | "operator" | "customer";
 
-export type AuthStatus =
-  | "loading"
-  | "authenticated"
-  | "unauthenticated"
-  | "unconfigured";
+export type AuthStatus = "loading" | "authenticated" | "unauthenticated" | "unconfigured";
 
 export type AuthUser = {
   uid: string;

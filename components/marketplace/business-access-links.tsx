@@ -1,19 +1,13 @@
+import { createPhoneHref, createWhatsAppHref } from "@/lib/utils/business-links";
 import { cn } from "@/lib/utils/cn";
 import type { FeaturedBusiness } from "@/types/featured-business";
-import {
-  createPhoneHref,
-  createWhatsAppHref,
-} from "@/lib/utils/business-links";
 
 type BusinessAccessLinksProps = {
   business: FeaturedBusiness;
   className?: string;
 };
 
-export function BusinessAccessLinks({
-  business,
-  className,
-}: BusinessAccessLinksProps) {
+export function BusinessAccessLinks({ business, className }: BusinessAccessLinksProps) {
   const quickLinks = [
     {
       label: "Escribenos por WhatsApp",

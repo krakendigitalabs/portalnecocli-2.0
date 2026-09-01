@@ -5,8 +5,7 @@ import { buildPortalUrl } from "@/lib/routing/subdomains";
 
 export const metadata: Metadata = {
   title: "Acceso denegado | Portal Necoclí 2.0",
-  description:
-    "Tu cuenta no tiene permisos suficientes para consultar este recurso.",
+  description: "Tu cuenta no tiene permisos suficientes para consultar este recurso.",
 };
 
 type ForbiddenPageProps = {
@@ -15,17 +14,14 @@ type ForbiddenPageProps = {
   }>;
 };
 
-export default async function ForbiddenPage({
-  searchParams,
-}: ForbiddenPageProps) {
+export default async function ForbiddenPage({ searchParams }: ForbiddenPageProps) {
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const requestHeaders = await headers();
   const host = requestHeaders.get("host");
   const protocol = requestHeaders.get("x-forwarded-proto");
-  const nextPath =
-    resolvedSearchParams?.next?.startsWith("/")
-      ? resolvedSearchParams.next
-      : "/merchant";
+  const nextPath = resolvedSearchParams?.next?.startsWith("/")
+    ? resolvedSearchParams.next
+    : "/merchant";
   const switchAccountHref = buildPortalUrl(
     "public",
     `/ingresar?next=${encodeURIComponent(nextPath)}`,

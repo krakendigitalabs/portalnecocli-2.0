@@ -5,7 +5,7 @@
 import "server-only";
 import { getFirestore } from "firebase-admin/firestore";
 import { getFirebaseAdminApp } from "@/lib/firebase/admin";
-import type { Reservation, ReservationLead, ReservationStatus } from '@/types/reservation';
+import type { Reservation, ReservationLead, ReservationStatus } from "@/types/reservation";
 
 function getDb() {
   return getFirestore(getFirebaseAdminApp());
@@ -14,7 +14,7 @@ function getDb() {
 /** Genera un código de referencia único legible para el cliente. */
 function generateReferenceCode(): string {
   const date = new Date();
-  const datePart = date.toISOString().slice(0, 10).replace(/-/g, '');
+  const datePart = date.toISOString().slice(0, 10).replace(/-/g, "");
   const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase();
   return `NEC-${datePart}-${randomPart}`;
 }
@@ -30,7 +30,7 @@ export async function createReservation(params: {
   customerId?: string;
 }): Promise<Reservation> {
   const db = getDb();
-  const ref = db.collection('reservations').doc();
+  const ref = db.collection("reservations").doc();
   const now = new Date().toISOString();
 
   const reservation: Reservation = {
@@ -38,7 +38,7 @@ export async function createReservation(params: {
     business_id: params.businessId,
     business_name: params.businessName,
     lead: params.lead,
-    status: 'PENDING_PAYMENT',
+    status: "PENDING_PAYMENT",
     total_amount: params.totalAmount,
     created_at: now,
     updated_at: now,
@@ -55,14 +55,17 @@ export async function createReservation(params: {
  */
 export async function markReservationAsPaid(
   reservationId: string,
-  escrowTransactionId: string
+  escrowTransactionId: string,
 ): Promise<void> {
   const db = getDb();
-  await db.collection('reservations').doc(reservationId).update({
-    status: 'PAID' as ReservationStatus,
-    escrow_transaction_id: escrowTransactionId,
-    updated_at: new Date().toISOString(),
-  });
+  await db
+    .collection("reservations")
+    .doc(reservationId)
+    .update({
+      status: "PAID" as ReservationStatus,
+      escrow_transaction_id: escrowTransactionId,
+      updated_at: new Date().toISOString(),
+    });
 }
 
 /**
@@ -71,7 +74,7 @@ export async function markReservationAsPaid(
  */
 export async function completeReservation(reservationId: string): Promise<Reservation> {
   const db = getDb();
-  const ref = db.collection('reservations').doc(reservationId);
+  const ref = db.collection("reservations").doc(reservationId);
   const snap = await ref.get();
 
   if (!snap.exists) {
@@ -80,24 +83,24 @@ export async function completeReservation(reservationId: string): Promise<Reserv
 
   const reservation = snap.data() as Reservation;
 
-  if (reservation.status !== 'PAID' && reservation.status !== 'CONFIRMED') {
+  if (reservation.status !== "PAID" && reservation.status !== "CONFIRMED") {
     throw new Error(
-      `La reserva ${reservationId} no puede completarse desde el estado: ${reservation.status}`
+      `La reserva ${reservationId} no puede completarse desde el estado: ${reservation.status}`,
     );
   }
 
   await ref.update({
-    status: 'COMPLETED' as ReservationStatus,
+    status: "COMPLETED" as ReservationStatus,
     updated_at: new Date().toISOString(),
   });
 
-  return { ...reservation, status: 'COMPLETED' };
+  return { ...reservation, status: "COMPLETED" };
 }
 
 /** Obtiene una reserva por ID. */
 export async function getReservationById(reservationId: string): Promise<Reservation> {
   const db = getDb();
-  const snap = await db.collection('reservations').doc(reservationId).get();
+  const snap = await db.collection("reservations").doc(reservationId).get();
 
   if (!snap.exists) {
     throw new Error(`Reserva ${reservationId} no encontrada.`);
@@ -112,9 +115,9 @@ export async function getReservationById(reservationId: string): Promise<Reserva
 export async function getReservationsByCustomer(customerId: string): Promise<Reservation[]> {
   const db = getDb();
   const snap = await db
-    .collection('reservations')
-    .where('customer_id', '==', customerId)
-    .orderBy('created_at', 'desc')
+    .collection("reservations")
+    .where("customer_id", "==", customerId)
+    .orderBy("created_at", "desc")
     .limit(20)
     .get();
 

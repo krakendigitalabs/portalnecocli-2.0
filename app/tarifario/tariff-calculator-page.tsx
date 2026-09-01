@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { TariffCalculator } from "@/components/marketplace/tariff-calculator";
 import { BookingModal } from "@/components/marketplace/booking-modal";
+import { TariffCalculator } from "@/components/marketplace/tariff-calculator";
 import type { TariffService } from "@/data/tariffData";
 
 interface SelectedItem {
@@ -31,10 +31,7 @@ export function TariffCalculatorPage() {
 
   return (
     <>
-      <TariffCalculator
-        onReserve={handleReserve}
-        onReserveAndPay={handleReserveAndPay}
-      />
+      <TariffCalculator onReserve={handleReserve} onReserveAndPay={handleReserveAndPay} />
 
       {showBookingModal && (
         <BookingModal

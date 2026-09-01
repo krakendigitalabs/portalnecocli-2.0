@@ -9,9 +9,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
-function isCommercialHomeContent(
-  value: unknown,
-): value is CommercialHomeContent {
+function isCommercialHomeContent(value: unknown): value is CommercialHomeContent {
   if (!isRecord(value)) {
     return false;
   }
@@ -29,23 +27,20 @@ function isCommercialHomeContent(
   ].every((key) => key in value);
 }
 
-export const getCommercialHomeContent = cache(
-  async (): Promise<CommercialHomeContent> => {
-    try {
-      const remoteContent =
-        await fetchFirestoreDocument<CommercialHomeContent>(
-          firestoreCommercialHomePath,
-        );
+export const getCommercialHomeContent = cache(async (): Promise<CommercialHomeContent> => {
+  try {
+    const remoteContent = await fetchFirestoreDocument<CommercialHomeContent>(
+      firestoreCommercialHomePath,
+    );
 
-      if (isCommercialHomeContent(remoteContent)) {
-        return remoteContent;
-      }
-    } catch (error) {
-      console.error("Failed to load commercial home content from Firestore.", {
-        error,
-      });
+    if (isCommercialHomeContent(remoteContent)) {
+      return remoteContent;
     }
+  } catch (error) {
+    console.error("Failed to load commercial home content from Firestore.", {
+      error,
+    });
+  }
 
-    return seedCommercialHomeContent;
-  },
-);
+  return seedCommercialHomeContent;
+});

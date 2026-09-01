@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { AnimatePresence, motion } from "framer-motion";
 import { TicketPercent, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export function ExitIntentModal() {
   const [isVisible, setIsVisible] = useState(false);
@@ -35,7 +35,7 @@ export function ExitIntentModal() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-    
+
     setIsSubmitting(true);
     // Simular guardado
     setTimeout(() => {
@@ -82,9 +82,7 @@ export function ExitIntentModal() {
                 </div>
               ) : (
                 <>
-                  <h3 className="text-xl font-bold text-ink">
-                    Lleva 10% de Descuento
-                  </h3>
+                  <h3 className="text-xl font-bold text-ink">Lleva 10% de Descuento</h3>
                   <p className="mt-3 text-sm text-ink/70">
                     En tu primer tour o reserva de hotel. Solo dinos a dónde enviamos el código.
                   </p>

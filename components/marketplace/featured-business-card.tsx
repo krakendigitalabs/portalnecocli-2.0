@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Card } from "@/components/ui/card";
 import { BusinessAccessLinks } from "@/components/marketplace/business-access-links";
 import { BusinessCategoryBadge } from "@/components/marketplace/business-category-badge";
 import { BusinessCTAGroup } from "@/components/marketplace/business-cta-group";
+import { Card } from "@/components/ui/card";
 import type { FeaturedBusiness } from "@/types/featured-business";
 
 type FeaturedBusinessCardProps = {
@@ -21,24 +21,16 @@ export function FeaturedBusinessCard({ business }: FeaturedBusinessCardProps) {
           />
         </div>
       </Link>
-      <article
-        aria-label={`Ficha de ${business.name}`}
-        className="flex flex-1 flex-col gap-5 p-6"
-      >
+      <article aria-label={`Ficha de ${business.name}`} className="flex flex-1 flex-col gap-5 p-6">
         <div className="space-y-4">
-          <BusinessCategoryBadge
-            category={business.category}
-            serviceType={business.serviceType}
-          />
+          <BusinessCategoryBadge category={business.category} serviceType={business.serviceType} />
           <div>
             <Link href={`/negocios/${business.slug}`}>
               <h3 className="text-2xl font-semibold tracking-tight text-ink transition hover:text-teal">
                 {business.name}
               </h3>
             </Link>
-            <p className="mt-3 text-sm leading-7 text-ink/70">
-              {business.shortDescription}
-            </p>
+            <p className="mt-3 text-sm leading-7 text-ink/70">{business.shortDescription}</p>
           </div>
           <div className="flex flex-wrap gap-2">
             {business.tags.slice(0, 3).map((tag) => (

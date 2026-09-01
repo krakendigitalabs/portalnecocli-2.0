@@ -13,7 +13,10 @@ export const ProfileRepo = {
   /**
    * Crea o reemplaza un perfil. Valida con Zod antes de guardar.
    */
-  async createProfile(uid: string, data: Omit<Profile, "uid" | "createdAt" | "updatedAt">): Promise<void> {
+  async createProfile(
+    uid: string,
+    data: Omit<Profile, "uid" | "createdAt" | "updatedAt">,
+  ): Promise<void> {
     const db = getDb();
     const profileData: Profile = {
       ...data,
@@ -21,10 +24,10 @@ export const ProfileRepo = {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    
+
     // Validar con el esquema
     const validatedData = ProfileSchema.parse(profileData);
-    
+
     await db.collection(COLLECTION_NAME).doc(uid).set(validatedData);
   },
 
@@ -34,7 +37,7 @@ export const ProfileRepo = {
   async getProfile(uid: string): Promise<Profile | null> {
     const db = getDb();
     const docSnap = await db.collection(COLLECTION_NAME).doc(uid).get();
-    
+
     if (docSnap.exists) {
       const data = docSnap.data();
       const parsedData = {
@@ -50,12 +53,15 @@ export const ProfileRepo = {
   /**
    * Actualiza datos parciales de un perfil.
    */
-  async updateProfile(uid: string, data: Partial<Omit<Profile, "uid" | "createdAt">>): Promise<void> {
+  async updateProfile(
+    uid: string,
+    data: Partial<Omit<Profile, "uid" | "createdAt">>,
+  ): Promise<void> {
     const db = getDb();
     const updateData = {
       ...data,
       updatedAt: new Date(),
     };
     await db.collection(COLLECTION_NAME).doc(uid).update(updateData);
-  }
+  },
 };

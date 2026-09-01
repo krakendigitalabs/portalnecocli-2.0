@@ -65,9 +65,7 @@ export function assertFirebasePublicConfig(): FirebaseWebConfig {
   const missingEnv = getMissingFirebasePublicConfig();
 
   if (missingEnv.length > 0) {
-    throw new Error(
-      `Missing Firebase public config: ${missingEnv.join(", ")}`,
-    );
+    throw new Error(`Missing Firebase public config: ${missingEnv.join(", ")}`);
   }
 
   return firebaseConfig;

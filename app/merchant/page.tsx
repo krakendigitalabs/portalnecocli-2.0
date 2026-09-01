@@ -11,4 +11,3 @@ export default async function MerchantPage() {
 
   return <MerchantDashboard data={data} />;
 }
-

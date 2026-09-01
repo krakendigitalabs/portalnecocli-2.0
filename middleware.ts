@@ -1,3 +1,4 @@
+import { createRemoteJWKSet, jwtVerify } from "jose";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import {
@@ -6,13 +7,14 @@ import {
   PORTAL_APP_HEADER,
   resolvePortalAppFromHost,
 } from "@/lib/routing/subdomains";
-import { jwtVerify, createRemoteJWKSet } from "jose";
 
 // Preparación para Fase 5: Validación de tokens de sesión Firebase en el Edge
 async function verifyFirebaseToken(token: string) {
   try {
     const JWKS = createRemoteJWKSet(
-      new URL("https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com")
+      new URL(
+        "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com",
+      ),
     );
     const { payload } = await jwtVerify(token, JWKS, {
       issuer: `https://securetoken.google.com/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}`,

@@ -1,10 +1,10 @@
 "use client";
 
-import { createContext, useEffect, useMemo, useState } from "react";
 import type { IdTokenResult, User } from "firebase/auth";
 import { onIdTokenChanged, signOut } from "firebase/auth";
-import { syncServerSession, clearServerSession } from "@/lib/auth/session-client";
+import { createContext, useEffect, useMemo, useState } from "react";
 import { getPrimaryRole, resolveAuthorizationFromClaims } from "@/lib/auth/roles";
+import { clearServerSession, syncServerSession } from "@/lib/auth/session-client";
 import { getFirebaseAuth } from "@/lib/firebase/client";
 import { hasFirebasePublicConfig } from "@/lib/firebase/config";
 import type { AuthSession, AuthUser } from "@/types/auth";
@@ -39,9 +39,7 @@ function mapAuthUser(tokenResult: IdTokenResult, firebaseUser: User): AuthUser {
   };
 }
 
-export function FirebaseAuthProvider({
-  children,
-}: FirebaseAuthProviderProps) {
+export function FirebaseAuthProvider({ children }: FirebaseAuthProviderProps) {
   const [session, setSession] = useState<AuthSession>(() => {
     const hasConfig = hasFirebasePublicConfig();
 
@@ -119,8 +117,6 @@ export function FirebaseAuthProvider({
   const contextValue = useMemo(() => session, [session]);
 
   return (
-    <FirebaseAuthContext.Provider value={contextValue}>
-      {children}
-    </FirebaseAuthContext.Provider>
+    <FirebaseAuthContext.Provider value={contextValue}>{children}</FirebaseAuthContext.Provider>
   );
 }

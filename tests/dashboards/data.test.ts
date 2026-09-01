@@ -17,7 +17,7 @@ describe("dashboard data", () => {
     expect(data.topBusinesses.length).toBeGreaterThan(0);
   });
 
-  it("filters merchant data to the assigned tenant and business ids", () => {
+  it("filters merchant data to the assigned tenant and business ids", async () => {
     const scope: AuthScope = {
       global: false,
       tenantId: "tenant-hospitality-coast",
@@ -26,7 +26,7 @@ describe("dashboard data", () => {
     };
 
     const businesses = getScopedBusinesses(scope);
-    const data = getMerchantDashboardData(scope);
+    const data = await getMerchantDashboardData(scope);
 
     expect(businesses).toHaveLength(1);
     expect(businesses[0]?.id).toBe("hotel-brisa-marina");
@@ -35,8 +35,8 @@ describe("dashboard data", () => {
     );
   });
 
-  it("prevents merchant dashboards from leaking data outside the scope", () => {
-    const data = getMerchantDashboardData({
+  it("prevents merchant dashboards from leaking data outside the scope", async () => {
+    const data = await getMerchantDashboardData({
       global: false,
       tenantId: "tenant-hospitality-coast",
       businessIds: ["cabanas-arena-clara"],

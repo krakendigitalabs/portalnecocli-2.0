@@ -1,9 +1,13 @@
 "use server";
 
 import { z } from "zod";
-import { ReservationRepo } from "@/lib/data/repositories/reservation-repo";
 import { EscrowRepo } from "@/lib/data/repositories/escrow-repo";
-import { RoutingTypeSchema, BookingRequestSchema, BookingRequestData } from "@/lib/validations/schemas";
+import { ReservationRepo } from "@/lib/data/repositories/reservation-repo";
+import {
+  BookingRequestData,
+  BookingRequestSchema,
+  RoutingTypeSchema,
+} from "@/lib/validations/schemas";
 
 export type BookingResponse = {
   success: boolean;
@@ -43,20 +47,20 @@ export async function processBookingRequest(data: BookingRequestData): Promise<B
       // TODO: En producción, buscar el teléfono real del negocio en la BD.
       // Por ahora, lo mandamos a un número central o al del negocio mockeado.
       const businessPhone = "573217511866"; // Número puente o del aliado
-      
+
       const text = `¡Hola! Portal Necoclí me conectó con ustedes. Mi nombre es ${validatedData.customerName}. 
 Deseo información o reservar: ${validatedData.serviceName} 
 Para ${validatedData.guests} personas el día ${validatedData.reservationDate.toLocaleDateString()}. 
 Reserva ID: ${reservationId}`;
-      
+
       const whatsappUrl = `https://wa.me/${businessPhone}?text=${encodeURIComponent(text)}`;
 
       return {
         success: true,
-        message: "¡Excelente elección! Como se trata de un servicio directo, te conectaremos con el aliado.",
+        message:
+          "¡Excelente elección! Como se trata de un servicio directo, te conectaremos con el aliado.",
         whatsappLink: whatsappUrl,
       };
-
     } else {
       // CASO A: Paquete Propio del Portal (Retención de fondos Escrow)
       if (!validatedData.totalAmount) {
@@ -78,12 +82,14 @@ Reserva ID: ${reservationId}`;
         ticketId: escrowId,
       };
     }
-
   } catch (error) {
     console.error("Error en processBookingRequest:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Ocurrió un error inesperado al procesar la reserva.",
+      message:
+        error instanceof Error
+          ? error.message
+          : "Ocurrió un error inesperado al procesar la reserva.",
     };
   }
 }

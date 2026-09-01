@@ -24,12 +24,8 @@ export function AudienceSection({ content }: AudienceSectionProps) {
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-coral">
               Paso {index + 1}
             </p>
-            <h3 className="mt-4 text-xl font-semibold tracking-tight text-ink">
-              {step.title}
-            </h3>
-            <p className="mt-3 text-sm leading-7 text-ink/70">
-              {step.description}
-            </p>
+            <h3 className="mt-4 text-xl font-semibold tracking-tight text-ink">{step.title}</h3>
+            <p className="mt-3 text-sm leading-7 text-ink/70">{step.description}</p>
             {step.cta ? (
               <div className="mt-5">
                 <Button href={step.cta.href} size="md" variant="secondary">

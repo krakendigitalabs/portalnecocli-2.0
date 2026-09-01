@@ -1,7 +1,4 @@
-import {
-  getFirebasePublicConfigDiagnostics,
-  type FirebaseWebConfig,
-} from "@/lib/firebase/config";
+import { type FirebaseWebConfig, getFirebasePublicConfigDiagnostics } from "@/lib/firebase/config";
 
 type FirebaseErrorLike = {
   code?: string;
@@ -44,8 +41,7 @@ export function getFirebaseAuthErrorDetails(
       return {
         code,
         title: "Configuración de autenticación no encontrada",
-        message:
-          `Google Sign-In no está configurado en Firebase Auth para el proyecto ${projectLabel}.`,
+        message: `Google Sign-In no está configurado en Firebase Auth para el proyecto ${projectLabel}.`,
         action:
           "Habilita Google en Firebase Console > Authentication > Sign-in method y verifica que Vercel use el mismo proyecto.",
       };
@@ -53,8 +49,7 @@ export function getFirebaseAuthErrorDetails(
       return {
         code,
         title: "Método de acceso deshabilitado",
-        message:
-          `El método de autenticación solicitado no está habilitado para el proyecto ${projectLabel}.`,
+        message: `El método de autenticación solicitado no está habilitado para el proyecto ${projectLabel}.`,
         action:
           "Activa Google o Email/Password en Firebase Console > Authentication > Sign-in method.",
       };
@@ -62,8 +57,7 @@ export function getFirebaseAuthErrorDetails(
       return {
         code,
         title: "Dominio no autorizado",
-        message:
-          "El dominio actual no está autorizado para ejecutar autenticación con Firebase.",
+        message: "El dominio actual no está autorizado para ejecutar autenticación con Firebase.",
         action:
           "Agrega tu dominio de producción y tus previews necesarios en Firebase Console > Authentication > Settings > Authorized domains.",
       };
@@ -80,23 +74,20 @@ export function getFirebaseAuthErrorDetails(
       return {
         code,
         title: "Popup bloqueado",
-        message:
-          "El navegador bloqueó la ventana de autenticación de Google.",
+        message: "El navegador bloqueó la ventana de autenticación de Google.",
         action: "Permite popups para este sitio y vuelve a intentar.",
       };
     case "auth/popup-closed-by-user":
       return {
         code,
         title: "Popup cerrado",
-        message:
-          "Cerraste la ventana de autenticación antes de completar el acceso.",
+        message: "Cerraste la ventana de autenticación antes de completar el acceso.",
       };
     case "auth/account-exists-with-different-credential":
       return {
         code,
         title: "Cuenta con otro proveedor",
-        message:
-          "Este correo ya existe en Firebase con un método de acceso diferente.",
+        message: "Este correo ya existe en Firebase con un método de acceso diferente.",
         action:
           "Entra con el método original o vincula proveedores en Firebase si ese es el comportamiento esperado.",
       };
@@ -106,8 +97,7 @@ export function getFirebaseAuthErrorDetails(
       return {
         code,
         title: "Credenciales inválidas",
-        message:
-          "El correo o la contraseña no coinciden con una cuenta válida.",
+        message: "El correo o la contraseña no coinciden con una cuenta válida.",
       };
     default: {
       const fallbackMessage =

@@ -1,16 +1,14 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { FeaturedBusinessCard } from "@/components/marketplace/featured-business-card";
 import type { FeaturedBusiness } from "@/types/featured-business";
-import { motion } from "framer-motion";
 
 type FeaturedBusinessGridProps = {
   businesses: FeaturedBusiness[];
 };
 
-export function FeaturedBusinessGrid({
-  businesses,
-}: FeaturedBusinessGridProps) {
+export function FeaturedBusinessGrid({ businesses }: FeaturedBusinessGridProps) {
   return (
     <div className="grid gap-6 md:gap-10 md:grid-cols-2 xl:grid-cols-3 py-10" role="list">
       {businesses.map((business, index) => (

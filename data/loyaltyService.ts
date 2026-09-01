@@ -1,18 +1,14 @@
 /**
  * Servicio de fidelización (Loyalty) para Portal Necoclí.
  * Gestiona el perfil del turista, las estrellas doradas y la generación de bonos.
- * 
+ *
  * ARQUITECTURA: Usa el Admin SDK de Firebase (server-only) para operar
  * desde API Routes y Server Actions con privilegios de administrador.
  */
 import "server-only";
 import { getFirestore } from "firebase-admin/firestore";
 import { getFirebaseAdminApp } from "@/lib/firebase/admin";
-import type {
-  LoyaltyProfile,
-  LoyaltyStar,
-  LoyaltyBonus,
-} from "@/types/loyalty";
+import type { LoyaltyBonus, LoyaltyProfile, LoyaltyStar } from "@/types/loyalty";
 import { LOYALTY_STARS_PER_CYCLE } from "@/types/loyalty";
 
 function getDb() {
@@ -34,7 +30,7 @@ function generateBonusCode(): string {
 export async function getOrCreateLoyaltyProfile(
   customerId: string,
   displayName: string,
-  email: string
+  email: string,
 ): Promise<LoyaltyProfile> {
   const db = getDb();
   const ref = db.collection("loyalty_profiles").doc(customerId);
@@ -65,9 +61,7 @@ export async function getOrCreateLoyaltyProfile(
 /**
  * Obtiene el perfil de fidelización de un turista por su UID.
  */
-export async function getLoyaltyProfile(
-  customerId: string
-): Promise<LoyaltyProfile | null> {
+export async function getLoyaltyProfile(customerId: string): Promise<LoyaltyProfile | null> {
   const db = getDb();
   const snap = await db.collection("loyalty_profiles").doc(customerId).get();
   if (!snap.exists) return null;

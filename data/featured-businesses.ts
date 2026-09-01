@@ -13,10 +13,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     longDescription:
       "Hotel Brisa Marina representa el tipo de hospedaje que mejor conecta con la promesa de Portal Necocli: cercania al mar, claridad en el contacto y una presentacion lista para convertir visitas en reservas. Su propuesta mezcla descanso familiar, ubicacion comoda y soporte agil por WhatsApp para confirmar disponibilidad, tarifas y servicios adicionales.",
     image: "/businesses/hotel-brisa-marina.svg",
-    gallery: [
-      "/businesses/hotel-brisa-marina.svg",
-      "/businesses/cabanas-arena-clara.svg",
-    ],
+    gallery: ["/businesses/hotel-brisa-marina.svg", "/businesses/cabanas-arena-clara.svg"],
     tags: ["Frente al mar", "Con balcón", "Con vista al mar", "Ideal para familias"],
     propertyType: "Hotel",
     reviewCount: 764,
@@ -38,9 +35,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     ],
     rating: 4.8,
     priceRange: "$$$",
-    businessHours: [
-      { day: "Lunes a domingo", open: "6:00 a.m.", close: "10:00 p.m." },
-    ],
+    businessHours: [{ day: "Lunes a domingo", open: "6:00 a.m.", close: "10:00 p.m." }],
     ctaPrimaryLabel: "Reservar ahora",
     ctaPrimaryValue: "wa:+573204127801",
     ctaSecondaryLabel: "Llamar hotel",
@@ -60,10 +55,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     longDescription:
       "Cabanas Arena Clara funciona como una propuesta de descanso mas aspiracional dentro del directorio: espacios privados, tono boutique y una narrativa perfecta para visitantes que buscan fines de semana tranquilos o estancias cortas con sensacion premium. El contacto directo facilita convertir consultas en reservas sin friccion.",
     image: "/businesses/cabanas-arena-clara.svg",
-    gallery: [
-      "/businesses/cabanas-arena-clara.svg",
-      "/businesses/hotel-brisa-marina.svg",
-    ],
+    gallery: ["/businesses/cabanas-arena-clara.svg", "/businesses/hotel-brisa-marina.svg"],
     tags: ["Boutique", "Central", "Con opción de turismo de naturaleza"],
     propertyType: "Casa Hotel",
     reviewCount: 611,
@@ -78,9 +70,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     email: "hola@arenaclara.co",
     rating: 4.7,
     priceRange: "$$$",
-    businessHours: [
-      { day: "Lunes a domingo", open: "7:00 a.m.", close: "9:00 p.m." },
-    ],
+    businessHours: [{ day: "Lunes a domingo", open: "7:00 a.m.", close: "9:00 p.m." }],
     ctaPrimaryLabel: "Consultar disponibilidad",
     ctaPrimaryValue: "wa:+573138459012",
     ctaSecondaryLabel: "Como llegar",
@@ -100,10 +90,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     longDescription:
       "Mar de Sabores esta pensado como ejemplo de restaurante que necesita claridad operativa: menu costero, promesa local reconocible y CTAs concretas para reservar mesa, pedir por WhatsApp o ubicar el punto exacto del negocio. La ficha prioriza la decision rapida y la facilidad de contacto.",
     image: "/businesses/mar-de-sabores.svg",
-    gallery: [
-      "/businesses/mar-de-sabores.svg",
-      "/businesses/mercado-costero.svg",
-    ],
+    gallery: ["/businesses/mar-de-sabores.svg", "/businesses/mercado-costero.svg"],
     tags: ["Cocina local", "Bar restaurante", "Central"],
     propertyType: "Restaurante",
     reviewCount: 245,
@@ -150,10 +137,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     longDescription:
       "Manglar Vivo Tours funciona como ejemplo de operador turistico que necesita explicar rapido su propuesta: recorridos guiados, naturaleza, punto de salida y reserva asistida. La ficha combina tono aspiracional con informacion operativa para que el visitante pueda consultar fechas, cupos y recomendaciones sin perder tiempo.",
     image: "/businesses/manglar-vivo-tours.svg",
-    gallery: [
-      "/businesses/manglar-vivo-tours.svg",
-      "/businesses/golfo-transfer.svg",
-    ],
+    gallery: ["/businesses/manglar-vivo-tours.svg", "/businesses/golfo-transfer.svg"],
     tags: ["Ecoturismo", "De islas", "Con opción de turismo de naturaleza"],
     propertyType: "Operador",
     reviewCount: 128,
@@ -173,9 +157,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     ],
     rating: 4.9,
     priceRange: "$$",
-    businessHours: [
-      { day: "Lunes a domingo", open: "7:00 a.m.", close: "7:00 p.m." },
-    ],
+    businessHours: [{ day: "Lunes a domingo", open: "7:00 a.m.", close: "7:00 p.m." }],
     ctaPrimaryLabel: "Reservar experiencia",
     ctaPrimaryValue: "wa:+573147723005",
     ctaSecondaryLabel: "Ver punto de salida",
@@ -195,10 +177,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     longDescription:
       "Golfo Transfer representa una categoria muy util para el visitante: movilidad coordinada antes de llegar o moverse dentro de Necocli. La ficha resuelve lo esencial con velocidad: tipo de servicio, contacto inmediato, ubicacion y CTA para pedir trayecto sin tener que navegar contenido innecesario.",
     image: "/businesses/golfo-transfer.svg",
-    gallery: [
-      "/businesses/golfo-transfer.svg",
-      "/businesses/manglar-vivo-tours.svg",
-    ],
+    gallery: ["/businesses/golfo-transfer.svg", "/businesses/manglar-vivo-tours.svg"],
     tags: ["Traslados", "Aeropuerto", "Grupos pequenos"],
     address: "Cobertura urbana y rutas de conexion",
     city: "Necocli",
@@ -206,9 +185,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     whatsapp: "+57 300 721 4509",
     rating: 4.5,
     priceRange: "$$",
-    businessHours: [
-      { day: "Lunes a domingo", open: "5:00 a.m.", close: "11:00 p.m." },
-    ],
+    businessHours: [{ day: "Lunes a domingo", open: "5:00 a.m.", close: "11:00 p.m." }],
     ctaPrimaryLabel: "Solicitar traslado",
     ctaPrimaryValue: "wa:+573007214509",
     ctaSecondaryLabel: "Llamar ahora",
@@ -228,10 +205,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     longDescription:
       "Mercado Costero aterriza la categoria de comercio local dentro del nuevo portal. Su ficha esta pensada para compras practicas: productos esenciales, pedidos por WhatsApp y direccion clara para quienes prefieren acercarse directamente. Es un caso util para escalar despues hacia domicilios y pedidos formales.",
     image: "/businesses/mercado-costero.svg",
-    gallery: [
-      "/businesses/mercado-costero.svg",
-      "/businesses/mar-de-sabores.svg",
-    ],
+    gallery: ["/businesses/mercado-costero.svg", "/businesses/mar-de-sabores.svg"],
     tags: ["Pedido rapido", "Comercio local", "Entrega urbana"],
     address: "Carrera 49 #54-11",
     neighborhood: "Simon Bolivar",
@@ -263,10 +237,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     longDescription:
       "Bahia Dorada Suites amplia la capa de hospedaje del marketplace con una propuesta pensada para estadias de varios dias, grupos pequenos y viajeros que necesitan comodidad operativa. La ficha destaca la ubicacion, el soporte por WhatsApp y la claridad del producto para acelerar consultas con intencion real de reserva.",
     image: "/businesses/hotel-brisa-marina.svg",
-    gallery: [
-      "/businesses/hotel-brisa-marina.svg",
-      "/businesses/cabanas-arena-clara.svg",
-    ],
+    gallery: ["/businesses/hotel-brisa-marina.svg", "/businesses/cabanas-arena-clara.svg"],
     tags: ["Suites", "Con balcón", "Central", "Cultural"],
     propertyType: "Apartamento",
     reviewCount: 432,
@@ -281,9 +252,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     email: "reservas@bahiadorada.co",
     rating: 4.5,
     priceRange: "$$",
-    businessHours: [
-      { day: "Lunes a domingo", open: "6:30 a.m.", close: "9:30 p.m." },
-    ],
+    businessHours: [{ day: "Lunes a domingo", open: "6:30 a.m.", close: "9:30 p.m." }],
     ctaPrimaryLabel: "Consultar suites",
     ctaPrimaryValue: "wa:+573146601182",
     ctaSecondaryLabel: "Llamar recepcion",
@@ -303,10 +272,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     longDescription:
       "La Barra del Golfo entra al marketplace como una opcion gastronomica orientada a cenas, grupos y planes al atardecer. La ficha busca reducir friccion al momento de reservar mesa o preguntar por disponibilidad para eventos pequenos y experiencias privadas.",
     image: "/businesses/mar-de-sabores.svg",
-    gallery: [
-      "/businesses/mar-de-sabores.svg",
-      "/businesses/mercado-costero.svg",
-    ],
+    gallery: ["/businesses/mar-de-sabores.svg", "/businesses/mercado-costero.svg"],
     tags: ["Parrilla", "Atardeceres", "Mesas para grupos"],
     address: "Carrera 47 #51-06",
     neighborhood: "Malecon",
@@ -339,10 +305,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     longDescription:
       "Sunset Golfo Experience complementa la oferta turistica con un producto mas aspiracional: navegacion corta, atmosfera premium y coordinacion directa para parejas, familias o grupos pequenos. La ficha esta pensada para convertir consultas de ultimo minuto en reservas con confirmacion rapida.",
     image: "/businesses/manglar-vivo-tours.svg",
-    gallery: [
-      "/businesses/manglar-vivo-tours.svg",
-      "/businesses/golfo-transfer.svg",
-    ],
+    gallery: ["/businesses/manglar-vivo-tours.svg", "/businesses/golfo-transfer.svg"],
     tags: ["Atardecer", "Lancha", "Cultural", "De islas"],
     propertyType: "Operador",
     reviewCount: 89,
@@ -356,9 +319,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     email: "bookings@sunsetgolfo.co",
     rating: 4.8,
     priceRange: "$$$",
-    businessHours: [
-      { day: "Lunes a domingo", open: "9:00 a.m.", close: "7:30 p.m." },
-    ],
+    businessHours: [{ day: "Lunes a domingo", open: "9:00 a.m.", close: "7:30 p.m." }],
     ctaPrimaryLabel: "Reservar tour",
     ctaPrimaryValue: "wa:+573159204470",
     ctaSecondaryLabel: "Ver salida",
@@ -378,10 +339,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     longDescription:
       "Ruta Caribe Shuttle extiende la capa de movilidad del marketplace con un servicio mas estructurado para traslados recurrentes. La ficha enfatiza cobertura, capacidad y respuesta rapida para coordinar llegadas, salidas y rutas operativas dentro del municipio.",
     image: "/businesses/golfo-transfer.svg",
-    gallery: [
-      "/businesses/golfo-transfer.svg",
-      "/businesses/manglar-vivo-tours.svg",
-    ],
+    gallery: ["/businesses/golfo-transfer.svg", "/businesses/manglar-vivo-tours.svg"],
     tags: ["Shuttle", "Terminal", "Servicio privado"],
     address: "Cobertura hotelera, terminal y muelle",
     neighborhood: "Centro",
@@ -390,9 +348,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     whatsapp: "+57 301 620 1138",
     rating: 4.6,
     priceRange: "$$",
-    businessHours: [
-      { day: "Lunes a domingo", open: "4:30 a.m.", close: "10:30 p.m." },
-    ],
+    businessHours: [{ day: "Lunes a domingo", open: "4:30 a.m.", close: "10:30 p.m." }],
     ctaPrimaryLabel: "Coordinar traslado",
     ctaPrimaryValue: "wa:+573016201138",
     ctaSecondaryLabel: "Llamar transporte",
@@ -412,10 +368,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     longDescription:
       "Ola Rapida Domicilios aterriza la vertical de entregas con una propuesta simple y util para residentes y turistas: cobertura urbana, respuesta por WhatsApp y una operacion pensada para pedidos de conveniencia. Esta ficha sirve para validar la capa publica antes de escalar a pedidos transaccionales.",
     image: "/businesses/mercado-costero.svg",
-    gallery: [
-      "/businesses/mercado-costero.svg",
-      "/businesses/mar-de-sabores.svg",
-    ],
+    gallery: ["/businesses/mercado-costero.svg", "/businesses/mar-de-sabores.svg"],
     tags: ["Domicilios", "Compras rapidas", "Cobertura urbana"],
     address: "Cobertura centro y malecon",
     neighborhood: "Centro",
@@ -424,9 +377,7 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     whatsapp: "+57 312 440 0217",
     rating: 4.3,
     priceRange: "$",
-    businessHours: [
-      { day: "Lunes a domingo", open: "8:00 a.m.", close: "9:00 p.m." },
-    ],
+    businessHours: [{ day: "Lunes a domingo", open: "8:00 a.m.", close: "9:00 p.m." }],
     ctaPrimaryLabel: "Pedir domicilio",
     ctaPrimaryValue: "wa:+573124400217",
     ctaSecondaryLabel: "Llamar operador",

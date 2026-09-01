@@ -1,8 +1,12 @@
 import { CategoryCard3D } from "@/components/marketplace/category-card-3d";
+import { LogoMarquee } from "@/components/marketplace/logo-marquee";
+import { LuxuryHero } from "@/components/marketplace/luxury-hero";
 import { MarketplaceFeaturedSection } from "@/components/marketplace/marketplace-featured-section";
 import { MarketplaceHomeHero } from "@/components/marketplace/marketplace-home-hero";
 import { MarketplaceRegisterCta } from "@/components/marketplace/marketplace-register-cta";
+import { PackagesSection } from "@/components/marketplace/packages-section";
 import { Card } from "@/components/ui/card";
+import { Container } from "@/components/ui/container";
 import { SectionHeader } from "@/components/ui/section-header";
 import { businessCategories } from "@/data/categories";
 import {
@@ -11,12 +15,6 @@ import {
   getMarketplaceCategories,
   getMarketplaceFilterOptions,
 } from "@/lib/content/marketplace";
-
-import { LuxuryHero } from "@/components/marketplace/luxury-hero";
-import { PackagesSection } from "@/components/marketplace/packages-section";
-import { LogoMarquee } from "@/components/marketplace/logo-marquee";
-
-import { Container } from "@/components/ui/container";
 
 export default function PublicHomePage() {
   const marketplaceCategories = getMarketplaceCategories();
@@ -46,10 +44,11 @@ export default function PublicHomePage() {
             Explora el marketplace
           </h2>
           <p className="text-xl lg:text-2xl text-ink/70 max-w-3xl">
-            Siente el ecosistema de Necoclí. Cada tarjeta es un portal interactivo hacia tu próxima experiencia premium.
+            Siente el ecosistema de Necoclí. Cada tarjeta es un portal interactivo hacia tu próxima
+            experiencia premium.
           </p>
         </div>
-        
+
         <div className="grid gap-6 md:gap-8 md:grid-cols-2 xl:grid-cols-4 w-full">
           {homeCategories.map((category) => (
             <CategoryCard3D category={category} key={category.slug} />
@@ -58,7 +57,7 @@ export default function PublicHomePage() {
       </section>
 
       <PackagesSection />
-      
+
       <LogoMarquee />
 
       <Container className="space-y-16 md:space-y-24 mt-16">
@@ -72,22 +71,22 @@ export default function PublicHomePage() {
             <Card className="rounded-[28px] border-ink/10 p-6">
               <p className="text-sm font-semibold text-ink">Buscador universal</p>
               <p className="mt-3 text-sm leading-7 text-ink/70">
-                Un solo formulario reutilizable para navegar el catálogo por
-                categoría, ubicación, precio y rating.
+                Un solo formulario reutilizable para navegar el catálogo por categoría, ubicación,
+                precio y rating.
               </p>
             </Card>
             <Card className="rounded-[28px] border-ink/10 p-6">
               <p className="text-sm font-semibold text-ink">Listados por vertical</p>
               <p className="mt-3 text-sm leading-7 text-ink/70">
-                Hoteles, restaurantes, tours y transporte con rutas propias y
-                filtros persistentes sobre mock data ampliado.
+                Hoteles, restaurantes, tours y transporte con rutas propias y filtros persistentes
+                sobre mock data ampliado.
               </p>
             </Card>
             <Card className="rounded-[28px] border-ink/10 p-6">
               <p className="text-sm font-semibold text-ink">Detalle dinámico</p>
               <p className="mt-3 text-sm leading-7 text-ink/70">
-                Cada negocio ya tiene ficha por slug con accesos directos, datos
-                operativos y negocios relacionados.
+                Cada negocio ya tiene ficha por slug con accesos directos, datos operativos y
+                negocios relacionados.
               </p>
             </Card>
           </div>

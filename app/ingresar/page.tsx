@@ -18,8 +18,9 @@ type SignInPageProps = {
 
 export default async function SignInPage({ searchParams }: SignInPageProps) {
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
-  const nextPath =
-    resolvedSearchParams?.next?.startsWith("/") ? resolvedSearchParams.next : "/negocios";
+  const nextPath = resolvedSearchParams?.next?.startsWith("/")
+    ? resolvedSearchParams.next
+    : "/negocios";
 
   return (
     <div className="space-y-6 pb-14 pt-6 md:space-y-8 md:pt-10">

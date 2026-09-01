@@ -1,19 +1,23 @@
 import type { Metadata } from "next";
-import { requireRole } from "@/lib/auth/server";
-import { getOrCreateLoyaltyProfile, getLoyaltyStars, getLoyaltyBonuses } from "@/data/loyaltyService";
-import { getReservationsByCustomer } from "@/data/reservationService";
 import { CustomerDashboard } from "@/components/dashboards/customer-dashboard";
+import {
+  getLoyaltyBonuses,
+  getLoyaltyStars,
+  getOrCreateLoyaltyProfile,
+} from "@/data/loyaltyService";
+import { getReservationsByCustomer } from "@/data/reservationService";
+import { requireRole } from "@/lib/auth/server";
 
 export const metadata: Metadata = {
   title: "Mi Panel | Portal Necoclí",
-  description: "Gestiona tus reservas, estrellas de fidelidad y bonos exclusivos de Portal Necoclí.",
+  description:
+    "Gestiona tus reservas, estrellas de fidelidad y bonos exclusivos de Portal Necoclí.",
 };
 
 export default async function CustomerPage() {
-  const session = await requireRole(
-    ["customer", "business", "admin", "super_admin"],
-    { nextPath: "/customer" }
-  );
+  const session = await requireRole(["customer", "business", "admin", "super_admin"], {
+    nextPath: "/customer",
+  });
 
   const { user } = session;
 
@@ -22,7 +26,7 @@ export default async function CustomerPage() {
     getOrCreateLoyaltyProfile(
       user.uid,
       user.displayName ?? user.email ?? "Turista",
-      user.email ?? ""
+      user.email ?? "",
     ),
     getLoyaltyStars(user.uid),
     getLoyaltyBonuses(user.uid),

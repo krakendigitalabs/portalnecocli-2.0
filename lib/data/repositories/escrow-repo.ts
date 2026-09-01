@@ -16,16 +16,16 @@ export const EscrowRepo = {
   async createTransaction(data: Omit<EscrowTransaction, "id" | "createdAt">): Promise<string> {
     const db = getDb();
     const newDocRef = db.collection(COLLECTION_NAME).doc();
-    
+
     const transactionData: EscrowTransaction = {
       ...data,
       id: newDocRef.id,
       createdAt: new Date(),
     };
-    
+
     // Validar esquema estructuralmente
     const validatedData = EscrowTransactionSchema.parse(transactionData);
-    
+
     await newDocRef.set(validatedData);
     return newDocRef.id;
   },
@@ -37,7 +37,7 @@ export const EscrowRepo = {
     const db = getDb();
     const docSnap = await db.collection(COLLECTION_NAME).doc(id).get();
     if (!docSnap.exists) return null;
-    
+
     const data = docSnap.data();
     return EscrowTransactionSchema.parse({
       ...data,
@@ -51,9 +51,12 @@ export const EscrowRepo = {
    */
   async getTransactionsByBusiness(businessId: string): Promise<EscrowTransaction[]> {
     const db = getDb();
-    const querySnapshot = await db.collection(COLLECTION_NAME).where("businessId", "==", businessId).get();
-    
-    return querySnapshot.docs.map(doc => {
+    const querySnapshot = await db
+      .collection(COLLECTION_NAME)
+      .where("businessId", "==", businessId)
+      .get();
+
+    return querySnapshot.docs.map((doc) => {
       const data = doc.data();
       return EscrowTransactionSchema.parse({
         ...data,
@@ -67,21 +70,21 @@ export const EscrowRepo = {
    * Actualiza el estado de la transacción (ej. de "held" a "released").
    */
   async updateTransactionStatus(
-    id: string, 
-    status: EscrowTransaction["status"], 
-    officialTicketUrl?: string
+    id: string,
+    status: EscrowTransaction["status"],
+    officialTicketUrl?: string,
   ): Promise<void> {
     const db = getDb();
-    const updateData: any = { status };
-    
+    const updateData: Partial<EscrowTransaction> = { status };
+
     if (status === "released") {
       updateData.releasedAt = new Date();
     }
-    
+
     if (officialTicketUrl) {
       updateData.officialTicketUrl = officialTicketUrl;
     }
-    
+
     await db.collection(COLLECTION_NAME).doc(id).update(updateData);
-  }
+  },
 };

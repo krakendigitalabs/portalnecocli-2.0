@@ -13,9 +13,7 @@ type RestaurantsPageProps = {
   searchParams?: Promise<MarketplaceSearchParams>;
 };
 
-export default async function RestaurantsPage({
-  searchParams,
-}: RestaurantsPageProps) {
+export default async function RestaurantsPage({ searchParams }: RestaurantsPageProps) {
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const data = getMarketplaceListingData(resolvedSearchParams, {
     serviceType: "restaurante",

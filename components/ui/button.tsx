@@ -2,13 +2,10 @@ import Link from "next/link";
 import { cn } from "@/lib/utils/cn";
 
 const buttonVariants = {
-  primary:
-    "bg-teal text-white hover:bg-teal/90 border-transparent shadow-soft",
-  secondary:
-    "bg-white text-ink border-ink/12 hover:border-teal/30 hover:text-teal",
+  primary: "bg-teal text-white hover:bg-teal/90 border-transparent shadow-soft",
+  secondary: "bg-white text-ink border-ink/12 hover:border-teal/30 hover:text-teal",
   ghost: "bg-transparent text-ink border-transparent hover:text-teal",
-  accent:
-    "bg-coral text-white hover:bg-coral/90 border-transparent shadow-soft",
+  accent: "bg-coral text-white hover:bg-coral/90 border-transparent shadow-soft",
 } as const;
 
 const buttonSizes = {
@@ -43,18 +40,11 @@ export function Button({
   variant = "primary",
   onClick,
 }: ButtonProps) {
-  const classes = cn(
-    baseButtonClassName,
-    buttonSizes[size],
-    buttonVariants[variant],
-    className,
-  );
+  const classes = cn(baseButtonClassName, buttonSizes[size], buttonVariants[variant], className);
 
   if (href) {
     const isExternalHref =
-      href.startsWith("http") ||
-      href.startsWith("mailto:") ||
-      href.startsWith("tel:");
+      href.startsWith("http") || href.startsWith("mailto:") || href.startsWith("tel:");
 
     if (isExternalHref) {
       const shouldOpenInNewTab = href.startsWith("http");

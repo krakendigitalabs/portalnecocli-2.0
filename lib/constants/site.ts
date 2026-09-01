@@ -7,8 +7,7 @@ export const siteMetadata = {
   description:
     "Plataforma premium para hotelería, turismo, alimentos, transporte turístico y domicilios en Necoclí.",
   siteUrl: "https://portalnecocli.com",
-  ogImage:
-    "https://res.cloudinary.com/dr50ioh9h/image/upload/v1752722255/familia_22_febopw.png",
+  ogImage: "https://res.cloudinary.com/dr50ioh9h/image/upload/v1752722255/familia_22_febopw.png",
 } as const;
 
 export const navigationLinks = [

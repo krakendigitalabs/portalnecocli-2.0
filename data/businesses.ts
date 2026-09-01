@@ -7,8 +7,7 @@ export const featuredBusinesses: Business[] = [
     slug: "hotel-brisa-marina",
     category: "hotels",
     categoryLabel: "Hotelería",
-    summary:
-      "Hotel frente al mar con enfoque boutique, estancias familiares y reservas flexibles.",
+    summary: "Hotel frente al mar con enfoque boutique, estancias familiares y reservas flexibles.",
     location: "Malecón de Necoclí",
     priceRange: "$$$",
     status: "active",
@@ -19,8 +18,7 @@ export const featuredBusinesses: Business[] = [
     slug: "sabor-de-origen",
     category: "restaurants",
     categoryLabel: "Alimentos",
-    summary:
-      "Restaurante de cocina costera con operación preparada para mesa y domicilios.",
+    summary: "Restaurante de cocina costera con operación preparada para mesa y domicilios.",
     location: "Centro urbano",
     priceRange: "$$",
     status: "active",
@@ -31,8 +29,7 @@ export const featuredBusinesses: Business[] = [
     slug: "ruta-manglar",
     category: "tours",
     categoryLabel: "Turismo",
-    summary:
-      "Operador de recorridos ecológicos y experiencias guiadas para grupos pequeños.",
+    summary: "Operador de recorridos ecológicos y experiencias guiadas para grupos pequeños.",
     location: "Zona turística",
     priceRange: "$$",
     status: "draft",

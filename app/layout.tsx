@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "@/app/globals.css";
+import { Permanent_Marker } from "next/font/google";
 import { AppShell } from "@/components/layout/app-shell";
 import { AppProviders } from "@/components/providers/app-providers";
 import { brand, siteMetadata } from "@/lib/constants/site";
 import { PORTAL_APP_HEADER } from "@/lib/routing/subdomains";
-import { Permanent_Marker } from "next/font/google";
 
 const tropicalFont = Permanent_Marker({
   weight: "400",
@@ -64,10 +64,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           {isDashboardApp ? (
             children
           ) : (
-            <AppShell
-              announcement="Reservas, afiliaciones y soporte local"
-              brandName={brand.name}
-            >
+            <AppShell announcement="Reservas, afiliaciones y soporte local" brandName={brand.name}>
               {children}
             </AppShell>
           )}

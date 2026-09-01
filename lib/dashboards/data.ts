@@ -1,9 +1,9 @@
 import "server-only";
+import { getMerchantBalance } from "@/data/escrowService";
 import { featuredBusinessesSeed } from "@/data/featured-businesses";
 import type { AuthScope } from "@/types/auth";
-import type { FeaturedBusiness } from "@/types/featured-business";
 import type { MerchantWallet } from "@/types/escrow";
-import { getMerchantBalance } from "@/data/escrowService";
+import type { FeaturedBusiness } from "@/types/featured-business";
 
 type DashboardMetric = {
   label: string;
@@ -30,9 +30,7 @@ export type MerchantDashboardData = {
 };
 
 function formatAverageRating(businesses: FeaturedBusiness[]) {
-  const ratedBusinesses = businesses.filter(
-    (business) => typeof business.rating === "number",
-  );
+  const ratedBusinesses = businesses.filter((business) => typeof business.rating === "number");
 
   if (ratedBusinesses.length === 0) {
     return "Sin calificación";
@@ -49,10 +47,7 @@ function formatAverageRating(businesses: FeaturedBusiness[]) {
 function getServiceTypeSummary(businesses: FeaturedBusiness[]) {
   return Array.from(
     businesses.reduce((summaryMap, business) => {
-      summaryMap.set(
-        business.serviceType,
-        (summaryMap.get(business.serviceType) ?? 0) + 1,
-      );
+      summaryMap.set(business.serviceType, (summaryMap.get(business.serviceType) ?? 0) + 1);
 
       return summaryMap;
     }, new Map<string, number>()),
@@ -77,17 +72,11 @@ export function getScopedBusinesses(scope: AuthScope) {
   }
 
   return featuredBusinessesSeed.filter((business) => {
-    const matchesTenant = scope.tenantId
-      ? business.tenantId === scope.tenantId
-      : true;
+    const matchesTenant = scope.tenantId ? business.tenantId === scope.tenantId : true;
     const matchesBusinessIds =
-      scope.businessIds.length > 0
-        ? scope.businessIds.includes(business.id)
-        : true;
+      scope.businessIds.length > 0 ? scope.businessIds.includes(business.id) : true;
     const matchesServiceTypes =
-      scope.serviceTypes.length > 0
-        ? scope.serviceTypes.includes(business.serviceType)
-        : true;
+      scope.serviceTypes.length > 0 ? scope.serviceTypes.includes(business.serviceType) : true;
 
     return matchesTenant && matchesBusinessIds && matchesServiceTypes;
   });

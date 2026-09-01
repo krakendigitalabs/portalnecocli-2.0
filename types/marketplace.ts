@@ -1,11 +1,6 @@
 import type { BusinessServiceType, FeaturedBusiness } from "@/types/featured-business";
 
-export type MarketplaceCategoryKey =
-  | "all"
-  | "hoteles"
-  | "restaurantes"
-  | "tours"
-  | "transporte";
+export type MarketplaceCategoryKey = "all" | "hoteles" | "restaurantes" | "tours" | "transporte";
 
 export type MarketplaceSearchParams = {
   q?: string;

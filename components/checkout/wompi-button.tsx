@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Loader2, ShieldCheck } from "lucide-react";
+import { useEffect, useState } from "react";
 
 declare global {
   interface Window {
-    WidgetCheckout: any;
+    WidgetCheckout: unknown;
   }
 }
 
@@ -17,25 +17,28 @@ type WompiButtonProps = {
   signature?: string;
 };
 
-export function WompiButton({ reference, amountInCents, currency = "COP", redirectUrl, signature }: WompiButtonProps) {
+export function WompiButton({
+  reference,
+  amountInCents,
+  currency = "COP",
+  redirectUrl,
+  signature,
+}: WompiButtonProps) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [checkout, setCheckout] = useState<any>(null);
+  const [checkout, setCheckout] = useState<unknown>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const isDev = process.env.NODE_ENV !== "production";
-    const pubKey = isDev 
-      ? (process.env.NEXT_PUBLIC_WOMPI_TEST_KEY || "pub_test_Q5yDA9xoKdePzhSGeVe9HAez7HgGORGf")
-      : (process.env.NEXT_PUBLIC_WOMPI_KEY || "");  
-      
+    const pubKey = process.env.NEXT_PUBLIC_WOMPI_KEY;
+
     if (!pubKey) {
-      setError("Falta la llave pública de Wompi.");
+      setError("Error de configuración: Llave de pagos no encontrada en Vercel.");
       return;
     }
 
     function initCheckout(pubKey: string) {
       try {
-        const widgetConfig: any = {
+        const widgetConfig: Record<string, unknown> = {
           currency,
           amountInCents,
           reference,
@@ -97,12 +100,13 @@ export function WompiButton({ reference, amountInCents, currency = "COP", redire
         <button
           onClick={(e) => {
             e.preventDefault();
-            checkout?.open((result: any) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (checkout as any)?.open((result: { transaction?: unknown }) => {
               console.log("Wompi Result:", result);
-              // Wompi devuelve la transacción aquí. 
+              // Wompi devuelve la transacción aquí.
               // Redirigimos manualmente al usuario a su ticket!
               if (result && result.transaction) {
-                  window.location.href = redirectUrl;
+                window.location.href = redirectUrl;
               }
             });
           }}

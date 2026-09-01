@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import type { Category } from "@/types/category";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import type { Category } from "@/types/category";
 
 export function CategoryCard3D({ category }: { category: Category }) {
   // Físicas de Parallax y Tilt de Framer Motion
@@ -45,8 +45,10 @@ export function CategoryCard3D({ category }: { category: Category }) {
       className="relative h-[450px] lg:h-[550px] w-full rounded-[40px] border border-ink/5 bg-gradient-to-br from-white/90 to-white/60 backdrop-blur-xl shadow-2xl p-8 lg:p-12 transition-colors hover:border-gold/40 group cursor-pointer overflow-hidden"
     >
       {/* Capa de Contenido HTML (Al frente) */}
-      <div className="relative z-10 flex flex-col h-full justify-end" style={{ transform: "translateZ(80px)" }}>
-        
+      <div
+        className="relative z-10 flex flex-col h-full justify-end"
+        style={{ transform: "translateZ(80px)" }}
+      >
         <div className="mt-auto">
           <h3 className="text-[2.5rem] sm:text-5xl lg:text-7xl font-bold text-ink group-hover:text-green transition-colors drop-shadow-md tracking-tighter leading-[0.9] mb-4 lg:mb-6 w-full break-words">
             {category.label}
@@ -54,7 +56,7 @@ export function CategoryCard3D({ category }: { category: Category }) {
           <p className="text-base lg:text-xl leading-relaxed text-ink/80 max-w-sm drop-shadow-sm font-medium">
             {category.description}
           </p>
-          
+
           {category.metric ? (
             <div className="mt-8 lg:mt-12 flex items-center justify-between">
               <p className="text-sm lg:text-base font-bold uppercase tracking-[0.25em] text-green bg-green/10 px-5 py-2.5 rounded-full shadow-inner border border-green/10">
@@ -71,8 +73,16 @@ export function CategoryCard3D({ category }: { category: Category }) {
   );
 
   if (category.href) {
-    return <Link href={category.href} className="block w-full" style={{ perspective: 1200 }}>{content}</Link>;
+    return (
+      <Link href={category.href} className="block w-full" style={{ perspective: 1200 }}>
+        {content}
+      </Link>
+    );
   }
 
-  return <div className="block w-full" style={{ perspective: 1200 }}>{content}</div>;
+  return (
+    <div className="block w-full" style={{ perspective: 1200 }}>
+      {content}
+    </div>
+  );
 }
