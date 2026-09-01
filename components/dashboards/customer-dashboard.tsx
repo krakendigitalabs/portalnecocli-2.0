@@ -166,8 +166,9 @@ export function CustomerDashboard({
             </p>
             <h3 className="mt-2 text-xl font-bold text-ink">Acumula 5 experiencias → 6ta al 50%</h3>
             <p className="mt-1 text-sm text-ink/60">
-              Cada reserva completada te da una estrella dorada. Al completar 5, recibes un bono
-              especial del 50% para tu próximo viaje a Necoclí.
+              Cada reserva oficial te otorga una estrella dorada. Al juntar 5, Portal Necoclí te regala 
+              un bono del <strong>50% de descuento</strong> (subvencionado por nosotros y nuestros aliados premium) 
+              para tu próximo viaje a Urabá.
             </p>
           </div>
           <div className="shrink-0 text-5xl">🌴</div>

@@ -224,6 +224,30 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
           )}
         </SurfaceCard>
       </div>
+
+      {/* ─── Centro de Crecimiento (Modelo de Negocio Ads) ─── */}
+      <div className="h-px w-full bg-ink/8" />
+      <SurfaceCard className="relative overflow-hidden rounded-[28px] p-8">
+        <div className="absolute inset-0 bg-gradient-to-r from-teal/5 to-transparent" />
+        <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-teal">
+              Centro de Crecimiento · Freemium a Premium
+            </p>
+            <h2 className="mt-3 text-2xl font-bold tracking-tight text-ink">
+              Destaca tu negocio en Portal Necoclí
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-ink/70">
+              Nuestro modelo te permite estar visible <strong>sin costo fijo anual</strong>. Solo pagas
+              comisión cuando generas ventas reales. Si deseas captar más turistas este fin de semana,
+              adquiere un <strong>Boost de Posicionamiento</strong> y aparece de primero en las búsquedas.
+            </p>
+          </div>
+          <button className="shrink-0 rounded-full bg-teal px-6 py-3 font-semibold text-white shadow-soft transition hover:bg-teal/90">
+            Impulsar Ficha (Boost)
+          </button>
+        </div>
+      </SurfaceCard>
     </section>
   );
 }

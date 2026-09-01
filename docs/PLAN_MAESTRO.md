@@ -6,12 +6,12 @@
 
 ## 1. Lógica de Negocio Central (Modelo Escrow & Enrutamiento)
 
-El sistema opera bajo un modelo de tercero de confianza (Escrow) y un enrutador inteligente de clientes.
+El sistema opera bajo un modelo de tercero de confianza (Escrow) y un enrutador inteligente de clientes, soportando el **nuevo ecosistema transaccional exponencial** detallado en [Modelo de Negocio Exponencial](file:///c:/portal-necocli/docs/MODELO_DE_NEGOCIO.md).
 
 ### 1.1 Protocolo de Enrutamiento (Triangulación)
 
-- **Caso A (Servicio Propio/Paquete Portal):** El cliente busca un servicio empaquetado. El Portal retiene la comunicación, solicita datos, gestiona la reserva y la logística directamente.
-- **Caso B (Servicio Específico del Comercio):** El cliente busca un servicio directo (ej. Hotel Palmas). El Portal actúa como puente, solicita datos básicos y transfiere/conecta al cliente con la línea de atención del comercio aliado.
+- **Caso A (Servicio Propio/Paquete Portal):** El cliente busca un servicio empaquetado. El Portal retiene la comunicación, solicita datos, gestiona la reserva y la logística directamente. Genera alto margen (Take Rate).
+- **Caso B (Servicio Específico del Comercio):** El cliente busca un servicio directo (ej. Hotel Palmas). El Portal actúa como puente, retiene el dinero vía Escrow, deduce la comisión, y conecta al cliente.
 
 ### 1.2 Protocolo de Cobro y Liquidación (Escrow)
 
