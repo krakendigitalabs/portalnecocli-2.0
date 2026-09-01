@@ -1,5 +1,5 @@
-import { requireRole } from "@/lib/auth/server";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
+import { requireRole } from "@/lib/auth/server";
 
 type AdminLayoutProps = Readonly<{
   children: React.ReactNode;

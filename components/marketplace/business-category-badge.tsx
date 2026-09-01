@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils/cn";
 import { getServiceTypeLabel } from "@/lib/utils/business-links";
+import { cn } from "@/lib/utils/cn";
 import type { BusinessServiceType } from "@/types/featured-business";
 
 type BusinessCategoryBadgeProps = {

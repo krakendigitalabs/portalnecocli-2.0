@@ -1,12 +1,12 @@
 import "client-only";
 import {
+  type Auth,
   GoogleAuthProvider,
-  type User,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-  type Auth,
+  type User,
 } from "firebase/auth";
 import { clearServerSession, syncServerSession } from "@/lib/auth/session-client";
 import { getFirebaseAuth } from "@/lib/firebase/client";
@@ -32,16 +32,9 @@ async function persistServerSession(auth: Auth, user: User) {
   }
 }
 
-export async function signInWithEmailPassword(
-  email: string,
-  password: string,
-) {
+export async function signInWithEmailPassword(email: string, password: string) {
   const auth = requireFirebaseAuth();
-  const credentials = await signInWithEmailAndPassword(
-    auth,
-    email,
-    password,
-  );
+  const credentials = await signInWithEmailAndPassword(auth, email, password);
 
   await persistServerSession(auth, credentials.user);
 
@@ -74,9 +67,7 @@ export async function signOutCurrentUser() {
     await clearServerSession();
   } catch (error) {
     sessionError =
-      error instanceof Error
-        ? error
-        : new Error("No fue posible cerrar la sesión del servidor.");
+      error instanceof Error ? error : new Error("No fue posible cerrar la sesión del servidor.");
   }
 
   await signOut(requireFirebaseAuth());

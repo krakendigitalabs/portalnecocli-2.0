@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import type { Category } from "@/types/category";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import type { Category } from "@/types/category";
 
 type CategoryCardProps = {
   category: Category;
@@ -21,8 +21,12 @@ export function CategoryCard({ category }: CategoryCardProps) {
       className="h-full"
     >
       <Card className="h-full rounded-[32px] border-ink/10 p-8 lg:p-10 transition-colors hover:shadow-2xl hover:border-gold/50 bg-white/60 backdrop-blur-sm">
-        <Badge variant="accent" className="px-4 py-1.5 text-sm">{category.shortLabel}</Badge>
-        <h3 className="mt-6 text-2xl lg:text-3xl font-semibold text-ink group-hover:text-green transition-colors">{category.label}</h3>
+        <Badge variant="accent" className="px-4 py-1.5 text-sm">
+          {category.shortLabel}
+        </Badge>
+        <h3 className="mt-6 text-2xl lg:text-3xl font-semibold text-ink group-hover:text-green transition-colors">
+          {category.label}
+        </h3>
         <p className="mt-4 text-base lg:text-lg leading-relaxed text-ink/75">
           {category.description}
         </p>
@@ -36,7 +40,11 @@ export function CategoryCard({ category }: CategoryCardProps) {
   );
 
   if (category.href) {
-    return <Link href={category.href} className="group h-full block">{content}</Link>;
+    return (
+      <Link href={category.href} className="group h-full block">
+        {content}
+      </Link>
+    );
   }
 
   return <div className="group h-full">{content}</div>;

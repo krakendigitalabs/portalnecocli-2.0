@@ -21,10 +21,7 @@ type FirestoreMapValue = {
   };
 };
 
-type FirestoreValue =
-  | FirestoreScalarValue
-  | FirestoreArrayValue
-  | FirestoreMapValue;
+type FirestoreValue = FirestoreScalarValue | FirestoreArrayValue | FirestoreMapValue;
 
 type FirestoreDocumentResponse = {
   fields?: Record<string, FirestoreValue>;
@@ -66,17 +63,13 @@ function fromFirestoreValue(value: FirestoreValue): unknown {
   return null;
 }
 
-function fromFirestoreFields(
-  fields: Record<string, FirestoreValue>,
-): Record<string, unknown> {
+function fromFirestoreFields(fields: Record<string, FirestoreValue>): Record<string, unknown> {
   return Object.fromEntries(
     Object.entries(fields).map(([key, value]) => [key, fromFirestoreValue(value)]),
   );
 }
 
-export async function fetchFirestoreDocument<T>(
-  documentPath: string,
-): Promise<T | null> {
+export async function fetchFirestoreDocument<T>(documentPath: string): Promise<T | null> {
   if (!hasFirebasePublicConfig()) {
     return null;
   }

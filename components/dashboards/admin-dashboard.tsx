@@ -12,11 +12,7 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
     <section className="space-y-8">
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {data.metrics.map((metric) => (
-          <MetricCard
-            key={metric.label}
-            label={metric.label}
-            value={metric.value}
-          />
+          <MetricCard key={metric.label} label={metric.label} value={metric.value} />
         ))}
       </div>
 
@@ -34,9 +30,7 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
                 key={item.label}
                 className="flex items-center justify-between rounded-[20px] border border-ink/8 bg-ink/[0.03] px-4 py-3"
               >
-                <span className="text-sm font-medium capitalize text-ink/72">
-                  {item.label}
-                </span>
+                <span className="text-sm font-medium capitalize text-ink/72">{item.label}</span>
                 <span className="text-lg font-semibold text-ink">{item.value}</span>
               </div>
             ))}

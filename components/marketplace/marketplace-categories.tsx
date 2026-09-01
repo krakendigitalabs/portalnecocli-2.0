@@ -6,9 +6,7 @@ type MarketplaceCategoriesProps = {
   categories: Category[];
 };
 
-export function MarketplaceCategories({
-  categories,
-}: MarketplaceCategoriesProps) {
+export function MarketplaceCategories({ categories }: MarketplaceCategoriesProps) {
   return (
     <section className="space-y-6">
       <SectionHeader

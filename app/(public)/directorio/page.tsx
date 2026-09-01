@@ -10,9 +10,7 @@ type DirectoryAliasPageProps = {
   }>;
 };
 
-export default async function DirectoryAliasPage({
-  searchParams,
-}: DirectoryAliasPageProps) {
+export default async function DirectoryAliasPage({ searchParams }: DirectoryAliasPageProps) {
   const resolvedSearchParams = await searchParams;
   const params = new URLSearchParams();
 

@@ -1,18 +1,14 @@
+import { UniversalSearch } from "@/components/marketplace/universal-search";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import type { MarketplaceCategory } from "@/types/marketplace";
-import { UniversalSearch } from "@/components/marketplace/universal-search";
-import type { MarketplaceFilterOptions } from "@/types/marketplace";
+import type { MarketplaceCategory, MarketplaceFilterOptions } from "@/types/marketplace";
 
 type MarketplaceHomeHeroProps = {
   categories: MarketplaceCategory[];
   options: MarketplaceFilterOptions;
 };
 
-export function MarketplaceHomeHero({
-  categories,
-  options,
-}: MarketplaceHomeHeroProps) {
+export function MarketplaceHomeHero({ categories, options }: MarketplaceHomeHeroProps) {
   return (
     <section className="relative">
       <Card className="overflow-hidden rounded-[36px] border-white/50 bg-ink shadow-soft md:rounded-[42px]">
@@ -24,11 +20,12 @@ export function MarketplaceHomeHero({
                 Marketplace publico
               </p>
               <h1 className="max-w-4xl text-4xl font-semibold tracking-tight md:text-6xl">
-                Descubre hoteles, restaurantes, tours y transporte en Necocli desde una sola experiencia.
+                Descubre hoteles, restaurantes, tours y transporte en Necocli desde una sola
+                experiencia.
               </h1>
               <p className="max-w-2xl text-base leading-7 text-white/78 md:text-lg">
-                Esta fase deja operativa la base publica del portal: buscador universal,
-                verticales navegables, fichas de negocio y filtros utiles para convertir mejor.
+                Esta fase deja operativa la base publica del portal: buscador universal, verticales
+                navegables, fichas de negocio y filtros utiles para convertir mejor.
               </p>
             </div>
 
@@ -68,12 +65,8 @@ export function MarketplaceHomeHero({
                   <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/58">
                     {category.shortLabel}
                   </p>
-                  <h2 className="mt-3 text-xl font-semibold tracking-tight">
-                    {category.label}
-                  </h2>
-                  <p className="mt-3 text-sm leading-6 text-white/72">
-                    {category.description}
-                  </p>
+                  <h2 className="mt-3 text-xl font-semibold tracking-tight">{category.label}</h2>
+                  <p className="mt-3 text-sm leading-6 text-white/72">{category.description}</p>
                   <div className="mt-4">
                     <Button
                       className="border-white/24 bg-white/10 text-white hover:border-white/36 hover:text-white"

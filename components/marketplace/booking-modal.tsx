@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 
@@ -42,12 +42,7 @@ const initialFormData: LeadFormData = {
 };
 
 /** Componente de formulario de reserva multi-paso con diseño Premium */
-export function BookingModal({
-  businessId,
-  businessName,
-  priceRange,
-  onClose,
-}: BookingModalProps) {
+export function BookingModal({ businessId, businessName, priceRange, onClose }: BookingModalProps) {
   const [step, setStep] = useState<Step>("form");
   const [formData, setFormData] = useState<LeadFormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,11 +59,9 @@ export function BookingModal({
   const [referenceCode, setReferenceCode] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  function handleChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value, type } = e.target;
-    
+
     if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
       setFormData((prev) => ({ ...prev, [name]: checked }));
@@ -159,9 +152,7 @@ export function BookingModal({
       setStep("success");
     } catch (err) {
       setError(
-        err instanceof Error
-          ? err.message
-          : "Ocurrió un error inesperado. Inténtalo de nuevo."
+        err instanceof Error ? err.message : "Ocurrió un error inesperado. Inténtalo de nuevo.",
       );
     } finally {
       setIsSubmitting(false);
@@ -180,7 +171,6 @@ export function BookingModal({
     >
       {/* Panel */}
       <div className="relative flex max-h-full w-full max-w-lg flex-col overflow-hidden rounded-[24px] bg-white shadow-[0_24px_80px_rgba(24,32,42,0.18)] sm:rounded-[32px]">
-        
         {/* Header degradado */}
         <div className="shrink-0 bg-gradient-to-r from-teal to-teal/80 px-6 py-5 sm:px-7 sm:py-6">
           <button
@@ -208,7 +198,8 @@ export function BookingModal({
           {step === "form" && (
             <form id="booking-form" noValidate onSubmit={handleSubmit}>
               <p className="mb-5 text-sm leading-6 text-ink/65">
-                Completa tus datos y nuestro equipo te contactará para confirmar disponibilidad y guiarte en el pago.
+                Completa tus datos y nuestro equipo te contactará para confirmar disponibilidad y
+                guiarte en el pago.
               </p>
 
               <div className="space-y-4">
@@ -338,13 +329,13 @@ export function BookingModal({
                   <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-ink/55">
                     Huéspedes y Habitaciones
                   </p>
-                  
+
                   <div className="space-y-4">
                     {/* Adultos */}
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-ink">Adultos</span>
                       <div className="flex items-center gap-3">
-                        <button 
+                        <button
                           type="button"
                           onClick={() => updateCounter("adults_count", -1)}
                           className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/20 text-ink transition hover:bg-ink/5 disabled:opacity-50"
@@ -352,8 +343,10 @@ export function BookingModal({
                         >
                           -
                         </button>
-                        <span className="w-4 text-center text-sm font-semibold">{formData.adults_count}</span>
-                        <button 
+                        <span className="w-4 text-center text-sm font-semibold">
+                          {formData.adults_count}
+                        </span>
+                        <button
                           type="button"
                           onClick={() => updateCounter("adults_count", 1)}
                           className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/20 text-ink transition hover:bg-ink/5"
@@ -370,7 +363,7 @@ export function BookingModal({
                         <span className="text-xs text-ink/50">Edades 0-17</span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <button 
+                        <button
                           type="button"
                           onClick={() => updateCounter("children_count", -1)}
                           className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/20 text-ink transition hover:bg-ink/5 disabled:opacity-50"
@@ -378,8 +371,10 @@ export function BookingModal({
                         >
                           -
                         </button>
-                        <span className="w-4 text-center text-sm font-semibold">{formData.children_count}</span>
-                        <button 
+                        <span className="w-4 text-center text-sm font-semibold">
+                          {formData.children_count}
+                        </span>
+                        <button
                           type="button"
                           onClick={() => updateCounter("children_count", 1)}
                           className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/20 text-ink transition hover:bg-ink/5"
@@ -393,7 +388,7 @@ export function BookingModal({
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-ink">Habitaciones</span>
                       <div className="flex items-center gap-3">
-                        <button 
+                        <button
                           type="button"
                           onClick={() => updateCounter("rooms_count", -1)}
                           className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/20 text-ink transition hover:bg-ink/5 disabled:opacity-50"
@@ -401,8 +396,10 @@ export function BookingModal({
                         >
                           -
                         </button>
-                        <span className="w-4 text-center text-sm font-semibold">{formData.rooms_count}</span>
-                        <button 
+                        <span className="w-4 text-center text-sm font-semibold">
+                          {formData.rooms_count}
+                        </span>
+                        <button
                           type="button"
                           onClick={() => updateCounter("rooms_count", 1)}
                           className="flex h-8 w-8 items-center justify-center rounded-full border border-ink/20 text-ink transition hover:bg-ink/5"
@@ -417,8 +414,8 @@ export function BookingModal({
                   <div className="mt-5 flex items-center justify-between border-t border-ink/10 pt-4">
                     <span className="text-sm font-medium text-ink">¿Viajas con mascotas?</span>
                     <label className="relative inline-flex cursor-pointer items-center">
-                      <input 
-                        type="checkbox" 
+                      <input
+                        type="checkbox"
                         name="pets_included"
                         checked={formData.pets_included}
                         onChange={handleChange}
@@ -473,7 +470,8 @@ export function BookingModal({
               </div>
 
               <p className="mt-4 text-center text-xs text-ink/40">
-                Al enviar confirmas que aceptas ser contactado por nuestro equipo para gestionar tu reserva.
+                Al enviar confirmas que aceptas ser contactado por nuestro equipo para gestionar tu
+                reserva.
               </p>
             </form>
           )}
@@ -487,8 +485,8 @@ export function BookingModal({
               <h3 className="text-2xl font-bold text-ink">¡Reserva recibida!</h3>
               <p className="mt-2 text-sm leading-6 text-ink/65">
                 Hemos enviado la confirmación a{" "}
-                <span className="font-semibold text-teal">{formData.email}</span>.
-                Nuestro equipo se pondrá en contacto contigo en breve.
+                <span className="font-semibold text-teal">{formData.email}</span>. Nuestro equipo se
+                pondrá en contacto contigo en breve.
               </p>
 
               {/* Código de referencia */}
@@ -499,9 +497,7 @@ export function BookingModal({
                 <p className="mt-2 text-3xl font-extrabold tracking-wider text-ink">
                   {referenceCode}
                 </p>
-                <p className="mt-1 text-xs text-ink/45">
-                  Guárdalo para hacer seguimiento
-                </p>
+                <p className="mt-1 text-xs text-ink/45">Guárdalo para hacer seguimiento</p>
               </div>
 
               {/* WhatsApp directo */}
@@ -515,12 +511,7 @@ export function BookingModal({
                 Confirmar por WhatsApp
               </a>
 
-              <Button
-                className="mt-3 w-full"
-                size="lg"
-                variant="secondary"
-                onClick={onClose}
-              >
+              <Button className="mt-3 w-full" size="lg" variant="secondary" onClick={onClose}>
                 Cerrar
               </Button>
             </div>

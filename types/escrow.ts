@@ -1,13 +1,13 @@
 /**
  * Estados posibles para una transacción Escrow (Modelo de Depósito en Garantía).
- * 
+ *
  * - PENDING: La transacción fue creada pero el pago no ha sido confirmado.
  * - HELD: El pago fue confirmado y los fondos están retenidos (en garantía).
  * - RELEASED: El servicio fue prestado y los fondos se liberaron al comercio.
  * - REFUNDED: La transacción fue cancelada y el dinero se devolvió al cliente.
  * - DISPUTED: Existe un conflicto con el servicio; fondos bloqueados temporalmente.
  */
-export type EscrowTransactionStatus = 'PENDING' | 'HELD' | 'RELEASED' | 'REFUNDED' | 'DISPUTED';
+export type EscrowTransactionStatus = "PENDING" | "HELD" | "RELEASED" | "REFUNDED" | "DISPUTED";
 
 /**
  * Representa una transacción bajo el modelo Escrow.
@@ -43,7 +43,7 @@ export interface EscrowTransaction {
  */
 export interface PayoutMethod {
   /** Tipo de cuenta o billetera financiera */
-  type: 'NEQUI' | 'BANCOLOMBIA' | 'DAVIPLATA' | 'OTHER';
+  type: "NEQUI" | "BANCOLOMBIA" | "DAVIPLATA" | "OTHER";
   /** Número de cuenta, teléfono o identificador */
   account_number: string;
   /** Nombre del titular de la cuenta */
@@ -53,7 +53,7 @@ export interface PayoutMethod {
 }
 
 /**
- * Billetera del comercio aliado. 
+ * Billetera del comercio aliado.
  * Refleja sus saldos actuales dentro del modelo transaccional.
  */
 export interface MerchantWallet {

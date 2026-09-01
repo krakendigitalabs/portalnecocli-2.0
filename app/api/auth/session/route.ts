@@ -1,6 +1,10 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { SESSION_COOKIE_NAME, SESSION_MAX_AGE_MS, SESSION_MAX_AGE_SECONDS } from "@/lib/auth/config";
+import {
+  SESSION_COOKIE_NAME,
+  SESSION_MAX_AGE_MS,
+  SESSION_MAX_AGE_SECONDS,
+} from "@/lib/auth/config";
 import {
   getFirebaseAdminAuth,
   getFirebaseAdminDiagnostics,
@@ -20,9 +24,7 @@ export async function GET() {
         error: "Firebase Admin configuration is missing",
         status: 500,
         diagnostics:
-          process.env.NODE_ENV === "production"
-            ? undefined
-            : getFirebaseAdminDiagnostics(),
+          process.env.NODE_ENV === "production" ? undefined : getFirebaseAdminDiagnostics(),
       },
       { status: 500 },
     );
@@ -36,10 +38,7 @@ export async function GET() {
   }
 
   try {
-    const decodedToken = await getFirebaseAdminAuth().verifySessionCookie(
-      sessionCookie,
-      true,
-    );
+    const decodedToken = await getFirebaseAdminAuth().verifySessionCookie(sessionCookie, true);
 
     return NextResponse.json({
       status: 200,
@@ -60,9 +59,7 @@ export async function POST(request: Request) {
         error: "Firebase Admin configuration is missing",
         status: 500,
         diagnostics:
-          process.env.NODE_ENV === "production"
-            ? undefined
-            : getFirebaseAdminDiagnostics(),
+          process.env.NODE_ENV === "production" ? undefined : getFirebaseAdminDiagnostics(),
       },
       { status: 500 },
     );
@@ -73,19 +70,13 @@ export async function POST(request: Request) {
   try {
     payload = (await request.json()) as CreateSessionPayload;
   } catch {
-    return NextResponse.json(
-      { error: "Invalid JSON payload", status: 400 },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "Invalid JSON payload", status: 400 }, { status: 400 });
   }
 
   const idToken = payload.idToken?.trim();
 
   if (!idToken) {
-    return NextResponse.json(
-      { error: "Missing idToken", status: 400 },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "Missing idToken", status: 400 }, { status: 400 });
   }
 
   try {
@@ -95,18 +86,12 @@ export async function POST(request: Request) {
       typeof decodedToken.auth_time === "number" &&
       Date.now() - decodedToken.auth_time * 1000 > RECENT_SIGN_IN_WINDOW_MS
     ) {
-      return NextResponse.json(
-        { error: "Recent sign-in required", status: 401 },
-        { status: 401 },
-      );
+      return NextResponse.json({ error: "Recent sign-in required", status: 401 }, { status: 401 });
     }
 
-    const sessionCookie = await getFirebaseAdminAuth().createSessionCookie(
-      idToken,
-      {
-        expiresIn: SESSION_MAX_AGE_MS,
-      },
-    );
+    const sessionCookie = await getFirebaseAdminAuth().createSessionCookie(idToken, {
+      expiresIn: SESSION_MAX_AGE_MS,
+    });
 
     const response = NextResponse.json({ ok: true });
 
@@ -122,10 +107,7 @@ export async function POST(request: Request) {
 
     return response;
   } catch {
-    return NextResponse.json(
-      { error: "Unauthorized", status: 401 },
-      { status: 401 },
-    );
+    return NextResponse.json({ error: "Unauthorized", status: 401 }, { status: 401 });
   }
 }
 

@@ -1,18 +1,15 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import {
-  getFirebaseAdminAuth,
-  hasFirebaseAdminConfig,
-} from "@/lib/firebase/admin";
+import { SESSION_COOKIE_NAME } from "@/lib/auth/config";
 import {
   getPrimaryRole,
   hasRequiredRole,
   hasRequiredScope,
-  type ScopeRequirement,
   resolveAuthorizationFromClaims,
+  type ScopeRequirement,
 } from "@/lib/auth/roles";
-import { SESSION_COOKIE_NAME } from "@/lib/auth/config";
+import { getFirebaseAdminAuth, hasFirebaseAdminConfig } from "@/lib/firebase/admin";
 import type { AuthUser, UserRole } from "@/types/auth";
 
 export type ServerAuthSession = {
@@ -86,9 +83,7 @@ export async function getServerAuthSession(): Promise<ServerAuthSession | null> 
 
   if (!hasFirebaseAdminConfig()) {
     if (process.env.NODE_ENV !== "production") {
-      console.error(
-        "Firebase Admin config is missing. Server auth session cannot be verified.",
-      );
+      console.error("Firebase Admin config is missing. Server auth session cannot be verified.");
     }
 
     return null;
@@ -99,10 +94,7 @@ export async function getServerAuthSession(): Promise<ServerAuthSession | null> 
   }
 
   try {
-    const decodedToken = await getFirebaseAdminAuth().verifySessionCookie(
-      sessionCookie,
-      true,
-    );
+    const decodedToken = await getFirebaseAdminAuth().verifySessionCookie(sessionCookie, true);
     const claims = decodedToken as unknown as Record<string, unknown>;
 
     return {
@@ -123,10 +115,7 @@ export async function getServerAuthSession(): Promise<ServerAuthSession | null> 
 
 export async function authorizeServerAccess(
   options: AuthorizationOptions = {},
-): Promise<
-  | { ok: true; session: ServerAuthSession }
-  | { ok: false; status: 401 | 403 }
-> {
+): Promise<{ ok: true; session: ServerAuthSession } | { ok: false; status: 401 | 403 }> {
   const session = await getServerAuthSession();
 
   if (!session) {
@@ -138,10 +127,7 @@ export async function authorizeServerAccess(
   }
 
   if (options.scope) {
-    if (
-      options.scope.requireAssignedScope &&
-      !hasAssignedScope(session.user)
-    ) {
+    if (options.scope.requireAssignedScope && !hasAssignedScope(session.user)) {
       return { ok: false, status: 403 };
     }
 
@@ -163,10 +149,7 @@ export async function requireAuth(options: RedirectOptions = {}) {
   return authorization.session;
 }
 
-export async function requireRole(
-  roles: UserRole[],
-  options: RedirectOptions = {},
-) {
+export async function requireRole(roles: UserRole[], options: RedirectOptions = {}) {
   const authorization = await authorizeServerAccess({ roles });
 
   if (!authorization.ok) {
@@ -180,10 +163,7 @@ export async function requireRole(
   return authorization.session;
 }
 
-export async function requireScope(
-  scope: ScopeRequirement,
-  options: RedirectOptions = {},
-) {
+export async function requireScope(scope: ScopeRequirement, options: RedirectOptions = {}) {
   const authorization = await authorizeServerAccess({ scope });
 
   if (!authorization.ok) {

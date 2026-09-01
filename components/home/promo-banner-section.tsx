@@ -10,11 +10,7 @@ type PromoBannerSectionProps = {
   tone?: "light" | "dark";
 };
 
-export function PromoBannerSection({
-  content,
-  id,
-  tone = "light",
-}: PromoBannerSectionProps) {
+export function PromoBannerSection({ content, id, tone = "light" }: PromoBannerSectionProps) {
   const isDark = tone === "dark";
   const getColumnClassName = (index: number) => {
     if (index === 0) {
@@ -65,9 +61,7 @@ export function PromoBannerSection({
                 {item.eyebrow}
               </Badge>
               <div className="max-w-xl space-y-3">
-                <h3 className="text-xl font-semibold tracking-tight md:text-3xl">
-                  {item.title}
-                </h3>
+                <h3 className="text-xl font-semibold tracking-tight md:text-3xl">{item.title}</h3>
                 <p className="text-sm leading-6 text-white/76 md:text-base md:leading-7">
                   {item.description}
                 </p>

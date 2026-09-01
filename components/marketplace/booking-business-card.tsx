@@ -1,24 +1,51 @@
-import Link from "next/link";
 import Image from "next/image";
-import { FeaturedBusiness } from "@/types/featured-business";
-import { Card } from "@/components/ui/card";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { FeaturedBusiness } from "@/types/featured-business";
 
 const Star = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
   </svg>
 );
 
 const ThumbsUp = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
     <path d="M7 10v12" />
     <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
   </svg>
 );
 
 const MapPin = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
     <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
     <circle cx="12" cy="10" r="3" />
   </svg>
@@ -65,7 +92,6 @@ export function BookingBusinessCard({ business }: BookingBusinessCardProps) {
 
       {/* Contenido principal (centro y derecha) */}
       <div className="flex flex-1 flex-col p-4 sm:flex-row sm:p-5">
-        
         {/* Columna Centro: Información */}
         <div className="flex-1">
           <div className="flex items-center gap-2">
@@ -87,13 +113,15 @@ export function BookingBusinessCard({ business }: BookingBusinessCardProps) {
           </div>
 
           <div className="mt-1 flex items-center gap-2 text-sm text-ink/70">
-            <Link href={business.mapLink || "#"} target="_blank" className="flex items-center gap-1 font-medium text-teal hover:underline">
+            <Link
+              href={business.mapLink || "#"}
+              target="_blank"
+              className="flex items-center gap-1 font-medium text-teal hover:underline"
+            >
               <MapPin className="h-4 w-4" />
               {business.neighborhood || business.city}
             </Link>
-            <button className="font-semibold text-teal hover:underline">
-              Mostrar en el mapa
-            </button>
+            <button className="font-semibold text-teal hover:underline">Mostrar en el mapa</button>
             <span className="hidden text-ink/50 sm:inline">•</span>
             <span className="hidden sm:inline">a 350 m del centro</span>
           </div>
@@ -126,7 +154,6 @@ export function BookingBusinessCard({ business }: BookingBusinessCardProps) {
 
         {/* Columna Derecha: Precio y Call to Action */}
         <div className="mt-4 flex flex-col justify-between sm:mt-0 sm:ml-6 sm:w-[200px] sm:items-end sm:text-right">
-          
           {/* Reviews Score */}
           <div className="flex items-center gap-2 sm:flex-col sm:items-end sm:gap-1">
             <div className="flex flex-col sm:items-end">
@@ -143,21 +170,27 @@ export function BookingBusinessCard({ business }: BookingBusinessCardProps) {
             <div className="text-left sm:text-right">
               <p className="text-xs text-ink/60">Precio por noche desde</p>
               <p className="text-xl font-bold text-ink">
-                {business.numericPrice 
-                  ? new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(business.numericPrice) 
-                  : "$ 120.000"
-                }
+                {business.numericPrice
+                  ? new Intl.NumberFormat("es-CO", {
+                      style: "currency",
+                      currency: "COP",
+                      maximumFractionDigits: 0,
+                    }).format(business.numericPrice)
+                  : "$ 120.000"}
               </p>
               <p className="text-xs text-ink/50">+ impuestos y cargos</p>
             </div>
-            
+
             <div className="mt-3">
-              <Button href={href} variant="primary" className="w-full bg-[#0071c2] hover:bg-[#005999]">
+              <Button
+                href={href}
+                variant="primary"
+                className="w-full bg-[#0071c2] hover:bg-[#005999]"
+              >
                 Ver disponibilidad {">"}
               </Button>
             </div>
           </div>
-
         </div>
       </div>
     </Card>

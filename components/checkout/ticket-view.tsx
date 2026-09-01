@@ -1,17 +1,26 @@
+import { Building, Calendar, CheckCircle2, ShieldCheck, Ticket, Users } from "lucide-react";
 import { EscrowTransaction, Reservation } from "@/lib/validations/schemas";
 import { WompiButton } from "./wompi-button";
-import { CheckCircle2, Ticket, Calendar, Users, Building, ShieldCheck } from "lucide-react";
 
-export function TicketView({ escrow, reservation, signature }: { escrow: EscrowTransaction; reservation: Reservation; signature?: string }) {
+export function TicketView({
+  escrow,
+  reservation,
+  signature,
+}: {
+  escrow: EscrowTransaction;
+  reservation: Reservation;
+  signature?: string;
+}) {
   const isPaid = escrow.status === "released" || escrow.status === "refunded";
-  
+
   // Wompi exige montos en centavos (ej: 40000 COP -> 4000000)
   const amountInCents = escrow.amountCollected * 100;
-  
+
   // URL de redirección dinámica según el entorno
-  const baseUrl = process.env.NODE_ENV === "production" 
-    ? "https://portal-necocli.vercel.app" 
-    : "http://localhost:3000";
+  const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? "https://portal-necocli.vercel.app"
+      : "http://localhost:3000";
   const redirectUrl = `${baseUrl}/tickets/${escrow.id!}`;
 
   return (
@@ -24,7 +33,9 @@ export function TicketView({ escrow, reservation, signature }: { escrow: EscrowT
       <div className="relative z-10">
         {/* Header */}
         <div className="text-center mb-8 pb-8 border-b border-dashed border-ink/20">
-          <p className="text-gold font-bold tracking-widest uppercase text-xs mb-2">Portal Necoclí - Escrow</p>
+          <p className="text-gold font-bold tracking-widest uppercase text-xs mb-2">
+            Portal Necoclí - Escrow
+          </p>
           <h1 className="text-3xl md:text-4xl font-bold text-ink font-tropical tracking-wide mb-2">
             Ticket de Reserva
           </h1>
@@ -39,7 +50,9 @@ export function TicketView({ escrow, reservation, signature }: { escrow: EscrowT
               <p className="font-semibold text-ink text-lg">{reservation.customerName}</p>
             </div>
             <div>
-              <p className="text-[10px] uppercase font-bold text-ink/50 tracking-widest">Contacto</p>
+              <p className="text-[10px] uppercase font-bold text-ink/50 tracking-widest">
+                Contacto
+              </p>
               <p className="font-medium text-ink/80">{reservation.customerPhone}</p>
             </div>
           </div>
@@ -48,24 +61,32 @@ export function TicketView({ escrow, reservation, signature }: { escrow: EscrowT
             <div className="flex items-start gap-3">
               <Building className="w-5 h-5 text-teal mt-0.5 shrink-0" />
               <div>
-                <p className="text-[10px] uppercase font-bold text-ink/50 tracking-widest">Servicio</p>
+                <p className="text-[10px] uppercase font-bold text-ink/50 tracking-widest">
+                  Servicio
+                </p>
                 <p className="font-semibold text-ink leading-tight">{reservation.serviceName}</p>
               </div>
             </div>
-            
+
             <div className="flex gap-6">
               <div className="flex items-start gap-3">
                 <Calendar className="w-5 h-5 text-teal mt-0.5 shrink-0" />
                 <div>
-                  <p className="text-[10px] uppercase font-bold text-ink/50 tracking-widest">Fecha</p>
-                  <p className="font-semibold text-ink">{reservation.reservationDate.toLocaleDateString()}</p>
+                  <p className="text-[10px] uppercase font-bold text-ink/50 tracking-widest">
+                    Fecha
+                  </p>
+                  <p className="font-semibold text-ink">
+                    {reservation.reservationDate.toLocaleDateString()}
+                  </p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-3">
                 <Users className="w-5 h-5 text-teal mt-0.5 shrink-0" />
                 <div>
-                  <p className="text-[10px] uppercase font-bold text-ink/50 tracking-widest">Cupos</p>
+                  <p className="text-[10px] uppercase font-bold text-ink/50 tracking-widest">
+                    Cupos
+                  </p>
                   <p className="font-semibold text-ink">{reservation.guests}</p>
                 </div>
               </div>
@@ -76,12 +97,18 @@ export function TicketView({ escrow, reservation, signature }: { escrow: EscrowT
         {/* Resumen de Cobro */}
         <div className="bg-sand p-6 rounded-2xl mb-8 flex items-center justify-between">
           <div>
-            <p className="text-sm font-bold text-ink/60 uppercase tracking-widest mb-1">Total a Pagar</p>
-            <p className="text-3xl font-bold text-teal">${escrow.amountCollected.toLocaleString("es-CO")}</p>
+            <p className="text-sm font-bold text-ink/60 uppercase tracking-widest mb-1">
+              Total a Pagar
+            </p>
+            <p className="text-3xl font-bold text-teal">
+              ${escrow.amountCollected.toLocaleString("es-CO")}
+            </p>
           </div>
           <div className="text-right flex flex-col items-end">
             <ShieldCheck className="w-8 h-8 text-gold mb-1" />
-            <p className="text-[10px] uppercase font-bold text-ink/50 tracking-widest">Pago Protegido</p>
+            <p className="text-[10px] uppercase font-bold text-ink/50 tracking-widest">
+              Pago Protegido
+            </p>
           </div>
         </div>
 
@@ -97,8 +124,10 @@ export function TicketView({ escrow, reservation, signature }: { escrow: EscrowT
             </div>
           ) : (
             <div className="w-full">
-              <p className="text-center text-sm text-ink/60 mb-4">Selecciona tu método de pago seguro:</p>
-              <WompiButton 
+              <p className="text-center text-sm text-ink/60 mb-4">
+                Selecciona tu método de pago seguro:
+              </p>
+              <WompiButton
                 reference={escrow.id!}
                 amountInCents={amountInCents}
                 redirectUrl={redirectUrl}

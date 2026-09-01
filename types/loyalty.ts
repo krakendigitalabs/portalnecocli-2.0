@@ -46,7 +46,7 @@ export interface LoyaltyBonus {
   /** Código legible del bono (ej: BONO-NEC-2026-XXXX) */
   code: string;
   discount_percentage: 50;
-  status: 'ACTIVE' | 'REDEEMED' | 'EXPIRED';
+  status: "ACTIVE" | "REDEEMED" | "EXPIRED";
   /** Reserva en la que se redimió el bono */
   redeemed_on_reservation_id?: string;
   created_at: string;

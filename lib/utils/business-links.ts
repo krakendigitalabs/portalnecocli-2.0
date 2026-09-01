@@ -1,15 +1,8 @@
-import type {
-  BusinessServiceType,
-  FeaturedBusiness,
-} from "@/types/featured-business";
+import type { BusinessServiceType, FeaturedBusiness } from "@/types/featured-business";
 
 type BusinessSeedInput = Omit<
   FeaturedBusiness,
-  | "mapLink"
-  | "ctaPrimaryHref"
-  | "ctaSecondaryHref"
-  | "website"
-  | "socialLinks"
+  "mapLink" | "ctaPrimaryHref" | "ctaSecondaryHref" | "website" | "socialLinks"
 > & {
   mapQuery: string;
   ctaPrimaryValue: string;
@@ -37,9 +30,7 @@ export function createWhatsAppHref(phone: string, message?: string) {
 }
 
 export function createMapHref(mapQuery: string) {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    mapQuery,
-  )}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
 }
 
 export function createBusinessSeed(input: BusinessSeedInput): FeaturedBusiness {
@@ -51,11 +42,7 @@ export function createBusinessSeed(input: BusinessSeedInput): FeaturedBusiness {
       href: normalizeGenericHref(link.href),
     })),
     mapLink: createMapHref(input.mapQuery),
-    ctaPrimaryHref: getNormalizedBusinessHref(
-      input.ctaPrimaryValue,
-      input.serviceType,
-      input.name,
-    ),
+    ctaPrimaryHref: getNormalizedBusinessHref(input.ctaPrimaryValue, input.serviceType, input.name),
     ctaSecondaryHref: getNormalizedBusinessHref(
       input.ctaSecondaryValue,
       input.serviceType,
@@ -132,10 +119,7 @@ function getNormalizedBusinessHref(
   return normalizeGenericHref(value);
 }
 
-function getWhatsAppMessageByServiceType(
-  serviceType: BusinessServiceType,
-  businessName: string,
-) {
+function getWhatsAppMessageByServiceType(serviceType: BusinessServiceType, businessName: string) {
   const prefixByServiceType: Record<BusinessServiceType, string> = {
     hotel: "Hola, quiero reservar hospedaje en",
     restaurante: "Hola, quiero pedir informacion sobre el menu de",

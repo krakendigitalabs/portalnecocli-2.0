@@ -6,11 +6,7 @@ export type BusinessServiceType =
   | "turismo"
   | "domicilios";
 
-export type BusinessSocialPlatform =
-  | "instagram"
-  | "facebook"
-  | "tiktok"
-  | "website";
+export type BusinessSocialPlatform = "instagram" | "facebook" | "tiktok" | "website";
 
 export type BusinessSocialLink = {
   platform: BusinessSocialPlatform;
@@ -24,7 +20,7 @@ export type BusinessHoursEntry = {
   closed?: boolean;
 };
 
-export type PropertyType = 
+export type PropertyType =
   | "Hotel"
   | "Apartamento"
   | "Resort"

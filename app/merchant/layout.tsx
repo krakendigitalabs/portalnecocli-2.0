@@ -1,5 +1,5 @@
-import { requireRole, requireScope } from "@/lib/auth/server";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
+import { requireRole, requireScope } from "@/lib/auth/server";
 
 type MerchantLayoutProps = Readonly<{
   children: React.ReactNode;

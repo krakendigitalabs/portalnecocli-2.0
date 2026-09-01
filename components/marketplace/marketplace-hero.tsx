@@ -1,7 +1,7 @@
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SearchBar } from "@/components/ui/search-bar";
-import { Badge } from "@/components/ui/badge";
 
 export function MarketplaceHero() {
   return (
@@ -11,13 +11,11 @@ export function MarketplaceHero() {
           <Badge variant="teal">Portal premium para Necoclí</Badge>
           <div className="space-y-4">
             <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-ink md:text-6xl">
-              Descubre una experiencia moderna para hospitalidad, turismo y
-              comercio local.
+              Descubre una experiencia moderna para hospitalidad, turismo y comercio local.
             </h1>
             <p className="max-w-2xl text-base leading-7 text-ink/72 md:text-lg">
-              Portal Necoclí 2.0 inicia con una base visual sólida para crecer
-              por fases, con diseño limpio, navegación clara y componentes
-              reutilizables listos para producción.
+              Portal Necoclí 2.0 inicia con una base visual sólida para crecer por fases, con diseño
+              limpio, navegación clara y componentes reutilizables listos para producción.
             </p>
           </div>
           <SearchBar />
@@ -35,8 +33,7 @@ export function MarketplaceHero() {
             <p className="text-sm text-white/70">Estado del proyecto</p>
             <p className="mt-3 text-3xl font-semibold">Fase 2 en base visual</p>
             <p className="mt-3 text-sm leading-6 text-white/75">
-              Sistema visual, layout premium y componentes reutilizables para
-              la portada pública.
+              Sistema visual, layout premium y componentes reutilizables para la portada pública.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4">

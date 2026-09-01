@@ -1,14 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SurfaceCard } from "@/components/ui/surface-card";
-import {
-  sendPasswordReset,
-  signInWithEmailPassword,
-  signInWithGoogle,
-} from "@/lib/firebase/auth";
+import { useAuthSession } from "@/hooks/use-auth-session";
+import { sendPasswordReset, signInWithEmailPassword, signInWithGoogle } from "@/lib/firebase/auth";
 import {
   firebaseConfig,
   getFirebasePublicConfigDiagnostics,
@@ -18,14 +15,11 @@ import {
   getFirebaseAuthErrorDetails,
   getFirebaseConfigurationWarning,
 } from "@/lib/firebase/errors";
-import { useAuthSession } from "@/hooks/use-auth-session";
 
 function getErrorMessage(error: unknown): string {
   const details = getFirebaseAuthErrorDetails(error, firebaseConfig);
 
-  return details.action
-    ? `${details.message} ${details.action}`
-    : details.message;
+  return details.action ? `${details.message} ${details.action}` : details.message;
 }
 
 const fieldClassName =
@@ -145,11 +139,10 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
           Falta configurar las variables públicas de Firebase.
         </h1>
         <p className="mt-4 text-base leading-7 text-ink/72">
-          La base de autenticación está instalada, pero todavía no puede iniciar sesión hasta que el entorno tenga las credenciales correctas.
+          La base de autenticación está instalada, pero todavía no puede iniciar sesión hasta que el
+          entorno tenga las credenciales correctas.
         </p>
-        <p className="mt-4 text-sm leading-7 text-ink/68">
-          {missingConfig.join(", ")}
-        </p>
+        <p className="mt-4 text-sm leading-7 text-ink/68">{missingConfig.join(", ")}</p>
       </SurfaceCard>
     );
   }
@@ -164,7 +157,8 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
           Inicia sesión con Firebase Auth
         </h1>
         <p className="mt-4 text-base leading-7 text-ink/72">
-          Usa tu cuenta autorizada para entrar al backoffice, al hub de negocios y a futuros módulos operativos del portal.
+          Usa tu cuenta autorizada para entrar al backoffice, al hub de negocios y a futuros módulos
+          operativos del portal.
         </p>
         <ul className="mt-6 space-y-3 text-sm leading-7 text-ink/68">
           <li>Acceso rápido con Google.</li>
@@ -241,8 +235,8 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
 
           {process.env.NODE_ENV !== "production" && errorMessage ? (
             <p className="rounded-[18px] border border-ink/10 bg-ink/[0.03] px-4 py-3 text-xs leading-6 text-ink/70">
-              Proyecto Firebase: {firebaseDiagnostics.projectId || "sin projectId"} ·
-              authDomain: {firebaseDiagnostics.authDomain || "sin authDomain"}
+              Proyecto Firebase: {firebaseDiagnostics.projectId || "sin projectId"} · authDomain:{" "}
+              {firebaseDiagnostics.authDomain || "sin authDomain"}
             </p>
           ) : null}
 
@@ -262,12 +256,7 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
             >
               {isSubmitting ? "Ingresando..." : "Ingresar"}
             </Button>
-            <Button
-              className="w-full sm:w-auto"
-              href="/"
-              size="lg"
-              variant="secondary"
-            >
+            <Button className="w-full sm:w-auto" href="/" size="lg" variant="secondary">
               Volver al portal
             </Button>
           </div>

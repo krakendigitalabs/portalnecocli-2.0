@@ -1,6 +1,6 @@
+import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { SectionHeader } from "@/components/ui/section-header";
-import { Badge } from "@/components/ui/badge";
 import type { CommercialHomeContent } from "@/types/commercial-content";
 
 type ContactSectionProps = {
@@ -59,9 +59,8 @@ export function ContactSection({ content }: ContactSectionProps) {
           <div className="mt-8 space-y-3">
             <Badge variant="teal">Atención comercial y turística</Badge>
             <p className="text-sm leading-7 text-ink/70">
-              El nuevo portal toma la información central del sitio actual y la
-              organiza en bloques listos para crecer hacia directorio, reservas,
-              roles y operaciones reales.
+              El nuevo portal toma la información central del sitio actual y la organiza en bloques
+              listos para crecer hacia directorio, reservas, roles y operaciones reales.
             </p>
           </div>
         </Card>

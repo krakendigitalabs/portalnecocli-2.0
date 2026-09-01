@@ -10,7 +10,8 @@ const tourismMapHref = "https://www.google.com/maps?q=Necocli,+Antioquia";
 export const commercialHomeContent: CommercialHomeContent = {
   hero: {
     eyebrow: "Portal oficial de turismo y comercio local",
-    title: "Hospedaje, turismo y negocios listos para convertir tu visita en una experiencia mejor organizada.",
+    title:
+      "Hospedaje, turismo y negocios listos para convertir tu visita en una experiencia mejor organizada.",
     description:
       "Descubre planes frente al mar, gastronomía local, experiencias guiadas y comercios aliados con una portada inmersiva, accesos rápidos y un directorio pensado para reservar, llamar y llegar sin fricción.",
     primaryCta: {

@@ -1,7 +1,7 @@
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SectionHeader } from "@/components/ui/section-header";
-import { Badge } from "@/components/ui/badge";
 import type { CommercialHomeContent } from "@/types/commercial-content";
 
 type DirectorySectionProps = {
@@ -33,12 +33,8 @@ export function DirectorySection({ content }: DirectorySectionProps) {
               </div>
               <Badge variant="teal">{listing.priceLabel}</Badge>
             </div>
-            <p className="mt-4 text-sm leading-7 text-ink/70">
-              {listing.summary}
-            </p>
-            <p className="mt-4 text-sm font-medium text-ink/68">
-              {listing.location}
-            </p>
+            <p className="mt-4 text-sm leading-7 text-ink/70">{listing.summary}</p>
+            <p className="mt-4 text-sm font-medium text-ink/68">{listing.location}</p>
             <div className="mt-5 flex flex-wrap gap-2">
               {listing.tags.map((tag) => (
                 <Badge key={tag} variant="neutral">

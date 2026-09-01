@@ -5,8 +5,7 @@ import { buildPortalUrl } from "@/lib/routing/subdomains";
 
 export const metadata: Metadata = {
   title: "Acceso requerido | Portal Necoclí 2.0",
-  description:
-    "Debes iniciar sesión para entrar a esta sección privada de Portal Necoclí.",
+  description: "Debes iniciar sesión para entrar a esta sección privada de Portal Necoclí.",
 };
 
 type UnauthorizedPageProps = {
@@ -15,25 +14,18 @@ type UnauthorizedPageProps = {
   }>;
 };
 
-export default async function UnauthorizedPage({
-  searchParams,
-}: UnauthorizedPageProps) {
+export default async function UnauthorizedPage({ searchParams }: UnauthorizedPageProps) {
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const requestHeaders = await headers();
   const host = requestHeaders.get("host");
   const protocol = requestHeaders.get("x-forwarded-proto");
-  const nextPath =
-    resolvedSearchParams?.next?.startsWith("/")
-      ? resolvedSearchParams.next
-      : "/merchant";
-  const loginHref = buildPortalUrl(
-    "public",
-    `/ingresar?next=${encodeURIComponent(nextPath)}`,
-    {
-      host,
-      protocol,
-    },
-  );
+  const nextPath = resolvedSearchParams?.next?.startsWith("/")
+    ? resolvedSearchParams.next
+    : "/merchant";
+  const loginHref = buildPortalUrl("public", `/ingresar?next=${encodeURIComponent(nextPath)}`, {
+    host,
+    protocol,
+  });
   const portalHref = buildPortalUrl("public", "/", {
     host,
     protocol,

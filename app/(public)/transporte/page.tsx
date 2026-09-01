@@ -13,9 +13,7 @@ type TransportPageProps = {
   searchParams?: Promise<MarketplaceSearchParams>;
 };
 
-export default async function TransportPage({
-  searchParams,
-}: TransportPageProps) {
+export default async function TransportPage({ searchParams }: TransportPageProps) {
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const data = getMarketplaceListingData(resolvedSearchParams, {
     serviceType: "transporte",

@@ -25,11 +25,11 @@ export interface ReservationLead {
  * - CANCELLED: Reserva cancelada antes de prestar el servicio.
  */
 export type ReservationStatus =
-  | 'PENDING_PAYMENT'
-  | 'PAID'
-  | 'CONFIRMED'
-  | 'COMPLETED'
-  | 'CANCELLED';
+  | "PENDING_PAYMENT"
+  | "PAID"
+  | "CONFIRMED"
+  | "COMPLETED"
+  | "CANCELLED";
 
 /**
  * Reserva completa que vincula a un cliente con un negocio y una transacción Escrow.

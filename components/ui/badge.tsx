@@ -14,11 +14,7 @@ const badgeVariants: Record<BadgeVariant, string> = {
   neutral: "bg-ink/6 text-ink/72",
 };
 
-export function Badge({
-  children,
-  className,
-  variant = "teal",
-}: BadgeProps) {
+export function Badge({ children, className, variant = "teal" }: BadgeProps) {
   return (
     <span
       className={cn(

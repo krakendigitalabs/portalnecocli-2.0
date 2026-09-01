@@ -22,10 +22,7 @@ type UniversalSearchProps = {
   variant?: "hero" | "listing";
 };
 
-function renderSelectOptions(
-  options: string[],
-  placeholder: string,
-) {
+function renderSelectOptions(options: string[], placeholder: string) {
   return (
     <>
       <option value="">{placeholder}</option>
@@ -58,9 +55,7 @@ export function UniversalSearch({
 
   return (
     <Card
-      className={`rounded-[30px] border-ink/10 ${
-        isHero ? "bg-white/96 p-3 shadow-soft" : "p-3"
-      }`}
+      className={`rounded-[30px] border-ink/10 ${isHero ? "bg-white/96 p-3 shadow-soft" : "p-3"}`}
     >
       <form action={actionPath} className="grid gap-3 md:grid-cols-12" method="get">
         {lockedServiceType ? (

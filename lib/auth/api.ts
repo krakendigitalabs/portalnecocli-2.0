@@ -1,7 +1,7 @@
 import "server-only";
 import { NextResponse } from "next/server";
-import { authorizeServerAccess } from "@/lib/auth/server";
 import type { ScopeRequirement } from "@/lib/auth/roles";
+import { authorizeServerAccess } from "@/lib/auth/server";
 import type { UserRole } from "@/types/auth";
 
 type ApiAuthorizationOptions = {

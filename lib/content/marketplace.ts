@@ -1,17 +1,14 @@
 import { featuredBusinessesSeed } from "@/data/featured-businesses";
-import type {
-  BusinessServiceType,
-  FeaturedBusiness,
-} from "@/types/featured-business";
+import { getServiceTypeLabel } from "@/lib/utils/business-links";
+import type { BusinessServiceType, FeaturedBusiness } from "@/types/featured-business";
 import type {
   MarketplaceCategory,
   MarketplaceCategoryKey,
-  MarketplaceFilters,
   MarketplaceFilterOptions,
+  MarketplaceFilters,
   MarketplaceListingData,
   MarketplaceSearchParams,
 } from "@/types/marketplace";
-import { getServiceTypeLabel } from "@/lib/utils/business-links";
 
 const marketplaceCategories: MarketplaceCategory[] = [
   {
@@ -44,8 +41,7 @@ const marketplaceCategories: MarketplaceCategory[] = [
     key: "restaurantes",
     label: "Restaurantes y cocina local",
     shortLabel: "Food",
-    description:
-      "Comida costera, mesas para grupos y opciones para pedir o reservar sin fricción.",
+    description: "Comida costera, mesas para grupos y opciones para pedir o reservar sin fricción.",
     href: "/restaurantes",
     serviceType: "restaurante",
     heroTitle: "Restaurantes en Necoclí",
@@ -129,9 +125,8 @@ export function getMarketplaceCategories() {
     const totalCount =
       category.serviceType === "all"
         ? featuredBusinessesSeed.length
-        : featuredBusinessesSeed.filter(
-            (business) => business.serviceType === category.serviceType,
-          ).length;
+        : featuredBusinessesSeed.filter((business) => business.serviceType === category.serviceType)
+            .length;
 
     return {
       ...category,
@@ -140,13 +135,8 @@ export function getMarketplaceCategories() {
   });
 }
 
-export function getMarketplaceCategoryByKey(
-  key: MarketplaceCategoryKey = "all",
-) {
-  return (
-    marketplaceCategories.find((category) => category.key === key) ??
-    marketplaceCategories[0]
-  );
+export function getMarketplaceCategoryByKey(key: MarketplaceCategoryKey = "all") {
+  return marketplaceCategories.find((category) => category.key === key) ?? marketplaceCategories[0];
 }
 
 function isSupportedServiceType(value: string): value is BusinessServiceType | "all" {
@@ -159,9 +149,7 @@ function resolveRequestedServiceType(value?: string) {
   }
 
   const normalizedValue = value.trim().toLowerCase();
-  const categoryMatch = marketplaceCategories.find(
-    (category) => category.key === normalizedValue,
-  );
+  const categoryMatch = marketplaceCategories.find((category) => category.key === normalizedValue);
 
   if (categoryMatch) {
     return categoryMatch.serviceType;
@@ -174,9 +162,7 @@ function resolveRequestedServiceType(value?: string) {
   return null;
 }
 
-export function getMarketplaceCategoryByServiceType(
-  serviceType: BusinessServiceType | "all",
-) {
+export function getMarketplaceCategoryByServiceType(serviceType: BusinessServiceType | "all") {
   const matchingCategory = marketplaceCategories.find(
     (category) => category.serviceType === serviceType,
   );
@@ -238,10 +224,7 @@ export function getMarketplaceBusinesses(filters: MarketplaceFilters) {
   const query = normalizeText(filters.query);
 
   return featuredBusinessesSeed.filter((business) => {
-    if (
-      filters.serviceType !== "all" &&
-      business.serviceType !== filters.serviceType
-    ) {
+    if (filters.serviceType !== "all" && business.serviceType !== filters.serviceType) {
       return false;
     }
 
@@ -300,9 +283,7 @@ export function getMarketplaceFilterOptions(
       new Set(scopedBusinesses.map(getLocationLabel).filter(isNonEmptyString)),
     ).sort(),
     priceRanges: Array.from(
-      new Set(
-        scopedBusinesses.map((business) => business.priceRange).filter(isNonEmptyString),
-      ),
+      new Set(scopedBusinesses.map((business) => business.priceRange).filter(isNonEmptyString)),
     ).sort(),
     ratings: ratingOptions,
   };

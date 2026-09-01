@@ -4,9 +4,9 @@ import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import type { AuthUser } from "@/types/auth";
-import type { LoyaltyProfile, LoyaltyBonus, LoyaltyStar } from "@/types/loyalty";
-import type { Reservation } from "@/types/reservation";
+import type { LoyaltyBonus, LoyaltyProfile, LoyaltyStar } from "@/types/loyalty";
 import { LOYALTY_STARS_PER_CYCLE } from "@/types/loyalty";
+import type { Reservation } from "@/types/reservation";
 
 type CustomerDashboardProps = {
   user: AuthUser;
@@ -85,12 +85,11 @@ export function CustomerDashboard({
 }: CustomerDashboardProps) {
   const activeBonus = bonuses.find((b) => b.status === "ACTIVE");
   const pendingReservations = reservations.filter(
-    (r) => r.status === "PENDING_PAYMENT" || r.status === "CONFIRMED"
+    (r) => r.status === "PENDING_PAYMENT" || r.status === "CONFIRMED",
   );
 
   return (
     <section className="space-y-8">
-
       {/* ─── Saludo personalizado ─── */}
       <div className="flex items-center gap-4">
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-teal to-teal/70 text-2xl text-white shadow-soft">
@@ -165,20 +164,16 @@ export function CustomerDashboard({
             <p className="text-xs font-semibold uppercase tracking-[0.26em] text-coral">
               Programa de Fidelidad · Estrellas Doradas
             </p>
-            <h3 className="mt-2 text-xl font-bold text-ink">
-              Acumula 5 experiencias → 6ta al 50%
-            </h3>
+            <h3 className="mt-2 text-xl font-bold text-ink">Acumula 5 experiencias → 6ta al 50%</h3>
             <p className="mt-1 text-sm text-ink/60">
-              Cada reserva completada te da una estrella dorada. Al completar 5, recibes un bono especial del 50% para tu próximo viaje a Necoclí.
+              Cada reserva completada te da una estrella dorada. Al completar 5, recibes un bono
+              especial del 50% para tu próximo viaje a Necoclí.
             </p>
           </div>
           <div className="shrink-0 text-5xl">🌴</div>
         </div>
 
-        <StarProgressBar
-          current={loyaltyProfile.stars_in_cycle}
-          total={LOYALTY_STARS_PER_CYCLE}
-        />
+        <StarProgressBar current={loyaltyProfile.stars_in_cycle} total={LOYALTY_STARS_PER_CYCLE} />
 
         {/* Visualización de estrellas del ciclo */}
         <div className="mt-5 flex gap-2">
@@ -233,9 +228,7 @@ export function CustomerDashboard({
           ) : (
             <div className="mt-6 rounded-2xl border border-ink/8 bg-sand/40 px-6 py-8 text-center">
               <p className="text-4xl">🌊</p>
-              <p className="mt-3 text-sm font-semibold text-ink">
-                Aún no tienes reservas
-              </p>
+              <p className="mt-3 text-sm font-semibold text-ink">Aún no tienes reservas</p>
               <p className="mt-1 text-xs text-ink/50">
                 Explora hoteles, tours y restaurantes en Necoclí
               </p>
@@ -293,15 +286,13 @@ export function CustomerDashboard({
                     className="flex items-center justify-between rounded-xl border border-ink/8 bg-white px-4 py-3"
                   >
                     <div>
-                      <p className="text-sm font-bold tracking-wider text-ink">
-                        {bonus.code}
-                      </p>
+                      <p className="text-sm font-bold tracking-wider text-ink">{bonus.code}</p>
                       <p className="text-xs text-ink/50">
                         {bonus.status === "ACTIVE"
                           ? `Vence: ${formatDate(bonus.expires_at)}`
                           : bonus.status === "REDEEMED"
-                          ? "Redimido"
-                          : "Expirado"}
+                            ? "Redimido"
+                            : "Expirado"}
                       </p>
                     </div>
                     <span
@@ -324,11 +315,10 @@ export function CustomerDashboard({
       {/* ─── CTA explorar ─── */}
       <Card className="rounded-[28px] border-ink/8 p-8 text-center">
         <p className="text-2xl">🏖️</p>
-        <h3 className="mt-3 text-xl font-bold text-ink">
-          El Golfo de Urabá te espera
-        </h3>
+        <h3 className="mt-3 text-xl font-bold text-ink">El Golfo de Urabá te espera</h3>
         <p className="mt-2 text-sm text-ink/60">
-          Descubre hoteles, tours de manglar, gastronomía local y más experiencias únicas en Necoclí.
+          Descubre hoteles, tours de manglar, gastronomía local y más experiencias únicas en
+          Necoclí.
         </p>
         <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Link

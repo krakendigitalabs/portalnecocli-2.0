@@ -1,7 +1,4 @@
-import type {
-  AuthScope,
-  UserRole,
-} from "@/types/auth";
+import type { AuthScope, UserRole } from "@/types/auth";
 import type { BusinessServiceType } from "@/types/featured-business";
 
 export type ScopeRequirement = {
@@ -13,13 +10,7 @@ export type ScopeRequirement = {
   serviceTypes?: BusinessServiceType[];
 };
 
-const userRoles: UserRole[] = [
-  "super_admin",
-  "admin",
-  "business",
-  "operator",
-  "customer",
-];
+const userRoles: UserRole[] = ["super_admin", "admin", "business", "operator", "customer"];
 const businessServiceTypes: BusinessServiceType[] = [
   "hotel",
   "restaurante",
@@ -38,10 +29,7 @@ export function isUserRole(value: unknown): value is UserRole {
 }
 
 function isBusinessServiceType(value: unknown): value is BusinessServiceType {
-  return (
-    typeof value === "string" &&
-    businessServiceTypes.includes(value as BusinessServiceType)
-  );
+  return typeof value === "string" && businessServiceTypes.includes(value as BusinessServiceType);
 }
 
 function normalizeStringList(value: unknown): string[] {
@@ -184,9 +172,7 @@ export function resolveScopeFromClaims(
   };
 }
 
-export function resolveAuthorizationFromClaims(
-  claims: Record<string, unknown>,
-) {
+export function resolveAuthorizationFromClaims(claims: Record<string, unknown>) {
   const claimCandidates = [
     { source: "roles", value: claims.roles },
     { source: "role", value: claims.role },
@@ -194,10 +180,7 @@ export function resolveAuthorizationFromClaims(
     { source: "portal_roles", value: claims.portal_roles },
     {
       source: "portal.roles",
-      value:
-        isRecord(claims.portal) && claims.portal !== null
-          ? claims.portal.roles
-          : undefined,
+      value: isRecord(claims.portal) && claims.portal !== null ? claims.portal.roles : undefined,
     },
   ];
 
@@ -233,10 +216,7 @@ export function getPrimaryRole(roles: UserRole[]): UserRole | null {
   return roles[0] ?? null;
 }
 
-export function hasRequiredRole(
-  roles: UserRole[],
-  requiredRoles: UserRole[],
-): boolean {
+export function hasRequiredRole(roles: UserRole[], requiredRoles: UserRole[]): boolean {
   if (requiredRoles.length === 0) {
     return true;
   }
@@ -244,10 +224,7 @@ export function hasRequiredRole(
   return requiredRoles.some((requiredRole) => roles.includes(requiredRole));
 }
 
-export function hasRequiredScope(
-  scope: AuthScope,
-  requirement?: ScopeRequirement,
-): boolean {
+export function hasRequiredScope(scope: AuthScope, requirement?: ScopeRequirement): boolean {
   if (!requirement) {
     return true;
   }
@@ -271,9 +248,7 @@ export function hasRequiredScope(
   if (
     scope.businessIds.length > 0 &&
     requirement.businessIds?.length &&
-    !requirement.businessIds.some((businessId) =>
-      scope.businessIds.includes(businessId),
-    )
+    !requirement.businessIds.some((businessId) => scope.businessIds.includes(businessId))
   ) {
     return false;
   }
@@ -289,9 +264,7 @@ export function hasRequiredScope(
   if (
     scope.serviceTypes.length > 0 &&
     requirement.serviceTypes?.length &&
-    !requirement.serviceTypes.some((serviceType) =>
-      scope.serviceTypes.includes(serviceType),
-    )
+    !requirement.serviceTypes.some((serviceType) => scope.serviceTypes.includes(serviceType))
   ) {
     return false;
   }

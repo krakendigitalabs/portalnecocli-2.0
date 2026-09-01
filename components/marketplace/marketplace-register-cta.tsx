@@ -11,12 +11,12 @@ export function MarketplaceRegisterCta() {
               Crece con el portal
             </p>
             <h2 className="max-w-3xl text-3xl font-semibold tracking-tight text-ink md:text-4xl">
-              Registra tu negocio y preparate para reservas, pedidos y operacion comercial desde una sola plataforma.
+              Registra tu negocio y preparate para reservas, pedidos y operacion comercial desde una
+              sola plataforma.
             </h2>
             <p className="max-w-2xl text-base leading-7 text-ink/72">
-              Esta base publica ya deja visible el valor del portal: discovery,
-              contacto directo y una estructura lista para crecer hacia flujos
-              transaccionales por comercio.
+              Esta base publica ya deja visible el valor del portal: discovery, contacto directo y
+              una estructura lista para crecer hacia flujos transaccionales por comercio.
             </p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
