@@ -22,7 +22,7 @@ export async function releaseEscrowFunds(transactionId: string) {
     }
 
     // 3. (Opcional) Verificar que el usuario tenga permiso sobre el businessId
-    if (session.role === "business" && transaction.businessId !== session.tenantId) {
+    if (session.user.primaryRole === "business" && transaction.businessId !== session.user.tenantId) {
       return { success: false, error: "No tienes permiso para liberar esta transacción." };
     }
 
