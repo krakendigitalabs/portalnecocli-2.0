@@ -18,7 +18,8 @@ const firebaseAdminEnv = {
 } as const;
 
 function normalizePrivateKey(value: string): string {
-  return value.replace(/\\n/g, "\n");
+  // Eliminar comillas dobles al inicio y al final (común al pegar en Vercel) y arreglar saltos de línea
+  return value.replace(/^"|"$/g, "").replace(/\\n/g, "\n");
 }
 
 export function getFirebaseAdminProjectId(): string {
