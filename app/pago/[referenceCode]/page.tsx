@@ -6,13 +6,14 @@ import { SurfaceCard } from "@/components/ui/surface-card";
 import { PaymentButton } from "@/components/checkout/payment-button";
 
 type Props = {
-  params: {
+  params: Promise<{
     referenceCode: string;
-  };
+  }>;
 };
 
 export default async function PagoCheckoutPage({ params }: Props) {
-  const reservation = await getReservationByReferenceCode(params.referenceCode);
+  const { referenceCode } = await params;
+  const reservation = await getReservationByReferenceCode(referenceCode);
 
   if (!reservation) {
     notFound();
