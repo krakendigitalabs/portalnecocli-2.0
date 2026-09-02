@@ -16,6 +16,11 @@ export function PaymentButton({ reservationId }: Props) {
       try {
         await processSimulatedPayment(reservationId);
       } catch (error) {
+        // En Next.js, 'redirect()' lanza un error que NO debe ser atrapado.
+        // Verificamos si el error es una redirección, en cuyo caso lo volvemos a lanzar.
+        if (error instanceof Error && error.message.includes("NEXT_REDIRECT")) {
+          throw error;
+        }
         alert("Ocurrió un error procesando el pago. Intenta de nuevo.");
       }
     });
