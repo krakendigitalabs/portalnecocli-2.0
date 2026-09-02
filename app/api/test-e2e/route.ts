@@ -25,7 +25,6 @@ export async function GET(request: Request) {
         whatsapp: "3000000000",
         check_in_date: "2026-10-15",
         check_out_date: "2026-10-20",
-        guests: 2,
         notes: "Test automatizado"
       },
       totalAmount: 150000000, // 1.5 Millones
