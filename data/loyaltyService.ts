@@ -105,12 +105,27 @@ export async function awardLoyaltyStar(params: {
   const profileRef = db.collection("loyalty_profiles").doc(params.customerId);
   const profileSnap = await profileRef.get();
 
-  if (!profileSnap.exists) {
-    throw new Error(`Perfil de fidelización no encontrado para ${params.customerId}`);
-  }
-
-  const profile = profileSnap.data() as LoyaltyProfile;
+  let profile: LoyaltyProfile;
   const now = new Date().toISOString();
+
+  if (!profileSnap.exists) {
+    // Inicializar perfil en caso de que sea su primera transacción
+    profile = {
+      customer_id: params.customerId,
+      display_name: "Turista (Generado Auto)",
+      email: "correo@no-definido.com", // Se actualizará en login
+      total_stars: 0,
+      stars_in_cycle: 0,
+      bonuses_redeemed: 0,
+      has_active_bonus: false,
+      active_bonus_code: null,
+      created_at: now,
+      updated_at: now,
+    };
+    await profileRef.set(profile);
+  } else {
+    profile = profileSnap.data() as LoyaltyProfile;
+  }
 
   // Crear la estrella
   const starRef = db.collection("loyalty_stars").doc();

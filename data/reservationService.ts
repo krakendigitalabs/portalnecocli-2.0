@@ -153,3 +153,22 @@ export async function getReservationByReferenceCode(referenceCode: string): Prom
   return snap.docs[0].data() as Reservation;
 }
 
+/**
+ * Obtiene una reserva buscando por su escrow_transaction_id.
+ * Utilizado para generar el Ticket Digital Oficial.
+ */
+export async function getReservationByEscrowId(escrowId: string): Promise<Reservation | null> {
+  const db = getDb();
+  const snap = await db
+    .collection("reservations")
+    .where("escrow_transaction_id", "==", escrowId)
+    .limit(1)
+    .get();
+
+  if (snap.empty) {
+    return null;
+  }
+
+  return snap.docs[0].data() as Reservation;
+}
+

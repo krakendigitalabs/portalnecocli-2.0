@@ -47,14 +47,44 @@ export function ReservationCalendar({ reservations }: Props) {
     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
   ];
 
-  // Helper para verificar si hay reserva en un día específico
+  // Helper para normalizar una fecha ignorando las horas (solo nos importa el día/mes/año)
+  const getStartOfDay = (dateString: string | undefined | null) => {
+    if (!dateString) return 0;
+    const d = new Date(dateString);
+    if (isNaN(d.getTime())) return 0;
+    // Si viene como string '2026-09-18' localmente al hacer new Date puede desfasarse por horas,
+    // extraemos explicitamente o confiamos en Date con UTC ajustado.
+    // Lo más seguro es usar el año, mes y día de la fecha local
+    d.setHours(0, 0, 0, 0);
+    // Para compensar UTC de Firestore si fuese ISO
+    d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+    d.setHours(0, 0, 0, 0);
+    return d.getTime();
+  };
+
+  // Helper para verificar si hay reserva en un día específico (comprueba RANGOS de viaje)
   const getReservationsForDay = (day: number) => {
     if (!day) return [];
-    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    
+    // El timestamp (comienzo del día) de la celda del calendario que estamos dibujando
+    const cellDate = new Date(year, month, day, 0, 0, 0, 0).getTime();
+
     return reservations.filter(r => {
-      // Usar check_in_date si existe, de lo contrario fallback a created_at para propósito ilustrativo
-      const rDateStr = (r.lead?.check_in_date || r.created_at).split('T')[0];
-      return rDateStr === dateStr;
+      // 1. Si la reserva tiene fechas exactas, usamos el rango de lead
+      if (r.lead?.check_in_date) {
+        const checkIn = getStartOfDay(r.lead.check_in_date);
+        
+        // Si hay check_out, es un rango de días. Si no hay, es solo 1 día.
+        const checkOut = r.lead.check_out_date 
+          ? getStartOfDay(r.lead.check_out_date) 
+          : checkIn; // +1 día por defecto si quisiéramos, pero así está bien
+          
+        return cellDate >= checkIn && cellDate <= checkOut;
+      }
+      
+      // 2. Si no hay fecha de viaje, retrocedemos al fallback ilustrativo (fecha de creación)
+      const createdDate = getStartOfDay(r.created_at);
+      return cellDate === createdDate;
     });
   };
 
