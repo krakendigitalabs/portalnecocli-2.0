@@ -22,6 +22,7 @@ export async function GET(request: Request) {
       lead: {
         full_name: "Usuario De Pruebas E2E",
         email: "test@kraken.com",
+        phone: "3000000000",
         whatsapp: "3000000000",
         check_in_date: "2026-10-15",
         check_out_date: "2026-10-20",
