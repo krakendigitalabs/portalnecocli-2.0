@@ -62,6 +62,7 @@ function mapServerUser(
   emailVerified?: boolean,
 ): AuthUser {
   const authorization = resolveAuthorizationFromClaims(claims);
+  const roles = authorization.roles.length > 0 ? authorization.roles : (["customer"] as UserRole[]);
 
   return {
     uid,
@@ -69,8 +70,8 @@ function mapServerUser(
     displayName: displayName ?? null,
     photoURL: photoURL ?? null,
     emailVerified: emailVerified ?? false,
-    roles: authorization.roles,
-    primaryRole: getPrimaryRole(authorization.roles),
+    roles: roles,
+    primaryRole: getPrimaryRole(roles),
     claimsSource: authorization.source,
     tenantId: authorization.scope.tenantId,
     scope: authorization.scope,

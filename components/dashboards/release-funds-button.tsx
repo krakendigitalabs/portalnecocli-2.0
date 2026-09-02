@@ -24,6 +24,7 @@ export function ReleaseFundsButton({ transactionId }: ReleaseFundsButtonProps) {
 
   return (
     <button
+      type="button"
       onClick={handleRelease}
       disabled={isPending}
       className="rounded-full bg-teal/10 px-4 py-2 text-sm font-semibold text-teal transition hover:bg-teal/20 disabled:opacity-50"

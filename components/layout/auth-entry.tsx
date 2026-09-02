@@ -1,6 +1,6 @@
 "use client";
 
-import { Briefcase, Clock, Heart, User } from "lucide-react";
+import { Briefcase, Clock, Heart, User, Gift } from "lucide-react";
 import Link from "next/link";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { signOutCurrentUser } from "@/lib/firebase/auth";
@@ -55,6 +55,13 @@ export function AuthEntry() {
           >
             <Briefcase className="w-5 h-5" />
             <span className="text-sm font-medium">Mis Reservas</span>
+          </Link>
+          <Link
+            href="/customer/bonos"
+            className="flex items-center gap-3 px-3 py-3 hover:bg-sand rounded-xl transition-colors text-ink/80 hover:text-ink"
+          >
+            <Gift className="w-5 h-5 text-coral/80" />
+            <span className="text-sm font-medium">Mis Bonos</span>
           </Link>
         </div>
 

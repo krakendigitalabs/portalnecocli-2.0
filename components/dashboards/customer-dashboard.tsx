@@ -7,6 +7,7 @@ import type { AuthUser } from "@/types/auth";
 import type { LoyaltyBonus, LoyaltyProfile, LoyaltyStar } from "@/types/loyalty";
 import { LOYALTY_STARS_PER_CYCLE } from "@/types/loyalty";
 import type { Reservation } from "@/types/reservation";
+import { ReservationCalendar } from "./reservation-calendar";
 
 type CustomerDashboardProps = {
   user: AuthUser;
@@ -193,9 +194,15 @@ export function CustomerDashboard({
         </div>
       </SurfaceCard>
 
-      {/* ─── Historial de reservas ─── */}
+      {/* ─── Itinerario y Reservas ─── */}
       <div className="grid gap-6 xl:grid-cols-2">
-        <SurfaceCard className="rounded-[28px] p-8">
+        {/* Calendario de Reservas */}
+        <div className="xl:col-span-1">
+          <ReservationCalendar reservations={reservations} />
+        </div>
+
+        {/* Historial Corto */}
+        <SurfaceCard className="rounded-[28px] p-8 h-full">
           <p className="text-xs font-semibold uppercase tracking-[0.26em] text-coral">
             Mis reservas
           </p>
@@ -223,14 +230,21 @@ export function CustomerDashboard({
                     >
                       {RESERVATION_STATUS_LABEL[reservation.status] ?? reservation.status}
                     </span>
-                    {reservation.escrow_transaction_id && (
+                    {reservation.status === "PENDING_PAYMENT" ? (
+                      <Link
+                        href={`/pago/${reservation.reference_code}`}
+                        className="text-[10px] font-bold uppercase tracking-wider text-white bg-green-500 hover:bg-green-600 px-3 py-1.5 rounded-full transition-colors"
+                      >
+                        Pagar Reserva
+                      </Link>
+                    ) : reservation.escrow_transaction_id ? (
                       <Link
                         href={`/tickets/${reservation.escrow_transaction_id}`}
                         className="text-[10px] font-bold uppercase tracking-wider text-teal hover:underline"
                       >
                         Ver Ticket Escrow →
                       </Link>
-                    )}
+                    ) : null}
                   </div>
                   </div>
                 </div>

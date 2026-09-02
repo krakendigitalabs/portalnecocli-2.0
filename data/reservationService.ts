@@ -113,13 +113,43 @@ export async function getReservationById(reservationId: string): Promise<Reserva
  * Obtiene todas las reservas de un cliente ordenadas por fecha (más reciente primero).
  */
 export async function getReservationsByCustomer(customerId: string): Promise<Reservation[]> {
+  try {
+    const db = getDb();
+    const snap = await db
+      .collection("reservations")
+      .where("customer_id", "==", customerId)
+      // .orderBy("created_at", "desc") // Eliminado para no forzar la creación manual de un índice compuesto
+      // .limit(20)
+      .get();
+
+    const reservations = snap.docs.map((doc) => doc.data() as Reservation);
+    
+    // Ordenamiento y límite en memoria (Seguro para MVP y volúmenes moderados)
+    return reservations
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      .slice(0, 20);
+  } catch (error) {
+    console.error("Error obteniendo reservas:", error);
+    return [];
+  }
+}
+
+/**
+ * Obtiene una reserva buscando por su reference_code.
+ * Utilizado en la vista pública de checkout/pago.
+ */
+export async function getReservationByReferenceCode(referenceCode: string): Promise<Reservation | null> {
   const db = getDb();
   const snap = await db
     .collection("reservations")
-    .where("customer_id", "==", customerId)
-    .orderBy("created_at", "desc")
-    .limit(20)
+    .where("reference_code", "==", referenceCode)
+    .limit(1)
     .get();
 
-  return snap.docs.map((doc) => doc.data() as Reservation);
+  if (snap.empty) {
+    return null;
+  }
+
+  return snap.docs[0].data() as Reservation;
 }
+

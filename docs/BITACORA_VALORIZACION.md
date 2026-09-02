@@ -188,3 +188,15 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 - **📎 Evidencias:** [MODELO_DE_NEGOCIO.md](file:///c:/portal-necocli/docs/MODELO_DE_NEGOCIO.md)
 
 ---
+*(La bitácora aguarda impaciente por el siguiente capítulo...)*
+
+### 📅 EL DESPERTAR DEL TURISTA (Sesión #10): Erradicación de 403 y 404
+- **⏰ Entrada:** 05:45 PM | **⏰ Salida:** 06:15 PM
+- **⏳ Horas Dedicadas:** 0.5 hrs
+- **📌 Estado:** `Listo a Producción`
+- **🧠 Nivel de Complejidad:** `Media`
+- **💰 Valorización del Módulo/Trabajo:** `$180 USD` *(Corrección de Edge Cases en Firebase Auth, asignación implícita de roles y desarrollo UI/UX de placeholders para el área del cliente).*
+- **🛠️ Relato de la Jornada:** 
+  Las alarmas sonaron cuando el gran Ojo de Vercel (Production) reportó errores 404 y 403. Al examinar el campo de batalla, los Agentes 1 y 4 descubrieron que los turistas que cruzaban el portal usando Google Auth eran detenidos en la aduana (Middleware) por no llevar un sello explícito de "customer" en sus pergaminos (Claims). Modificamos de inmediato las leyes del reino en `lib/auth/server.ts`, decretando que cualquier viajero autenticado sin rango previo sería acogido implícitamente como "customer". Acto seguido, erigimos las carpas de `Favoritos`, `Vistos` y `Reservas` (`404 Not Found` solucionados), creando espacios visualmente inmersivos donde antes solo había vacío. El turista ahora puede navegar su panel libremente, sin bloqueos ni paredes.
+- **📄 Archivos Alterados:** `lib/auth/server.ts`, `app/customer/favoritos/page.tsx`, `app/customer/vistos/page.tsx`, `app/customer/reservas/page.tsx`.
+- **📎 Evidencias:** (Rutas del área de clientes habilitadas)

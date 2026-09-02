@@ -72,15 +72,24 @@ export async function getLoyaltyProfile(customerId: string): Promise<LoyaltyProf
  * Obtiene las últimas estrellas ganadas por un turista (máximo 20).
  */
 export async function getLoyaltyStars(customerId: string): Promise<LoyaltyStar[]> {
-  const db = getDb();
-  const snap = await db
-    .collection("loyalty_stars")
-    .where("customer_id", "==", customerId)
-    .orderBy("earned_at", "desc")
-    .limit(20)
-    .get();
+  try {
+    const db = getDb();
+    const snap = await db
+      .collection("loyalty_stars")
+      .where("customer_id", "==", customerId)
+      // .orderBy("earned_at", "desc") // Eliminado para evitar composite index en desarrollo
+      // .limit(20)
+      .get();
 
-  return snap.docs.map((doc) => doc.data() as LoyaltyStar);
+    const stars = snap.docs.map((doc) => doc.data() as LoyaltyStar);
+    
+    return stars
+      .sort((a, b) => new Date(b.earned_at).getTime() - new Date(a.earned_at).getTime())
+      .slice(0, 20);
+  } catch (error) {
+    console.error("Error obteniendo estrellas:", error);
+    return [];
+  }
 }
 
 /**
@@ -157,13 +166,22 @@ export async function awardLoyaltyStar(params: {
  * Obtiene los bonos disponibles y el historial de un turista.
  */
 export async function getLoyaltyBonuses(customerId: string): Promise<LoyaltyBonus[]> {
-  const db = getDb();
-  const snap = await db
-    .collection("loyalty_bonuses")
-    .where("customer_id", "==", customerId)
-    .orderBy("created_at", "desc")
-    .limit(10)
-    .get();
+  try {
+    const db = getDb();
+    const snap = await db
+      .collection("loyalty_bonuses")
+      .where("customer_id", "==", customerId)
+      // .orderBy("created_at", "desc") // Eliminado para evitar composite index en desarrollo
+      // .limit(10)
+      .get();
 
-  return snap.docs.map((doc) => doc.data() as LoyaltyBonus);
+    const bonuses = snap.docs.map((doc) => doc.data() as LoyaltyBonus);
+    
+    return bonuses
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      .slice(0, 10);
+  } catch (error) {
+    console.error("Error obteniendo bonos:", error);
+    return [];
+  }
 }
