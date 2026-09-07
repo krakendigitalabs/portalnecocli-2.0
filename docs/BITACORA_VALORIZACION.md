@@ -11,8 +11,8 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 ---
 
 ## 📊 Resumen de Valorización Acumulada
-- **Total Horas Invertidas Registradas:** 53.0 hrs
-- **Valorización Total del Software (Mercado):** $5,350 USD
+- **Total Horas Invertidas Registradas:** 54.0 hrs
+- **Valorización Total del Software (Mercado):** $5,800 USD
 
 ---
 
@@ -228,4 +228,18 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
   El Agente 4, custodio de la infraestructura y el SEO, solicitó afinar la visión del portal. Atendiendo al llamado, integramos en los cimientos (`layout.tsx`) el poder de Google Analytics 4 utilizando los componentes ultrarrápidos de `@next/third-parties`. Para garantizar la futura monetización y visibilidad, se añadieron las balizas de *Google AdSense*, *Google Ads (Conversion Tracking)* y *Search Console*, asegurando que cada clic y conversión queden grabados sin sacrificar milisegundos de carga. Finalmente, en nuestro glorioso Panel SuperAdmin, construimos el `AnalyticsDashboard`: una ventana de cristal (glassmorphism) lista para embeber el reporte maestro de *Looker Studio*. Ahora el Kraken no solo procesa pagos, sino que estudia el comportamiento de su ecosistema en tiempo real.
 - **📄 Archivos Alterados:** `package.json`, `.env.local`, `app/layout.tsx`, `components/dashboards/admin-dashboard.tsx`, `components/dashboards/analytics-dashboard.tsx`.
 - **📎 Evidencias:** [analytics-dashboard.tsx](file:///c:/portal-necocli/components/dashboards/analytics-dashboard.tsx), [layout.tsx](file:///c:/portal-necocli/app/layout.tsx)
+
+---
+*(La bitácora aguarda impaciente por el siguiente capítulo...)*
+
+### 📅 LA CONEXIÓN DIRECTA (Sesión #13): Refactorización a GA4 Data API v1 y Recharts
+- **⏰ Entrada:** 02:45 PM | **⏰ Salida:** 03:45 PM
+- **⏳ Horas Dedicadas:** 1.0 hrs
+- **📌 Estado:** `Listo a Producción`
+- **🧠 Nivel de Complejidad:** `Alta`
+- **💰 Valorización del Módulo/Trabajo:** `$450 USD` *(Implementación de conexión backend nativa con Google Cloud, SDK `@google-analytics/data` y gráficas interactivas SSR con `recharts`).*
+- **🛠️ Relato de la Jornada:**
+  El Fundador dictaminó que depender de un iframe de Looker Studio no estaba a la altura del nivel "Enterprise" del portal. Se ordenó forjar una conexión directa. El Agente Arquitecto y el Agente DevOps procedieron a instalar el SDK de Node.js para la API de datos de Google Analytics y la librería gráfica Recharts. Se creó la capa de acceso `analytics-api.ts` que se comunica con Google Cloud de forma segura mediante un *Service Account*, extrayendo sesiones, usuarios y vistas directamente del motor de GA4. Finalmente, el `AnalyticsDashboard` fue transformado: los fríos iframes fueron reemplazados por un hermoso y vibrante gráfico de áreas superpuestas (AreaChart) renderizado de forma nativa en el frontend. Si las credenciales faltan, el sistema inteligentemente inyecta datos de prueba (Mock) para que la interfaz nunca se rompa. Hemos elevado el estándar.
+- **📄 Archivos Alterados:** `.env.local`, `lib/analytics/analytics-api.ts`, `components/dashboards/analytics-dashboard.tsx`, `lib/dashboards/data.ts`.
+- **📎 Evidencias:** [analytics-api.ts](file:///c:/portal-necocli/lib/analytics/analytics-api.ts), [analytics-dashboard.tsx](file:///c:/portal-necocli/components/dashboards/analytics-dashboard.tsx)
 

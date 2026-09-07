@@ -9,6 +9,7 @@ import type { FeaturedBusiness } from "@/types/featured-business";
 import type { EscrowTransaction } from "@/lib/validations/schemas";
 import { getReservationsByBusiness } from "@/data/reservationService";
 import type { Reservation } from "@/types/reservation";
+import { getTrafficSummary, type TrafficSummary } from "@/lib/analytics/analytics-api";
 
 type DashboardMetric = {
   label: string;
@@ -44,6 +45,8 @@ export type SuperAdminDashboardData = {
   /** Negocios del marketplace */
   businesses: FeaturedBusiness[];
   serviceTypeSummary: ServiceTypeSummary[];
+  /** Analítica de GA4 */
+  trafficSummary: TrafficSummary;
 };
 
 export type MerchantDashboardData = {
@@ -220,9 +223,13 @@ export async function getAdminDashboardFullData(): Promise<SuperAdminDashboardDa
   // 2. Transacciones Escrow globales
   const allEscrowPromise = EscrowRepo.getAllTransactions().catch(() => []);
 
-  const [reservationsNested, escrowTransactions] = await Promise.all([
+  // 3. Analítica de GA4
+  const trafficPromise = getTrafficSummary();
+
+  const [reservationsNested, escrowTransactions, trafficSummary] = await Promise.all([
     Promise.all(allReservationsPromises),
     allEscrowPromise,
+    trafficPromise,
   ]);
 
   const recentReservations = reservationsNested
@@ -255,5 +262,6 @@ export async function getAdminDashboardFullData(): Promise<SuperAdminDashboardDa
     escrowTransactions,
     businesses: allBusinesses,
     serviceTypeSummary: getServiceTypeSummary(allBusinesses),
+    trafficSummary,
   };
 }

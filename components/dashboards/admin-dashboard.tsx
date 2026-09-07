@@ -181,8 +181,8 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
 
       <div className="h-px w-full bg-ink/8" />
 
-      {/* ─── Dashboard de Analítica de Tráfico (Looker Studio) ─── */}
-      <AnalyticsDashboard />
+      {/* ─── Dashboard de Analítica de Tráfico (Nativo GA4) ─── */}
+      <AnalyticsDashboard data={data.trafficSummary} />
 
       <div className="h-px w-full bg-ink/8" />
 

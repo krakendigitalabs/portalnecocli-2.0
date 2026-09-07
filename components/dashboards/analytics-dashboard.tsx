@@ -1,78 +1,110 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { SurfaceCard } from "@/components/ui/surface-card";
-import { BarChart3, ExternalLink } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { BarChart3 } from "lucide-react";
+import { 
+  AreaChart, 
+  Area, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  Legend
+} from "recharts";
+import type { TrafficSummary } from "@/lib/analytics/analytics-api";
 
-export function AnalyticsDashboard() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [embedUrl, setEmbedUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    // We only access process.env on the client side inside useEffect 
-    // if we want to ensure it matches or we can just read NEXT_PUBLIC
-    const url = process.env.NEXT_PUBLIC_LOOKER_STUDIO_EMBED_URL;
-    if (url && url !== "https://lookerstudio.google.com/embed/reporting/your-report-id/page/1M") {
-      setEmbedUrl(url);
-    }
-  }, []);
-
+export function AnalyticsDashboard({ data }: { data: TrafficSummary }) {
   return (
-    <SurfaceCard className="rounded-[28px] p-8 col-span-full">
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-6">
+    <SurfaceCard className="rounded-[28px] p-8 col-span-full overflow-hidden">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-8">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.26em] text-emerald-600 dark:text-emerald-400">
             Inteligencia de Negocios (GA4)
           </p>
           <h2 className="mt-2 text-2xl font-bold text-ink flex items-center gap-2">
             <BarChart3 className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-            Tráfico y Rendimiento
+            Tráfico y Rendimiento (Últimos 30 días)
           </h2>
           <p className="mt-1 text-sm text-ink/60">
-            Métricas de adquisición de usuarios y rendimiento de campañas.
+            Métricas de adquisición de usuarios directamente de Google Analytics.
           </p>
         </div>
-        {embedUrl && (
-          <Button variant="secondary" size="sm" className="hidden sm:flex" asChild>
-            <a href={embedUrl} target="_blank" rel="noopener noreferrer">
-              Abrir reporte
-              <ExternalLink className="w-4 h-4 ml-2" />
-            </a>
-          </Button>
-        )}
       </div>
 
-      <div className="w-full">
-        {!embedUrl ? (
-          <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mb-4">
-              <BarChart3 className="w-8 h-8 text-emerald-600 dark:text-emerald-400 opacity-50" />
-            </div>
-            <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">
-              Dashboard no configurado
-            </h3>
-            <p className="text-zinc-500 dark:text-zinc-400 max-w-md mx-auto mb-6">
-              Para visualizar las métricas aquí, debes configurar la variable de entorno <code className="bg-zinc-100 dark:bg-zinc-800 px-1 py-0.5 rounded text-sm">NEXT_PUBLIC_LOOKER_STUDIO_EMBED_URL</code> con el enlace de inserción de tu reporte de Looker Studio.
-            </p>
-          </div>
-        ) : (
-          <div className="relative w-full aspect-square sm:aspect-video lg:aspect-[21/9]">
-            {isLoading && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-zinc-50/50 dark:bg-zinc-900/50">
-                <div className="w-full h-full rounded-lg bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
-              </div>
-            )}
-            <iframe
-              src={embedUrl}
-              className="w-full h-full border-0"
-              style={{ display: isLoading ? "none" : "block" }}
-              onLoad={() => setIsLoading(false)}
-              allowFullScreen
-              sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+      <div className="grid gap-4 sm:grid-cols-3 mb-8">
+        <div className="rounded-[20px] border border-ink/8 bg-ink/[0.03] px-6 py-4">
+          <p className="text-xs font-semibold uppercase text-ink/60 mb-1">Vistas de Página</p>
+          <p className="text-3xl font-extrabold text-ink">{data.totalPageViews.toLocaleString()}</p>
+        </div>
+        <div className="rounded-[20px] border border-ink/8 bg-ink/[0.03] px-6 py-4">
+          <p className="text-xs font-semibold uppercase text-ink/60 mb-1">Sesiones Totales</p>
+          <p className="text-3xl font-extrabold text-emerald-700">{data.totalSessions.toLocaleString()}</p>
+        </div>
+        <div className="rounded-[20px] border border-ink/8 bg-ink/[0.03] px-6 py-4">
+          <p className="text-xs font-semibold uppercase text-ink/60 mb-1">Usuarios Activos</p>
+          <p className="text-3xl font-extrabold text-coral">{data.totalActiveUsers.toLocaleString()}</p>
+        </div>
+      </div>
+
+      <div className="w-full aspect-[21/9] min-h-[350px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart
+            data={data.trafficByDate}
+            margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+          >
+            <defs>
+              <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#0f2e21" stopOpacity={0.15} />
+                <stop offset="95%" stopColor="#0f2e21" stopOpacity={0} />
+              </linearGradient>
+              <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#ff6b4a" stopOpacity={0.15} />
+                <stop offset="95%" stopColor="#ff6b4a" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+            <XAxis 
+              dataKey="date" 
+              axisLine={false}
+              tickLine={false}
+              tick={{ fontSize: 12, fill: "#6b7280" }}
+              tickFormatter={(val) => {
+                const parts = val.split("-");
+                if (parts.length === 3) return `${parts[2]}/${parts[1]}`;
+                return val;
+              }}
             />
-          </div>
-        )}
+            <YAxis 
+              axisLine={false}
+              tickLine={false}
+              tick={{ fontSize: 12, fill: "#6b7280" }}
+            />
+            <Tooltip 
+              contentStyle={{ borderRadius: "12px", border: "none", boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)" }}
+              labelStyle={{ fontWeight: "bold", color: "#1f2937", marginBottom: "4px" }}
+            />
+            <Legend verticalAlign="top" height={36} iconType="circle" />
+            <Area 
+              type="monotone" 
+              dataKey="screenPageViews" 
+              name="Vistas"
+              stroke="#0f2e21" 
+              strokeWidth={2}
+              fillOpacity={1} 
+              fill="url(#colorViews)" 
+            />
+            <Area 
+              type="monotone" 
+              dataKey="activeUsers" 
+              name="Usuarios"
+              stroke="#ff6b4a" 
+              strokeWidth={2}
+              fillOpacity={1} 
+              fill="url(#colorUsers)" 
+            />
+          </AreaChart>
+        </ResponsiveContainer>
       </div>
     </SurfaceCard>
   );
