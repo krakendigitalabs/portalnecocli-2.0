@@ -2,6 +2,7 @@ import Link from "next/link";
 import { MetricCard } from "@/components/ui/metric-card";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import { ReleaseFundsButton } from "@/components/dashboards/release-funds-button";
+import { ReservationCalendar } from "@/components/dashboards/reservation-calendar";
 import type { MerchantDashboardData } from "@/lib/dashboards/data";
 
 type MerchantDashboardProps = {
@@ -139,6 +140,60 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
         ) : (
           <p className="mt-6 text-base leading-7 text-ink/70">
             Aún no tienes transacciones Escrow procesadas.
+          </p>
+        )}
+      </SurfaceCard>
+
+      {/* ─── Separador visual ─── */}
+      <div className="h-px w-full bg-ink/8" />
+
+      {/* ─── Clientes y Reservas ─── */}
+      <SurfaceCard className="rounded-[28px] p-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.26em] text-coral">
+          Gestión Operativa
+        </p>
+        <h2 className="mt-4 text-2xl font-semibold tracking-tight text-ink">
+          Turistas y próximas llegadas
+        </h2>
+        
+        {data.reservations && data.reservations.length > 0 ? (
+          <div className="mt-6 space-y-8">
+            {/* ─── Calendario Visual ─── */}
+            <div className="rounded-[22px] border border-ink/8 bg-white p-2">
+              <ReservationCalendar reservations={data.reservations} />
+            </div>
+
+            {/* ─── Lista de Llegadas ─── */}
+            <div className="space-y-4">
+              <h3 className="text-sm font-semibold text-ink/70 uppercase tracking-wider mb-2 px-2">Listado de llegadas</h3>
+              {data.reservations.map((res) => (
+                <div
+                key={res.id}
+                className="flex flex-col gap-4 rounded-[22px] border border-ink/8 bg-white px-5 py-4 md:flex-row md:items-center md:justify-between"
+              >
+                <div>
+                  <p className="text-lg font-semibold text-ink">
+                    {res.lead.full_name}
+                  </p>
+                  <p className="text-sm text-ink/68">
+                    Contacto: {res.lead.email} {res.lead.phone ? `· ${res.lead.phone}` : ""}
+                  </p>
+                  <p className="text-sm text-ink/68">
+                    Llegada: {res.lead.check_in_date ? res.lead.check_in_date : "Por confirmar"} · Negocio: {res.business_name}
+                  </p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase ${res.status === 'PAID' || res.status === 'COMPLETED' ? 'bg-teal/10 text-teal' : 'bg-coral/10 text-coral'}`}>
+                    {res.status === 'PAID' ? 'PAGADO' : res.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+            </div>
+          </div>
+        ) : (
+          <p className="mt-6 text-base leading-7 text-ink/70">
+            No tienes reservas registradas actualmente.
           </p>
         )}
       </SurfaceCard>

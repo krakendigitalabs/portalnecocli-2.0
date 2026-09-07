@@ -1,6 +1,15 @@
 import { AdminDashboard } from "@/components/dashboards/admin-dashboard";
-import { getAdminDashboardData } from "@/lib/dashboards/data";
+import { requireRole } from "@/lib/auth/server";
+import { getAdminDashboardFullData } from "@/lib/dashboards/data";
 
-export default function AdminPage() {
-  return <AdminDashboard data={getAdminDashboardData()} />;
+export const dynamic = "force-dynamic";
+
+export default async function AdminPage() {
+  await requireRole(["admin", "super_admin"], {
+    nextPath: "/admin",
+  });
+
+  const data = await getAdminDashboardFullData();
+
+  return <AdminDashboard data={data} />;
 }
