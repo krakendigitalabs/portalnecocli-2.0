@@ -58,8 +58,9 @@ export interface LoyaltyBonus {
   value?: number;
   /** Días de la semana en los que aplica (1=Lunes, 7=Domingo). Vacío = todos los días */
   valid_days: number[];
-
+  
   status: "ACTIVE" | "REDEEMED" | "EXPIRED";
+  discount_percentage?: number;
   /** Reserva en la que se redimió el bono */
   redeemed_on_reservation_id?: string;
   created_at: string;

@@ -14,7 +14,19 @@ export default async function FavoritosPage() {
   const favorites = await getCustomerFavorites(session.user.uid);
   
   const favoriteBusinessIds = new Set(favorites.map(f => f.business_id));
-  const favoriteBusinesses = featuredBusinessesSeed.filter(b => favoriteBusinessIds.has(b.id));
+  const favoriteBusinesses = featuredBusinessesSeed
+    .filter(b => favoriteBusinessIds.has(b.id))
+    .map(b => ({
+      id: b.id,
+      name: b.name,
+      slug: b.slug,
+      category: "hotels" as const, // We use a valid CategorySlug here
+      categoryLabel: b.category,
+      summary: b.shortDescription,
+      location: b.address,
+      priceRange: b.priceRange || "$",
+      status: "active" as const,
+    }));
 
   return (
     <div className="space-y-6">

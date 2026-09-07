@@ -52,4 +52,6 @@ export interface Reservation {
   updated_at: string;
   /** Referencia legible para mostrar al cliente (ej: NEC-20260829-001) */
   reference_code: string;
+  /** ID del bono aplicado en el pago (si aplica) */
+  applied_bonus_id?: string;
 }
