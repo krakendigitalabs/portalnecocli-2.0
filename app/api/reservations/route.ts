@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getServerAuthSession } from "@/lib/auth/server";
 import { createReservation } from "@/data/reservationService";
 import type { ReservationLead } from "@/types/reservation";
 
@@ -16,6 +17,7 @@ interface CreateReservationRequestBody {
  */
 export async function POST(req: Request) {
   try {
+    const session = await getServerAuthSession();
     const body = (await req.json()) as CreateReservationRequestBody;
 
     // Validación básica de campos requeridos
@@ -41,6 +43,7 @@ export async function POST(req: Request) {
       businessName: body.business_name,
       lead: body.lead,
       totalAmount: body.total_amount ?? 0,
+      customerId: session?.user.uid,
     });
 
     // Envío de correo de confirmación usando Resend

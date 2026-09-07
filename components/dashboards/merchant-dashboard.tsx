@@ -2,6 +2,7 @@ import Link from "next/link";
 import { MetricCard } from "@/components/ui/metric-card";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import { ReleaseFundsButton } from "@/components/dashboards/release-funds-button";
+import { ReservationCalendar } from "@/components/dashboards/reservation-calendar";
 import type { MerchantDashboardData } from "@/lib/dashboards/data";
 
 type MerchantDashboardProps = {
@@ -156,9 +157,17 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
         </h2>
         
         {data.reservations && data.reservations.length > 0 ? (
-          <div className="mt-6 space-y-4">
-            {data.reservations.map((res) => (
-              <div
+          <div className="mt-6 space-y-8">
+            {/* ─── Calendario Visual ─── */}
+            <div className="rounded-[22px] border border-ink/8 bg-white p-2">
+              <ReservationCalendar reservations={data.reservations} />
+            </div>
+
+            {/* ─── Lista de Llegadas ─── */}
+            <div className="space-y-4">
+              <h3 className="text-sm font-semibold text-ink/70 uppercase tracking-wider mb-2 px-2">Listado de llegadas</h3>
+              {data.reservations.map((res) => (
+                <div
                 key={res.id}
                 className="flex flex-col gap-4 rounded-[22px] border border-ink/8 bg-white px-5 py-4 md:flex-row md:items-center md:justify-between"
               >
@@ -180,6 +189,7 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
                 </div>
               </div>
             ))}
+            </div>
           </div>
         ) : (
           <p className="mt-6 text-base leading-7 text-ink/70">
