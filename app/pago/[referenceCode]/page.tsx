@@ -4,6 +4,8 @@ import { ShieldCheck, CreditCard, CheckCircle2, Lock, ArrowLeft } from "lucide-r
 import Link from "next/link";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import { PaymentButton } from "@/components/checkout/payment-button";
+import { getLoyaltyBonuses } from "@/data/loyaltyService";
+import { BonusSelector } from "./bonus-selector";
 
 type Props = {
   params: Promise<{
@@ -24,10 +26,13 @@ export default async function PagoCheckoutPage({ params }: Props) {
     redirect(`/tickets/${reservation.escrow_transaction_id || ''}`);
   }
 
-  const { lead, business_name, total_amount, reference_code } = reservation;
+  const { lead, business_name, total_amount, reference_code, customer_id, applied_bonus_id } = reservation;
 
   // Calculamos el valor en formato moneda
   const amountFormatted = (total_amount / 100).toLocaleString("es-CO");
+  
+  // Extraemos bonos del cliente
+  const bonuses = customer_id ? await getLoyaltyBonuses(customer_id) : [];
 
   return (
     <main className="min-h-screen bg-sand/30 py-12 px-4 sm:px-6">
@@ -132,8 +137,16 @@ export default async function PagoCheckoutPage({ params }: Props) {
                     </li>
                   </ul>
                   
+                  <BonusSelector 
+                    bonuses={bonuses} 
+                    reservationId={reservation.id} 
+                    appliedBonusId={applied_bonus_id} 
+                  />
+                  
                   {/* BOTÓN WOMPI (Conectado al Server Action) */}
-                  <PaymentButton reservationId={reservation.id} />
+                  <div className="pt-4">
+                    <PaymentButton reservationId={reservation.id} />
+                  </div>
                   
                   <p className="text-[10px] text-center text-ink/40 mt-4 leading-relaxed font-semibold">
                     Al hacer clic, aceptas nuestros Términos y Condiciones. 

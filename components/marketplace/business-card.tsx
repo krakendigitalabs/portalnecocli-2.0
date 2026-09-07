@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { Heart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { useFavorites } from "@/components/providers/favorites-provider";
 import type { Business } from "@/types/business";
 
 type BusinessCardProps = {
@@ -12,6 +14,16 @@ type BusinessCardProps = {
 
 export function BusinessCard({ business }: BusinessCardProps) {
   const statusLabel = business.status === "active" ? "Activo" : "Borrador";
+  
+  // No va a explotar si no estamos logueados porque useFavorites devuelve array vacío
+  const { favoriteIds, toggleFavorite } = useFavorites();
+  const isFavorite = favoriteIds.includes(business.id);
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleFavorite(business.id);
+  };
 
   return (
     <motion.div
@@ -32,7 +44,18 @@ export function BusinessCard({ business }: BusinessCardProps) {
                 {business.name}
               </h3>
             </div>
-            <Badge variant={business.status === "active" ? "teal" : "neutral"}>{statusLabel}</Badge>
+            <div className="flex flex-col items-end gap-2">
+              <Badge variant={business.status === "active" ? "teal" : "neutral"}>{statusLabel}</Badge>
+              <button 
+                onClick={handleFavoriteClick}
+                className={`p-2 rounded-full transition-all ${isFavorite ? 'bg-coral/10' : 'bg-ink/5 hover:bg-ink/10'}`}
+                aria-label={isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
+              >
+                <Heart 
+                  className={`w-5 h-5 transition-colors ${isFavorite ? 'fill-coral text-coral' : 'text-ink/40'}`} 
+                />
+              </button>
+            </div>
           </div>
           <p className="mt-4 text-sm leading-6 text-ink/70">{business.summary}</p>
           <div className="mt-6 flex items-center justify-between text-sm text-ink/65">
