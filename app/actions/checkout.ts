@@ -24,12 +24,12 @@ export async function processSimulatedPayment(reservationId: string) {
     // 2. Simular respuesta de Wompi y generar un ID de Transacción Escrow
     const escrowTransactionId = `ESCROW-WOMPI-${Date.now().toString().slice(-6)}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
 
-    // 3. Marcar la reserva como pagada
-    await markReservationAsPaid(reservationId, escrowTransactionId);
+    // 3. Marcar la reserva como pagada y vincularla al turista que la está pagando
+    const targetCustomerId = reservation.customer_id || user.uid;
+    await markReservationAsPaid(reservationId, escrowTransactionId, targetCustomerId);
 
     // 4. Otorgar Estrella de Fidelidad (Recompensa)
-    // Pasamos el customer_id de la reserva (o el del usuario logueado si es que acaba de reclamarla)
-    const targetCustomerId = reservation.customer_id || user.uid;
+    // Pasamos el customer_id definitivo
     
     await awardLoyaltyStar({
       customerId: targetCustomerId,

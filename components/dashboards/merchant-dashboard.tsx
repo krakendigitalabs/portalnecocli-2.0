@@ -146,6 +146,51 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
       {/* ─── Separador visual ─── */}
       <div className="h-px w-full bg-ink/8" />
 
+      {/* ─── Clientes y Reservas ─── */}
+      <SurfaceCard className="rounded-[28px] p-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.26em] text-coral">
+          Gestión Operativa
+        </p>
+        <h2 className="mt-4 text-2xl font-semibold tracking-tight text-ink">
+          Turistas y próximas llegadas
+        </h2>
+        
+        {data.reservations && data.reservations.length > 0 ? (
+          <div className="mt-6 space-y-4">
+            {data.reservations.map((res) => (
+              <div
+                key={res.id}
+                className="flex flex-col gap-4 rounded-[22px] border border-ink/8 bg-white px-5 py-4 md:flex-row md:items-center md:justify-between"
+              >
+                <div>
+                  <p className="text-lg font-semibold text-ink">
+                    {res.lead.name}
+                  </p>
+                  <p className="text-sm text-ink/68">
+                    Contacto: {res.lead.email} {res.lead.phone ? `· ${res.lead.phone}` : ""}
+                  </p>
+                  <p className="text-sm text-ink/68">
+                    Llegada: {res.lead.check_in_date ? res.lead.check_in_date : "Por confirmar"} · Negocio: {res.business_name}
+                  </p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase ${res.status === 'PAID' || res.status === 'COMPLETED' ? 'bg-teal/10 text-teal' : 'bg-coral/10 text-coral'}`}>
+                    {res.status === 'PAID' ? 'PAGADO' : res.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="mt-6 text-base leading-7 text-ink/70">
+            No tienes reservas registradas actualmente.
+          </p>
+        )}
+      </SurfaceCard>
+
+      {/* ─── Separador visual ─── */}
+      <div className="h-px w-full bg-ink/8" />
+
       {/* ─── Métricas de operación ─── */}
       <div>
         <p className="mb-5 text-xs font-semibold uppercase tracking-[0.26em] text-ink/45">

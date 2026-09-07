@@ -5,6 +5,8 @@ import type { AuthScope } from "@/types/auth";
 import type { MerchantWallet } from "@/types/escrow";
 import type { FeaturedBusiness } from "@/types/featured-business";
 import type { EscrowTransaction } from "@/lib/validations/schemas";
+import { getReservationsByBusiness } from "@/data/reservationService";
+import type { Reservation } from "@/types/reservation";
 
 type DashboardMetric = {
   label: string;
@@ -30,6 +32,8 @@ export type MerchantDashboardData = {
   wallet: MerchantWallet;
   /** Historial transaccional Escrow real */
   escrowTransactions: EscrowTransaction[];
+  /** Reservas de los clientes (Llegadas) */
+  reservations: Reservation[];
 };
 
 function formatAverageRating(businesses: FeaturedBusiness[]) {
@@ -139,7 +143,18 @@ export async function getMerchantDashboardData(scope: AuthScope): Promise<Mercha
   
   const transactionsPromise = EscrowRepo.getTransactionsByBusiness(merchantId).catch(() => []);
 
-  const [wallet, escrowTransactions] = await Promise.all([walletPromise, transactionsPromise]);
+  // Cargar reservas para todos los negocios de este scope
+  const reservationsPromises = businesses.map((b) => getReservationsByBusiness(b.id));
+
+  const [wallet, escrowTransactions, ...reservationsArrays] = await Promise.all([
+    walletPromise, 
+    transactionsPromise,
+    ...reservationsPromises
+  ]);
+  
+  const reservations = reservationsArrays
+    .flat()
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
   return {
     metrics: [
@@ -155,5 +170,6 @@ export async function getMerchantDashboardData(scope: AuthScope): Promise<Mercha
     serviceTypeSummary: getServiceTypeSummary(businesses),
     wallet,
     escrowTransactions,
+    reservations,
   };
 }

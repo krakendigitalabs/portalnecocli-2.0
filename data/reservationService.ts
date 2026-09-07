@@ -56,16 +56,24 @@ export async function createReservation(params: {
 export async function markReservationAsPaid(
   reservationId: string,
   escrowTransactionId: string,
+  customerId?: string,
 ): Promise<void> {
   const db = getDb();
+  
+  const updateData: any = {
+    status: "PAID" as ReservationStatus,
+    escrow_transaction_id: escrowTransactionId,
+    updated_at: new Date().toISOString(),
+  };
+
+  if (customerId) {
+    updateData.customer_id = customerId;
+  }
+
   await db
     .collection("reservations")
     .doc(reservationId)
-    .update({
-      status: "PAID" as ReservationStatus,
-      escrow_transaction_id: escrowTransactionId,
-      updated_at: new Date().toISOString(),
-    });
+    .update(updateData);
 }
 
 /**
@@ -130,6 +138,27 @@ export async function getReservationsByCustomer(customerId: string): Promise<Res
       .slice(0, 20);
   } catch (error) {
     console.error("Error obteniendo reservas:", error);
+    return [];
+  }
+}
+
+/**
+ * Obtiene todas las reservas dirigidas a un comercio específico (Aliado).
+ */
+export async function getReservationsByBusiness(businessId: string): Promise<Reservation[]> {
+  try {
+    const db = getDb();
+    const snap = await db
+      .collection("reservations")
+      .where("business_id", "==", businessId)
+      .get();
+
+    const reservations = snap.docs.map((doc) => doc.data() as Reservation);
+    
+    // Ordenamiento en memoria, más recientes primero
+    return reservations.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  } catch (error) {
+    console.error("Error obteniendo reservas del negocio:", error);
     return [];
   }
 }
