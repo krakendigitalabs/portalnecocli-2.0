@@ -38,14 +38,27 @@ export interface LoyaltyProfile {
 }
 
 /**
- * Bono de descuento del 50% generado al completar 5 estrellas en un ciclo.
+ * Bono de recompensa dinámica cruzada.
  */
 export interface LoyaltyBonus {
   id: string;
   customer_id: string;
   /** Código legible del bono (ej: BONO-NEC-2026-XXXX) */
   code: string;
-  discount_percentage: 50;
+  
+  /** Título principal del bono */
+  title: string;
+  /** Descripción o condiciones */
+  description: string;
+  /** Categoría a la que aplica este bono (ej. restaurant, hotel, tour, hardware, health) */
+  target_category: string;
+  /** Tipo de descuento o beneficio */
+  type: "DISCOUNT_PERCENTAGE" | "FIXED_AMOUNT" | "FREE_ITEM" | "SPECIAL_PERK";
+  /** Valor numérico si aplica (ej. 15 para 15%, 5000 para $5000) */
+  value?: number;
+  /** Días de la semana en los que aplica (1=Lunes, 7=Domingo). Vacío = todos los días */
+  valid_days: number[];
+
   status: "ACTIVE" | "REDEEMED" | "EXPIRED";
   /** Reserva en la que se redimió el bono */
   redeemed_on_reservation_id?: string;
@@ -56,5 +69,3 @@ export interface LoyaltyBonus {
 
 /** Número de estrellas por ciclo para obtener el bono */
 export const LOYALTY_STARS_PER_CYCLE = 5;
-/** Porcentaje de descuento del bono */
-export const LOYALTY_BONUS_DISCOUNT = 50;

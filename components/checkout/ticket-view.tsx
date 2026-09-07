@@ -19,7 +19,7 @@ export function TicketView({
   // URL de redirección dinámica según el entorno
   const baseUrl =
     process.env.NODE_ENV === "production"
-      ? "https://portal-necocli.vercel.app"
+      ? "https://tours.portalnecocli.com"
       : "http://localhost:3000";
   const redirectUrl = `${baseUrl}/tickets/${escrow.id!}`;
 

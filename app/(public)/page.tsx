@@ -5,6 +5,7 @@ import { MarketplaceFeaturedSection } from "@/components/marketplace/marketplace
 import { MarketplaceHomeHero } from "@/components/marketplace/marketplace-home-hero";
 import { MarketplaceRegisterCta } from "@/components/marketplace/marketplace-register-cta";
 import { PackagesSection } from "@/components/marketplace/packages-section";
+import { WelcomeModal } from "@/components/marketplace/welcome-modal";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { SectionHeader } from "@/components/ui/section-header";
@@ -94,6 +95,9 @@ export default function PublicHomePage() {
 
         <MarketplaceRegisterCta />
       </Container>
+      
+      {/* Lead Magnet */}
+      <WelcomeModal />
     </div>
   );
 }

@@ -8,52 +8,51 @@ import { Container } from "@/components/ui/container";
 
 const packages = [
   {
-    id: "islas",
-    title: "Vive Islas",
+    id: "sol-playa-express",
+    title: "Sol y Playa Express",
     description:
-      "Paraíso de aguas cristalinas, tranquilidad absoluta y desconexión total en el mar del golfo.",
+      "Viaje en ferry hacia playas de ensueño. Incluye transporte urbano y un almuerzo típico costeño.",
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1737932109/Playa_necocli_6_usilb7.jpg",
     options: [
-      { id: "islas_p1", label: "Paquete 1 (Solo Islas)", price: 210000 },
-      {
-        id: "islas_p2",
-        label: "Paquete 2 (Islas + Alojamiento día antes y después)",
-        price: 300000,
-      },
-      { id: "islas_p3", label: "Paquete 3 (Islas + Alojamiento + Alimentación)", price: 395000 },
-      { id: "islas_basico", label: "Alojamiento Básico", price: 40000 },
+      { id: "spe_basico", label: "Paquete Base (Ferry + Almuerzo + Transporte)", price: 230000 },
+      { id: "spe_premium", label: "Paquete Premium (Ferry + 3 Comidas)", price: 247000 },
     ],
   },
   {
-    id: "local",
-    title: "Vive Local",
+    id: "savage-weekend",
+    title: "Savage Weekend",
     description:
-      "Descubre la rica cultura, gastronomía costeña y la vibrante esencia de nuestra gente.",
+      "2 noches de alojamiento con aire acondicionado, desayunos, cenas y transporte incluido. Pura aventura.",
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1744003434/turismo_necocli_57_gqvstk.jpg",
+    options: [
+      { id: "sw_2noches", label: "2 Noches de Aventura", price: 218000 },
+      { id: "sw_1noche", label: "1 Noche Express", price: 109000 },
+    ],
+  },
+  {
+    id: "full-necocli-vip",
+    title: "Full Necoclí VIP",
+    description:
+      "La experiencia definitiva. Hotel AC, 3 comidas, Día de Sol en Ferry y transporte a las afueras.",
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1744003480/turismo_30_dzr8jh.jpg",
+    options: [
+      { id: "fnv_vip", label: "Todo Incluido VIP", price: 339000 },
+    ],
+  },
+  {
+    id: "naturaleza-relax",
+    title: "Naturaleza y Relax",
+    description:
+      "Alojamiento básico ideal para exploradores, con almuerzo y transporte a los alrededores de Necoclí.",
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1739291954/turismo_necocli_motonecos_1_mmblod.jpg",
     options: [
-      { id: "local_motocarro", label: "Tour en Motocarro", price: 50000 },
-      { id: "local_turismo", label: "Turismo Cultural", price: 80000 },
+      { id: "nr_basico", label: "Explorador (Hotel Básico + Almuerzo)", price: 74000 },
+      { id: "nr_ac", label: "Explorador (Hotel AC + Almuerzo)", price: 104000 },
     ],
-  },
-  {
-    id: "naturaleza",
-    title: "Vive Naturaleza",
-    description:
-      "Sumérgete en el ecoturismo, explora reservas ecológicas, manglares y senderos llenos de vida.",
-    image:
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1744003434/turismo_necocli_57_gqvstk.jpg",
-    options: [{ id: "nat_playa", label: "Naturaleza y Playa", price: 120000 }],
-  },
-  {
-    id: "sol",
-    title: "Día de Sol",
-    description:
-      "Perfecto para escapar la rutina. Piscinas, playa, cócteles y relax familiar garantizado.",
-    image:
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1744003480/turismo_30_dzr8jh.jpg",
-    options: [{ id: "sol_basico", label: "Día de Sol Básico", price: 60000 }],
   },
 ];
 

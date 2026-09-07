@@ -10,6 +10,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { getFirebaseAdminApp } from "@/lib/firebase/admin";
 import type { LoyaltyBonus, LoyaltyProfile, LoyaltyStar } from "@/types/loyalty";
 import { LOYALTY_STARS_PER_CYCLE } from "@/types/loyalty";
+import { BONUS_TEMPLATES } from "@/data/bonusTemplates";
 
 function getDb() {
   return getFirestore(getFirebaseAdminApp());
@@ -100,6 +101,7 @@ export async function awardLoyaltyStar(params: {
   customerId: string;
   reservationId: string;
   businessName: string;
+  businessCategory?: string; // Optional para backwards compatibility
 }): Promise<{ star: LoyaltyStar; bonusGenerated: boolean; bonus?: LoyaltyBonus }> {
   const db = getDb();
   const profileRef = db.collection("loyalty_profiles").doc(params.customerId);
@@ -147,20 +149,37 @@ export async function awardLoyaltyStar(params: {
   let hasActiveBonus = profile.has_active_bonus;
 
   if (cycleCompleted) {
-    // Generar bono al 50%: válido por 6 meses
+    // Cross-Selling: Excluir la categoría actual si existe.
+    let eligibleTemplates = BONUS_TEMPLATES;
+    if (params.businessCategory) {
+      eligibleTemplates = BONUS_TEMPLATES.filter(
+        (t) => t.target_category !== params.businessCategory
+      );
+      // Fallback si por alguna razón no hay otras categorías
+      if (eligibleTemplates.length === 0) eligibleTemplates = BONUS_TEMPLATES;
+    }
+
+    // Elegir aleatoriamente
+    const randomIndex = Math.floor(Math.random() * eligibleTemplates.length);
+    const selectedTemplate = eligibleTemplates[randomIndex];
+
+    // Expiración rápida: 7 días
     const expiresAt = new Date();
-    expiresAt.setMonth(expiresAt.getMonth() + 6);
+    expiresAt.setDate(expiresAt.getDate() + 7);
+    
     const bonusRef = db.collection("loyalty_bonuses").doc();
     bonusCode = generateBonusCode();
+    
     bonus = {
       id: bonusRef.id,
       customer_id: params.customerId,
       code: bonusCode,
-      discount_percentage: 50,
+      ...selectedTemplate,
       status: "ACTIVE",
       created_at: now,
       expires_at: expiresAt.toISOString(),
-    };
+    } as LoyaltyBonus;
+    
     await bonusRef.set(bonus);
     hasActiveBonus = true;
   }
