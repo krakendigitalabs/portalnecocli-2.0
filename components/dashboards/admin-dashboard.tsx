@@ -3,6 +3,7 @@ import { SurfaceCard } from "@/components/ui/surface-card";
 import type { SuperAdminDashboardData } from "@/lib/dashboards/data";
 import type { EscrowTransaction } from "@/lib/validations/schemas";
 import type { Reservation } from "@/types/reservation";
+import { AnalyticsDashboard } from "./analytics-dashboard";
 
 type AdminDashboardProps = {
   data: SuperAdminDashboardData;
@@ -177,6 +178,11 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
           />
         </div>
       </div>
+
+      <div className="h-px w-full bg-ink/8" />
+
+      {/* ─── Dashboard de Analítica de Tráfico (Looker Studio) ─── */}
+      <AnalyticsDashboard />
 
       <div className="h-px w-full bg-ink/8" />
 

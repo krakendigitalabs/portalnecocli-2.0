@@ -11,8 +11,8 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 ---
 
 ## 📊 Resumen de Valorización Acumulada
-- **Total Horas Invertidas Registradas:** 52.5 hrs
-- **Valorización Total del Software (Mercado):** $5,050 USD
+- **Total Horas Invertidas Registradas:** 53.0 hrs
+- **Valorización Total del Software (Mercado):** $5,350 USD
 
 ---
 
@@ -214,3 +214,18 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
   Y entonces el Arquitecto proclamó: *"Es hora de encender el motor real."* Bajo la batuta unificada de los nueve Agentes, se ejecutó la sesión más épica del portal. Primero, se selló el trabajo anterior con un commit solemne. Luego, el **Centro de Mando Kraken** — el Panel SuperAdmin — emergió de sus cenizas de placeholder para convertirse en el cuartel general operativo real: KPIs financieros en tiempo real (leads capturados, fondos retenidos en la bóveda, fondos liberados), un monitor global de leads y la bóveda Escrow de toda la plataforma. El Agente 9 (Ciberseguridad) tomó el control del **Webhook de Wompi**, blindándolo con validación criptográfica HMAC-SHA256 e idempotencia perfecta: nunca un pago se procesa dos veces. El flujo completo quedó operativo: `transaction.APPROVED` → `markReservationAsPaid` → `holdFunds` (bóveda Escrow) → `awardLoyaltyStar` (fidelización del turista). El botón de **Liberar Fondos** del panel del comerciante recibió su UX final: confirmación en dos pasos, estados visuales premium y refresco automático del saldo. Finalmente, el **Ticket Digital** fue elevado al rango de documento legal: CSS `@media print` para impresión limpia, QR visual SVG inline sin dependencias, fechas del servicio, y el NIT de Kraken Digital Labs estampado con honor. El build compiló en verde. ¡El motor ruge!
 - **📄 Archivos Alterados:** `lib/dashboards/data.ts`, `lib/data/repositories/escrow-repo.ts`, `app/admin/page.tsx`, `components/dashboards/admin-dashboard.tsx`, `app/actions/wompi.ts`, `app/api/webhooks/wompi/route.ts`, `components/dashboards/release-funds-button.tsx`, `app/tickets/[ticketId]/page.tsx`, `components/checkout/print-ticket-button.tsx`, `components/dashboards/merchant-dashboard.tsx`.
 - **📎 Evidencias:** [admin-dashboard.tsx](file:///c:/portal-necocli/components/dashboards/admin-dashboard.tsx), [wompi/route.ts](file:///c:/portal-necocli/app/api/webhooks/wompi/route.ts)
+
+---
+*(La bitácora aguarda impaciente por el siguiente capítulo...)*
+
+### 📅 EL OJO QUE TODO LO VE (Sesión #12): Ecosistema de Analítica y Publicidad
+- **⏰ Entrada:** 02:00 PM | **⏰ Salida:** 02:30 PM
+- **⏳ Horas Dedicadas:** 0.5 hrs
+- **📌 Estado:** `Listo a Producción`
+- **🧠 Nivel de Complejidad:** `Media`
+- **💰 Valorización del Módulo/Trabajo:** `$300 USD` *(Integración de Google Analytics 4, Google Ads, AdSense, Search Console y diseño del dashboard en SuperAdmin).*
+- **🛠️ Relato de la Jornada:**
+  El Agente 4, custodio de la infraestructura y el SEO, solicitó afinar la visión del portal. Atendiendo al llamado, integramos en los cimientos (`layout.tsx`) el poder de Google Analytics 4 utilizando los componentes ultrarrápidos de `@next/third-parties`. Para garantizar la futura monetización y visibilidad, se añadieron las balizas de *Google AdSense*, *Google Ads (Conversion Tracking)* y *Search Console*, asegurando que cada clic y conversión queden grabados sin sacrificar milisegundos de carga. Finalmente, en nuestro glorioso Panel SuperAdmin, construimos el `AnalyticsDashboard`: una ventana de cristal (glassmorphism) lista para embeber el reporte maestro de *Looker Studio*. Ahora el Kraken no solo procesa pagos, sino que estudia el comportamiento de su ecosistema en tiempo real.
+- **📄 Archivos Alterados:** `package.json`, `.env.local`, `app/layout.tsx`, `components/dashboards/admin-dashboard.tsx`, `components/dashboards/analytics-dashboard.tsx`.
+- **📎 Evidencias:** [analytics-dashboard.tsx](file:///c:/portal-necocli/components/dashboards/analytics-dashboard.tsx), [layout.tsx](file:///c:/portal-necocli/app/layout.tsx)
+
