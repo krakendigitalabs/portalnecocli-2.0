@@ -1,5 +1,7 @@
 import "server-only";
 import { EscrowRepo } from "@/lib/data/repositories/escrow-repo";
+import { getFirestore } from "firebase-admin/firestore";
+import { getFirebaseAdminApp } from "@/lib/firebase/admin";
 import { featuredBusinessesSeed } from "@/data/featured-businesses";
 import type { AuthScope } from "@/types/auth";
 import type { MerchantWallet } from "@/types/escrow";
@@ -22,6 +24,26 @@ export type AdminDashboardData = {
   metrics: DashboardMetric[];
   serviceTypeSummary: ServiceTypeSummary[];
   topBusinesses: FeaturedBusiness[];
+};
+
+export type SuperAdminDashboardData = {
+  /** KPIs financieros reales extraídos de Firestore */
+  kpis: {
+    totalReservations: number;
+    totalLeads: number;
+    totalHeldAmount: number;
+    totalReleasedAmount: number;
+    pendingPaymentCount: number;
+    paidCount: number;
+    completedCount: number;
+  };
+  /** Últimas reservas (leads) de todos los negocios */
+  recentReservations: Reservation[];
+  /** Últimas transacciones Escrow globales */
+  escrowTransactions: EscrowTransaction[];
+  /** Negocios del marketplace */
+  businesses: FeaturedBusiness[];
+  serviceTypeSummary: ServiceTypeSummary[];
 };
 
 export type MerchantDashboardData = {
@@ -171,5 +193,67 @@ export async function getMerchantDashboardData(scope: AuthScope): Promise<Mercha
     wallet,
     escrowTransactions,
     reservations,
+  };
+}
+
+/**
+ * Carga TODOS los leads (reservas) y transacciones Escrow del sistema completo.
+ * Solo accesible por el SuperAdmin / Admin.
+ */
+export async function getAdminDashboardFullData(): Promise<SuperAdminDashboardData> {
+  const db = getFirestore(getFirebaseAdminApp());
+  const allBusinesses = featuredBusinessesSeed;
+
+  // 1. Reservas globales (todos los negocios)
+  const allReservationsPromises = allBusinesses.map(async (b) => {
+    try {
+      const snap = await db
+        .collection("reservations")
+        .where("business_id", "==", b.id)
+        .get();
+      return snap.docs.map((doc) => doc.data() as Reservation);
+    } catch {
+      return [];
+    }
+  });
+
+  // 2. Transacciones Escrow globales
+  const allEscrowPromise = EscrowRepo.getAllTransactions().catch(() => []);
+
+  const [reservationsNested, escrowTransactions] = await Promise.all([
+    Promise.all(allReservationsPromises),
+    allEscrowPromise,
+  ]);
+
+  const recentReservations = reservationsNested
+    .flat()
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(0, 50);
+
+  // 3. KPIs financieros calculados
+  const totalHeldAmount = escrowTransactions
+    .filter((tx) => tx.status === "held")
+    .reduce((sum, tx) => sum + (tx.netAmountToBusiness ?? 0), 0);
+
+  const totalReleasedAmount = escrowTransactions
+    .filter((tx) => tx.status === "released")
+    .reduce((sum, tx) => sum + (tx.netAmountToBusiness ?? 0), 0);
+
+  const allReservationsFlat = reservationsNested.flat();
+
+  return {
+    kpis: {
+      totalReservations: allReservationsFlat.length,
+      totalLeads: allReservationsFlat.length,
+      totalHeldAmount,
+      totalReleasedAmount,
+      pendingPaymentCount: allReservationsFlat.filter((r) => r.status === "PENDING_PAYMENT").length,
+      paidCount: allReservationsFlat.filter((r) => r.status === "PAID").length,
+      completedCount: allReservationsFlat.filter((r) => r.status === "COMPLETED").length,
+    },
+    recentReservations,
+    escrowTransactions,
+    businesses: allBusinesses,
+    serviceTypeSummary: getServiceTypeSummary(allBusinesses),
   };
 }

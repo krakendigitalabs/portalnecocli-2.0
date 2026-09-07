@@ -110,4 +110,26 @@ export const EscrowRepo = {
       held_balance: heldBalance,
     };
   },
+
+  /**
+   * Obtiene TODAS las transacciones Escrow del sistema.
+   * Solo debe ser invocado desde el Panel SuperAdmin.
+   */
+  async getAllTransactions(): Promise<EscrowTransaction[]> {
+    const db = getDb();
+    const querySnapshot = await db
+      .collection(COLLECTION_NAME)
+      .orderBy("createdAt", "desc")
+      .limit(100)
+      .get();
+
+    return querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return EscrowTransactionSchema.parse({
+        ...data,
+        createdAt: data?.createdAt?.toDate(),
+        releasedAt: data?.releasedAt?.toDate(),
+      });
+    });
+  },
 };

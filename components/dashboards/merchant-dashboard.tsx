@@ -164,7 +164,7 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
               >
                 <div>
                   <p className="text-lg font-semibold text-ink">
-                    {res.lead.name}
+                    {res.lead.full_name}
                   </p>
                   <p className="text-sm text-ink/68">
                     Contacto: {res.lead.email} {res.lead.phone ? `· ${res.lead.phone}` : ""}
