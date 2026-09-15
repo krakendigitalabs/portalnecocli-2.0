@@ -6,6 +6,8 @@ import { AppShell } from "@/components/layout/app-shell";
 import { AppProviders } from "@/components/providers/app-providers";
 import { brand, siteMetadata } from "@/lib/constants/site";
 import { PORTAL_APP_HEADER } from "@/lib/routing/subdomains";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 
 const tropicalFont = Permanent_Marker({
   weight: "400",
@@ -46,6 +48,9 @@ export const metadata: Metadata = {
     description: siteMetadata.description,
     images: [siteMetadata.ogImage],
   },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
 };
 
 type RootLayoutProps = Readonly<{
@@ -69,6 +74,32 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             </AppShell>
           )}
         </AppProviders>
+        
+        {/* Google Analytics 4 */}
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        )}
+        
+        {/* Google Ads (Conversion Tracking) */}
+        {process.env.NEXT_PUBLIC_GOOGLE_ADS_ID && (
+          <Script id="google-ads-config" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}');
+            `}
+          </Script>
+        )}
+        
+        {/* Google AdSense */}
+        {process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID && (
+          <Script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        )}
       </body>
     </html>
   );
