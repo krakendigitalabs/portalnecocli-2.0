@@ -124,7 +124,7 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
 
     let wompiLink = undefined;
     if (validatedData.isSolidarityActive) {
-       const pubKey = process.env.NEXT_PUBLIC_WOMPI_PUB_KEY || "pub_test_XXX";
+       const pubKey = process.env.NEXT_PUBLIC_WOMPI_TEST_KEY || process.env.NEXT_PUBLIC_WOMPI_KEY || "pub_test_XXX";
        wompiLink = `https://checkout.wompi.co/p/?public-key=${pubKey}&currency=COP&amount-in-cents=500000&reference=${ticketId}-APORTE`;
     }
 
