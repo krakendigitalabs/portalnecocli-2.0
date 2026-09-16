@@ -42,9 +42,10 @@ export default async function EscrowTicketPage({ params }: Props) {
   });
 
   // QR apuntando al dominio personalizado del portal
-  const ticketUrl = `https://portal-necocli.qrtiket.com/tickets/${ticketId}`;
+  const publicTicketUrl = `https://portal-necocli.qrtiket.com/tickets/${ticketId}`;
+  
   // API pública gratuita para generar QR real (sin instalar dependencias)
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(ticketUrl)}&bgcolor=ffffff&color=0f2e21&margin=4&format=png`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(publicTicketUrl)}&bgcolor=ffffff&color=0f2e21&margin=4&format=png`;
 
   return (
     <>
@@ -306,7 +307,7 @@ export default async function EscrowTicketPage({ params }: Props) {
                     className="qr-img rounded-lg border border-gray-100 p-1 bg-white"
                   />
                   <p className="text-[8px] text-gray-400 font-mono text-center max-w-[130px] break-all leading-tight">
-                    {ticketUrl.replace("https://", "")}
+                    {publicTicketUrl.replace("https://", "")}
                   </p>
                 </div>
 
@@ -352,6 +353,24 @@ export default async function EscrowTicketPage({ params }: Props) {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* ── CTA Turista: Reseña en Google ── */}
+            <div className="mx-6 mb-6 mt-2 rounded-xl bg-gradient-to-r from-sky-50 to-emerald-50 border border-sky-100 p-5 text-center shadow-sm">
+              <h4 className="text-sm font-bold text-sky-900 mb-2 flex items-center justify-center gap-2">
+                ⭐ ¡Queremos saber de ti!
+              </h4>
+              <p className="text-xs text-sky-800 leading-relaxed max-w-md mx-auto mb-3">
+                Para estar pendiente de tu experiencia de principio a fin, notifica a <strong>Portal Necoclí</strong> que ya estás próximo a embarcar y haz un comentario para que otras personas se vean motivadas a vivir esta maravillosa experiencia.
+              </p>
+              <a 
+                href="https://g.page/r/CRFcMAbI46COEAE/review" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-white border border-sky-200 text-sky-700 px-4 py-2 rounded-full text-xs font-bold shadow-sm hover:bg-sky-50 hover:text-sky-800 transition-colors"
+              >
+                Dejar comentario en Portal Necoclí
+              </a>
             </div>
 
             {/* ── Footer legal del ticket ── */}

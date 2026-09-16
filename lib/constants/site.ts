@@ -13,9 +13,10 @@ export const siteMetadata = {
 export const navigationLinks = [
   { href: "/", label: "Inicio" },
   { href: "/negocios", label: "Explora negocios" },
+  { href: "/turistas", label: "Paquetes" },
+  { href: "/reservas-maritimas", label: "Tour Islas" },
   { href: "/tarifario", label: "Tarifario" },
-  { href: "/turistas", label: "Turistas" },
-  { href: "/customer/bonos", label: "Recompensas" },
   { href: "/#businesses", label: "Afiliados" },
   { href: "/#contact", label: "Contacto" },
+  { href: "/customer/bonos", label: "Recompensas" },
 ] as const;

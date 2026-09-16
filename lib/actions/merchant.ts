@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { EscrowRepo } from "@/lib/data/repositories/escrow-repo";
-import { ReservationRepo } from "@/lib/data/repositories/reservation-repo";
+import { completeReservation } from "@/data/reservationService";
 import { requireRole } from "@/lib/auth/server";
 
 export async function releaseEscrowFunds(transactionId: string) {
@@ -30,7 +30,7 @@ export async function releaseEscrowFunds(transactionId: string) {
     await EscrowRepo.updateTransactionStatus(transactionId, "released");
 
     // 5. Actualizar Reserva a 'completed'
-    await ReservationRepo.updateReservation(transaction.reservationId, { status: "completed" });
+    await completeReservation(transaction.reservationId);
 
     revalidatePath("/merchant");
 
