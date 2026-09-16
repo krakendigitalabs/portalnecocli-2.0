@@ -15,7 +15,8 @@
 ### 📈 A. Take Rate (Motor Escrow)
 La fuente principal de ingresos es la **retención o comisión transaccional**.
 - **Caso A (Paquetes Turísticos Propios):** Alta rentabilidad (15% - 25%). El Portal funciona como agencia nativa. El turista paga al Portal y el Portal paga al operador local descontando su comisión mayor mayorista.
-- **Caso B (Reservas Aliadas):** Margen de procesamiento (5% - 10%). Portal Necoclí actúa como tercero de confianza (Escrow). El cliente reserva a través de Wompi, el dinero queda retenido (`HELD`), el Portal cobra su comisión del split automáticamente, y el saldo se libera (`RELEASED`) al aliado al momento de prestar el servicio.
+- **Caso B (Reservas Aliadas - Online):** Margen de procesamiento (5% - 10%). Portal Necoclí actúa como tercero de confianza (Escrow). El cliente reserva a través de Wompi, el dinero queda retenido (`HELD`), el Portal cobra su comisión del split automáticamente, y el saldo se libera (`RELEASED`) al aliado al momento de prestar el servicio.
+- **Caso C (Escrow Offline - Taquilla Marítima):** Para operaciones logísticas en tiempo real (rutas marítimas), el portal actúa como motor de captura de leads calificados y generación de *Tiquetes Digitales*. El turista asegura su cupo online pero ejecuta el pago en la taquilla del operador. El portal audita el volumen de turistas enviados (data valiosa) para posteriores negociaciones de comisión B2B o para subvencionar el Programa de Estrellas Doradas.
 
 ### 🌟 B. SaaS Freemium y Micro-Posicionamiento (Boost)
 Los negocios de Necoclí no pagan por "estar", pagan por "destacar".

@@ -72,7 +72,9 @@ export function MaritimeBookingWidget() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabType>("ruta");
   const [operator, setOperator] = useState<"caribe" | "sol_playa">("caribe");
+  const [origin, setOrigin] = useState("Necoclí");
   const [destination, setDestination] = useState("Capurganá");
+  const [journeyType, setJourneyType] = useState<"ida" | "ida_vuelta">("ida_vuelta");
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [travelDate, setTravelDate] = useState("");
@@ -120,11 +122,24 @@ export function MaritimeBookingWidget() {
 
   useEffect(() => {
     if (activeTab === "sol") {
+      setOrigin("Necoclí");
       setDestination("Día de Sol: Playa Soledad y Sapzurro");
     } else if (destination.startsWith("Día de Sol")) {
+      setOrigin("Necoclí");
       setDestination("Capurganá");
     }
   }, [activeTab]);
+
+  const handleOriginChange = (newOrigin: string) => {
+    setOrigin(newOrigin);
+    // Auto-update destination to something valid
+    if (newOrigin === "Capurganá" && destination === "Capurganá") setDestination("Necoclí");
+    if (newOrigin === "Triganá" && destination === "Triganá") setDestination("Necoclí");
+    if (newOrigin === "Acandí" && destination === "Acandí") setDestination("Necoclí");
+    if (newOrigin !== "Necoclí" && (destination === "Playa Soledad" || destination === "Bahía Aguacate")) {
+      setDestination("Necoclí");
+    }
+  };
 
   const getBasePrice = () => {
     if (activeTab === "yate") {
@@ -134,8 +149,32 @@ export function MaritimeBookingWidget() {
       }
       return baseFor6;
     }
-    const base = activeTab === "sol" ? 210000 : 190000;
-    return base * totalPassengers;
+    if (activeTab === "sol") {
+      return 210000 * totalPassengers; // Siempre ida y vuelta
+    }
+    
+    const route = `${origin}-${destination}`;
+    const idaPrices: Record<string, number> = {
+      "Necoclí-Capurganá": 95000,
+      "Capurganá-Necoclí": 95000,
+      "Necoclí-Triganá": 75000,
+      "Triganá-Necoclí": 75000,
+      "Necoclí-Acandí": 85000,
+      "Acandí-Necoclí": 85000,
+      "Capurganá-Triganá": 75000,
+      "Triganá-Capurganá": 75000,
+      "Capurganá-Acandí": 55000,
+      "Acandí-Capurganá": 55000,
+      "Triganá-Acandí": 55000,
+      "Acandí-Triganá": 55000,
+      "Necoclí-Playa Soledad": 95000,
+      "Necoclí-Bahía Aguacate": 95000,
+    };
+    
+    const base = idaPrices[route] || 95000;
+    const perPassengerPrice = journeyType === "ida" ? base : base * 2;
+    
+    return perPassengerPrice * totalPassengers;
   };
 
   const getAccommodationPrice = () => {
@@ -159,6 +198,25 @@ export function MaritimeBookingWidget() {
 
   const handleGenerateTicket = async () => {
     if (!termsAccepted || isLoading) return;
+    
+    if (!travelDate) {
+      alert("⚠️ Debes seleccionar una Fecha de Viaje antes de continuar.");
+      return;
+    }
+    
+    if (groupMode === "individual") {
+      const p1 = passengers[0];
+      if (!p1.name || !p1.docNum || !p1.phone || !p1.email) {
+        alert("⚠️ Los datos del Pasajero 1 (Nombre, Documento, Teléfono y Correo) son obligatorios.");
+        return;
+      }
+    } else {
+      if (!groupContactName || !groupContactPhone || !groupContactEmail) {
+        alert("⚠️ Los datos del Representante del Grupo son obligatorios.");
+        return;
+      }
+    }
+
     setIsLoading(true);
     try {
       const passengersPayload: MaritimeBookingInput["passengers"] =
@@ -168,7 +226,9 @@ export function MaritimeBookingWidget() {
 
       const result = await processMaritimeBooking({
         tripType: activeTab,
+        journeyType: activeTab === "ruta" ? journeyType : "ida_vuelta",
         operator,
+        origin,
         destination,
         date: travelDate,
         accommodation,
@@ -179,6 +239,8 @@ export function MaritimeBookingWidget() {
       if (result.success && result.ticketId) {
         const params = new URLSearchParams({
           tripType: activeTab,
+          journeyType: activeTab === "ruta" ? journeyType : "ida_vuelta",
+          origin,
           destination,
           date: travelDate,
           accommodation,
@@ -297,13 +359,27 @@ export function MaritimeBookingWidget() {
         <div className="p-5 lg:p-10 space-y-8">
 
           {/* Search bar row */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
+          <div className={`grid grid-cols-2 md:grid-cols-3 ${activeTab === "ruta" ? "lg:grid-cols-6" : "lg:grid-cols-5"} gap-3 md:gap-4`}>
             {/* Origin */}
-            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 hover:border-gray-400 transition-colors">
+            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 hover:border-gray-400 transition-colors relative">
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Origen</p>
-              <div className="flex items-center gap-2 font-semibold text-gray-800">
+              <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-sky-500 shrink-0" />
-                Necoclí
+                {activeTab === "sol" ? (
+                  <span className="font-semibold text-gray-800">Necoclí</span>
+                ) : (
+                  <select
+                    className="w-full bg-transparent font-semibold text-gray-800 outline-none appearance-none cursor-pointer pr-5"
+                    value={origin}
+                    onChange={(e) => handleOriginChange(e.target.value)}
+                  >
+                    <option>Necoclí</option>
+                    <option>Capurganá</option>
+                    <option>Triganá</option>
+                    <option>Acandí</option>
+                  </select>
+                )}
+                {activeTab !== "sol" && <ChevronDown className="w-3.5 h-3.5 absolute right-3 bottom-4 text-gray-400 pointer-events-none" />}
               </div>
             </div>
 
@@ -333,20 +409,41 @@ export function MaritimeBookingWidget() {
                   <option>Día de Sol: Playa Soledad y Sapzurro</option>
                 ) : (
                   <>
-                    <option>Capurganá</option>
-                    <option>Triganá</option>
-                    <option>Acandí</option>
-                    <option>Playa Soledad</option>
-                    <option>Bahía Aguacate</option>
+                    {origin !== "Capurganá" && <option>Capurganá</option>}
+                    {origin !== "Triganá" && <option>Triganá</option>}
+                    {origin !== "Acandí" && <option>Acandí</option>}
+                    {origin !== "Necoclí" && <option>Necoclí</option>}
+                    {origin === "Necoclí" && (
+                      <>
+                        <option>Playa Soledad</option>
+                        <option>Bahía Aguacate</option>
+                      </>
+                    )}
                   </>
                 )}
               </select>
               <ChevronDown className="w-3.5 h-3.5 absolute right-3 bottom-4 text-gray-400 pointer-events-none" />
             </div>
 
+            {/* Tipo de Trayecto (Only for ruta) */}
+            {activeTab === "ruta" && (
+              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 hover:border-gray-400 transition-colors relative">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Trayecto</p>
+                <select
+                  className="w-full bg-transparent font-semibold text-gray-800 outline-none appearance-none cursor-pointer pr-5 text-sm"
+                  value={journeyType}
+                  onChange={(e) => setJourneyType(e.target.value as "ida" | "ida_vuelta")}
+                >
+                  <option value="ida">Ida (One-way)</option>
+                  <option value="ida_vuelta">Ida y Vuelta</option>
+                </select>
+                <ChevronDown className="w-3.5 h-3.5 absolute right-3 bottom-4 text-gray-400 pointer-events-none" />
+              </div>
+            )}
+
             {/* Date */}
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 hover:border-gray-400 transition-colors">
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Fecha de Viaje</p>
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Fecha de Viaje <span className="text-rose-500 text-xs">*</span></p>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-sky-500 shrink-0" />
                 <input
@@ -354,6 +451,7 @@ export function MaritimeBookingWidget() {
                   className="bg-transparent font-semibold text-gray-800 outline-none w-full text-sm cursor-pointer"
                   value={travelDate}
                   onChange={(e) => setTravelDate(e.target.value)}
+                  required
                 />
               </div>
             </div>
@@ -489,33 +587,36 @@ export function MaritimeBookingWidget() {
                 <p className="text-xs text-sky-700 font-semibold uppercase tracking-wider mb-4">📋 Representante o Coordinador del Grupo</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-medium text-gray-600 mb-1.5">Nombre Completo del Representante</label>
+                    <label className="block text-xs font-medium text-gray-600 mb-1.5">Nombre Completo del Representante <span className="text-rose-500">*</span></label>
                     <input
                       type="text"
                       className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-400 outline-none"
                       placeholder="Nombre del representante o empresa"
                       value={groupContactName}
                       onChange={(e) => setGroupContactName(e.target.value)}
+                      required
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-gray-600 mb-1.5">Teléfono de Contacto</label>
+                    <label className="block text-xs font-medium text-gray-600 mb-1.5">Teléfono de Contacto <span className="text-rose-500">*</span></label>
                     <input
                       type="tel"
                       className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-400 outline-none"
                       placeholder="+57 300 000 0000"
                       value={groupContactPhone}
                       onChange={(e) => setGroupContactPhone(e.target.value)}
+                      required
                     />
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block text-xs font-medium text-gray-600 mb-1.5">Correo Electrónico</label>
+                    <label className="block text-xs font-medium text-gray-600 mb-1.5">Correo Electrónico <span className="text-rose-500">*</span></label>
                     <input
                       type="email"
                       className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-400 outline-none"
                       placeholder="ejemplo@correo.com"
                       value={groupContactEmail}
                       onChange={(e) => setGroupContactEmail(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -543,13 +644,14 @@ export function MaritimeBookingWidget() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                       <div className="md:col-span-3">
-                        <label className="block text-xs font-medium text-gray-500 mb-1">Nombre Completo (como en el documento)</label>
+                        <label className="block text-xs font-medium text-gray-500 mb-1">Nombre Completo (como en el documento) <span className="text-rose-500">*</span></label>
                         <input
                           type="text"
                           className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-400 outline-none"
                           placeholder="Ej. Juan García Pérez"
                           value={pass.name}
                           onChange={(e) => handleUpdatePassenger(index, "name", e.target.value)}
+                          required
                         />
                       </div>
                       <div>
@@ -566,33 +668,36 @@ export function MaritimeBookingWidget() {
                         </select>
                       </div>
                       <div>
-                        <label className="block text-xs font-medium text-gray-500 mb-1">Número de Documento</label>
+                        <label className="block text-xs font-medium text-gray-500 mb-1">Número de Documento <span className="text-rose-500">*</span></label>
                         <input
                           type="text"
                           className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-400 outline-none"
                           placeholder="Número"
                           value={pass.docNum}
                           onChange={(e) => handleUpdatePassenger(index, "docNum", e.target.value)}
+                          required
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-medium text-gray-500 mb-1">Teléfono</label>
+                        <label className="block text-xs font-medium text-gray-500 mb-1">Teléfono {index === 0 && <span className="text-rose-500">*</span>}</label>
                         <input
                           type="tel"
                           className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-400 outline-none"
                           placeholder="+57 300 000 0000"
                           value={pass.phone}
                           onChange={(e) => handleUpdatePassenger(index, "phone", e.target.value)}
+                          required={index === 0}
                         />
                       </div>
                       <div className="md:col-span-3">
-                        <label className="block text-xs font-medium text-gray-500 mb-1">Correo Electrónico</label>
+                        <label className="block text-xs font-medium text-gray-500 mb-1">Correo Electrónico {index === 0 && <span className="text-rose-500">*</span>}</label>
                         <input
                           type="email"
                           className="w-full p-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-400 outline-none"
-                          placeholder="ejemplo@correo.com (Opcional)"
+                          placeholder="ejemplo@correo.com"
                           value={pass.email}
                           onChange={(e) => handleUpdatePassenger(index, "email", e.target.value)}
+                          required={index === 0}
                         />
                       </div>
                     </div>
@@ -699,8 +804,13 @@ export function MaritimeBookingWidget() {
               </motion.div>
               <div className="flex items-center justify-center gap-2 mt-1 text-sky-200 text-sm">
                 <MapPin className="w-3.5 h-3.5" />
-                <span>Necoclí → <strong className="text-white">{destination}</strong></span>
+                <span>{origin} → <strong className="text-white">{destination}</strong></span>
               </div>
+              {activeTab === "ruta" && (
+                <p className="text-sky-200 text-xs mt-1 uppercase tracking-wide font-semibold">
+                  {journeyType === "ida" ? "Solo Ida" : "Ida y Vuelta"}
+                </p>
+              )}
               {travelDate && (
                 <p className="text-sky-200 text-xs mt-1">
                   📅 {new Date(travelDate + "T12:00:00").toLocaleDateString("es-CO", { weekday: "long", day: "numeric", month: "long" })}
@@ -742,7 +852,14 @@ export function MaritimeBookingWidget() {
                   ${total.toLocaleString("es-CO")}
                   <span className="text-base font-normal text-sky-300 ml-1">COP</span>
                 </motion.p>
-                <p className="text-xs text-sky-300 mt-1">Impuestos incluidos · Pago en taquilla</p>
+                <p className="text-xs text-sky-300 mt-1 mb-4">Impuestos incluidos · Pago en taquilla</p>
+                
+                <div className="p-3 bg-white/10 rounded-xl border border-white/20 text-xs text-sky-100 shadow-sm">
+                  <p className="font-semibold text-white mb-1 flex items-center gap-1.5">
+                    🧳 Política de Equipaje
+                  </p>
+                  <p>10 kg incluidos por pasajero. El peso excedente tiene un valor de <strong>$2.000 COP</strong> por cada kilo adicional (pago exclusivo en taquilla).</p>
+                </div>
               </div>
             </div>
 

@@ -18,6 +18,12 @@ El sistema opera bajo un modelo de tercero de confianza (Escrow) y un enrutador 
 - **Comunicación B2B:** Tono profesional, cálido y enfocado en el valor (ej. felicitar por aniversarios).
 - **Generación de Ticket:** El sistema genera un ticket de recaudo oficial de Kraken Digital Labs / Portal Necoclí con RUT y métodos de pago (Nequi/Efectivo) para respaldar la transacción contablemente.
 
+### 1.3 Protocolo de Transporte Marítimo (Offline Escrow & Yate Privado)
+
+- **Pago Seguro en Taquilla:** Para el transporte marítimo intermunicipal y turístico (rutas a Capurganá, Acandí, Triganá, etc.), se utiliza un modelo de **Offline Escrow**. El usuario genera un *Tiquete Digital Seguro* en el portal sin requerir transferencias bancarias anticipadas, y el pago físico se realiza directamente en las taquillas (Naviera El Caribe o Sol y Playa) 45 minutos antes de zarpar.
+- **Día de Sol Dinámico:** El sistema renderiza UI inteligente para el plan "Día de Sol", adaptando las promesas de valor, horarios (6:00 a.m. vs 8:00 a.m.) e itinerarios (Sapzurro vs La Miel) dependiendo del Operador logístico seleccionado.
+- **Yate Privado (Pricing Exponencial):** La reserva de Yates de lujo sigue un algoritmo escalonado: **$8.000.000 COP** base para grupos de 1 a 6 pasajeros. A partir del 7mo pasajero, se suma un recargo de **$1.100.000 COP** por persona adicional, automatizando el cobro sin intervención humana.
+
 ## 2. Fases de Desarrollo (Alineado con Auditoría de Antigravity)
 
 ### Fase A: Base Transaccional e Historial (Backend & Escrow)

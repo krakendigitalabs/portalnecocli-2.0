@@ -14,12 +14,14 @@ const PassengerSchema = z.object({
 
 const BookingSchema = z.object({
   tripType: z.enum(["ruta", "sol", "yate"]),
+  origin: z.string().min(1, "Origen requerido").default("Necoclí"),
   destination: z.string().min(1, "Destino requerido"),
   operator: z.enum(["caribe", "sol_playa"], { message: "Debe seleccionar una naviera" }),
   date: z.string().optional(),
   accommodation: z.enum(["none", "without_food", "food_standard", "food_exclusive"]),
   isSolidarityActive: z.boolean(),
   totalPrice: z.number().min(0, "Precio inválido"),
+  journeyType: z.enum(["ida", "ida_vuelta"]).optional().default("ida_vuelta"),
   passengers: z.array(PassengerSchema).min(1, "Al menos un pasajero es requerido"),
 });
 
@@ -48,6 +50,8 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
       registerDate,
       registerTime,
       tripType: validatedData.tripType,
+      journeyType: validatedData.journeyType === "ida" ? "Ida" : "Ida y Vuelta",
+      origin: validatedData.origin,
       destination: validatedData.destination,
       operator: validatedData.operator === "caribe" ? "El Caribe S.A.S." : "Sol y Playa S.A.S.",
       travelDate: validatedData.date ?? "Sin fecha",
@@ -133,7 +137,7 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
                 <p style="color: #64748b; font-size: 14px; margin-top: 5px;">Tu viaje hacia el paraíso comienza aquí</p>
               </div>
               <p style="font-size: 16px;">Hola <strong>${validatedData.passengers[0].name}</strong>,</p>
-              <p style="font-size: 16px; line-height: 1.5; color: #334155;">Tu pre-reserva hacia <strong>${validatedData.destination}</strong> operada por <strong>${operatorName}</strong> ha sido generada con éxito. Por favor presenta el siguiente código en la taquilla de la naviera correspondiente para realizar el pago final y asegurar tu embarque:</p>
+              <p style="font-size: 16px; line-height: 1.5; color: #334155;">Tu pre-reserva para la ruta <strong>${validatedData.origin} → ${validatedData.destination}</strong> operada por <strong>${operatorName}</strong> ha sido generada con éxito. Por favor presenta el siguiente código en la taquilla de la naviera correspondiente para realizar el pago final y asegurar tu embarque:</p>
               <div style="background-color: #f0f9ff; border: 1px dashed #bae6fd; padding: 20px; text-align: center; border-radius: 12px; margin: 30px 0;">
                 <span style="display: block; font-size: 12px; color: #0369a1; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Código de Reserva</span>
                 <strong style="font-size: 28px; color: #0c4a6e; letter-spacing: 2px;">${ticketId}</strong>
@@ -141,7 +145,7 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
               <table style="width: 100%; font-size: 14px; color: #475569; margin-bottom: 30px; border-collapse: collapse;">
                 <tr>
                   <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;"><strong>Tipo de Viaje:</strong></td>
-                  <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0; text-align: right;">${validatedData.tripType.toUpperCase()}</td>
+                  <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0; text-align: right;">${validatedData.tripType.toUpperCase()} - ${validatedData.journeyType === "ida" ? "IDA" : "IDA Y VUELTA"}</td>
                 </tr>
                 <tr>
                   <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0;"><strong>Pasajeros:</strong></td>
@@ -152,6 +156,11 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
                   <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0; text-align: right; color: #059669; font-weight: bold;">$${validatedData.totalPrice.toLocaleString("es-CO")} COP</td>
                 </tr>
               </table>
+              <div style="background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px 16px; margin-bottom: 25px; border-radius: 4px;">
+                <p style="margin: 0; font-size: 13px; color: #92400e;">
+                  <strong>🧳 Política de Equipaje:</strong> Tienes 10 kg incluidos por pasajero. El peso excedente tiene un valor de <strong>$2.000 COP</strong> por cada kilo adicional, pagaderos exclusivamente en la taquilla de la naviera.
+                </p>
+              </div>
               <p style="font-size: 14px; color: #64748b; text-align: center;">Te esperamos en el muelle. Gracias por elegir <a href="https://portalnecocli.com" style="color: #0ea5e9; text-decoration: none;">Portal Necoclí</a>.</p>
             </div>
           `
