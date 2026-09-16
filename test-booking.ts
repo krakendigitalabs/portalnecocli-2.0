@@ -8,6 +8,7 @@ async function testBooking() {
   const payload = {
     tripType: "sol" as const,
     destination: "Capurganá",
+    operator: "sol_playa" as const,
     date: "2026-09-20",
     accommodation: "food_standard" as const,
     isSolidarityActive: true,

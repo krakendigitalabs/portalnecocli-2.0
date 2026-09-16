@@ -15,7 +15,7 @@ const PassengerSchema = z.object({
 const BookingSchema = z.object({
   tripType: z.enum(["ruta", "sol", "yate"]),
   destination: z.string().min(1, "Destino requerido"),
-  operator: z.enum(["caribe", "sol_playa"], { required_error: "Debe seleccionar una naviera" }),
+  operator: z.enum(["caribe", "sol_playa"], { message: "Debe seleccionar una naviera" }),
   date: z.string().optional(),
   accommodation: z.enum(["none", "without_food", "food_standard", "food_exclusive"]),
   isSolidarityActive: z.boolean(),
