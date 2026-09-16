@@ -8,6 +8,7 @@ import {
   ChevronDown, Loader2, ChevronUp, UserPlus, Building2
 } from "lucide-react";
 import Image from "next/image";
+import { DiaDeSolInfo } from "./dia-de-sol-info";
 import { SolidarityBanner } from "./solidarity-banner";
 import { ScarcityBadge } from "./scarcity-badge";
 import { processMaritimeBooking } from "@/app/actions/maritime-booking";
@@ -70,6 +71,7 @@ function Waves({ color = "#00b4d8" }: { color?: string }) {
 export function MaritimeBookingWidget() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabType>("ruta");
+  const [operator, setOperator] = useState<"caribe" | "sol_playa">("caribe");
   const [destination, setDestination] = useState("Capurganá");
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
@@ -108,8 +110,30 @@ export function MaritimeBookingWidget() {
     });
   }, [totalPassengers, groupMode]);
 
+  useEffect(() => {
+    const handleTabChange = (e: CustomEvent) => {
+      if (e.detail === 'sol') setActiveTab('sol');
+    };
+    window.addEventListener('change-booking-tab', handleTabChange as EventListener);
+    return () => window.removeEventListener('change-booking-tab', handleTabChange as EventListener);
+  }, []);
+
+  useEffect(() => {
+    if (activeTab === "sol") {
+      setDestination("Día de Sol: Playa Soledad y Sapzurro");
+    } else if (destination.startsWith("Día de Sol")) {
+      setDestination("Capurganá");
+    }
+  }, [activeTab]);
+
   const getBasePrice = () => {
-    if (activeTab === "yate") return 8000000;
+    if (activeTab === "yate") {
+      const baseFor6 = 8000000;
+      if (totalPassengers > 6) {
+        return baseFor6 + ((totalPassengers - 6) * 1100000);
+      }
+      return baseFor6;
+    }
     const base = activeTab === "sol" ? 210000 : 190000;
     return base * totalPassengers;
   };
@@ -144,6 +168,7 @@ export function MaritimeBookingWidget() {
 
       const result = await processMaritimeBooking({
         tripType: activeTab,
+        operator,
         destination,
         date: travelDate,
         accommodation,
@@ -169,7 +194,7 @@ export function MaritimeBookingWidget() {
           router.push(`/reservas-maritimas?${params.toString()}`);
         }
       } else {
-        alert("Hubo un error al generar tu tiquete. Inténtalo nuevamente.");
+        alert(result.error || "Hubo un error al generar tu tiquete. Verifica los datos e inténtalo nuevamente.");
       }
     } finally {
       setIsLoading(false);
@@ -182,10 +207,11 @@ export function MaritimeBookingWidget() {
   const waveColor = activeTab === "ruta" ? "#00b4d8" : activeTab === "sol" ? "#f77f00" : "#9d4edd";
 
   return (
-    <div className="w-full bg-white rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.12)] overflow-hidden border border-gray-100">
+    <div className="w-full max-w-[1400px] mx-auto">
+      <div id="booking-widget" className="w-full bg-white rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.12)] overflow-hidden border border-gray-100">
 
       {/* ── HERO HEADER with animated waves ── */}
-      <div className={`relative bg-gradient-to-br ${tab.accent} px-8 py-10 overflow-hidden`}>
+      <div className={`relative bg-gradient-to-br ${tab.accent} px-5 py-8 md:px-8 md:py-10 overflow-hidden`}>
         {/* Animated boat crossing */}
         <motion.div
           className="absolute bottom-6 opacity-20"
@@ -202,12 +228,29 @@ export function MaritimeBookingWidget() {
 
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <Image
-              src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1751910298/logo_portal_necocli_ak1mbd.png"
-              alt="Portal Necoclí"
-              width={110} height={36}
-              className="object-contain brightness-0 invert"
-            />
+            <motion.div
+              animate={{ 
+                y: [0, -4, 0],
+                rotate: [0, 4, -4, 0],
+                boxShadow: [
+                  "0px 4px 15px rgba(0, 0, 0, 0.2)",
+                  "0px 10px 30px rgba(255, 255, 255, 0.5)",
+                  "0px 4px 15px rgba(0, 0, 0, 0.2)"
+                ]
+              }}
+              transition={{ 
+                duration: 4, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+              className="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-white/60 flex items-center justify-center overflow-hidden shrink-0 z-20"
+            >
+              <img
+                src="https://res.cloudinary.com/dr50ioh9h/image/upload/v1746587440/Dise%C3%B1o_sin_t%C3%ADtulo_pvwjh9.png"
+                alt="Portal Necoclí"
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
             <div>
               <p className="text-white/70 text-xs uppercase tracking-widest font-semibold">Reservas Marítimas</p>
               <h1 className="text-white text-2xl font-extrabold leading-tight">Proyecto de Confianza Turística</h1>
@@ -218,8 +261,8 @@ export function MaritimeBookingWidget() {
       </div>
 
       {/* ── TAB SELECTOR ── */}
-      <div className="border-b border-gray-100 px-8 pt-0 bg-gray-50">
-        <div className="flex gap-0 -mb-px">
+      <div className="border-b border-gray-100 px-2 md:px-8 pt-0 bg-gray-50 overflow-x-auto no-scrollbar">
+        <div className="flex gap-0 -mb-px min-w-max">
           {(["ruta", "sol", "yate"] as TabType[]).map((t) => {
             const cfg = TAB_CONFIG[t];
             const Icon = cfg.icon;
@@ -228,7 +271,7 @@ export function MaritimeBookingWidget() {
               <button
                 key={t}
                 onClick={() => setActiveTab(t)}
-                className={`relative flex items-center gap-2 px-6 py-4 text-sm font-semibold border-b-2 transition-all ${
+                className={`relative flex items-center gap-2 px-4 md:px-6 py-4 text-sm font-semibold border-b-2 transition-all ${
                   active
                     ? "border-current text-gray-900"
                     : "border-transparent text-gray-400 hover:text-gray-700"
@@ -251,10 +294,10 @@ export function MaritimeBookingWidget() {
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_360px]">
 
         {/* ══ LEFT: MAIN FORM ══ */}
-        <div className="p-6 lg:p-10 space-y-8">
+        <div className="p-5 lg:p-10 space-y-8">
 
           {/* Search bar row */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
             {/* Origin */}
             <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 hover:border-gray-400 transition-colors">
               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Origen</p>
@@ -262,6 +305,20 @@ export function MaritimeBookingWidget() {
                 <MapPin className="w-4 h-4 text-sky-500 shrink-0" />
                 Necoclí
               </div>
+            </div>
+
+            {/* Naviera / Operador */}
+            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 hover:border-gray-400 transition-colors relative">
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Naviera</p>
+              <select
+                className="w-full bg-transparent font-semibold text-gray-800 outline-none appearance-none cursor-pointer pr-5 text-sm"
+                value={operator}
+                onChange={(e) => setOperator(e.target.value as "caribe" | "sol_playa")}
+              >
+                <option value="caribe">El Caribe S.A.S</option>
+                <option value="sol_playa">Sol y Playa S.A.S</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 absolute right-3 bottom-4 text-gray-400 pointer-events-none" />
             </div>
 
             {/* Destination */}
@@ -272,11 +329,17 @@ export function MaritimeBookingWidget() {
                 value={destination}
                 onChange={(e) => setDestination(e.target.value)}
               >
-                <option>Capurganá</option>
-                <option>Triganá</option>
-                <option>Acandí</option>
-                <option>Playa Soledad</option>
-                <option>Bahía Aguacate</option>
+                {activeTab === "sol" ? (
+                  <option>Día de Sol: Playa Soledad y Sapzurro</option>
+                ) : (
+                  <>
+                    <option>Capurganá</option>
+                    <option>Triganá</option>
+                    <option>Acandí</option>
+                    <option>Playa Soledad</option>
+                    <option>Bahía Aguacate</option>
+                  </>
+                )}
               </select>
               <ChevronDown className="w-3.5 h-3.5 absolute right-3 bottom-4 text-gray-400 pointer-events-none" />
             </div>
@@ -317,7 +380,7 @@ export function MaritimeBookingWidget() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -8, scale: 0.97 }}
                     transition={{ duration: 0.18 }}
-                    className="absolute top-full left-0 mt-2 w-80 bg-white border border-gray-200 shadow-2xl rounded-2xl p-5 z-30"
+                    className="absolute top-full right-0 lg:right-auto lg:left-0 mt-2 w-[calc(100vw-2.5rem)] max-w-[320px] bg-white border border-gray-200 shadow-2xl rounded-2xl p-4 sm:p-5 z-30"
                   >
                     {/* Mode toggle */}
                     <div className="flex gap-2 mb-5 bg-gray-100 rounded-xl p-1">
@@ -409,29 +472,6 @@ export function MaritimeBookingWidget() {
             </div>
           </div>
 
-          {/* Accommodation */}
-          <div className="p-5 bg-sky-50/60 rounded-2xl border border-sky-100">
-            <h4 className="text-sm font-bold text-sky-900 mb-3 flex items-center gap-2">
-              <Building2 className="w-4 h-4" /> ¿Deseas agregar alojamiento en el destino?
-            </h4>
-            <div className="flex flex-wrap gap-3">
-              {[
-                { val: "none" as const, label: "No, solo transporte 🚤" },
-                { val: "without_food" as const, label: "Alojamiento sin alimentación (desde $80.000) 🛏️" },
-                { val: "food_standard" as const, label: "Alojamiento + Alimentación Estándar (desde $105.000) 🍽️" },
-                { val: "food_exclusive" as const, label: "Alojamiento + Alimentación Exclusiva (desde $160.000) 🍷" },
-              ].map(({ val, label }) => (
-                <label key={val} className={`flex items-center gap-2 cursor-pointer px-4 py-2.5 rounded-xl border text-sm font-medium transition-all ${
-                  accommodation === val
-                    ? "bg-sky-600 text-white border-sky-600 shadow-sm"
-                    : "bg-white text-gray-700 border-gray-200 hover:border-sky-300"
-                }`}>
-                  <input type="radio" name="acc" className="hidden" checked={accommodation === val} onChange={() => setAccommodation(val)} />
-                  {label}
-                </label>
-              ))}
-            </div>
-          </div>
 
           {/* Passenger Forms */}
           <div className="space-y-4">
@@ -492,7 +532,7 @@ export function MaritimeBookingWidget() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10, height: 0 }}
                     transition={{ duration: 0.25, delay: index * 0.05 }}
-                    className="bg-gray-50 border border-gray-200 rounded-2xl p-5"
+                    className="bg-gray-50 border border-gray-200 rounded-2xl p-4 md:p-5"
                   >
                     <div className="flex items-center gap-2 mb-4">
                       <div className={`w-7 h-7 rounded-full bg-gradient-to-br ${tab.accent} text-white text-xs font-bold flex items-center justify-center shadow`}>
@@ -585,32 +625,49 @@ export function MaritimeBookingWidget() {
             )}
           </div>
 
-          {/* Solidarity */}
-          <SolidarityBanner isActive={isSolidarityActive} onToggle={setIsSolidarityActive} />
+          {/* Solidarity - DESACTIVADO HASTA NUEVA ORDEN */}
+          {/* <SolidarityBanner isActive={isSolidarityActive} onToggle={setIsSolidarityActive} /> */}
 
           {/* Terms */}
           <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5">
-            <label className="flex items-start gap-3 cursor-pointer">
+            <div className="flex items-start gap-3">
               <input
                 type="checkbox"
-                className="mt-0.5 w-5 h-5 accent-sky-600 rounded border-gray-300"
+                id="terms-checkbox"
+                className="mt-0.5 w-5 h-5 accent-sky-600 rounded border-gray-300 cursor-pointer"
                 checked={termsAccepted}
                 onChange={(e) => setTermsAccepted(e.target.checked)}
               />
-              <div>
-                <p className="text-sm font-semibold text-gray-900">Acepto los términos y condiciones de viaje</p>
-                <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+              <div className="flex-1">
+                <label htmlFor="terms-checkbox" className="text-sm font-semibold text-gray-900 cursor-pointer">Acepto los términos y condiciones de viaje</label>
+                <p className="text-xs text-gray-500 mt-1 leading-relaxed cursor-pointer" onClick={() => setTermsAccepted(!termsAccepted)}>
                   Certifico que los datos ingresados son reales. Entiendo que niños de 2 años en adelante pagan tarifa completa.
                   Este servicio opera bajo la <strong>Alianza de Confianza Turística Portal Necoclí</strong>.
                 </p>
-                <a href="#" className="text-xs text-sky-600 hover:underline mt-1 inline-block font-semibold">Leer Contrato para el Cliente →</a>
+                
+                <details className="mt-3 group">
+                  <summary className="text-xs text-sky-600 hover:text-sky-700 inline-flex items-center gap-1 cursor-pointer font-bold list-none [&::-webkit-details-marker]:hidden bg-sky-50/50 hover:bg-sky-50 px-2 py-1 rounded transition-colors">
+                    <span className="group-open:hidden">Leer Contrato para el Cliente ↓</span>
+                    <span className="hidden group-open:inline">Ocultar Contrato ↑</span>
+                  </summary>
+                  <div className="mt-3 p-4 bg-gray-50 border border-gray-100 rounded-xl text-xs text-gray-600 leading-relaxed max-h-60 overflow-y-auto shadow-inner">
+                    <p className="font-bold text-gray-800 mb-3 uppercase tracking-wide">Términos y Condiciones del Servicio de Transporte</p>
+                    <div className="space-y-3">
+                      <p><strong>1. Naturaleza del Servicio:</strong> Portal Necoclí actúa exclusivamente como corredor tecnológico y canal de enrutamiento para las empresas operadoras marítimas aliadas (ej. El Caribe S.A.S, Sol y Playa S.A.S). La responsabilidad directa sobre la prestación del servicio de transporte, seguridad, itinerarios y cumplimiento normativo recae enteramente sobre la naviera operadora.</p>
+                      <p><strong>2. Validez de la Pre-reserva:</strong> El tiquete generado a través de Portal Necoclí garantiza la pre-reserva de su cupo. Para hacer efectiva la reserva, el pasajero debe presentarse en la taquilla de la naviera asignada al menos <strong>45 minutos antes</strong> de la hora de zarpe estipulada para realizar el pago final del servicio y reclamar su pase de abordar.</p>
+                      <p><strong>3. Tarifas y Menores de Edad:</strong> Las tarifas mostradas son establecidas por la empresa operadora. Por estricta normatividad de seguridad marítima y seguros de vida (DIMAR), todo niño a partir de los 2 años cumplidos ocupa puesto en la embarcación y debe pagar la tarifa completa (100%).</p>
+                      <p><strong>4. Cambios y Cancelaciones:</strong> Los zarpes están estrictamente sujetos a las condiciones climáticas y a la autorización de la Capitanía de Puerto. En caso de cierre temporal de puerto por mal tiempo, las navieras aliadas reprogramarán el servicio según el orden de reservas y la disponibilidad inmediata.</p>
+                      <p><strong>5. Tratamiento de Datos:</strong> Al generar esta pre-reserva, el pasajero acepta compartir sus datos de contacto de manera segura con Portal Necoclí y la empresa operadora final, exclusivamente para los fines logísticos y de coordinación del viaje, conforme a la Ley 1581 de 2012 (Habeas Data).</p>
+                    </div>
+                  </div>
+                </details>
               </div>
-            </label>
+            </div>
           </div>
         </div>
 
         {/* ══ RIGHT: OCEAN SUMMARY PANEL ══ */}
-        <div className="relative flex flex-col bg-gradient-to-b from-[#03045e] via-[#0077b6] to-[#00b4d8] text-white xl:rounded-r-3xl overflow-hidden">
+        <div className="relative flex flex-col bg-gradient-to-b from-[#03045e] via-[#0077b6] to-[#00b4d8] text-white overflow-hidden">
 
           {/* Animated wave top decoration */}
           <div className="absolute top-0 left-0 right-0 h-20 opacity-20">
@@ -626,7 +683,7 @@ export function MaritimeBookingWidget() {
             <Ship className="w-48 h-48" />
           </motion.div>
 
-          <div className="relative z-10 p-8 flex flex-col h-full">
+          <div className="relative z-10 p-6 md:p-8 flex flex-col h-full">
             {/* Trip summary header */}
             <div className="mb-8 text-center relative">
               <TabIcon className="w-10 h-10 mx-auto mb-3 opacity-80" />
@@ -731,6 +788,14 @@ export function MaritimeBookingWidget() {
           </div>
         </div>
       </div>
+      </div>
+      
+      {/* ── DÍA DE SOL INFO ── */}
+      {activeTab === "sol" && (
+        <div className="mt-16 w-full">
+          <DiaDeSolInfo operator={operator} />
+        </div>
+      )}
     </div>
   );
 }

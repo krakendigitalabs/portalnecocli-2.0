@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { EscrowRepo } from "@/lib/data/repositories/escrow-repo";
-import { ReservationRepo } from "@/lib/data/repositories/reservation-repo";
+import { createReservation } from "@/data/reservationService";
 import {
   BookingRequestData,
   BookingRequestSchema,
@@ -27,19 +27,21 @@ export async function processBookingRequest(data: BookingRequestData): Promise<B
     const validatedData = BookingRequestSchema.parse(data);
 
     // 2. Guardar en Base de Datos (Reservations / Leads)
-    const reservationId = await ReservationRepo.createReservation({
-      customerId: "guest", // En el futuro puede ser el UID del usuario logueado
-      customerName: validatedData.customerName,
-      customerPhone: validatedData.customerPhone,
-      customerEmail: validatedData.customerEmail,
-      routingType: validatedData.routingType,
-      status: "pending",
-      businessId: validatedData.businessId,
-      serviceName: validatedData.serviceName,
-      reservationDate: validatedData.reservationDate,
-      guests: validatedData.guests,
-      totalAmount: validatedData.totalAmount,
+    const reservation = await createReservation({
+      businessId: validatedData.businessId || "portal_necocli_internal",
+      businessName: validatedData.serviceName,
+      lead: {
+        full_name: validatedData.customerName,
+        phone: validatedData.customerPhone,
+        email: validatedData.customerEmail,
+        whatsapp: validatedData.customerPhone,
+        check_in_date: validatedData.reservationDate.toISOString(),
+        adults_count: validatedData.guests,
+      },
+      totalAmount: validatedData.totalAmount || 0,
+      customerId: "guest",
     });
+    const reservationId = reservation.id;
 
     // 3. Lógica de Enrutamiento (Triangulación)
     if (validatedData.routingType === "CASE_B") {
