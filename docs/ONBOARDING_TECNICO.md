@@ -59,7 +59,8 @@ El proyecto impone una estricta separación de responsabilidades (Separation of 
 - **Modelo Escrow:** Sistema transaccional de garantía. Las reservas del "Caso A" entran en estado retenido (`escrow`) hasta que el servicio es prestado y verificado. Requiere inmutabilidad y auditoría rigurosa.
 - **Enrutador de Triangulación:** Sistema inteligente de flujo de ventas.
   - *Caso A (Paquete Portal):* Cierre transaccional 100% dentro de la plataforma (Retención de cliente y pago).
-  - *Caso B (Tercero):* Hand-off (transferencia) limpia al aliado externo recolectando previamente datos analíticos.
+  - *Caso B (Tercero Online):* Hand-off (transferencia) limpia al aliado externo recolectando previamente datos analíticos o reteniendo el dinero vía Wompi.
+  - *Caso C (Tercero Offline - Taquilla):* Emisión de un Tiquete Digital Seguro en la plataforma (captura de lead/data) y pago físico ejecutado en las instalaciones del aliado (ej. transporte marítimo).
 
 ## 5. Ecosistema Multi-Agente
 El proyecto convive con agentes IA especializados. Al desarrollar, respeta los lineamientos de cada rol de diseño e ingeniería:

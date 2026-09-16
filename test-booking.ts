@@ -7,12 +7,14 @@ async function testBooking() {
   console.log("Iniciando prueba de reserva marítima...");
   const payload = {
     tripType: "sol" as const,
-    destination: "Capurganá",
+    origin: "Necoclí",
+    destination: "Día de Sol: Playa Soledad y Sapzurro",
     operator: "sol_playa" as const,
-    date: "2026-09-20",
+    date: "2025-05-20",
     accommodation: "food_standard" as const,
     isSolidarityActive: true,
-    totalPrice: 425000,
+    totalPrice: 420000, // 2 pax
+    journeyType: "ida_vuelta" as const,
     passengers: [
       {
         name: "Yessy Test",
