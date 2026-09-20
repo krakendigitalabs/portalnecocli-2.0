@@ -10,6 +10,7 @@ import type { EscrowTransaction } from "@/lib/validations/schemas";
 import { getReservationsByBusiness } from "@/data/reservationService";
 import type { Reservation } from "@/types/reservation";
 import { getTrafficSummary, type TrafficSummary } from "@/lib/analytics/analytics-api";
+import type { ConciergeRequest } from "@/lib/actions/concierge";
 
 type DashboardMetric = {
   label: string;
@@ -47,6 +48,8 @@ export type SuperAdminDashboardData = {
   serviceTypeSummary: ServiceTypeSummary[];
   /** Analítica de GA4 */
   trafficSummary: TrafficSummary;
+  /** Solicitudes del conserje de IA */
+  conciergeRequests: ConciergeRequest[];
 };
 
 export type MerchantDashboardData = {
@@ -226,10 +229,16 @@ export async function getAdminDashboardFullData(): Promise<SuperAdminDashboardDa
   // 3. Analítica de GA4
   const trafficPromise = getTrafficSummary();
 
-  const [reservationsNested, escrowTransactions, trafficSummary] = await Promise.all([
+  // 4. Solicitudes del Conserje
+  const conciergePromise = db.collection("concierge_requests").orderBy("createdAt", "desc").limit(20).get()
+    .then(snap => snap.docs.map(doc => ({ id: doc.id, ...doc.data() }) as ConciergeRequest & {id: string}))
+    .catch(() => []);
+
+  const [reservationsNested, escrowTransactions, trafficSummary, conciergeRequests] = await Promise.all([
     Promise.all(allReservationsPromises),
     allEscrowPromise,
     trafficPromise,
+    conciergePromise,
   ]);
 
   const recentReservations = reservationsNested
@@ -263,5 +272,6 @@ export async function getAdminDashboardFullData(): Promise<SuperAdminDashboardDa
     businesses: allBusinesses,
     serviceTypeSummary: getServiceTypeSummary(allBusinesses),
     trafficSummary,
+    conciergeRequests,
   };
 }

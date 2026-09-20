@@ -31,14 +31,14 @@ export function LuxuryHero() {
   };
 
   return (
-    <section className="relative w-full h-screen min-h-[640px] max-h-[900px] overflow-hidden">
+    <section className="relative w-full h-[100svh] overflow-hidden bg-black flex flex-col items-center justify-between py-12 md:py-16">
       {/* ─── Video Background ─── */}
       <video
         autoPlay
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover object-center"
+        className="absolute inset-0 w-full h-full object-contain object-center"
         style={{ zIndex: 0 }}
       >
         <source
@@ -48,64 +48,26 @@ export function LuxuryHero() {
       </video>
 
       {/* ─── Gradient overlays — subtle, only corners & bottom ─── */}
-      {/* Top vignette (very light) */}
+      <div className="absolute inset-0 bg-black/40 md:bg-black/20 pointer-events-none" style={{ zIndex: 1 }} />
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           zIndex: 1,
           background:
-            "linear-gradient(to bottom, rgba(10,14,20,0.45) 0%, transparent 30%, transparent 55%, rgba(10,14,20,0.72) 100%)",
+            "linear-gradient(to bottom, rgba(10,14,20,0.8) 0%, transparent 25%, transparent 75%, rgba(10,14,20,0.8) 100%)",
         }}
       />
 
-      {/* ─── Floating Logo — top center ─── */}
-      <div
-        className="absolute top-0 left-0 right-0 flex justify-center pt-6 sm:pt-8"
-        style={{ zIndex: 10 }}
-      >
-        <motion.img
-          src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1755929246/icono_portal_necocli_nw9wle.png"
-          alt="Portal Necoclí"
-          initial={{ opacity: 0, scale: 0.75, y: -10 }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-            y: [0, -8, 0],
-          }}
-          transition={{
-            opacity: { duration: 0.9 },
-            scale: { duration: 0.9 },
-            y: { duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 },
-          }}
-          className="w-16 sm:w-20 md:w-24 drop-shadow-[0_4px_24px_rgba(255,255,255,0.35)]"
-        />
-      </div>
 
-      {/* ─── Hero copy — vertically centered slightly above middle ─── */}
-      <motion.div
-        initial={{ opacity: 0, y: 28 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: "easeOut", delay: 0.2 }}
-        className="absolute inset-x-0 flex flex-col items-center text-center px-4"
-        style={{ top: "30%", zIndex: 10 }}
-      >
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.08] tracking-tight drop-shadow-[0_2px_16px_rgba(0,0,0,0.7)]">
-          Descubre el Paraíso
-          <br />
-          <span className="text-[#F5C842]">Oculto de Colombia</span>
-        </h1>
-        <p className="mt-4 text-base sm:text-lg md:text-xl text-white/85 max-w-xl font-light leading-relaxed drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)]">
-          Hoteles, tours, restaurantes y transporte en Necoclí — reserva con seguridad garantizada.
-        </p>
-      </motion.div>
+      {/* ─── Spacer para mantener el buscador abajo ─── */}
+      <div className="flex-1" />
 
-      {/* ─── Search bar — anchored to bottom inside hero ─── */}
+      {/* ─── Search bar — anchored to bottom ─── */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease: "easeOut", delay: 0.45 }}
-        className="absolute inset-x-0 bottom-12 sm:bottom-14 px-4 sm:px-6 flex justify-center"
-        style={{ zIndex: 10 }}
+        className="relative z-10 w-full px-4 sm:px-6 flex justify-center pb-8 md:pb-4"
       >
         <form
           ref={formRef}

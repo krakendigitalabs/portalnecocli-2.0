@@ -8,6 +8,7 @@ import { brand, siteMetadata } from "@/lib/constants/site";
 import { PORTAL_APP_HEADER } from "@/lib/routing/subdomains";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import Script from "next/script";
+import { AiConciergeWidget } from "@/components/marketplace/ai-concierge-widget";
 
 const tropicalFont = Permanent_Marker({
   weight: "400",
@@ -72,9 +73,12 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           {isDashboardApp ? (
             children
           ) : (
-            <AppShell announcement="Reservas, afiliaciones y soporte local" brandName={brand.name}>
-              {children}
-            </AppShell>
+            <>
+              <AppShell announcement="Reservas, afiliaciones y soporte local" brandName={brand.name}>
+                {children}
+              </AppShell>
+              <AiConciergeWidget />
+            </>
           )}
         </AppProviders>
         
