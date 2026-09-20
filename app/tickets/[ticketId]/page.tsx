@@ -2,9 +2,9 @@
  * Ticket Digital Oficial — Portal Necoclí 2.0
  * Comprobante de Recaudo Escrow con QR real, datos legales completos e impresión en 1 página.
  */
-import { getReservationByEscrowId } from "@/data/reservationService";
+import { getReservationByEscrowId, getReservationById } from "@/data/reservationService";
 import { notFound } from "next/navigation";
-import { ArrowLeft, CheckCircle2, ShieldCheck, Home, Map, Hotel, Phone } from "lucide-react";
+import { CheckCircle2, ShieldCheck, CreditCard } from "lucide-react";
 import Link from "next/link";
 import { PrintTicketButton } from "@/components/checkout/print-ticket-button";
 import Image from "next/image";
@@ -25,14 +25,24 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function EscrowTicketPage({ params }: Props) {
   const { ticketId } = await params;
-  const reservation = await getReservationByEscrowId(ticketId);
 
-  if (!reservation || !reservation.escrow_transaction_id) {
+  // 1. Try to find by direct reservation ID (from booking flow)
+  let reservation = null;
+  try {
+    reservation = await getReservationById(ticketId);
+  } catch {
+    // Not found by reservationId, try escrow ID
+    reservation = await getReservationByEscrowId(ticketId);
+  }
+
+  if (!reservation) {
     notFound();
   }
 
-  const { lead, business_name, total_amount, reference_code, created_at } = reservation;
-  const amountFormatted = (total_amount / 100).toLocaleString("es-CO");
+  const { lead, business_name, total_amount, reference_code, created_at, id: reservId } = reservation;
+  
+  // total_amount is stored directly in COP (not cents)
+  const amountFormatted = total_amount.toLocaleString("es-CO");
   const dateFormatted = new Date(created_at).toLocaleDateString("es-CO", {
     year: "numeric",
     month: "long",
@@ -41,11 +51,31 @@ export default async function EscrowTicketPage({ params }: Props) {
     minute: "2-digit",
   });
 
-  // QR apuntando al dominio personalizado del portal
-  const publicTicketUrl = `https://portal-necocli.qrtiket.com/tickets/${ticketId}`;
+  // Wompi link — amount in cents (with integrity signature for production)
+  const wompiKey = process.env.NEXT_PUBLIC_WOMPI_KEY ?? "";
+  const wompiRef = reference_code;
+  const wompiAmountCents = total_amount * 100; // convert COP → centavos
+  const wompiIntegritySecret = process.env.WOMPI_INTEGRITY_SECRET ?? "";
+
+  // Generate integrity signature: SHA256(reference + amountCents + "COP" + secret)
+  let wompiIntegrity = "";
+  if (wompiIntegritySecret) {
+    const { createHash } = await import("crypto");
+    const dataToHash = `${wompiRef}${wompiAmountCents}COP${wompiIntegritySecret}`;
+    wompiIntegrity = createHash("sha256").update(dataToHash).digest("hex");
+  }
+
+  const wompiLink = wompiKey
+    ? `https://checkout.wompi.co/p/?public-key=${wompiKey}&currency=COP&amount-in-cents=${wompiAmountCents}&reference=${wompiRef}${wompiIntegrity ? `&signature:integrity=${wompiIntegrity}` : ""}`
+    : null;
+
+  // QR apuntando al dominio real del portal
+  const publicTicketUrl = `https://tours.portalnecocli.com/tickets/${ticketId}`;
   
   // API pública gratuita para generar QR real (sin instalar dependencias)
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(publicTicketUrl)}&bgcolor=ffffff&color=0f2e21&margin=4&format=png`;
+
+
 
   return (
     <>
@@ -96,40 +126,6 @@ export default async function EscrowTicketPage({ params }: Props) {
         }
       `}</style>
 
-      {/* ─── Menú de Navegación (visible en pantalla, oculto en impresión) ─── */}
-      <nav className="print:hidden sticky top-0 z-50 w-full bg-white border-b border-gray-100 shadow-sm">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 font-black text-lg text-[#0f2e21] tracking-tight">
-            <ShieldCheck className="w-5 h-5 text-teal-600" />
-            Portal Necoclí
-          </Link>
-          {/* Links de navegación */}
-          <div className="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-500">
-            <Link href="/" className="flex items-center gap-1.5 hover:text-[#0f2e21] transition-colors">
-              <Home className="w-4 h-4" /> Inicio
-            </Link>
-            <Link href="/negocios" className="flex items-center gap-1.5 hover:text-[#0f2e21] transition-colors">
-              <Map className="w-4 h-4" /> Explorar
-            </Link>
-            <Link href="/hoteles" className="flex items-center gap-1.5 hover:text-[#0f2e21] transition-colors">
-              <Hotel className="w-4 h-4" /> Hoteles
-            </Link>
-            <a href="tel:3217511866" className="flex items-center gap-1.5 hover:text-[#0f2e21] transition-colors">
-              <Phone className="w-4 h-4" /> 3217511866
-            </a>
-          </div>
-          {/* Volver al panel */}
-          <Link
-            href="/customer/reservas"
-            className="flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-[#0f2e21] transition-colors"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            Mis Reservas
-          </Link>
-        </div>
-      </nav>
-
       {/* ─── Área principal ─── */}
       <main className="print:min-h-0 print:py-0 min-h-screen bg-white py-8 px-4 sm:px-6">
         <div className="ticket-wrapper max-w-2xl mx-auto space-y-5 print:space-y-0">
@@ -143,6 +139,22 @@ export default async function EscrowTicketPage({ params }: Props) {
               <PrintTicketButton />
             </div>
           </div>
+
+          {/* Botón Wompi — Pago en línea */}
+          {wompiLink && (
+            <div className="print:hidden mb-4">
+              <a
+                href={wompiLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-3 w-full bg-[#7B3FE4] hover:bg-[#6a35ca] text-white font-bold text-base py-4 px-6 rounded-2xl shadow-lg shadow-[#7B3FE4]/25 transition-all hover:-translate-y-0.5 active:scale-95"
+              >
+                <CreditCard className="w-5 h-5" />
+                Pagar ahora con Wompi — ${amountFormatted} COP
+              </a>
+              <p className="text-center text-xs text-gray-400 mt-2">Pago seguro con tarjeta, Nequi o PSE</p>
+            </div>
+          )}
 
           {/* ─────────────────────────────────────────
                TICKET CARD

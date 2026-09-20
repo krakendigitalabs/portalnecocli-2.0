@@ -8,11 +8,6 @@ const galleryImages = [
   "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737733633/IMG_20240116_174428_atjtfv.jpg",
   "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737748238/IMG_20240116_175237_d3wlur.jpg",
   "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737748238/IMG_20240107_161824_soutyq.jpg",
-  // SVG especial
-  {
-    src: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737875217/default-monochrome-black_bnk7um.svg",
-    isSvg: true,
-  },
   "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737931944/IMG_20241217_173202_a2jdjk.jpg",
   "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737932109/Playa_necocli_6_usilb7.jpg",
   "https://res.cloudinary.com/dwxk79gt0/image/upload/v1739243210/IMG_20241217_173322_xfanmb.jpg",

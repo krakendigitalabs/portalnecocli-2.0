@@ -33,6 +33,12 @@ export function middleware(request: NextRequest) {
 
   requestHeaders.set(PORTAL_APP_HEADER, app);
 
+  // Marcar rutas de ticket como standalone (sin AppShell)
+  const pathname = request.nextUrl.pathname;
+  if (pathname.startsWith("/tickets")) {
+    requestHeaders.set("x-standalone-route", "true");
+  }
+
   const subdomainApp = host ? resolvePortalAppFromHost(host) : "public";
   const rewritePath = getDashboardRewritePath(request.nextUrl.pathname, subdomainApp);
 
