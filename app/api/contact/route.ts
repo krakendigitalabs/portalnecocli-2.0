@@ -186,7 +186,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ success: false, errors: error.errors }, { status: 400 });
+      return NextResponse.json({ success: false, errors: error.issues }, { status: 400 });
     }
     console.error("[Contact API]", error);
     return NextResponse.json({ success: false, error: "Error interno del servidor" }, { status: 500 });
