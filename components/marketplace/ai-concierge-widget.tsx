@@ -344,7 +344,7 @@ export function AiConciergeWidget() {
                   rows={1}
                 />
                 <button
-                  onClick={handleSend}
+                  onClick={() => handleSend()}
                   disabled={!input.trim() || isLoading}
                   className="bg-emerald-600 text-white rounded-xl p-2.5 h-[44px] w-[44px] flex items-center justify-center hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shrink-0"
                 >
