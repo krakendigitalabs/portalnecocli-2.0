@@ -251,6 +251,57 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
 
       <div className="h-px w-full bg-ink/8" />
 
+      {/* ─── Solicitudes del Conserje IA (Alejandro) ─── */}
+      <SurfaceCard className="rounded-[28px] p-8">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-6">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-emerald-600">
+              Conserje IA PasiaSano
+            </p>
+            <h2 className="mt-2 text-2xl font-bold text-ink">
+              Solicitudes Especiales y Domicilios
+            </h2>
+            <p className="mt-1 text-sm text-ink/60">
+              Generadas por el Asistente Virtual Alejandro (Portal Necoclí 2.0)
+            </p>
+          </div>
+          <span className="shrink-0 rounded-full bg-emerald-100 px-4 py-1.5 text-xs font-bold text-emerald-800">
+            {data.conciergeRequests?.length || 0} recibidas
+          </span>
+        </div>
+
+        {(data.conciergeRequests?.length || 0) > 0 ? (
+          <div className="grid gap-4">
+            {data.conciergeRequests.map((req, i) => (
+              <div key={i} className="flex flex-col gap-3 rounded-[18px] border border-ink/8 bg-white px-5 py-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-ink/5 pb-3">
+                  <div>
+                    <p className="text-sm font-bold text-ink">{req.name}</p>
+                    <p className="text-xs text-ink/50">{req.email} · {req.phone}</p>
+                  </div>
+                  <span className="shrink-0 rounded-full bg-emerald-50 border border-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                    {req.status === "pending" ? "Pendiente" : req.status}
+                  </span>
+                </div>
+                <p className="text-sm text-ink/80 italic leading-relaxed font-serif">
+                  "{req.request}"
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-ink/8 bg-emerald-50/50 px-6 py-10 text-center">
+            <p className="text-3xl">☕</p>
+            <p className="mt-3 text-sm font-semibold text-emerald-900">Alejandro está esperando solicitudes</p>
+            <p className="mt-1 text-xs text-emerald-700/60">
+              Las peticiones de alojamiento, compras y domicilios aparecerán aquí en tiempo real.
+            </p>
+          </div>
+        )}
+      </SurfaceCard>
+
+      <div className="h-px w-full bg-ink/8" />
+
       {/* ─── Distribución por tipo de servicio ─── */}
       <div className="grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
         <SurfaceCard className="rounded-[28px] p-8">
