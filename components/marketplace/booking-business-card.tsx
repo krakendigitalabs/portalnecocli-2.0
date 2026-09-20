@@ -68,7 +68,7 @@ export function BookingBusinessCard({ business }: BookingBusinessCardProps) {
             src={business.image}
             alt={business.name}
             fill
-            className="object-cover transition duration-500 hover:scale-105"
+            className="object-contain p-4 bg-white transition duration-500 hover:scale-105"
             sizes="(max-width: 640px) 100vw, 280px"
           />
         </Link>

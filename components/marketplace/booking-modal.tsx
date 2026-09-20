@@ -24,6 +24,7 @@ interface BookingModalProps {
   businessId: string;
   businessName: string;
   priceRange?: string;
+  mode?: "booking" | "order";
   onClose: () => void;
 }
 
@@ -42,7 +43,7 @@ const initialFormData: LeadFormData = {
 };
 
 /** Componente de formulario de reserva multi-paso con diseño Premium */
-export function BookingModal({ businessId, businessName, priceRange, onClose }: BookingModalProps) {
+export function BookingModal({ businessId, businessName, priceRange, mode = "booking", onClose }: BookingModalProps) {
   const [step, setStep] = useState<Step>("form");
   const [formData, setFormData] = useState<LeadFormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -182,7 +183,7 @@ export function BookingModal({ businessId, businessName, priceRange, onClose }: 
             ✕
           </button>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-teal-100/70">
-            Portal Necoclí · Reserva
+            Portal Necoclí · {mode === "order" ? "Pedido" : "Reserva"}
           </p>
           <h2 className="mt-1 text-xl font-bold text-white">{businessName}</h2>
           {priceRange && (
@@ -225,7 +226,7 @@ export function BookingModal({ businessId, businessName, priceRange, onClose }: 
                 </div>
 
                 {/* Teléfono y WhatsApp en fila */}
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className={mode === "order" ? "hidden" : "grid gap-4 sm:grid-cols-2"}>
                   <div>
                     <label
                       className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ink/55"
@@ -325,7 +326,7 @@ export function BookingModal({ businessId, businessName, priceRange, onClose }: 
                 </div>
 
                 {/* Steppers de Huéspedes y Habitaciones */}
-                <div className="rounded-xl border border-ink/14 bg-sand/20 p-4">
+                <div className={mode === "order" ? "hidden" : "rounded-xl border border-ink/14 bg-sand/20 p-4"}>
                   <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-ink/55">
                     Huéspedes y Habitaciones
                   </p>
@@ -432,13 +433,13 @@ export function BookingModal({ businessId, businessName, priceRange, onClose }: 
                     className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ink/55"
                     htmlFor="notes"
                   >
-                    Detalla tu solicitud (opcional)
+                    {mode === "order" ? "Lista de tu pedido y dirección de entrega *" : "Detalla tu solicitud (opcional)"}
                   </label>
                   <textarea
                     className="w-full resize-none rounded-xl border border-ink/14 bg-sand/40 px-4 py-3 text-sm text-ink outline-none transition placeholder:text-ink/35 focus:border-teal/50 focus:ring-2 focus:ring-teal/10"
                     id="notes"
                     name="notes"
-                    placeholder="Fechas, número de personas, preferencias..."
+                    placeholder={mode === "order" ? "Ej: 2 pacas de agua, 1 arroz. Entregar en Barrio El Pescador..." : "Fechas, número de personas, preferencias..."}
                     rows={3}
                     value={formData.notes}
                     onChange={handleChange}
@@ -462,7 +463,7 @@ export function BookingModal({ businessId, businessName, priceRange, onClose }: 
                   type="submit"
                   variant="primary"
                 >
-                  {isSubmitting ? "Enviando…" : "Solicitar reserva →"}
+                  {isSubmitting ? "Enviando…" : (mode === "order" ? "Enviar pedido →" : "Solicitar reserva →")}
                 </Button>
                 <Button size="lg" type="button" variant="secondary" onClick={onClose}>
                   Cancelar
@@ -482,7 +483,7 @@ export function BookingModal({ businessId, businessName, priceRange, onClose }: 
               <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-teal/10 text-3xl">
                 🌴
               </div>
-              <h3 className="text-2xl font-bold text-ink">¡Reserva recibida!</h3>
+              <h3 className="text-2xl font-bold text-ink">{mode === "order" ? "¡Pedido recibido!" : "¡Reserva recibida!"}</h3>
               <p className="mt-2 text-sm leading-6 text-ink/65">
                 Hemos enviado la confirmación a{" "}
                 <span className="font-semibold text-teal">{formData.email}</span>. Nuestro equipo se
@@ -492,7 +493,7 @@ export function BookingModal({ businessId, businessName, priceRange, onClose }: 
               {/* Código de referencia */}
               <div className="mt-6 rounded-2xl border border-ink/10 bg-sand/50 px-6 py-5">
                 <p className="text-xs font-semibold uppercase tracking-widest text-coral">
-                  Tu código de reserva
+                  Tu código de {mode === "order" ? "pedido" : "reserva"}
                 </p>
                 <p className="mt-2 text-3xl font-extrabold tracking-wider text-ink">
                   {referenceCode}
@@ -503,7 +504,7 @@ export function BookingModal({ businessId, businessName, priceRange, onClose }: 
               {/* WhatsApp directo */}
               <a
                 className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-white shadow-soft transition hover:bg-[#1EBF5A]"
-                href={`https://wa.me/573214537484?text=${encodeURIComponent(`Hola! Acabo de hacer una reserva en ${businessName}. Mi código es: ${referenceCode}`)}`}
+                href={`https://wa.me/573214537484?text=${encodeURIComponent(`Hola! Acabo de hacer un ${mode === "order" ? "pedido" : "reserva"} en ${businessName}. Mi código es: ${referenceCode}`)}`}
                 rel="noreferrer"
                 target="_blank"
               >
