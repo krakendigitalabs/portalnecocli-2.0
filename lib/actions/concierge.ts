@@ -27,7 +27,7 @@ export async function submitConciergeRequest(data: ConciergeRequest) {
 
     // 2. Enviar email a Portal Necoclí
     await resend.emails.send({
-      from: "Conserje PasiaSano <guia@portalnecocli.com>", // Replace with verified domain if different
+      from: "Alejandro <guia@portalnecocli.com>", // Replace with verified domain if different
       to: ["guia@portalnecocli.com"],
       subject: `Nueva Solicitud de Domicilio/Reserva - ${data.name}`,
       html: `
@@ -42,13 +42,13 @@ export async function submitConciergeRequest(data: ConciergeRequest) {
     // 3. Enviar email de confirmación al cliente
     if (data.email) {
       await resend.emails.send({
-        from: "Alejandro (Conserje PasiaSano) <guia@portalnecocli.com>", 
+        from: "Alejandro <guia@portalnecocli.com>", 
         to: [data.email],
         subject: `Hemos recibido tu solicitud - Portal Necoclí`,
         html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
             <h1 style="color: #0f2e21;">Hola, ${data.name}!</h1>
-            <p>Soy Alejandro, tu conserje de PasiaSano en Portal Necoclí.</p>
+            <p>Soy Alejandro, tu guía de Portal Necoclí.</p>
             <p>He recibido tu solicitud y nuestro equipo ya está trabajando para brindarte la mejor experiencia:</p>
             <blockquote style="background-color: #f3f4f6; padding: 15px; border-left: 4px solid #10b981;">
               "${data.request}"

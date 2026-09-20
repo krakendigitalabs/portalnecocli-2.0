@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Coffee, CheckCircle2 } from "lucide-react";
+import { MessageCircle, X, Send, Coffee, CheckCircle2, Heart } from "lucide-react";
 import { chatWithAlejandro, ChatMessage } from "@/lib/actions/ai";
 import { submitConciergeRequest } from "@/lib/actions/concierge";
 import Image from "next/image";
@@ -12,7 +12,7 @@ export function AiConciergeWidget() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "model",
-      content: "¡Hola! Soy Alejandro, tu conserje de PasiaSano en Portal Necoclí. ¿En qué te puedo ayudar hoy? Te puedo asesorar con alojamientos espectaculares o llevarte compras y domicilios hasta la puerta de tu hotel.",
+      content: "Hola soy Alejandro guía de portal necocli, te ayudamos a reservar en hoteles certificados y de confianza, te buscamos comida a la carta o te llevamos la comida hasta la playa con nuestros restaurantes aliados, podemos hacer las compras por ti víveres, alimentos, licores y snacks, medicamento, productos de ferretería y otros ¿Qué necesitas o en qué fechas planeas visitarnos? ¡Dime en qué te puedo colaborar hoy!",
     },
   ]);
   const [input, setInput] = useState("");
@@ -23,7 +23,26 @@ export function AiConciergeWidget() {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", request: "" });
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [formType, setFormType] = useState<string>("general");
 
+  // Estado para modal de propina
+  const [showTipModal, setShowTipModal] = useState(false);
+  const [tipAmount, setTipAmount] = useState<string>("5000");
+
+  const handleWompiPayment = () => {
+    const amountInCents = parseInt(tipAmount) * 100;
+    if (isNaN(amountInCents) || amountInCents <= 0) return;
+    
+    // Generar referencia única
+    const reference = `PROPINA_ALEJANDRO_${Date.now()}`;
+    // Usamos la llave pública de producción configurada en las variables de entorno
+    const publicKey = process.env.NEXT_PUBLIC_WOMPI_KEY || "pub_prod_r6V49rlDfVKH0rp2VkIFEzqw0oVwwgmi";
+    
+    const wompiUrl = `https://checkout.wompi.co/p/?public-key=${publicKey}&currency=COP&amount-in-cents=${amountInCents}&reference=${reference}&redirect-url=https://portalnecocli.com`;
+    
+    window.open(wompiUrl, '_blank');
+    setShowTipModal(false);
+  };
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -32,11 +51,11 @@ export function AiConciergeWidget() {
     scrollToBottom();
   }, [messages, showForm]);
 
-  const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+  const handleSend = async (messageOverride?: string) => {
+    const userMessage = (typeof messageOverride === 'string' ? messageOverride : input).trim();
+    if (!userMessage || isLoading) return;
 
-    const userMessage = input.trim();
-    setInput("");
+    if (!messageOverride) setInput("");
     
     // Si el usuario da señales de querer hacer un pedido
     if (userMessage.toLowerCase().includes("solicitar") || userMessage.toLowerCase().includes("pedir") || userMessage.toLowerCase().includes("reservar")) {
@@ -102,7 +121,7 @@ export function AiConciergeWidget() {
               </div>
               {/* <MessageCircle className="w-6 h-6" /> */}
               <div className="relative w-8 h-8 rounded-full overflow-hidden border-2 border-white">
-                <Image src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1754280672/logo_pasiasano_it6yh0.png" alt="PasiaSano" fill className="object-cover" />
+                <Image src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1754280672/logo_pasiasano_it6yh0.png" alt="Alejandro" fill className="object-cover" />
               </div>
             </motion.button>
           )}
@@ -122,24 +141,24 @@ export function AiConciergeWidget() {
             {/* Header */}
             <div className="bg-emerald-600 p-4 text-white flex items-center justify-between shadow-md relative z-10">
               <div className="flex items-center gap-3">
-                <div className="relative w-10 h-10 rounded-full overflow-hidden bg-white p-0.5">
-                   <div className="relative w-full h-full rounded-full overflow-hidden">
-                     <Image src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1754280672/logo_pasiasano_it6yh0.png" alt="Alejandro" fill className="object-cover" />
+                <div className="relative w-14 h-14 rounded-full overflow-hidden bg-white p-0.5 shadow-sm">
+                   <div className="relative w-full h-full rounded-full overflow-hidden bg-emerald-50">
+                     <Image src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1754280672/logo_pasiasano_it6yh0.png" alt="Alejandro" fill className="object-cover scale-110" />
                    </div>
                 </div>
                 <div>
-                  <h3 className="font-semibold text-sm">Alejandro</h3>
-                  <p className="text-xs text-emerald-100">Conserje PasiaSano</p>
+                  <h3 className="font-bold text-base tracking-wide">Alejandro</h3>
+                  <p className="text-xs text-emerald-100 font-medium">Guía Local</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <button
-                  className="bg-emerald-700/50 hover:bg-emerald-700 text-white text-xs px-2 py-1.5 rounded flex items-center gap-1 transition-colors"
-                  onClick={() => alert("Próximamente: Integración con Checkout Wompi para propinas.")}
+                  className="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-colors shadow-[0_0_10px_rgba(239,68,68,0.5)] animate-pulse border border-red-400"
+                  onClick={() => setShowTipModal(true)}
                   title="Dar propina al Conserje"
                 >
-                  <Coffee className="w-3 h-3" />
-                  <span>Propina</span>
+                  <Heart className="w-3.5 h-3.5 fill-white" />
+                  <span className="font-bold">Propina</span>
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
@@ -149,6 +168,68 @@ export function AiConciergeWidget() {
                 </button>
               </div>
             </div>
+
+            {/* Modal de Propina */}
+            <AnimatePresence>
+              {showTipModal && (
+                <motion.div 
+                  initial={{ opacity: 0 }} 
+                  animate={{ opacity: 1 }} 
+                  exit={{ opacity: 0 }}
+                  className="absolute inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
+                >
+                  <motion.div 
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="bg-white w-full max-w-sm rounded-xl p-5 shadow-2xl relative"
+                  >
+                    <button 
+                      onClick={() => setShowTipModal(false)}
+                      className="absolute top-3 right-3 text-gray-400 hover:text-gray-700"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                    
+                    <div className="text-center mb-4">
+                      <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-2 text-emerald-600">
+                        <Coffee className="w-6 h-6" />
+                      </div>
+                      <h3 className="font-bold text-lg text-gray-900">Invítale un café a Alejandro</h3>
+                      <p className="text-sm text-gray-500">Apoya a tu guía local voluntariamente.</p>
+                    </div>
+
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">¿Cuánto deseas aportar? (COP)</label>
+                      <input 
+                        type="number" 
+                        value={tipAmount}
+                        onChange={(e) => setTipAmount(e.target.value)}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 font-semibold text-lg text-gray-900"
+                        placeholder="Ej: 5000"
+                      />
+                      <div className="flex gap-2 mt-2">
+                        {[5000, 10000, 20000].map(amt => (
+                          <button
+                            key={amt}
+                            onClick={() => setTipAmount(amt.toString())}
+                            className={`flex-1 py-1 text-xs font-medium rounded border transition-colors ${tipAmount === amt.toString() ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'}`}
+                          >
+                            ${(amt/1000)}k
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <button 
+                      onClick={handleWompiPayment}
+                      className="w-full bg-[#2733d1] hover:bg-[#1a239b] text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition-colors"
+                    >
+                      Pagar con Wompi
+                    </button>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Messages Area */}
             <div className="flex-1 overflow-y-auto p-4 bg-gray-50 flex flex-col gap-4">
@@ -178,9 +259,54 @@ export function AiConciergeWidget() {
                 </div>
               )}
               
+              {/* Quick Replies */}
+              {!isLoading && messages.length > 0 && messages[messages.length - 1].role === "model" && !showForm && (
+                <div className="flex flex-wrap gap-2 mt-2 pb-4">
+                  {[
+                    "🏝️ Tour de Islas",
+                    "📦 Armar Paquete",
+                    "🍔 Pedir Domicilio",
+                    "🏨 Buscar Hotel",
+                    "🛺 Motocarro local ($10k)"
+                  ].map((reply) => (
+                    <button
+                      key={reply}
+                      onClick={() => {
+                        let type = "general";
+                        if (reply.includes("Hotel")) type = "hotel";
+                        if (reply.includes("Domicilio")) type = "domicilio";
+                        if (reply.includes("Paquete")) type = "paquete";
+                        if (reply.includes("Tour")) type = "tour";
+                        if (reply.includes("Motocarro") || reply.includes("Transporte")) type = "transporte";
+                        
+                        setFormType(type);
+                        setFormData(prev => ({ ...prev, request: reply }));
+                        setShowForm(true);
+                      }}
+                      className="bg-white border border-emerald-100 text-emerald-700 text-xs px-3 py-1.5 rounded-full shadow-sm hover:bg-emerald-50 hover:border-emerald-300 transition-colors"
+                    >
+                      {reply}
+                    </button>
+                  ))}
+                </div>
+              )}
+              
               {showForm && (
-                <div className="bg-white border border-emerald-100 rounded-xl p-4 shadow-sm text-sm">
-                  <h4 className="font-semibold text-emerald-800 mb-2">Completar Solicitud</h4>
+                <div className="bg-white border border-emerald-100 rounded-xl p-4 shadow-sm text-sm relative">
+                  <button 
+                    onClick={() => setShowForm(false)} 
+                    className="absolute top-3 right-3 p-1 text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-full transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                  <h4 className="font-semibold text-emerald-800 mb-2 pr-6">
+                    {formType === "hotel" && "Reserva de Hotel"}
+                    {formType === "domicilio" && "Solicitud de Domicilio"}
+                    {formType === "paquete" && "Armar Paquete Turístico"}
+                    {formType === "tour" && "Tour de Islas"}
+                    {formType === "transporte" && "Solicitud de Transporte"}
+                    {formType === "general" && "Completar Solicitud"}
+                  </h4>
                   <form onSubmit={handleFormSubmit} className="flex flex-col gap-2">
                     <input required type="text" placeholder="Nombre completo" className="w-full border rounded p-2 text-xs" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
                     <input required type="email" placeholder="Correo electrónico" className="w-full border rounded p-2 text-xs" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
@@ -201,8 +327,11 @@ export function AiConciergeWidget() {
               <div className="p-3 bg-white border-t flex items-end gap-2 relative">
                 <button 
                   type="button"
-                  onClick={() => setShowForm(true)}
-                  className="absolute -top-10 left-1/2 -translate-x-1/2 bg-emerald-100 text-emerald-800 text-xs px-3 py-1.5 rounded-full font-medium shadow-sm border border-emerald-200 hover:bg-emerald-200 transition-colors whitespace-nowrap"
+                  onClick={() => {
+                    setFormType("general");
+                    setShowForm(true);
+                  }}
+                  className="absolute -top-10 left-1/2 -translate-x-1/2 bg-emerald-100 text-emerald-800 text-xs px-4 py-1.5 rounded-full font-bold shadow-[0_0_15px_rgba(16,185,129,0.4)] border border-emerald-300 hover:bg-emerald-200 transition-colors whitespace-nowrap animate-pulse"
                 >
                   Generar Solicitud Oficial
                 </button>
