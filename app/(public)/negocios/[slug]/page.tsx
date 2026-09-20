@@ -157,7 +157,7 @@ export default async function BusinessDetailPage({ params }: BusinessDetailPageP
       <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
         <Card className="overflow-hidden rounded-[34px] border-ink/10">
           <div className="aspect-[1.35/1] overflow-hidden bg-sand">
-            <img alt={business.name} className="h-full w-full object-cover" src={business.image} />
+            <img alt={business.name} className="h-full w-full object-contain p-4 bg-white" src={business.image} />
           </div>
         </Card>
         <div className="space-y-4">
@@ -207,7 +207,7 @@ export default async function BusinessDetailPage({ params }: BusinessDetailPageP
                   <img
                     src={related.image}
                     alt={related.name}
-                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="h-full w-full object-contain p-2 bg-white group-hover:scale-110 transition-transform duration-500"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -235,7 +235,7 @@ export default async function BusinessDetailPage({ params }: BusinessDetailPageP
                 <div className="aspect-[1.3/1] overflow-hidden bg-sand">
                   <img
                     alt={`${business.name} referencia visual`}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-contain p-4 bg-white"
                     src={image}
                   />
                 </div>

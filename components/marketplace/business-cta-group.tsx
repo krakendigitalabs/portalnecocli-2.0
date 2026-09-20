@@ -19,18 +19,30 @@ export function BusinessCTAGroup({ business, compact = false }: BusinessCTAGroup
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const sizeClass = compact ? "md" : "lg";
+  const isOrderMode = ["restaurante", "comercio", "domicilios"].includes(business.serviceType);
 
   return (
     <>
       <div
-        className={compact ? "flex flex-col gap-2 sm:flex-row" : "flex flex-col gap-3 sm:flex-row"}
+        className={compact ? "flex flex-col gap-2 sm:flex-row flex-wrap" : "flex flex-col gap-3 sm:flex-row flex-wrap"}
       >
-        {/* Botón primario → abre el formulario de reserva */}
-        <Button size={sizeClass} variant="primary" onClick={() => setIsModalOpen(true)}>
+        {/* Botón Reservar → abre el formulario de reserva o va a reservas-maritimas */}
+        {business.slug === "transporte-maritimo-sol-y-playa" || business.slug === "el-caribe-sas" ? (
+          <Button href="/reservas-maritimas" size={sizeClass} variant="primary">
+            Reservar Tour / Día de Sol
+          </Button>
+        ) : (
+          <Button size={sizeClass} variant="primary" onClick={() => setIsModalOpen(true)}>
+            {isOrderMode ? "Hacer Pedido" : "Reservar ahora"}
+          </Button>
+        )}
+
+        {/* Botón primario → enlace externo (WhatsApp / teléfono) */}
+        <Button href={business.ctaPrimaryHref} size={sizeClass} variant="secondary" className="border-teal text-teal hover:bg-teal hover:text-white">
           {business.ctaPrimaryLabel}
         </Button>
 
-        {/* Botón secundario → enlace externo (WhatsApp / teléfono) */}
+        {/* Botón secundario → enlace externo */}
         <Button href={business.ctaSecondaryHref} size={sizeClass} variant="secondary">
           {business.ctaSecondaryLabel}
         </Button>
@@ -42,6 +54,7 @@ export function BusinessCTAGroup({ business, compact = false }: BusinessCTAGroup
           businessId={business.id}
           businessName={business.name}
           priceRange={business.priceRange}
+          mode={isOrderMode ? "order" : "booking"}
           onClose={() => setIsModalOpen(false)}
         />
       )}

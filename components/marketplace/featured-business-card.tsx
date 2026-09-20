@@ -16,7 +16,7 @@ export function FeaturedBusinessCard({ business }: FeaturedBusinessCardProps) {
         <div className="aspect-[1.2/1] overflow-hidden bg-sand">
           <img
             alt={business.name}
-            className="h-full w-full object-cover transition duration-500 hover:scale-[1.03]"
+            className="h-full w-full object-contain p-4 bg-white transition duration-500 hover:scale-[1.03]"
             src={business.image}
           />
         </div>
