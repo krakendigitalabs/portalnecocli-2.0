@@ -1,6 +1,11 @@
-import { MapPin, CheckCircle2, Ticket } from "lucide-react";
+"use client";
+
+import { MapPin, CheckCircle2, Ticket, ChevronUp } from "lucide-react";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Container } from "@/components/ui/container";
 import { SurfaceCard } from "@/components/ui/surface-card";
+import { BookingForm } from "@/components/marketplace/booking-form";
 
 const paquetesDestinos = [
   {
@@ -10,7 +15,8 @@ const paquetesDestinos = [
     incluye: ["Transporte ida y regreso", "Desayuno y Almuerzo", "Guía acompañante", "Tarjeta de asistencia médica"],
     recorrido: "Visita al Peñol (Panorámico), La casa al revés (no incluye entrada), Alto del chocho, Piedra del peñol (no incluye ascenso), Visita a la plaza de zócalos, Parque central de Guatapé, Pasaporte para Barco rumbero, Malecón.",
     salidas: "Parque Poblado, Estación Metro Estadio (Recogida en hotel disponible)",
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789889388/guatape_brq8fb.jpg"
+    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789889388/guatape_brq8fb.jpg",
+    options: [{ id: "guatape", label: "Guatapé Tour", price: 129000 }]
   },
   {
     id: 2,
@@ -19,7 +25,11 @@ const paquetesDestinos = [
     incluye: ["Transporte ida y regreso", "Desayuno", "Guía Acompañante", "Tarjeta de asistencia médica", "NO INCLUYE ALMUERZO"],
     recorrido: "Visita a la plaza Santorini. BÁSICO: Lago de los hipopótamos, Amazon safari, Gran sabana africana, Museo memorial, Kamaria, Mariposario (No incluye piscinas). SAFARI: Incluye básico + Río Salvaje, Cataratas Victoria y Cobras.",
     salidas: "Punto de encuentro",
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789889804/NAPOLES_wfxc7m.jpg"
+    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789889804/NAPOLES_wfxc7m.jpg",
+    options: [
+      { id: "napoles_basico", label: "Pasaporte Básico", price: 259000 },
+      { id: "napoles_safari", label: "Pasaporte Safari", price: 299000 }
+    ]
   },
   {
     id: 3,
@@ -28,7 +38,8 @@ const paquetesDestinos = [
     incluye: ["Transporte ida y regreso", "Almuerzo", "Guía acompañante", "Tarjeta de asistencia médica"],
     recorrido: "Ingreso al Salto del Tequendamita. Visita al Parque del Retiro, Visita Parque de la Ceja, Visita al Parque de San Antonio de Pereira, Visita al Carmen de Viboral.",
     salidas: "Todos los días",
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789889413/oriente_aifrab.jpg"
+    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789889413/oriente_aifrab.jpg",
+    options: [{ id: "oriente", label: "Tour Vuelta Oriente", price: 145000 }]
   },
   {
     id: 4,
@@ -37,11 +48,14 @@ const paquetesDestinos = [
     incluye: ["Transporte ida y regreso", "Tarjeta de asistencia médica", "Una degustación (Cerveza, Agua, Gaseosa)"],
     recorrido: "Panorámico: Avenida 70, Puente de la 4 SUR, Parque del Poblado, Milla de Oro, Avenida 33.",
     salidas: "Estación Metro Estadio (7:00 PM), Parque Poblado (7:30 PM)",
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789890122/CHIVA_ELEJIDA_huazry.jpg"
+    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789890122/CHIVA_ELEJIDA_huazry.jpg",
+    options: [{ id: "chiva", label: "Chiva Rumbera", price: 70000 }]
   }
 ];
 
 export function ExternalToursSection() {
+  const [openId, setOpenId] = useState<number | null>(null);
+
   return (
     <section className="py-24 bg-white relative overflow-hidden" id="tourists">
       <div className="absolute inset-0 bg-ink/5 pointer-events-none" />
@@ -58,75 +72,109 @@ export function ExternalToursSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-12">
-          {paquetesDestinos.map((tour) => (
-            <SurfaceCard key={tour.id} className="p-0 overflow-hidden flex flex-col lg:flex-row group transition-shadow hover:shadow-2xl hover:shadow-ink/10">
-              {/* Image Header (Width and Grandeur) */}
-              <div className="w-full lg:w-[55%] h-[320px] lg:h-auto lg:min-h-[450px] relative overflow-hidden shrink-0">
-                <img 
-                  src={tour.image} 
-                  alt={tour.titulo} 
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-transparent lg:bg-gradient-to-r lg:from-ink/40 lg:via-transparent lg:to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 lg:hidden">
-                  <h3 className="text-3xl font-bold text-white leading-tight font-tropical tracking-wide drop-shadow-md">
-                    {tour.titulo}
-                  </h3>
-                </div>
-              </div>
-
-              {/* Content Below / Beside */}
-              <div className="p-6 sm:p-10 lg:p-12 flex-1 flex flex-col justify-center bg-white relative z-10">
-                <div>
-                  <h3 className="hidden lg:block text-4xl font-bold text-ink mb-4 font-tropical tracking-wide">
-                    {tour.titulo}
-                  </h3>
-                  
-                  <div className="flex items-center text-teal font-extrabold text-xl mb-6 bg-teal/5 inline-flex px-4 py-2 rounded-full border border-teal/10">
-                    <Ticket className="w-5 h-5 mr-2" />
-                    {tour.precio}
-                  </div>
-                  
-                  <div className="mb-4">
-                    <p className="text-xs uppercase tracking-wider text-ink/40 font-bold mb-2">Recorrido</p>
-                    <p className="text-sm text-ink/70 leading-relaxed line-clamp-3 group-hover:line-clamp-none transition-all">
-                      {tour.recorrido}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-xs uppercase tracking-wider text-ink/40 font-bold mb-2">Incluye</p>
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {tour.incluye.map((item, idx) => (
-                        <li key={idx} className="flex items-start text-xs text-ink/80">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-green mr-1.5 mt-0.5 shrink-0" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-ink/10 flex items-center justify-between">
-                  {tour.salidas && (
-                    <div className="flex items-center text-xs text-ink/60 max-w-[60%]">
-                      <MapPin className="w-4 h-4 mr-1.5 shrink-0 text-coral" />
-                      <span className="truncate">{tour.salidas}</span>
+        <div className="grid grid-cols-1 gap-8 relative z-10">
+          {paquetesDestinos.map((tour) => {
+            const isOpen = openId === tour.id;
+            return (
+              <div key={tour.id}>
+                {/* ─ Tour Card ─ */}
+                <SurfaceCard className={`p-0 overflow-hidden flex flex-col lg:flex-row group transition-shadow hover:shadow-2xl hover:shadow-ink/10 ${isOpen ? "rounded-b-none border-b-0" : ""}`}>
+                  {/* Image */}
+                  <div className="w-full lg:w-[55%] h-[320px] lg:h-auto lg:min-h-[420px] relative overflow-hidden shrink-0">
+                    <img
+                      src={tour.image}
+                      alt={tour.titulo}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-transparent lg:bg-gradient-to-r lg:from-ink/40 lg:via-transparent lg:to-transparent" />
+                    <div className="absolute bottom-6 left-6 right-6 lg:hidden">
+                      <h3 className="text-3xl font-bold text-white leading-tight font-tropical tracking-wide drop-shadow-md">
+                        {tour.titulo}
+                      </h3>
                     </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6 sm:p-10 lg:p-12 flex-1 flex flex-col justify-center bg-white relative z-10">
+                    <div>
+                      <h3 className="hidden lg:block text-4xl font-bold text-ink mb-4 font-tropical tracking-wide">
+                        {tour.titulo}
+                      </h3>
+                      <div className="flex items-center text-teal font-extrabold text-xl mb-6 bg-teal/5 inline-flex px-4 py-2 rounded-full border border-teal/10">
+                        <Ticket className="w-5 h-5 mr-2" />
+                        {tour.precio}
+                      </div>
+                      <div className="mb-4">
+                        <p className="text-xs uppercase tracking-wider text-ink/40 font-bold mb-2">Recorrido</p>
+                        <p className="text-sm text-ink/70 leading-relaxed line-clamp-3 group-hover:line-clamp-none transition-all">
+                          {tour.recorrido}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs uppercase tracking-wider text-ink/40 font-bold mb-2">Incluye</p>
+                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {tour.incluye.map((item, idx) => (
+                            <li key={idx} className="flex items-start text-xs text-ink/80">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-green mr-1.5 mt-0.5 shrink-0" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-ink/10 flex items-center justify-between">
+                      {tour.salidas && (
+                        <div className="flex items-center text-xs text-ink/60 max-w-[60%]">
+                          <MapPin className="w-4 h-4 mr-1.5 shrink-0 text-coral" />
+                          <span className="truncate">{tour.salidas}</span>
+                        </div>
+                      )}
+                      <button
+                        onClick={() => setOpenId(isOpen ? null : tour.id)}
+                        className="text-xs font-bold uppercase tracking-wider text-green hover:text-green/80 transition-colors inline-flex items-center gap-1"
+                      >
+                        {isOpen ? (
+                          <><ChevronUp className="w-4 h-4" /> Cerrar</>
+                        ) : (
+                          <>Reservar →</>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </SurfaceCard>
+
+                {/* ─ Inline form below tour card ─ */}
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      key="tour-form"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.35, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="bg-white border border-t-0 border-ink/10 rounded-b-[24px] shadow-xl shadow-teal/10">
+                        <div className="px-6 pt-5 pb-4 border-b border-ink/8 bg-teal/5">
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-teal mb-0.5">
+                            {tour.precio}
+                          </p>
+                          <p className="text-sm font-bold text-ink">{tour.titulo}</p>
+                        </div>
+                        <BookingForm
+                          businessId="portal_necocli_external"
+                          baseServiceName={`Tour: ${tour.titulo}`}
+                          routingType="CASE_A"
+                          packageOptions={tour.options}
+                        />
+                      </div>
+                    </motion.div>
                   )}
-                  <a 
-                    href="https://wa.me/573217511866?text=Hola,%20me%20gustaría%20reservar%20el%20tour:%20"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-xs font-bold uppercase tracking-wider text-green hover:text-green/80 transition-colors inline-flex items-center"
-                  >
-                    Reservar →
-                  </a>
-                </div>
+                </AnimatePresence>
               </div>
-            </SurfaceCard>
-          ))}
+            );
+          })}
         </div>
       </Container>
     </section>

@@ -111,9 +111,9 @@ export function WelcomeModal() {
                 </motion.div>
               ) : (
                 <>
-                  <h4 className="text-2xl font-bold text-ink mb-2">Lleva 10% de Descuento</h4>
+                  <h4 className="text-2xl font-bold text-ink mb-2">Lleva 5% de Descuento</h4>
                   <p className="text-sm text-ink/60 mb-6">
-                    En tu primer tour o reserva de hotel. Solo dinos a dónde enviamos el código.
+                    En alojamiento o restaurante (elegido al azar) para tu primera reserva. Solo dinos a dónde enviamos tu bono.
                   </p>
                   
                   <form onSubmit={handleSubmit} className="space-y-4">
@@ -130,7 +130,7 @@ export function WelcomeModal() {
                       disabled={isSubmitting}
                       className="w-full h-14 bg-green-700 hover:bg-green-800 text-white rounded-full font-bold text-lg shadow-lg shadow-green-900/20 transition-all hover:-translate-y-1"
                     >
-                      {isSubmitting ? "Activando..." : "¡Quiero mi 10% OFF!"}
+                      {isSubmitting ? "Activando..." : "¡Quiero mi bono!"}
                     </Button>
                   </form>
                   <button 

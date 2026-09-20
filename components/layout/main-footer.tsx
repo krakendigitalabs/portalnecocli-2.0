@@ -11,11 +11,20 @@ export async function MainFooter() {
       <Container className="max-w-[1400px]">
         {/* Encabezado del Footer */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6 border-b border-white/10 pb-8">
-          <img
-            src="https://res.cloudinary.com/dr50ioh9h/image/upload/v1746587440/Dise%C3%B1o_sin_t%C3%ADtulo_pvwjh9.png"
-            alt="Logo Portal Necocli"
-            className="h-14 brightness-0 invert opacity-90"
-          />
+          {/* Logo en recuadro blanco */}
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg shrink-0">
+              <img
+                src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1755929246/icono_portal_necocli_nw9wle.png"
+                alt="Portal Necoclí"
+                className="w-10 h-10 object-contain"
+              />
+            </div>
+            <div>
+              <p className="text-white font-bold text-base leading-tight">Portal Necoclí</p>
+              <p className="text-white/45 text-xs">La plataforma turística del Golfo</p>
+            </div>
+          </div>
           <div className="flex items-center gap-5">
             <a
               href="https://www.facebook.com/people/Portal-Necocli/100084510412418/"

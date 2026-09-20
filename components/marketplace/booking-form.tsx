@@ -96,29 +96,57 @@ export function BookingForm({
   };
 
   if (response?.success) {
+    const ticketUrl = response.reservationId
+      ? `/tickets/${response.reservationId}`
+      : response.ticketId
+      ? `/tickets/${response.ticketId}`
+      : null;
+
+    // Wompi link for direct payment
+    const wompiKey = process.env.NEXT_PUBLIC_WOMPI_KEY;
+    const wompiRef = response.reservationId || response.ticketId;
+    const wompiAmountCents = response.totalAmount ? response.totalAmount * 100 : null;
+    const wompiLink =
+      wompiKey && wompiRef && wompiAmountCents
+        ? `https://checkout.wompi.co/p/?public-key=${wompiKey}&currency=COP&amount-in-cents=${wompiAmountCents}&reference=NEC-${wompiRef.slice(-8).toUpperCase()}`
+        : null;
+
     return (
       <SurfaceCard className="p-8 text-center rounded-[32px]">
         <CheckCircle2 className="w-16 h-16 text-teal mx-auto mb-4" />
         <h3 className="text-2xl font-bold text-ink mb-2">¡Solicitud Registrada!</h3>
         <p className="text-ink/70 mb-6">{response.message}</p>
 
-        {response.whatsappLink && (
-          <Button
-            className="w-full rounded-full bg-green text-white hover:bg-green/90 h-12 shadow-lg shadow-green/20"
-            href={response.whatsappLink}
-          >
-            Continuar en WhatsApp <ArrowRight className="ml-2 w-4 h-4" />
-          </Button>
-        )}
+        <div className="flex flex-col gap-3">
+          {response.whatsappLink && (
+            <Button
+              className="w-full rounded-full bg-green text-white hover:bg-green/90 h-12 shadow-lg shadow-green/20"
+              href={response.whatsappLink}
+            >
+              Continuar en WhatsApp <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
+          )}
 
-        {response.ticketId && (
-          <Button
-            className="w-full rounded-full bg-gold text-white hover:bg-gold/90 h-12 shadow-lg shadow-gold/20"
-            href={`/tickets/${response.ticketId}`}
-          >
-            Ver Ticket de Pago <ArrowRight className="ml-2 w-4 h-4" />
-          </Button>
-        )}
+          {wompiLink && (
+            <a
+              href={wompiLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full bg-[#7B3FE4] hover:bg-[#6a35ca] text-white font-bold h-12 px-6 rounded-full shadow-lg shadow-[#7B3FE4]/20 transition-all hover:-translate-y-0.5 active:scale-95"
+            >
+              💳 Pagar ahora con Wompi — ${response.totalAmount?.toLocaleString("es-CO")} COP
+            </a>
+          )}
+
+          {ticketUrl && (
+            <Button
+              className="w-full rounded-full bg-gold text-white hover:bg-gold/90 h-12 shadow-lg shadow-gold/20"
+              href={ticketUrl}
+            >
+              Ver Ticket de Pago <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
+          )}
+        </div>
       </SurfaceCard>
     );
   }
@@ -238,6 +266,16 @@ export function BookingForm({
           </div>
         )}
 
+        {/* Total a Pagar section for CASE_A */}
+        {routingType === "CASE_A" && totalAmount !== undefined && (
+          <div className="p-4 rounded-xl bg-ink/5 border border-ink/10 flex justify-between items-center">
+            <span className="text-sm font-bold text-ink/70 uppercase tracking-widest">Total a pagar:</span>
+            <span className="text-xl font-bold text-teal">
+              ${totalAmount.toLocaleString("es-CO")} COP
+            </span>
+          </div>
+        )}
+
         <Button
           type="submit"
           disabled={isSubmitting}
@@ -250,7 +288,7 @@ export function BookingForm({
           ) : routingType === "CASE_B" ? (
             "Solicitar Disponibilidad"
           ) : (
-            "Ir a Pagar"
+            "Reservar"
           )}
         </Button>
       </form>

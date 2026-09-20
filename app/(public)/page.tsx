@@ -1,14 +1,9 @@
 import { CategoryCard3D } from "@/components/marketplace/category-card-3d";
 import { LogoMarquee } from "@/components/marketplace/logo-marquee";
 import { LuxuryHero } from "@/components/marketplace/luxury-hero";
-import { MarketplaceFeaturedSection } from "@/components/marketplace/marketplace-featured-section";
-import { MarketplaceHomeHero } from "@/components/marketplace/marketplace-home-hero";
-import { MarketplaceRegisterCta } from "@/components/marketplace/marketplace-register-cta";
 import { PhotoGallery } from "@/components/marketplace/photo-gallery";
 import { WelcomeModal } from "@/components/marketplace/welcome-modal";
-import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
-import { SectionHeader } from "@/components/ui/section-header";
 import { businessCategories } from "@/data/categories";
 import {
   getFeaturedExperiences,
@@ -61,40 +56,89 @@ export default function PublicHomePage() {
 
       <LogoMarquee />
 
-      <Container className="space-y-16 md:space-y-24 mt-16">
-        <section className="space-y-6">
-          <SectionHeader
-            description="La capa pública no solo muestra negocios: también prepara el terreno para reservas, pedidos y dashboards operativos."
-            eyebrow="Marketplace listo para crecer"
-            title="Una base consistente para discovery, conversión y operación"
-          />
-          <div className="grid gap-4 lg:grid-cols-3">
-            <Card className="rounded-[28px] border-ink/10 p-6">
-              <p className="text-sm font-semibold text-ink">Buscador universal</p>
-              <p className="mt-3 text-sm leading-7 text-ink/70">
-                Un solo formulario reutilizable para navegar el catálogo por categoría, ubicación,
-                precio y rating.
-              </p>
-            </Card>
-            <Card className="rounded-[28px] border-ink/10 p-6">
-              <p className="text-sm font-semibold text-ink">Listados por vertical</p>
-              <p className="mt-3 text-sm leading-7 text-ink/70">
-                Hoteles, restaurantes, tours y transporte con rutas propias y filtros persistentes
-                sobre mock data ampliado.
-              </p>
-            </Card>
-            <Card className="rounded-[28px] border-ink/10 p-6">
-              <p className="text-sm font-semibold text-ink">Detalle dinámico</p>
-              <p className="mt-3 text-sm leading-7 text-ink/70">
-                Cada negocio ya tiene ficha por slug con accesos directos, datos operativos y
-                negocios relacionados.
-              </p>
-            </Card>
+      {/* ─── Sección comercial de invitación ─── */}
+      <section className="py-20 bg-white">
+        <Container className="max-w-6xl">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <p className="text-teal font-bold tracking-[0.2em] uppercase text-xs mb-3">Golfo de Urabá · Colombia</p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-ink mb-5 leading-tight">
+              Necoclí te espera —<br />
+              <span className="text-green">¿Cuándo vienes?</span>
+            </h2>
+            <p className="text-lg md:text-xl text-ink/60 max-w-2xl mx-auto leading-relaxed">
+              Un destino que mezcla mar dulce, cultura viva y sabores únicos del Caribe colombiano.
+              Aquí cada día es una experiencia irrepetible.
+            </p>
           </div>
-        </section>
 
-        {/* <MarketplaceRegisterCta /> */}
-      </Container>
+          {/* 3 cards comerciales */}
+          <div className="grid gap-6 md:grid-cols-3">
+            {/* Turismo local */}
+            <div className="group relative rounded-[32px] overflow-hidden h-[380px] shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <img
+                src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1739291734/turismo_necocli_111_hwcnic.jpg"
+                alt="Turismo local en Necoclí"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-7">
+                <span className="inline-block bg-teal/90 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">Turismo Local</span>
+                <h3 className="text-2xl font-bold text-white mb-2 font-tropical">Aventura en el Golfo</h3>
+                <p className="text-sm text-white/75 leading-relaxed">
+                  Playas vírgenes, manglares y el mar dulce más grande del mundo. Tours en lancha, kayak y avistamiento de ballenas.
+                </p>
+              </div>
+            </div>
+
+            {/* Sitios culturales */}
+            <div className="group relative rounded-[32px] overflow-hidden h-[380px] shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <img
+                src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003485/turismo_necocli_35_c81lmu.jpg"
+                alt="Sitios culturales de Necoclí"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-7">
+                <span className="inline-block bg-gold/90 text-ink text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">Cultura & Patrimonio</span>
+                <h3 className="text-2xl font-bold text-white mb-2 font-tropical">Historia Viva</h3>
+                <p className="text-sm text-white/75 leading-relaxed">
+                  Malecón, iglesia colonial, cementerio náutico y el Parque del Bebé. Necoclí guarda siglos de historias junto al mar.
+                </p>
+              </div>
+            </div>
+
+            {/* Gastronomía */}
+            <div className="group relative rounded-[32px] overflow-hidden h-[380px] shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <img
+                src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1754277470/plato_4_akdkbk.jpg"
+                alt="Gastronomía de Necoclí"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-7">
+                <span className="inline-block bg-coral/90 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">Gastronomía</span>
+                <h3 className="text-2xl font-bold text-white mb-2 font-tropical">Sabores del Caribe</h3>
+                <p className="text-sm text-white/75 leading-relaxed">
+                  Langosta, pargo frito, cazuela de mariscos y cocadas artesanales. El mar llega directo a tu plato en Necoclí.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA central */}
+          <div className="mt-14 text-center">
+            <a
+              href="/turistas"
+              className="inline-flex items-center gap-3 bg-green text-white font-bold text-base px-8 py-4 rounded-full shadow-lg shadow-green/25 hover:bg-green/90 transition-all hover:-translate-y-1 active:scale-95"
+            >
+              🌊 Planea tu viaje a Necoclí
+              <span className="text-lg">→</span>
+            </a>
+            <p className="mt-4 text-sm text-ink/40">Paquetes desde <span className="font-bold text-ink/70">$50.000 COP</span> · Reserva en minutos</p>
+          </div>
+        </Container>
+      </section>
       
       {/* Lead Magnet */}
       <WelcomeModal />
