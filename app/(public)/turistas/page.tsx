@@ -1,4 +1,5 @@
 import { ExternalToursSection } from "@/components/marketplace/external-tours-section";
+import { PackagesSection } from "@/components/marketplace/packages-section";
 import { MainHeader } from "@/components/layout/main-header";
 import { MainFooter } from "@/components/layout/main-footer";
 import { brand } from "@/lib/constants/site";
@@ -11,7 +12,8 @@ export const metadata = {
 export default function TuristasPage() {
   return (
     <div className="flex flex-col min-h-screen bg-sand/10">
-      <main className="flex-1">
+      <main className="flex-1 pb-20">
+        <PackagesSection />
         <ExternalToursSection />
       </main>
     </div>

@@ -10,7 +10,7 @@ const paquetesDestinos = [
     incluye: ["Transporte ida y regreso", "Desayuno y Almuerzo", "Guía acompañante", "Tarjeta de asistencia médica"],
     recorrido: "Visita al Peñol (Panorámico), La casa al revés (no incluye entrada), Alto del chocho, Piedra del peñol (no incluye ascenso), Visita a la plaza de zócalos, Parque central de Guatapé, Pasaporte para Barco rumbero, Malecón.",
     salidas: "Parque Poblado, Estación Metro Estadio (Recogida en hotel disponible)",
-    image: "https://images.unsplash.com/photo-1596700543940-0c4a45a337da?q=80&w=2000&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789889388/guatape_brq8fb.jpg"
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const paquetesDestinos = [
     incluye: ["Transporte ida y regreso", "Desayuno", "Guía Acompañante", "Tarjeta de asistencia médica", "NO INCLUYE ALMUERZO"],
     recorrido: "Visita a la plaza Santorini. BÁSICO: Lago de los hipopótamos, Amazon safari, Gran sabana africana, Museo memorial, Kamaria, Mariposario (No incluye piscinas). SAFARI: Incluye básico + Río Salvaje, Cataratas Victoria y Cobras.",
     salidas: "Punto de encuentro",
-    image: "https://images.unsplash.com/photo-1549366021-9f761d450615?q=80&w=2000&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789889804/NAPOLES_wfxc7m.jpg"
   },
   {
     id: 3,
@@ -28,7 +28,7 @@ const paquetesDestinos = [
     incluye: ["Transporte ida y regreso", "Almuerzo", "Guía acompañante", "Tarjeta de asistencia médica"],
     recorrido: "Ingreso al Salto del Tequendamita. Visita al Parque del Retiro, Visita Parque de la Ceja, Visita al Parque de San Antonio de Pereira, Visita al Carmen de Viboral.",
     salidas: "Todos los días",
-    image: "https://images.unsplash.com/photo-1558981420-c532902e58b4?q=80&w=2000&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789889413/oriente_aifrab.jpg"
   },
   {
     id: 4,
@@ -37,7 +37,7 @@ const paquetesDestinos = [
     incluye: ["Transporte ida y regreso", "Tarjeta de asistencia médica", "Una degustación (Cerveza, Agua, Gaseosa)"],
     recorrido: "Panorámico: Avenida 70, Puente de la 4 SUR, Parque del Poblado, Milla de Oro, Avenida 33.",
     salidas: "Estación Metro Estadio (7:00 PM), Parque Poblado (7:30 PM)",
-    image: "https://images.unsplash.com/photo-1533619043865-1c2e1f4284b3?q=80&w=2000&auto=format&fit=crop"
+    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789890122/CHIVA_ELEJIDA_huazry.jpg"
   }
 ];
 

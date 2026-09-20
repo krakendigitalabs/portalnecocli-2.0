@@ -4,7 +4,7 @@ import { LuxuryHero } from "@/components/marketplace/luxury-hero";
 import { MarketplaceFeaturedSection } from "@/components/marketplace/marketplace-featured-section";
 import { MarketplaceHomeHero } from "@/components/marketplace/marketplace-home-hero";
 import { MarketplaceRegisterCta } from "@/components/marketplace/marketplace-register-cta";
-import { PackagesSection } from "@/components/marketplace/packages-section";
+import { PhotoGallery } from "@/components/marketplace/photo-gallery";
 import { WelcomeModal } from "@/components/marketplace/welcome-modal";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
@@ -57,7 +57,7 @@ export default function PublicHomePage() {
         </div>
       </section>
 
-      <PackagesSection />
+      <PhotoGallery />
 
       <LogoMarquee />
 
@@ -93,7 +93,7 @@ export default function PublicHomePage() {
           </div>
         </section>
 
-        <MarketplaceRegisterCta />
+        {/* <MarketplaceRegisterCta /> */}
       </Container>
       
       {/* Lead Magnet */}

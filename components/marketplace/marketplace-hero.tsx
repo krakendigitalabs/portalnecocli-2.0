@@ -20,9 +20,6 @@ export function MarketplaceHero() {
           </div>
           <SearchBar />
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Button href="/#businesses" size="lg">
-              Ver propuesta para afiliados
-            </Button>
             <Button href="/#directory" size="lg" variant="secondary">
               Explorar directorio
             </Button>

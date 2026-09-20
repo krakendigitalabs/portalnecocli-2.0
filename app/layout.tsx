@@ -38,6 +38,9 @@ export const metadata: Metadata = {
       },
     ],
   },
+  icons: {
+    icon: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1755929246/icono_portal_necocli_nw9wle.png",
+  },
   robots: {
     index: true,
     follow: true,
