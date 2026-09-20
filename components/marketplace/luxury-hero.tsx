@@ -27,11 +27,15 @@ export function LuxuryHero() {
     <section className="relative w-full h-[90vh] min-h-[600px] flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <img
-          src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80"
-          alt="Necoclí Playa"
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
           className="w-full h-full object-cover"
-        />
+        >
+          <source src="https://res.cloudinary.com/dwxk79gt0/video/upload/v1755742793/PORTAL_NECOCLI_2025_V1_xq3pnu.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-b from-ink/60 via-ink/30 to-ink/70" />
       </div>
 

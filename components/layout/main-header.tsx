@@ -87,12 +87,12 @@ export function MainHeader({ brandName }: MainHeaderProps) {
               Afiliar Comercio
             </Button>
 
-            <Button
+            {/* <Button
               className="rounded-full px-4 h-7 text-xs bg-gold hover:bg-gold/90 text-white shadow-sm font-bold tracking-wide"
               href="/tarifario"
             >
               Cotizar Plan
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>

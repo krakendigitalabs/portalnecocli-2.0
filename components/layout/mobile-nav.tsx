@@ -78,12 +78,12 @@ export function MobileNav() {
                       >
                         Afiliar Comercio
                       </Button>
-                      <Button
+                      {/* <Button
                         className="w-full bg-gold hover:bg-gold/90 text-white shadow-md rounded-full h-12 text-sm font-bold tracking-wide"
                         href="/tarifario"
                       >
                         Cotizar Plan
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
                 </motion.div>
