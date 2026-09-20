@@ -38,7 +38,7 @@ export function BusinessCTAGroup({ business, compact = false }: BusinessCTAGroup
         )}
 
         {/* Botón primario → enlace externo (WhatsApp / teléfono) */}
-        <Button href={business.ctaPrimaryHref} size={sizeClass} variant="outline" className="border-teal text-teal hover:bg-teal hover:text-white">
+        <Button href={business.ctaPrimaryHref} size={sizeClass} variant="secondary" className="border-teal text-teal hover:bg-teal hover:text-white">
           {business.ctaPrimaryLabel}
         </Button>
 
