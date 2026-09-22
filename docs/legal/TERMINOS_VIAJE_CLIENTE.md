@@ -23,4 +23,4 @@ Si usted seleccionó el aporte voluntario a la fundación **Motonecos**, dicho v
 
 ---
 *Documento emitido por Kraken Digital Labs.*
-*Portal Necoclí - Conectando el Urabá con el mundo.*
+*Portal Necoclí - Conectando Necoclí con el mundo.*

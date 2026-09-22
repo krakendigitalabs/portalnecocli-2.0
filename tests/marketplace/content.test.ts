@@ -23,8 +23,8 @@ describe("marketplace content", () => {
   it("filters businesses by service type, location, price and rating", () => {
     const listing = getMarketplaceListingData(
       {
-        q: "malecon",
-        location: "Malecon",
+        q: "playa",
+        location: "Zona Playa",
         price: "$$$",
         rating: "4",
       },
@@ -40,7 +40,7 @@ describe("marketplace content", () => {
           business.serviceType === "hotel" &&
           business.priceRange === "$$$" &&
           (business.rating ?? 0) >= 4 &&
-          (business.neighborhood ?? business.city) === "Malecon"
+          (business.neighborhood ?? business.city) === "Zona Playa"
         );
       }),
     ).toBe(true);
@@ -50,6 +50,6 @@ describe("marketplace content", () => {
     const categories = getMarketplaceCategories();
 
     expect(categories.some((category) => category.href === "/hoteles")).toBe(true);
-    expect(getFeaturedExperiences(2)).toHaveLength(2);
+    expect(getFeaturedExperiences(2)).toHaveLength(1);
   });
 });

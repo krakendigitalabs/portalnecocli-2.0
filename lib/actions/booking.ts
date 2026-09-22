@@ -83,6 +83,13 @@ function buildPortalEmail(data: BookingRequestData, reservationId: string, total
         <tr><td style="height:8px;"></td></tr>
         <tr>
           <td style="padding:12px 16px;background:#f8f2ea;border-radius:10px;">
+            <p style="margin:0;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#dd6b42;font-weight:700;">⏱️ Días / Noches</p>
+            <p style="margin:4px 0 0;font-size:15px;color:#18202a;font-weight:600;">${data.days || 1}</p>
+          </td>
+        </tr>
+        <tr><td style="height:8px;"></td></tr>
+        <tr>
+          <td style="padding:12px 16px;background:#f8f2ea;border-radius:10px;">
             <p style="margin:0;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#dd6b42;font-weight:700;">👥 Personas / Cupos</p>
             <p style="margin:4px 0 0;font-size:15px;color:#18202a;font-weight:600;">${data.guests}</p>
           </td>
@@ -182,6 +189,12 @@ function buildClientEmail(data: BookingRequestData, reservationId: string, total
             </td>
           </tr>
           <tr>
+            <td style="padding:6px 0;border-bottom:1px solid rgba(0,0,0,0.06);">
+              <span style="font-size:13px;color:#666;">Días / Noches</span>
+              <strong style="float:right;font-size:13px;color:#18202a;">${data.days || 1}</strong>
+            </td>
+          </tr>
+          <tr>
             <td style="padding:6px 0;">
               <span style="font-size:13px;color:#666;">Personas</span>
               <strong style="float:right;font-size:13px;color:#18202a;">${data.guests}</strong>
@@ -260,6 +273,7 @@ export async function processBookingRequest(data: BookingRequestData): Promise<B
         whatsapp: validatedData.customerPhone,
         check_in_date: validatedData.reservationDate.toISOString(),
         adults_count: validatedData.guests,
+        days: validatedData.days || 1,
       },
       totalAmount: validatedData.totalAmount || 0,
       customerId: "guest",

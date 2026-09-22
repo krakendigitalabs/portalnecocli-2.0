@@ -168,17 +168,37 @@ export function BookingBusinessCard({ business }: BookingBusinessCardProps) {
           {/* Precio y botón */}
           <div className="mt-4 flex flex-row items-end justify-between sm:mt-0 sm:flex-col">
             <div className="text-left sm:text-right">
-              <p className="text-xs text-ink/60">Precio por noche desde</p>
-              <p className="text-xl font-bold text-ink">
-                {business.numericPrice
-                  ? new Intl.NumberFormat("es-CO", {
-                      style: "currency",
-                      currency: "COP",
-                      maximumFractionDigits: 0,
-                    }).format(business.numericPrice)
-                  : "$ 120.000"}
-              </p>
-              <p className="text-xs text-ink/50">+ impuestos y cargos</p>
+              {business.id === "asotunec" ? (
+                <>
+                  <p className="text-xs text-ink/60">Apoyo gremial</p>
+                  <p className="text-xl font-bold text-ink">Asesoría gratis</p>
+                </>
+              ) : business.serviceType === "comercio" ? (
+                <>
+                  <p className="text-xs text-ink/60">Variedad y ahorro</p>
+                  <p className="text-xl font-bold text-ink">Precios cómodos</p>
+                </>
+              ) : (
+                <>
+                  <p className="text-xs text-ink/60">
+                    {business.serviceType === "transporte" 
+                      ? "Valor viaje desde" 
+                      : business.serviceType === "hotel" 
+                        ? "Precio por noche desde" 
+                        : "Precio desde"}
+                  </p>
+                  <p className="text-xl font-bold text-ink">
+                    {business.numericPrice
+                      ? new Intl.NumberFormat("es-CO", {
+                          style: "currency",
+                          currency: "COP",
+                          maximumFractionDigits: 0,
+                        }).format(business.numericPrice)
+                      : "Consultar valor"}
+                  </p>
+                  <p className="text-xs text-ink/50">+ impuestos y cargos</p>
+                </>
+              )}
             </div>
 
             <div className="mt-3">

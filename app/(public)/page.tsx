@@ -37,7 +37,7 @@ export default function PublicHomePage() {
       <section className="w-full max-w-[2400px] mx-auto px-4 md:px-8 xl:px-12 mt-20 mb-20">
         <div className="mb-10 lg:mb-16 px-2 lg:px-4 flex flex-col items-center text-center">
           <h2 className="text-4xl lg:text-6xl font-bold tracking-tight text-ink mb-6">
-            Explora el marketplace
+            Empresas recomendadas
           </h2>
           <p className="text-xl lg:text-2xl text-ink/70 max-w-3xl">
             Siente el ecosistema de Necoclí. Cada tarjeta es un portal interactivo hacia tu próxima
@@ -61,7 +61,7 @@ export default function PublicHomePage() {
         <Container className="max-w-6xl">
           {/* Header */}
           <div className="text-center mb-16">
-            <p className="text-teal font-bold tracking-[0.2em] uppercase text-xs mb-3">Golfo de Urabá · Colombia</p>
+            <p className="text-teal font-bold tracking-[0.2em] uppercase text-xs mb-3">Necoclí · Colombia</p>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-ink mb-5 leading-tight">
               Necoclí te espera —<br />
               <span className="text-green">¿Cuándo vienes?</span>

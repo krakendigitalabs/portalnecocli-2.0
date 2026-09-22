@@ -7,7 +7,9 @@ import type { AuthUser } from "@/types/auth";
 import type { LoyaltyBonus, LoyaltyProfile, LoyaltyStar } from "@/types/loyalty";
 import { LOYALTY_STARS_PER_CYCLE } from "@/types/loyalty";
 import type { Reservation } from "@/types/reservation";
+import type { CustomerFavorite } from "@/data/favoriteService";
 import { ReservationCalendar } from "./reservation-calendar";
+import { QuickCollections } from "./quick-collections";
 
 type CustomerDashboardProps = {
   user: AuthUser;
@@ -15,6 +17,7 @@ type CustomerDashboardProps = {
   recentStars: LoyaltyStar[];
   bonuses: LoyaltyBonus[];
   reservations: Reservation[];
+  favorites: CustomerFavorite[];
 };
 
 const RESERVATION_STATUS_LABEL: Record<string, string> = {
@@ -83,6 +86,7 @@ export function CustomerDashboard({
   recentStars,
   bonuses,
   reservations,
+  favorites,
 }: CustomerDashboardProps) {
   const activeBonus = bonuses.find((b) => b.status === "ACTIVE");
   const pendingReservations = reservations.filter(
@@ -158,6 +162,12 @@ export function CustomerDashboard({
         </SurfaceCard>
       </div>
 
+      {/* ─── Tus Colecciones Rápidas ─── */}
+      <div className="mb-8">
+        <h3 className="text-xl font-bold text-ink mb-4">Tus Colecciones Rápidas</h3>
+        <QuickCollections favorites={favorites || []} />
+      </div>
+
       {/* ─── Progreso del ciclo de fidelización ─── */}
       <SurfaceCard className="rounded-[28px] p-8">
         <div className="mb-6 flex items-start justify-between gap-4">
@@ -169,7 +179,7 @@ export function CustomerDashboard({
             <p className="mt-1 text-sm text-ink/60">
               Cada reserva oficial te otorga una estrella dorada. Al juntar 5, Portal Necoclí te regala 
               un bono del <strong>50% de descuento</strong> (subvencionado por nosotros y nuestros aliados premium) 
-              para tu próximo viaje a Urabá.
+              para tu próximo viaje a Necoclí.
             </p>
           </div>
           <div className="shrink-0 text-5xl">🌴</div>
@@ -340,7 +350,7 @@ export function CustomerDashboard({
       {/* ─── CTA explorar ─── */}
       <Card className="rounded-[28px] border-ink/8 p-8 text-center">
         <p className="text-2xl">🏖️</p>
-        <h3 className="mt-3 text-xl font-bold text-ink">El Golfo de Urabá te espera</h3>
+        <h3 className="mt-3 text-xl font-bold text-ink">Necoclí te espera</h3>
         <p className="mt-2 text-sm text-ink/60">
           Descubre hoteles, tours de manglar, gastronomía local y más experiencias únicas en
           Necoclí.

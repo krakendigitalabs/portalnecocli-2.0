@@ -13,13 +13,13 @@ import type {
 const marketplaceCategories: MarketplaceCategory[] = [
   {
     key: "all",
-    label: "Todo el marketplace",
+    label: "Todas las empresas",
     shortLabel: "Todo",
     description:
       "Un solo punto para explorar hospedajes, restaurantes, experiencias y transporte local.",
     href: "/negocios",
     serviceType: "all",
-    heroTitle: "Marketplace público de Necoclí",
+    heroTitle: "Empresas recomendadas en Necoclí",
     heroDescription:
       "Descubre negocios y experiencias con filtros útiles, navegación clara y fichas listas para convertir.",
     searchPlaceholder: "Busca hoteles, restaurantes, tours o transporte",
@@ -181,12 +181,12 @@ export function getMarketplaceCategoryByServiceType(serviceType: BusinessService
     key: "all" as const,
     label,
     shortLabel: label,
-    description: `Resultados filtrados por ${label.toLowerCase()} dentro del marketplace publico.`,
+    description: `Resultados filtrados por ${label.toLowerCase()} en nuestras empresas recomendadas.`,
     href: `/negocios?category=${serviceType}`,
     serviceType,
     heroTitle: `${label} en Necocli`,
     heroDescription:
-      "Explora resultados filtrados dentro del marketplace publico con datos mock ampliados y fichas navegables.",
+      "Explora resultados filtrados de empresas recomendadas con fichas listas para contactar.",
     searchPlaceholder: `Busca opciones de ${label.toLowerCase()}`,
   };
 }

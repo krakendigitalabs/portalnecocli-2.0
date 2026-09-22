@@ -12,7 +12,7 @@
 **KRAKEN DIGITAL LABS**, creadores y operadores de la plataforma digital **Portal Necoclí** (dominio: portalnecocli.com), identificada con su RUT y registro ante la Cámara de Comercio, representada para todos los efectos legales por su Representante Legal.
 
 **PARTE B — EL OPERADOR MARÍTIMO:**
-**EL CARIBE S.A.S**, sociedad legalmente constituida en Colombia, identificada con **NIT: 901000756-8**, con domicilio en el municipio de Necoclí, Antioquia, operadora de servicios de transporte marítimo turístico en el Golfo de Urabá, representada por su Gerente o Representante Legal.
+**EL CARIBE S.A.S**, sociedad legalmente constituida en Colombia, identificada con **NIT: 901000756-8**, con domicilio en el municipio de Necoclí, Antioquia, operadora de servicios de transporte marítimo turístico en Necoclí, representada por su Gerente o Representante Legal.
 
 ---
 
@@ -25,7 +25,7 @@ EL CORREDOR TECNOLÓGICO se compromete a operar como canal digital oficial de ca
 ## CLÁUSULA SEGUNDA: ALCANCE DE LOS SERVICIOS CUBIERTOS
 
 Los servicios de EL OPERADOR MARÍTIMO cubiertos por el presente contrato son:
-- **Plan Día de Sol** (excursiones de día completo a destinos del Golfo de Urabá).
+- **Plan Día de Sol** (excursiones de día completo a destinos de Necoclí).
 - **Transporte marítimo regular** hacia destinos como Capurganá, Triganá, Acandí, Playa Soledad y Bahía Aguacate.
 - **Yate Exclusivo Privado** (según disponibilidad de flota).
 

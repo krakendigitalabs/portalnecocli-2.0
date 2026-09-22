@@ -14,7 +14,7 @@ export default async function CustomerLayout({ children }: CustomerLayoutProps) 
     <DashboardShell
       eyebrow="Mi Portal · Turista"
       title="Tu espacio personal en Necoclí"
-      description="Gestiona tus reservas, estrellas de fidelidad, bonos activos y el historial de tus experiencias en el Golfo de Urabá."
+      description="Gestiona tus reservas, estrellas de fidelidad, bonos activos y el historial de tus experiencias en Necoclí."
     >
       {children}
     </DashboardShell>

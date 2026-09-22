@@ -20,8 +20,8 @@ describe("dashboard data", () => {
   it("filters merchant data to the assigned tenant and business ids", async () => {
     const scope: AuthScope = {
       global: false,
-      tenantId: "tenant-hospitality-coast",
-      businessIds: ["hotel-brisa-marina"],
+      tenantId: "tenant-primavera-beach",
+      businessIds: ["hotel-boutique-primavera-beach"],
       serviceTypes: ["hotel"],
     };
 
@@ -29,7 +29,7 @@ describe("dashboard data", () => {
     const data = await getMerchantDashboardData(scope);
 
     expect(businesses).toHaveLength(1);
-    expect(businesses[0]?.id).toBe("hotel-brisa-marina");
+    expect(businesses[0]?.id).toBe("hotel-boutique-primavera-beach");
     expect(data.metrics.find((metric) => metric.label === "Negocios en tu scope")?.value).toBe(
       "1",
     );
@@ -38,12 +38,12 @@ describe("dashboard data", () => {
   it("prevents merchant dashboards from leaking data outside the scope", async () => {
     const data = await getMerchantDashboardData({
       global: false,
-      tenantId: "tenant-hospitality-coast",
-      businessIds: ["cabanas-arena-clara"],
+      tenantId: "tenant-ibiza-garcia",
+      businessIds: ["hotel-ibiza-garcia"],
       serviceTypes: ["hotel"],
     });
 
-    expect(data.businesses.every((business) => business.id === "cabanas-arena-clara")).toBe(
+    expect(data.businesses.every((business) => business.id === "hotel-ibiza-garcia")).toBe(
       true,
     );
   });

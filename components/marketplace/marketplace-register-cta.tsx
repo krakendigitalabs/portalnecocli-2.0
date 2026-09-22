@@ -24,7 +24,7 @@ export function MarketplaceRegisterCta() {
               Registrar negocio
             </Button>
             <Button href="/negocios" size="lg" variant="secondary">
-              Ver marketplace
+              Ver empresas recomendadas
             </Button>
           </div>
         </div>

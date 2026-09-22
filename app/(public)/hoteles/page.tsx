@@ -6,7 +6,7 @@ import type { MarketplaceSearchParams } from "@/types/marketplace";
 export const metadata: Metadata = {
   title: "Hoteles en Necocli | Portal Necocli 2.0",
   description:
-    "Explora hoteles, cabanas y alojamientos con filtros por zona, precio y rating dentro del marketplace de Necocli.",
+    "Explora hoteles, cabañas y alojamientos con filtros por zona, precio y calificación en Portal Necoclí.",
 };
 
 type HotelsPageProps = {

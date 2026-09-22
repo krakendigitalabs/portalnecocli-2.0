@@ -51,16 +51,18 @@ export function BookingForm({
       serviceName: packageOptions.length > 0 ? packageOptions[0].id : baseServiceName,
       routingType,
       guests: 1,
+      days: 1,
     },
   });
 
   const guestsCount = watch("guests") || 1;
+  const daysCount = watch("days") || 1;
   const selectedOptionId = watch("serviceName");
 
   // Find the selected option price
   const selectedOption = packageOptions.find((opt) => opt.id === selectedOptionId);
   const totalAmount =
-    routingType === "CASE_A" && selectedOption ? selectedOption.price * guestsCount : undefined;
+    routingType === "CASE_A" && selectedOption ? selectedOption.price * guestsCount * daysCount : undefined;
 
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
@@ -226,7 +228,7 @@ export function BookingForm({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5">
               Fecha
@@ -245,7 +247,22 @@ export function BookingForm({
 
           <div>
             <label className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5">
-              Huéspedes / Cupos
+              Días / Noches
+            </label>
+            <input
+              type="number"
+              min={1}
+              {...register("days", { valueAsNumber: true })}
+              className="w-full h-12 px-4 rounded-xl border border-ink/10 bg-white focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all"
+            />
+            {errors.days && (
+              <p className="text-coral text-xs mt-1 font-medium">{errors.days.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5">
+              Huéspedes
             </label>
             <input
               type="number"

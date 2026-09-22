@@ -41,7 +41,7 @@ export default async function ReservasPage() {
       <div>
         <h2 className="text-3xl font-extrabold text-ink tracking-tight">Tus Reservas</h2>
         <p className="text-ink/60 mt-2">
-          Historial completo de tus aventuras, experiencias y estadías en el Golfo de Urabá.
+          Historial completo de tus aventuras, experiencias y estadías en Necoclí.
         </p>
       </div>
 

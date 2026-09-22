@@ -147,7 +147,7 @@ export const TARIFF_CATEGORIES: TariffCategory[] = [
       {
         id: "dia_islas",
         name: "Día de Islas",
-        description: "Excursión a las Islas del Golfo de Urabá (ida y vuelta en lancha)",
+        description: "Excursión a las Islas de Necoclí (ida y vuelta en lancha)",
         icon: "🏝️",
         unit: "persona",
         priceFixed: 250_000,

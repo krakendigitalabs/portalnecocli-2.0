@@ -12,7 +12,7 @@ import {
 export const metadata: Metadata = {
   title: "Contacto y Asesoría | Portal Necoclí",
   description:
-    "¿Listo para vivir Necoclí? Solicita tu asesoría personalizada. Te respondemos en menos de 24 horas para diseñar tu experiencia perfecta en el Golfo de Urabá.",
+    "¿Listo para vivir Necoclí? Solicita tu asesoría personalizada. Te respondemos en menos de 24 horas para diseñar tu experiencia perfecta en Necoclí.",
   openGraph: {
     title: "Contacto y Asesoría | Portal Necoclí",
     description:
@@ -148,7 +148,7 @@ export default function ContactoPage() {
           </h1>
           <p className="text-lg md:text-xl text-white/65 max-w-2xl mx-auto leading-relaxed">
             Solicita tu asesoría personalizada. Nuestros expertos locales diseñarán la experiencia
-            perfecta en el paraíso del Golfo de Urabá para ti.
+            perfecta en el paraíso de Necoclí para ti.
           </p>
 
           {/* Trust badges */}
@@ -197,7 +197,7 @@ export default function ContactoPage() {
               </h2>
               <p className="text-ink/60 text-lg leading-relaxed">
                 Desde tours de islas y yates privados hasta recomendaciones de hoteles boutique.
-                Nuestro equipo nativo de Necoclí conoce cada rincón del Golfo de Urabá.
+                Nuestro equipo nativo de Necoclí conoce cada rincón de Necoclí.
               </p>
             </div>
 
@@ -371,7 +371,7 @@ export default function ContactoPage() {
               </p>
               <h2 className="text-3xl md:text-4xl font-black text-white leading-tight">
                 En el corazón del
-                <span className="block text-gold"> Golfo de Urabá</span>
+                <span className="block text-gold"> Necoclí</span>
               </h2>
               <p className="text-white/60 leading-relaxed">
                 Necoclí, Antioquia, Colombia. El destino más vibrante del Caribe colombiano, puerta

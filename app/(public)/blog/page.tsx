@@ -3,7 +3,7 @@ import { Container } from "@/components/ui/container";
 
 export const metadata: Metadata = {
   title: "Blog y Noticias | Portal Necoclí",
-  description: "Noticias, guías de viaje y actualidad turística del golfo de Urabá.",
+  description: "Noticias, guías de viaje y actualidad turística de Necoclí.",
 };
 
 export default function BlogPage() {
