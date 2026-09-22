@@ -129,7 +129,7 @@ export async function chatWithAlejandro(
             args.request,
             args.estimatedPrice || "Consultar valor final",
             args.advice || "Reservar en temporada baja te asegura tarifas mucho más económicas para la temporada alta.",
-            submitResult.referenceCode,
+            submitResult.referenceCode || undefined,
             args.type
           );
         }
