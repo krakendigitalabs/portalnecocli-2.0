@@ -3,6 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { getFirebaseAdminApp } from "@/lib/firebase/admin";
 import { Resend } from "resend";
+import { createReservation } from "@/data/reservationService";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -11,6 +12,7 @@ export type ConciergeRequest = {
   email: string;
   phone: string;
   request: string;
+  estimatedPrice?: number;
   status?: "pending" | "in_progress" | "completed";
   createdAt?: Date | string;
 };
@@ -24,6 +26,24 @@ export async function submitConciergeRequest(data: ConciergeRequest) {
       status: "pending",
       createdAt: new Date().toISOString(),
     });
+
+    // 1.5. Crear Reserva Formal para el Checkout Wompi si hay un precio estimado
+    let referenceCode = null;
+    if (data.estimatedPrice) {
+      const reservation = await createReservation({
+        businessId: "portal-necocli-concierge",
+        businessName: "Portal Necoclí (Plan a Medida)",
+        totalAmount: data.estimatedPrice * 100, // Wompi requiere centavos
+        lead: {
+          full_name: data.name,
+          email: data.email,
+          phone: data.phone,
+          whatsapp: data.phone,
+          notes: data.request,
+        },
+      });
+      referenceCode = reservation.reference_code;
+    }
 
     // 2. Enviar email a Portal Necoclí
     await resend.emails.send({
@@ -62,7 +82,7 @@ export async function submitConciergeRequest(data: ConciergeRequest) {
       });
     }
 
-    return { success: true, id: docRef.id };
+    return { success: true, id: docRef.id, referenceCode };
   } catch (error) {
     console.error("Error submitting concierge request:", error);
     return { success: false, error: "No se pudo procesar la solicitud." };

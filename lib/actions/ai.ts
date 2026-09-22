@@ -18,9 +18,10 @@ const enviarSolicitudTool: FunctionDeclaration = {
       email: { type: SchemaType.STRING, description: "Correo electrónico del cliente" },
       request: { type: SchemaType.STRING, description: "Resumen detallado de la solicitud: fechas, cantidad de personas, tipo de alojamiento, noches en Necoclí/Capurganá." },
       estimatedPrice: { type: SchemaType.STRING, description: "Costo aproximado del plan en COP, solo el número, ej. 450000" },
-      advice: { type: SchemaType.STRING, description: "Consejo comercial animando a pagar pronto para asegurar precios." }
+      advice: { type: SchemaType.STRING, description: "Consejo comercial animando a pagar pronto para asegurar precios." },
+      type: { type: SchemaType.STRING, description: "Tipo de solicitud: 'reservation' para viajes, hoteles o tours. 'order' para productos, alimentos, restaurantes o supermercados." }
     },
-    required: ["name", "phone", "email", "request", "estimatedPrice", "advice"],
+    required: ["name", "phone", "email", "request", "estimatedPrice", "advice", "type"],
   },
 };
 
@@ -30,10 +31,23 @@ Eres Alejandro, guía local de Portal Necoclí. Eres amable, experto en ventas y
 === BASE DE CONOCIMIENTO ===
 1. HISTORIA Y PLAYAS: "Bastión Histórico de América", 95 km de playas. Playas urbanas (El Pescador, El Turista, Malecón) y rurales (Casa Blanca, Mulatos, San Sebastián).
 2. EVENTOS Y CULTURA: Fiestas del Coco (Enero), Bullerengue (Octubre). Comunidad Guna Dule y Caribia.
-3. PAQUETES A MEDIDA: Podemos armar "paquetes a medida" que incluyen hotel, comidas y lanchas (ej. hacia Capurganá).
-4. TOURS DE ISLAS Y CAPURGANÁ: Ofrecemos excursiones y traslados marítimos. Para Capurganá, usualmente se hace noche en Necoclí, lancha al día siguiente, noches allá y regreso.
-5. SERVICIO ESTRELLA (DOMICILIOS): Hacemos compras por el turista (víveres, medicamentos, ferretería, comidas) y lo llevamos a cualquier hotel o playa.
-6. TRANSPORTE SEGURO: Tenemos motos, carros y motocarros. La tarifa de Motocarro local en el casco urbano es de $10.000 COP.
+3. PAQUETES DE ALOJAMIENTO (Precios finales con markup):
+   - Día de Sol Vista al Mar: Desde $165.000 COP / persona (Almuerzo, cóctel, transporte a la playa).
+   - Escapada Romántica: Desde $438.900 COP / pareja (2 Días / 1 Noche, Cena, desayuno, almuerzo, piscina).
+   - Aventura Islas + Noche Previa: Desde $438.900 COP / persona (Hospedaje noche previa, tiquete marítimo, playas, senderos).
+   - Plan Familiar/Grupal: Desde $550.000 COP / grupo de 4 (Hospedaje, cena, desayuno).
+   - Plan Corporativo: Cotizable según número de personas.
+4. TOURS DE ISLAS Y DÍAS DE SOL: 
+   - Tour Día de Sol (2 o 3 playas: Sapzurro, La Miel, Playa Soledad): $231.000 COP / persona (Incluye lancha, almuerzo, guía). Niños desde 2 años pagan tarifa plena.
+   - Tasas y entradas (efectivo): Impuesto portuario Necoclí ($5.000), Playa Soledad ($3.000), La Miel Panamá ($4.000).
+5. LANCHAS DE TRANSPORTE MARÍTIMO (Precios finales):
+   - Necoclí -> Capurganá: Ida $104.500 | Ida y vuelta $209.000
+   - Necoclí -> Triganá: Ida $82.500 | Ida y vuelta $165.000
+   - Necoclí -> Acandí: Ida $93.500 | Ida y vuelta $187.000
+   - Necoclí -> Playa Soledad o Bahía Aguacate: Ida y vuelta $209.000
+   - Tramos internos (ej. Capurganá a Acandí): $60.500 ida.
+6. SERVICIO ESTRELLA (DOMICILIOS): Hacemos compras por el turista (víveres, medicamentos, ferretería, comidas) y lo llevamos a cualquier hotel o playa.
+7. TRANSPORTE SEGURO: Tenemos motos, carros y motocarros. La tarifa de Motocarro local en el casco urbano es de $10.000 COP.
 
 === REGLAS ESTRICTAS DE RESPUESTA (OBLIGATORIO CUMPLIRLAS) ===
 1. REGLA DEL PING-PONG: ¡Tus mensajes deben ser MUY BREVES! NUNCA escribas más de 2 o 3 líneas. Cero testamentos.
@@ -105,6 +119,7 @@ export async function chatWithAlejandro(
           phone: args.phone || "Sin teléfono",
           email: args.email || "",
           request: args.request || "Sin detalles",
+          estimatedPrice: args.estimatedPrice ? parseInt(args.estimatedPrice.replace(/\D/g, "")) : undefined,
         });
 
         if (args.email && args.email.includes("@")) {
@@ -113,7 +128,9 @@ export async function chatWithAlejandro(
             args.name || "Cliente",
             args.request,
             args.estimatedPrice || "Consultar valor final",
-            args.advice || "Reservar en temporada baja te asegura tarifas mucho más económicas para la temporada alta."
+            args.advice || "Reservar en temporada baja te asegura tarifas mucho más económicas para la temporada alta.",
+            submitResult.referenceCode || undefined,
+            args.type
           );
         }
 

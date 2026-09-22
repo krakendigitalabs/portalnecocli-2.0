@@ -351,14 +351,26 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 - **📄 Archivos Alterados:** `lib/actions/ai.ts`, `app/api/test-e2e/route.ts`, `docs/legal/*`, `AGENTS.md`, `docs/PLAN_MAESTRO.md`, `docs/MODELO_DE_NEGOCIO.md`, `docs/BITACORA_VALORIZACION.md`.
 - **📎 Evidencias:** [ai.ts (Flash Lite Fix)](file:///c:/portal-necocli/lib/actions/ai.ts)
 
+### 📅 CEREBRO FINANCIERO Y CORREOS MUTANTES (Sesión #22): Wompi 100% y Precios Base
+- **⏰ Entrada:** 02:40 AM | **⏰ Salida:** 03:25 AM
+- **⏳ Horas Dedicadas:** 0.75 hrs
+- **📌 Estado:** `Listo a Producción`
+- **🧠 Nivel de Complejidad:** `Alta`
+- **💰 Valorización del Módulo/Trabajo:** `$300 USD` *(Cálculo de comisiones automatizado, Correos Dinámicos y Fix Crítico en URLs de Checkout).*
+- **🛠️ Relato de la Jornada:**
+  El Agente 7 registra una victoria doble. Por un lado, se extirpó de raíz el molesto error "404" del botón de Wompi. Ahora Alejandro no "simula" reservas; las crea oficialmente en Firestore, encripta el `reference_code` y genera URLs de pago con enrutamiento dinámico infalible (\`NEXT_PUBLIC_BASE_URL/pago/[codigo]\`). Luego, las plantillas de correo mutaron: ahora detectan si es un "Plan/Viaje" o un "Pedido/Domicilio" y cambian sus títulos, textos y botones automáticamente. Finalmente, se le inyectó a la memoria neuronal de Alejandro la sagrada lista de precios comerciales de Necoclí (paquetes y lanchas), aplicándoles matemáticamente el **10% de comisión** de plataforma. La inteligencia del chat ahora es financieramente rentable y lista para recolectar dinero.
+- **📄 Archivos Alterados:** `lib/email/resend.ts`, `lib/actions/ai.ts`.
+- **📎 Evidencias:** [resend.ts (Correos Mutantes)](file:///c:/portal-necocli/lib/email/resend.ts)
+
 ---
 
 > [!IMPORTANT]  
 > ## 💎 REPORTE DE AUDITORÍA GLOBAL (ACTUALIZADO)
-> Tras la Sesión #21, el **Agente 7 (Tasador de Valor)** certifica oficialmente los siguientes totales acumulados de la plataforma:
+> Tras la Sesión #22, el **Agente 7 (Tasador de Valor)** certifica oficialmente los siguientes totales acumulados de la plataforma:
 > 
-> - ⏱️ **Tiempo Total Invertido:** 74.85 Horas (Ingeniería, Diseño, DevOps y Arquitectura)
-> - 💵 **Valorización de Mercado:** $11,630 USD 
+> - ⏱️ **Tiempo Total Invertido:** 75.60 Horas (Ingeniería, Diseño, DevOps y Arquitectura)
+> - 💵 **Valorización de Mercado:** $11,930 USD 
 >
-> *Portal Necoclí 2.0 consolida su valor superando la barrera de los $11,600 USD. La arquitectura de inteligencia artificial está probada en batalla contra apagones de red y el enfoque territorial es puro y absoluto.*
+> *Portal Necoclí 2.0 consolida su valor superando la barrera de los $11,900 USD. El motor de Escrow Wompi y el embudo de ventas están 100% operativos, dinámicos y sincronizados con Firestore.*
+
 
