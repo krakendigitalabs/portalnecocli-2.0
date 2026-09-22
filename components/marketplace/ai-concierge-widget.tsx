@@ -12,7 +12,7 @@ export function AiConciergeWidget() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "model",
-      content: "Hola soy Alejandro guía de portal necocli, te ayudamos a reservar en hoteles certificados y de confianza, te buscamos comida a la carta o te llevamos la comida hasta la playa con nuestros restaurantes aliados, podemos hacer las compras por ti víveres, alimentos, licores y snacks, medicamento, productos de ferretería y otros ¿Qué necesitas o en qué fechas planeas visitarnos? ¡Dime en qué te puedo colaborar hoy!",
+      content: "¡Hola! Soy Alejandro, guía local de Portal Necoclí. Conozco cada rincón de Necoclí. ¿Para qué fechas planeas tu viaje y qué tienes en mente?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -110,9 +110,20 @@ export function AiConciergeWidget() {
         <AnimatePresence>
           {!isOpen && (
             <motion.button
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
+              initial={{ scale: 0, opacity: 0, y: 50 }}
+              animate={{ 
+                scale: 1, 
+                opacity: 1, 
+                y: [0, -12, 0],
+                rotate: [0, -5, 5, -5, 0]
+              }}
+              transition={{ 
+                y: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
+                rotate: { duration: 5, repeat: Infinity, ease: "easeInOut", repeatDelay: 1 },
+                scale: { duration: 0.3 },
+                opacity: { duration: 0.3 }
+              }}
+              exit={{ scale: 0, opacity: 0, y: 50 }}
               onClick={() => setIsOpen(true)}
               className="bg-emerald-600 text-white rounded-full p-4 shadow-2xl hover:bg-emerald-700 transition-colors flex items-center justify-center relative group"
             >

@@ -8,6 +8,22 @@ import { Container } from "@/components/ui/container";
 
 const packages = [
   {
+    id: "alojamiento-basico",
+    title: "Alojamiento Básico",
+    description: "Opción económica y cómoda para hospedaje. Incluye acceso a piscina frente al mar, parqueadero, opción de alimentación a la habitación, WiFi y zonas de descanso. Ideal para el viajero práctico que busca relajarse en Necoclí.",
+    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1739291954/turismo_necocli_motonecos_1_mmblod.jpg",
+    highlight: "Económico · Piscina frente al mar",
+    options: [
+      { id: "basico_multiple", label: "Acomodación Múltiple", price: 45000 },
+      { id: "basico_ventilador", label: "Solo Alojamiento - Ventilador", price: 50000 },
+      { id: "basico_aire", label: "Solo Alojamiento - Aire Acondicionado", price: 60000 },
+      { id: "piscina_persona", label: "Alojamiento + Piscina (Por persona)", price: 90000 },
+      { id: "piscina_pareja", label: "Alojamiento + Piscina (Plan Pareja)", price: 175000 },
+      { id: "mar_persona", label: "Vista al Mar (Por persona)", price: 90000 },
+      { id: "mar_pareja", label: "Vista al Mar (Plan Pareja)", price: 175000 },
+    ],
+  },
+  {
     id: "sol-playa-express",
     title: "Sol y Playa Express",
     description:

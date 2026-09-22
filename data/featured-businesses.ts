@@ -204,9 +204,9 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     name: "Motocarros Motonecos",
     category: "Transporte local turístico",
     shortDescription:
-      "Servicio único y exclusivo de transporte turístico y local seguro en motocarro.",
+      "Reserva con tiempo. Transporte especializado para turismo local y seguro en motocarro.",
     longDescription:
-      "Motocarros Motonecos ofrece transporte local combinando comodidad, seguridad y personalización. Reserva tu motocarro rápido, disfruta de tours privados y exclusivos, y muévete por los rincones más hermosos de Necoclí con atención garantizada.",
+      "Motocarros Motonecos ofrece transporte especializado para turismo local. Reserva con tiempo tu motocarro, disfruta de tours privados y muévete por los rincones más hermosos de Necoclí con atención garantizada.",
     image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747866989/Copia_de_MOTONECO_247_rlibh1.png",
     gallery: ["https://res.cloudinary.com/dwxk79gt0/image/upload/v1747866989/Copia_de_MOTONECO_247_rlibh1.png"],
     tags: ["Motocarro", "Transporte urbano", "Tours privados"],
@@ -431,6 +431,36 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     ctaSecondaryValue: "tel:+573200000013",
     featured: true,
     serviceType: "comercio",
+    mapQuery: "Necoclí, Antioquia",
+  }),
+  // 14. Portal Necoclí (Agencia)
+  createBusinessSeed({
+    id: "portal-necocli-agencia",
+    slug: "portal-necocli-agencia",
+    tenantId: "tenant-portal-necocli",
+    name: "Portal Necoclí",
+    category: "Agencia y Operador",
+    shortDescription:
+      "Toda la oferta de servicios, experiencias y motonecos directos de Portal Necoclí.",
+    longDescription:
+      "Portal Necoclí es tu agencia y operador de confianza. Conecta directamente con nuestras experiencias, servicios de turismo y nuestra red oficial de motonecos para recorrer el municipio de forma segura y económica.",
+    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1769136402/logo-kraken-blanco-negro_nu0elt.png",
+    gallery: ["https://res.cloudinary.com/dwxk79gt0/image/upload/v1769136402/logo-kraken-blanco-negro_nu0elt.png"],
+    tags: ["Tours", "Servicios", "Motonecos"],
+    address: "Oficina Digital",
+    neighborhood: "Centro",
+    city: "Necoclí",
+    phone: "+57 300 000 0000",
+    whatsapp: "+57 300 000 0000",
+    rating: 5.0,
+    priceRange: "$$",
+    businessHours: [{ day: "Lunes a domingo", open: "8:00 a.m.", close: "6:00 p.m." }],
+    ctaPrimaryLabel: "Contactar asesor",
+    ctaPrimaryValue: "wa:+573000000000",
+    ctaSecondaryLabel: "Ver servicios",
+    ctaSecondaryValue: "wa:+573000000000?text=Quiero ver los servicios",
+    featured: true,
+    serviceType: "turismo",
     mapQuery: "Necoclí, Antioquia",
   }),
 ];

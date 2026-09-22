@@ -54,7 +54,7 @@ export async function GET(request: Request) {
     report.push(`✅ Estrella otorgada correctamente. Total de estrellas del usuario: ${stars.length}`);
 
     // 4. Agente 7 entra en acción: Registro en bitácora
-    report.push("📜 [AGENTE 7 - Cronista] La operación transaccional de extremo a extremo ha concluido con una victoria absoluta. Las rutas de dinero y datos fluyen como un río prístino en Urabá.");
+    report.push("📜 [AGENTE 7 - Cronista] La operación transaccional de extremo a extremo ha concluido con una victoria absoluta. Las rutas de dinero y datos fluyen como un río prístino en Necoclí.");
 
     return NextResponse.json({
       success: true,

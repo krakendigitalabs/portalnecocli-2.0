@@ -5,6 +5,7 @@ import {
   getLoyaltyStars,
   getOrCreateLoyaltyProfile,
 } from "@/data/loyaltyService";
+import { getCustomerFavorites } from "@/data/favoriteService";
 import { getReservationsByCustomer } from "@/data/reservationService";
 import { requireRole } from "@/lib/auth/server";
 
@@ -22,7 +23,7 @@ export default async function CustomerPage() {
   const { user } = session;
 
   // Obtener o crear perfil de fidelización del turista
-  const [loyaltyProfile, stars, bonuses, reservations] = await Promise.all([
+  const [loyaltyProfile, stars, bonuses, reservations, favorites] = await Promise.all([
     getOrCreateLoyaltyProfile(
       user.uid,
       user.displayName ?? user.email ?? "Turista",
@@ -31,6 +32,7 @@ export default async function CustomerPage() {
     getLoyaltyStars(user.uid),
     getLoyaltyBonuses(user.uid),
     getReservationsByCustomer(user.uid),
+    getCustomerFavorites(user.uid),
   ]);
 
   return (
@@ -40,6 +42,7 @@ export default async function CustomerPage() {
       recentStars={stars}
       bonuses={bonuses}
       reservations={reservations}
+      favorites={favorites}
     />
   );
 }

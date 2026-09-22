@@ -4,7 +4,7 @@ import { getMarketplaceListingData } from "@/lib/content/marketplace";
 import type { MarketplaceSearchParams } from "@/types/marketplace";
 
 export const metadata: Metadata = {
-  title: "Marketplace de Necocli | Portal Necocli 2.0",
+  title: "Empresas Recomendadas | Portal Necoclí 2.0",
   description:
     "Explora hoteles, restaurantes, tours y transporte con filtros base y fichas de negocio listas para descubrir y contactar.",
   alternates: {

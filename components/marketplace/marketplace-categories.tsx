@@ -10,7 +10,7 @@ export function MarketplaceCategories({ categories }: MarketplaceCategoriesProps
   return (
     <section className="space-y-6">
       <SectionHeader
-        eyebrow="Estructura del marketplace"
+        eyebrow="Estructura del portal"
         title="Categorías listas para evolucionar"
         description="La plataforma queda preparada para crecer por verticales con una base homogénea, consistente y fácil de expandir."
       />

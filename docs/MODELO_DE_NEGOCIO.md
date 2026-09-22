@@ -6,7 +6,7 @@
 
 ## 1. Visión Fundamental
 **El problema del pasado:** Cobrar una tarifa fija anual ("arriendo digital") genera fricción en temporada baja, limita el crecimiento (tope máximo = número de negocios físicos) y nos desconecta del flujo de dinero.
-**La visión 2.0:** Nos convertimos en el *Sistema Operativo del Turismo* en Urabá. Facilitamos las reservas, aseguramos el dinero, entregamos la demanda y solo cobramos si el aliado gana.
+**La visión 2.0:** Nos convertimos en el *Sistema Operativo del Turismo* en Necoclí. Facilitamos las reservas, aseguramos el dinero, entregamos la demanda y solo cobramos si el aliado gana.
 
 ---
 

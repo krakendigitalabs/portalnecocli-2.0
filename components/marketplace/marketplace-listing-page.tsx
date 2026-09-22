@@ -117,7 +117,7 @@ export function MarketplaceListingPage({ data }: MarketplaceListingPageProps) {
             </h2>
             <p className="mt-3 max-w-2xl text-base leading-7 text-ink/70">
               Ajusta la ubicacion, el rango de precio o el rating para ampliar la busqueda dentro
-              del marketplace publico.
+              de nuestras empresas recomendadas.
             </p>
             <div className="mt-5">
               <Button href={data.category.href} size="lg" variant="secondary">

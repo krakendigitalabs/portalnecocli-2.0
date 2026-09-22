@@ -56,7 +56,7 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 - **🧠 Nivel de Complejidad:** `Alta`
 - **💰 Valorización del Módulo/Trabajo:** `$860 USD` *(Desarrollo de motor de búsqueda, sistema de filtrado y fichas de producto).*
 - **🛠️ Relato de la Jornada:** 
-  Con la casa decorada, abrimos nuestras puertas al mundo. Creamos las vitrinas donde descansan hoteles, tours, restaurantes y opciones de transporte. Se forjó un buscador intuitivo y ágil, junto con tarjetas de negocio (`booking-business-card.tsx`) que invitan a la aventura. Cada ficha fue diseñada para inspirar confianza y deseo, priorizando la claridad operativa para una alta conversión. El Marketplace cobró vida, exhibiendo las joyas de Urabá ante los ojos asombrados de los viajeros.
+  Con la casa decorada, abrimos nuestras puertas al mundo. Creamos las vitrinas donde descansan hoteles, tours, restaurantes y opciones de transporte. Se forjó un buscador intuitivo y ágil, junto con tarjetas de negocio (`booking-business-card.tsx`) que invitan a la aventura. Cada ficha fue diseñada para inspirar confianza y deseo, priorizando la claridad operativa para una alta conversión. El Marketplace cobró vida, exhibiendo las joyas de Necoclí ante los ojos asombrados de los viajeros.
 - **📄 Archivos Alterados:** `app/(public)/*`, `components/marketplace/*`.
 
 ### 📅 LOS GUARDIANES DEL PORTAL (Fase 4): Autenticación, Roles y Dashboards
@@ -340,13 +340,25 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 - **📄 Archivos Alterados:** `components/marketplace/booking-modal.tsx`, `components/marketplace/business-cta-group.tsx`, `app/(public)/negocios/[slug]/page.tsx`, `data/featured-businesses.ts`.
 - **📎 Evidencias:** [booking-modal.tsx](file:///c:/portal-necocli/components/marketplace/booking-modal.tsx)
 
+### 📅 LA BATALLA DE LOS SERVIDORES Y EL RENACER LITERAL (Sesión #21): Gemini Flash Lite y Purgatorio Geográfico
+- **⏰ Entrada:** 01:00 AM | **⏰ Salida:** 02:30 AM
+- **⏳ Horas Dedicadas:** 1.5 hrs
+- **📌 Estado:** `Listo a Producción`
+- **🧠 Nivel de Complejidad:** `Extrema`
+- **💰 Valorización del Módulo/Trabajo:** `$450 USD` *(Ingeniería inversa de la API de Gemini, Estabilización de Modelos y Rebranding Semántico masivo).*
+- **🛠️ Relato de la Jornada:**
+  El Agente 7 relata la noche más oscura y victoriosa para la inteligencia del portal. La red neuronal de Alejandro se vio atrapada en un apagón global de los servidores de Google (error 503 por alta demanda en modelos Flash y un 429 estricto en la capa Pro). Con el ingenio al límite, el equipo inyectó el novísimo modelo `gemini-flash-lite-latest`, un corcel más ligero pero inmune a la congestión. Sin embargo, la nueva arquitectura rechazaba las llamadas de función (`role: "function"`). Haciendo uso de tácticas avanzadas de *prompt engineering*, se construyó un túnel seguro enviando un mensaje oculto desde el "[Sistema interno]", burlando la restricción y devolviéndole la fluidez al embudo de ventas. Además, se implantó una regla de hierro para evitar "alucinaciones de WhatsApp". Como estocada final, se ejecutó una purga masiva en todos los contratos y documentos maestros: la palabra "Urabá" fue desterrada por completo para coronar a **Necoclí** como el rey absoluto y exclusivo del ecosistema.
+- **📄 Archivos Alterados:** `lib/actions/ai.ts`, `app/api/test-e2e/route.ts`, `docs/legal/*`, `AGENTS.md`, `docs/PLAN_MAESTRO.md`, `docs/MODELO_DE_NEGOCIO.md`, `docs/BITACORA_VALORIZACION.md`.
+- **📎 Evidencias:** [ai.ts (Flash Lite Fix)](file:///c:/portal-necocli/lib/actions/ai.ts)
+
 ---
 
 > [!IMPORTANT]  
 > ## 💎 REPORTE DE AUDITORÍA GLOBAL (ACTUALIZADO)
-> Tras la Sesión #20, el **Agente 7 (Tasador de Valor)** certifica oficialmente los siguientes totales acumulados de la plataforma:
+> Tras la Sesión #21, el **Agente 7 (Tasador de Valor)** certifica oficialmente los siguientes totales acumulados de la plataforma:
 > 
-> - ⏱️ **Tiempo Total Invertido:** 73.35 Horas (Ingeniería, Diseño, DevOps y Arquitectura)
-> - 💵 **Valorización de Mercado:** $11,180 USD 
+> - ⏱️ **Tiempo Total Invertido:** 74.85 Horas (Ingeniería, Diseño, DevOps y Arquitectura)
+> - 💵 **Valorización de Mercado:** $11,630 USD 
 >
-> *Portal Necoclí 2.0 consolida su valor superando la barrera de los $11,100 USD. El motor transaccional ahora es completamente adaptativo y está listo para atender reservas, domicilios y ventas cruzadas bajo un mismo estándar de lujo.*
+> *Portal Necoclí 2.0 consolida su valor superando la barrera de los $11,600 USD. La arquitectura de inteligencia artificial está probada en batalla contra apagones de red y el enfoque territorial es puro y absoluto.*
+

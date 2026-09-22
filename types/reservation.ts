@@ -10,6 +10,7 @@ export interface ReservationLead {
   check_in_date?: string;
   check_out_date?: string;
   adults_count?: number;
+  days?: number;
   children_count?: number;
   rooms_count?: number;
   pets_included?: boolean;

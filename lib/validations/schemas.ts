@@ -93,6 +93,7 @@ export const BookingRequestSchema = z.object({
   serviceName: z.string().min(2),
   reservationDate: z.date(),
   guests: z.number().int().min(1),
+  days: z.number().int().min(1).optional(),
 
   routingType: RoutingTypeSchema,
   totalAmount: z.number().optional(), // Si es paquete portal (CASE_A)

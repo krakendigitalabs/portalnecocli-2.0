@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/container";
 export const metadata: Metadata = {
   title: "Quiénes Somos | Portal Necoclí",
   description:
-    "Conoce el equipo detrás de Portal Necoclí, la plataforma premium que está revolucionando el turismo en el golfo de Urabá.",
+    "Conoce el equipo detrás de Portal Necoclí, la plataforma premium que está revolucionando el turismo en Necoclí.",
 };
 
 export default function NosotrosPage() {
@@ -15,14 +15,14 @@ export default function NosotrosPage() {
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-ink">Quiénes Somos</h1>
           <p className="text-xl text-ink/70 max-w-2xl mx-auto">
             Impulsando el desarrollo digital, el turismo consciente y la economía local en la perla
-            del golfo de Urabá.
+            de Necoclí.
           </p>
         </div>
 
         <div className="prose prose-lg prose-ink mx-auto text-ink/80 text-justify">
           <p>
             <strong>Portal Necoclí 2.0</strong> nace bajo la visión de <em>Kraken Digital Labs</em>{" "}
-            como una plataforma tecnológica de alto nivel (marketplace) destinada a conectar a
+            como una plataforma tecnológica de alto nivel destinada a conectar a
             turistas de todo el mundo con la riqueza natural, cultural y gastronómica de Necoclí,
             Antioquia.
           </p>

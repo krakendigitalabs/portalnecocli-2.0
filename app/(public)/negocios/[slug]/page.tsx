@@ -6,6 +6,7 @@ import { BusinessCategoryBadge } from "@/components/marketplace/business-categor
 import { BusinessCTAGroup } from "@/components/marketplace/business-cta-group";
 import { BusinessMetaList } from "@/components/marketplace/business-meta-list";
 import { FeaturedBusinessGrid } from "@/components/marketplace/featured-business-grid";
+import { RecentViewerTracker } from "@/components/marketplace/recent-viewer-tracker";
 import { Card } from "@/components/ui/card";
 import { siteMetadata } from "@/lib/constants/site";
 import {
@@ -118,6 +119,7 @@ export default async function BusinessDetailPage({ params }: BusinessDetailPageP
 
   return (
     <div className="space-y-8 pb-14 pt-6 md:space-y-10 md:pt-10">
+      <RecentViewerTracker businessId={business.id} />
       <script
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(structuredData),

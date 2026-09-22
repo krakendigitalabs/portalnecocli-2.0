@@ -33,7 +33,7 @@ export default async function FavoritosPage() {
       <div>
         <h2 className="text-3xl font-extrabold text-ink tracking-tight">Tus Favoritos</h2>
         <p className="text-ink/60 mt-2">
-          Colecciona los lugares mágicos que sueñas visitar en el Golfo de Urabá.
+          Colecciona los lugares mágicos que sueñas visitar en Necoclí.
         </p>
       </div>
 

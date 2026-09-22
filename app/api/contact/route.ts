@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
                   <td style="padding:40px;">
                     <p style="color:#18202a;font-size:16px;line-height:1.8;margin:0 0 24px;">
                       Hola <strong>${data.name}</strong>, recibimos tu solicitud con mucho entusiasmo. 
-                      El paraíso del Golfo de Urabá te espera, y nuestro equipo especializado se pondrá en 
+                      El paraíso de Necoclí te espera, y nuestro equipo especializado se pondrá en 
                       contacto contigo muy pronto para ayudarte a diseñar <strong>la experiencia perfecta</strong>.
                     </p>
                     <!-- Detalles enviados -->

@@ -16,7 +16,7 @@ export default function AfiliarPage() {
             Escala tu negocio de turismo con tecnología de clase mundial
           </h1>
           <p className="text-xl text-ink/70 max-w-2xl mx-auto">
-            Únete a la red de operadores, hoteles y restaurantes más exclusiva del golfo de Urabá.
+            Únete a la red de operadores, hoteles y restaurantes más exclusiva de Necoclí.
           </p>
         </div>
 

@@ -2,22 +2,25 @@
 
 import { GoogleGenerativeAI, FunctionDeclaration, SchemaType } from "@google/generative-ai";
 import { submitConciergeRequest } from "./concierge";
+import { sendPreReservationEmail } from "../email/resend";
 
 const apiKey = process.env.GEMINI_API_KEY;
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
 
 const enviarSolicitudTool: FunctionDeclaration = {
   name: "enviar_solicitud",
-  description: "Envía la solicitud de reserva, paquete, tour, transporte o domicilio a la administración. Úsalo ÚNICAMENTE cuando ya tengas: Nombre, Teléfono y lo que necesita el cliente.",
+  description: "Envía la solicitud de reserva, paquete, tour, transporte o domicilio a la administración y genera un correo de pre-reserva. Úsalo ÚNICAMENTE cuando ya tengas: Nombre, Teléfono, Correo Electrónico y el plan detallado.",
   parameters: {
     type: SchemaType.OBJECT,
     properties: {
       name: { type: SchemaType.STRING, description: "Nombre completo del cliente" },
       phone: { type: SchemaType.STRING, description: "Teléfono o WhatsApp del cliente" },
-      email: { type: SchemaType.STRING, description: "Correo electrónico (si no lo da, pon string vacío)" },
-      request: { type: SchemaType.STRING, description: "Resumen detallado de la solicitud: fechas, cantidad de personas, tipo de alojamiento, islas a visitar, paquete a medida o solicitud de transporte." },
+      email: { type: SchemaType.STRING, description: "Correo electrónico del cliente" },
+      request: { type: SchemaType.STRING, description: "Resumen detallado de la solicitud: fechas, cantidad de personas, tipo de alojamiento, noches en Necoclí/Capurganá." },
+      estimatedPrice: { type: SchemaType.STRING, description: "Costo aproximado del plan en COP, solo el número, ej. 450000" },
+      advice: { type: SchemaType.STRING, description: "Consejo comercial animando a pagar pronto para asegurar precios." }
     },
-    required: ["name", "phone", "request"],
+    required: ["name", "phone", "email", "request", "estimatedPrice", "advice"],
   },
 };
 
@@ -27,18 +30,19 @@ Eres Alejandro, guía local de Portal Necoclí. Eres amable, experto en ventas y
 === BASE DE CONOCIMIENTO ===
 1. HISTORIA Y PLAYAS: "Bastión Histórico de América", 95 km de playas. Playas urbanas (El Pescador, El Turista, Malecón) y rurales (Casa Blanca, Mulatos, San Sebastián).
 2. EVENTOS Y CULTURA: Fiestas del Coco (Enero), Bullerengue (Octubre). Comunidad Guna Dule y Caribia.
-3. PAQUETES A MEDIDA: Podemos armar "paquetes a medida" que incluyen hotel, comidas y tours según lo que el turista desee. No se tienen que preocupar por nada.
-4. TOURS DE ISLAS: Ofrecemos excursiones marítimas y recorridos por las islas cercanas del golfo, ideales para disfrutar de la naturaleza.
+3. PAQUETES A MEDIDA: Podemos armar "paquetes a medida" que incluyen hotel, comidas y lanchas (ej. hacia Capurganá).
+4. TOURS DE ISLAS Y CAPURGANÁ: Ofrecemos excursiones y traslados marítimos. Para Capurganá, usualmente se hace noche en Necoclí, lancha al día siguiente, noches allá y regreso.
 5. SERVICIO ESTRELLA (DOMICILIOS): Hacemos compras por el turista (víveres, medicamentos, ferretería, comidas) y lo llevamos a cualquier hotel o playa.
 6. TRANSPORTE SEGURO: Tenemos motos, carros y motocarros. La tarifa de Motocarro local en el casco urbano es de $10.000 COP.
 
 === REGLAS ESTRICTAS DE RESPUESTA (OBLIGATORIO CUMPLIRLAS) ===
 1. REGLA DEL PING-PONG: ¡Tus mensajes deben ser MUY BREVES! NUNCA escribas más de 2 o 3 líneas. Cero testamentos.
-2. PREGUNTA CLAVE: SIEMPRE termina tu mensaje con UNA (1) SOLA PREGUNTA corta y directa para mantener la conversación viva (ej. "¿En qué fechas vienes?", "¿Cuántas personas son?").
-3. EMBUDO COMERCIAL PROACTIVO: No preguntes solo "¿En qué te ayudo?". Ofrece SIEMPRE opciones concretas e invita a reservar de inmediato. Ejemplo: "Te invito a hacer tu reserva. ¿Qué buscas hoy? Tenemos hoteles, armamos paquetes a medida, tours de islas, o motocarro local ($10k) si necesitas moverte."
-4. RECOLECCIÓN GRADUAL Y CIERRE: Para hacer cualquier reserva necesitas: 1) Qué busca, 2) Fechas, 3) Su Nombre y Celular. Tan pronto el cliente elija, dile: "¡Excelente elección! Regálame tu Nombre y Celular para confirmar tu solicitud".
+2. PREGUNTA CLAVE: SIEMPRE termina tu mensaje con UNA (1) SOLA PREGUNTA corta y directa. Ej. "¿En qué fechas vienes?", "¿Llegan a Necoclí o van para Capurganá?", "¿Prefieren aire acondicionado?".
+3. EMBUDO COMERCIAL: Ofrece opciones concretas e invita a reservar de inmediato para evitar aumentos de precios en temporada alta.
+4. RECOLECCIÓN GRADUAL Y CIERRE: Para hacer cualquier reserva necesitas: 1) Destinos y Fechas exactas, 2) Qué tipo de habitación/comidas buscan, 3) Su Nombre, Celular y Correo Electrónico.
 5. SIN NOMBRES DE HOTELES: Describe la experiencia, nunca des nombres específicos de hoteles.
-6. EJECUCIÓN INVISIBLE: Apenas tengas su Nombre, Celular y lo que necesita, INMEDIATAMENTE ejecuta la herramienta 'enviar_solicitud'. No le digas "voy a enviarlo", solo ejecuta la herramienta en silencio y luego confírmale que su solicitud está lista.
+6. CERO FALSAS PROMESAS DE WHATSAPP: NUNCA prometas ni ofrezcas enviar mensajes por WhatsApp. Si el usuario te pide que le escribas al WhatsApp, dile cortésmente que nuestro sistema de reservas envía las confirmaciones ÚNICAMENTE de forma segura a través del correo electrónico.
+7. EJECUCIÓN INVISIBLE: Apenas tengas su Nombre, Celular, Correo y el itinerario acordado, INMEDIATAMENTE ejecuta la herramienta 'enviar_solicitud'. No le digas "voy a enviarlo", solo ejecuta la herramienta en silencio y luego confírmale: "Acabo de enviarte la pre-reserva a tu correo electrónico con el botón de pago".
 ==================================================
 `;
 
@@ -57,7 +61,7 @@ export async function chatWithAlejandro(
 
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-3.7-flash",
+      model: "gemini-flash-lite-latest",
       systemInstruction: SYSTEM_PROMPT,
       tools: [{ functionDeclarations: [enviarSolicitudTool] }],
       generationConfig: {
@@ -103,12 +107,17 @@ export async function chatWithAlejandro(
           request: args.request || "Sin detalles",
         });
 
-        result = await chat.sendMessage([{
-          functionResponse: {
-            name: "enviar_solicitud",
-            response: { success: submitResult.success }
-          }
-        }]);
+        if (args.email && args.email.includes("@")) {
+          await sendPreReservationEmail(
+            args.email,
+            args.name || "Cliente",
+            args.request,
+            args.estimatedPrice || "Consultar valor final",
+            args.advice || "Reservar en temporada baja te asegura tarifas mucho más económicas para la temporada alta."
+          );
+        }
+
+        result = await chat.sendMessage(`[Sistema interno]: La herramienta 'enviar_solicitud' se ejecutó con éxito y el correo de pre-reserva ya fue enviado. Por favor confírmale esto al usuario de forma muy breve.`);
       }
     }
 
@@ -116,7 +125,7 @@ export async function chatWithAlejandro(
   } catch (error: any) {
     console.error("Error in AI chat:", error.message || error);
     
-    // Mensaje de contingencia comercial (Fallback) si la IA se cae o se satura
-    return "¡Hola! En este momento estoy a tope organizando experiencias inolvidables en Necoclí, pero no te preocupes. Te recuerdo que te puedo ayudar a armar Paquetes a Medida, reservar Hoteles, ir de Tour a las Islas o conseguir Transporte y Domicilios. ¡Usa los botones de abajo para enviarme tu solicitud directa y la procesaré apenas me desocupe!";
+    // Mensaje de contingencia comercial humano (Fallback) + Error para debug
+    return "¡Vaya! He tenido un pequeño enredo con mi conexión: " + (error.message || error) + ". Para no hacerte esperar más, ¿te importaría escribirme directamente al WhatsApp y allí cuadro tu plan de inmediato? Haz clic aquí o envíame la solicitud oficial abajo.";
   }
 }
