@@ -1,4 +1,4 @@
-import { initializeApp, cert, getApps } from "firebase-admin/app";
+import { cert, getApps, initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
@@ -33,7 +33,7 @@ async function run() {
         updated++;
       }
     }
-    
+
     console.log(`Successfully updated ${updated} reservations.`);
   } catch (err) {
     console.error("Error:", err);

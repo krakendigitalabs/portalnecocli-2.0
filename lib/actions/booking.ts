@@ -1,12 +1,9 @@
 "use server";
 
 import { Resend } from "resend";
-import { EscrowRepo } from "@/lib/data/repositories/escrow-repo";
 import { createReservation } from "@/data/reservationService";
-import {
-  BookingRequestData,
-  BookingRequestSchema,
-} from "@/lib/validations/schemas";
+import { EscrowRepo } from "@/lib/data/repositories/escrow-repo";
+import { BookingRequestData, BookingRequestSchema } from "@/lib/validations/schemas";
 
 export type BookingResponse = {
   success: boolean;
@@ -21,9 +18,14 @@ export type BookingResponse = {
 // ─── Email helpers ────────────────────────────────────────────────────────────
 
 function buildPortalEmail(data: BookingRequestData, reservationId: string, totalAmount: number) {
-  const fecha = data.reservationDate instanceof Date
-    ? data.reservationDate.toLocaleDateString("es-CO", { day: "2-digit", month: "long", year: "numeric" })
-    : String(data.reservationDate);
+  const fecha =
+    data.reservationDate instanceof Date
+      ? data.reservationDate.toLocaleDateString("es-CO", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        })
+      : String(data.reservationDate);
 
   return `<!DOCTYPE html>
 <html lang="es">
@@ -126,9 +128,14 @@ function buildPortalEmail(data: BookingRequestData, reservationId: string, total
 
 function buildClientEmail(data: BookingRequestData, reservationId: string, totalAmount: number) {
   const firstName = data.customerName.split(" ")[0];
-  const fecha = data.reservationDate instanceof Date
-    ? data.reservationDate.toLocaleDateString("es-CO", { day: "2-digit", month: "long", year: "numeric" })
-    : String(data.reservationDate);
+  const fecha =
+    data.reservationDate instanceof Date
+      ? data.reservationDate.toLocaleDateString("es-CO", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        })
+      : String(data.reservationDate);
 
   return `<!DOCTYPE html>
 <html lang="es">

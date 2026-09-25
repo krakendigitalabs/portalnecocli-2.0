@@ -1,8 +1,8 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { getFirebaseAdminApp } from "@/lib/firebase/admin";
 import { revalidatePath } from "next/cache";
+import { getFirebaseAdminApp } from "@/lib/firebase/admin";
 import type { ConciergeRequest } from "@/types/order";
 
 /** Estados posibles de una solicitud del Guía Local */
@@ -13,7 +13,7 @@ import { requireRole } from "@/lib/auth/server";
 /** Cambia el estado de una solicitud en Firestore, validando la sesión del comercio */
 export async function updateOrderStatus(
   orderId: string,
-  newStatus: OrderStatus
+  newStatus: OrderStatus,
 ): Promise<{ success: boolean; error?: string }> {
   try {
     // POKA YOKE 1: Verificar que quien hace la petición es un aliado autenticado
@@ -25,14 +25,20 @@ export async function updateOrderStatus(
     }
 
     // POKA YOKE 2: Evitar inyección de estados no permitidos
-    const validStatuses: OrderStatus[] = ["pending", "accepted", "in_progress", "completed", "cancelled"];
+    const validStatuses: OrderStatus[] = [
+      "pending",
+      "accepted",
+      "in_progress",
+      "completed",
+      "cancelled",
+    ];
     if (!validStatuses.includes(newStatus)) {
       return { success: false, error: "Estado no permitido." };
     }
 
     const db = getFirestore(getFirebaseAdminApp());
     const docRef = db.collection("concierge_requests").doc(orderId);
-    
+
     // POKA YOKE 3: Verificar que el pedido le pertenece al comercio (Zero Trust)
     const docSnap = await docRef.get();
     if (!docSnap.exists) {

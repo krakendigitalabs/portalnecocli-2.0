@@ -1,7 +1,7 @@
+import { MainFooter } from "@/components/layout/main-footer";
+import { MainHeader } from "@/components/layout/main-header";
 import { ExternalToursSection } from "@/components/marketplace/external-tours-section";
 import { PackagesSection } from "@/components/marketplace/packages-section";
-import { MainHeader } from "@/components/layout/main-header";
-import { MainFooter } from "@/components/layout/main-footer";
 import { brand } from "@/lib/constants/site";
 
 export const metadata = {

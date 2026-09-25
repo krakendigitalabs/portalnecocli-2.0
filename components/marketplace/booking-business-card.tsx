@@ -181,10 +181,10 @@ export function BookingBusinessCard({ business }: BookingBusinessCardProps) {
               ) : (
                 <>
                   <p className="text-xs text-ink/60">
-                    {business.serviceType === "transporte" 
-                      ? "Valor viaje desde" 
-                      : business.serviceType === "hotel" 
-                        ? "Precio por noche desde" 
+                    {business.serviceType === "transporte"
+                      ? "Valor viaje desde"
+                      : business.serviceType === "hotel"
+                        ? "Precio por noche desde"
                         : "Precio desde"}
                   </p>
                   <p className="text-xl font-bold text-ink">

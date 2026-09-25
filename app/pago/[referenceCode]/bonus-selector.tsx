@@ -1,23 +1,23 @@
 "use client";
 
+import { CheckCircle2, Gift, Loader2 } from "lucide-react";
 import { useState } from "react";
-import type { LoyaltyBonus } from "@/types/loyalty";
-import { Gift, Loader2, CheckCircle2 } from "lucide-react";
 import { applyBonusToReservation } from "@/app/actions/bonus";
+import type { LoyaltyBonus } from "@/types/loyalty";
 
-export function BonusSelector({ 
-  bonuses, 
+export function BonusSelector({
+  bonuses,
   reservationId,
-  appliedBonusId
-}: { 
-  bonuses: LoyaltyBonus[]; 
+  appliedBonusId,
+}: {
+  bonuses: LoyaltyBonus[];
   reservationId: string;
   appliedBonusId?: string | null;
 }) {
   const [isApplying, setIsApplying] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const activeBonuses = bonuses.filter(b => b.status === "ACTIVE");
+  const activeBonuses = bonuses.filter((b) => b.status === "ACTIVE");
 
   if (appliedBonusId) {
     return (
@@ -51,16 +51,15 @@ export function BonusSelector({
         <Gift className="w-5 h-5 text-coral" />
         <h4 className="font-bold">Tienes {activeBonuses.length} recompensa(s) aplicable(s)</h4>
       </div>
-      
-      {error && (
-        <div className="text-red-500 text-xs bg-red-50 p-2 rounded mb-3">
-          {error}
-        </div>
-      )}
+
+      {error && <div className="text-red-500 text-xs bg-red-50 p-2 rounded mb-3">{error}</div>}
 
       <div className="space-y-3">
-        {activeBonuses.map(bonus => (
-          <div key={bonus.id} className="bg-amber-50/50 border border-amber-200/50 p-3 rounded-xl flex items-center justify-between gap-4 transition-colors hover:bg-amber-50">
+        {activeBonuses.map((bonus) => (
+          <div
+            key={bonus.id}
+            className="bg-amber-50/50 border border-amber-200/50 p-3 rounded-xl flex items-center justify-between gap-4 transition-colors hover:bg-amber-50"
+          >
             <div>
               <p className="text-sm font-bold text-ink">{bonus.title}</p>
               <p className="text-xs text-ink/60">{bonus.description}</p>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Briefcase, Clock, Heart, User, Gift } from "lucide-react";
+import { Briefcase, Clock, Gift, Heart, User } from "lucide-react";
 import Link from "next/link";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { signOutCurrentUser } from "@/lib/firebase/auth";

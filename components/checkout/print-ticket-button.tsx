@@ -1,6 +1,6 @@
 "use client";
 
-import { Printer, Download } from "lucide-react";
+import { Download, Printer } from "lucide-react";
 
 /**
  * Botones de acción del Ticket Digital.

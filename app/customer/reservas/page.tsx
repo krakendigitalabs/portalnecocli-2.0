@@ -1,8 +1,8 @@
 import { Briefcase } from "lucide-react";
 import Link from "next/link";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import { getReservationsByCustomer } from "@/data/reservationService";
 import { requireRole } from "@/lib/auth/server";
-import { SurfaceCard } from "@/components/ui/surface-card";
 
 const RESERVATION_STATUS_LABEL: Record<string, string> = {
   PENDING_PAYMENT: "Pendiente de pago",
@@ -48,7 +48,10 @@ export default async function ReservasPage() {
       {reservations.length > 0 ? (
         <div className="grid gap-4 md:grid-cols-2">
           {reservations.map((reservation) => (
-            <SurfaceCard key={reservation.id} className="p-6 rounded-[24px] flex flex-col justify-between">
+            <SurfaceCard
+              key={reservation.id}
+              className="p-6 rounded-[24px] flex flex-col justify-between"
+            >
               <div>
                 <div className="flex justify-between items-start mb-4">
                   <span
@@ -56,22 +59,26 @@ export default async function ReservasPage() {
                   >
                     {RESERVATION_STATUS_LABEL[reservation.status] ?? reservation.status}
                   </span>
-                  <p className="text-xs font-mono text-ink/40 font-semibold">{reservation.reference_code}</p>
+                  <p className="text-xs font-mono text-ink/40 font-semibold">
+                    {reservation.reference_code}
+                  </p>
                 </div>
                 <h3 className="text-xl font-bold text-ink">{reservation.business_name}</h3>
                 <p className="text-ink/60 text-sm mt-1">
                   Reservado el {formatDate(reservation.created_at)}
                 </p>
               </div>
-              
+
               <div className="mt-6 flex flex-wrap gap-4 justify-between items-end border-t border-ink/5 pt-4">
                 <div>
-                  <p className="text-xs uppercase tracking-widest text-ink/40 font-semibold">Total Pago</p>
+                  <p className="text-xs uppercase tracking-widest text-ink/40 font-semibold">
+                    Total Pago
+                  </p>
                   <p className="text-lg font-extrabold text-teal">
                     ${(reservation.total_amount / 100).toLocaleString("es-CO")}
                   </p>
                 </div>
-                
+
                 <div className="flex gap-2">
                   {reservation.status === "PENDING_PAYMENT" && (
                     <Link
@@ -89,7 +96,10 @@ export default async function ReservasPage() {
                       Ver Ticket Oficial
                     </Link>
                   ) : reservation.status !== "PENDING_PAYMENT" ? (
-                    <button disabled className="text-xs font-semibold text-ink/30 bg-ink/5 py-2.5 px-4 rounded-full flex items-center justify-center whitespace-nowrap">
+                    <button
+                      disabled
+                      className="text-xs font-semibold text-ink/30 bg-ink/5 py-2.5 px-4 rounded-full flex items-center justify-center whitespace-nowrap"
+                    >
                       Ticket no disponible
                     </button>
                   ) : null}
@@ -105,10 +115,11 @@ export default async function ReservasPage() {
           </div>
           <h2 className="text-2xl font-bold text-ink mb-2">Aún no hay reservas</h2>
           <p className="text-ink/60 max-w-md mb-8">
-            Cuando realices una reserva en hoteles, tours o experiencias, aparecerán aquí para tu control absoluto.
+            Cuando realices una reserva en hoteles, tours o experiencias, aparecerán aquí para tu
+            control absoluto.
           </p>
-          
-          <Link 
+
+          <Link
             href="/negocios"
             className="bg-coral hover:bg-coral/90 text-white font-bold py-3.5 px-8 rounded-full transition-colors shadow-soft"
           >

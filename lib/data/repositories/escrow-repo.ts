@@ -93,7 +93,7 @@ export const EscrowRepo = {
    */
   async getMerchantBalance(businessId: string) {
     const transactions = await this.getTransactionsByBusiness(businessId);
-    
+
     let heldBalance = 0;
     let availableBalance = 0;
 

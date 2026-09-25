@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Clock, Compass, Heart } from "lucide-react";
 import Link from "next/link";
-import { Clock, Heart, Compass } from "lucide-react";
-import { useRecentlyViewed } from "@/hooks/use-recently-viewed";
-import { featuredBusinessesSeed } from "@/data/featured-businesses";
+import { useEffect, useState } from "react";
 import { BusinessCard } from "@/components/marketplace/business-card";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import type { CustomerFavorite } from "@/data/favoriteService";
+import { featuredBusinessesSeed } from "@/data/featured-businesses";
+import { useRecentlyViewed } from "@/hooks/use-recently-viewed";
 
 type QuickCollectionsProps = {
   favorites: CustomerFavorite[];
@@ -72,7 +72,8 @@ export function QuickCollections({ favorites }: QuickCollectionsProps) {
         </div>
         <h3 className="text-lg font-bold text-ink">Comienza tu aventura</h3>
         <p className="mt-1 text-sm text-ink/60 mb-5">
-          Explora Necoclí, marca tus hoteles favoritos y guarda tu historial para armar el viaje perfecto.
+          Explora Necoclí, marca tus hoteles favoritos y guarda tu historial para armar el viaje
+          perfecto.
         </p>
         <Link
           href="/negocios"

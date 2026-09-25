@@ -70,9 +70,7 @@ export function getMerchantEmail(businessName: string): string | null {
   if (normalized.length < 3) return null; // Evitar matches con "el", "la", etc.
 
   const match = MERCHANT_DIRECTORY.find(
-    (m) =>
-      m.status === "active" &&
-      m.name.toLowerCase().includes(normalized)
+    (m) => m.status === "active" && m.name.toLowerCase().includes(normalized),
   );
   return match?.email ?? null;
 }

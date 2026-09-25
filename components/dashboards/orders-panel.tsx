@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { updateOrderStatus, type OrderStatus } from "@/lib/actions/orders";
+import { type OrderStatus, updateOrderStatus } from "@/lib/actions/orders";
 import type { ConciergeRequest } from "@/types/order";
 import { COMMISSION_RATES } from "@/types/order";
 
@@ -15,47 +15,49 @@ function formatCOP(amount: number): string {
 }
 
 const STATUS_CONFIG: Record<OrderStatus, { label: string; color: string; bg: string }> = {
-  pending:     { label: "Nuevo Pedido",    color: "text-amber-700",  bg: "bg-amber-50 border-amber-200" },
-  accepted:    { label: "En Preparación",  color: "text-blue-700",   bg: "bg-blue-50 border-blue-200" },
-  in_progress: { label: "En Camino",       color: "text-purple-700", bg: "bg-purple-50 border-purple-200" },
-  completed:   { label: "Completado ✓",    color: "text-teal-700",   bg: "bg-teal-50 border-teal-200" },
-  cancelled:   { label: "Cancelado",       color: "text-red-700",    bg: "bg-red-50 border-red-200" },
+  pending: { label: "Nuevo Pedido", color: "text-amber-700", bg: "bg-amber-50 border-amber-200" },
+  accepted: { label: "En Preparación", color: "text-blue-700", bg: "bg-blue-50 border-blue-200" },
+  in_progress: {
+    label: "En Camino",
+    color: "text-purple-700",
+    bg: "bg-purple-50 border-purple-200",
+  },
+  completed: { label: "Completado ✓", color: "text-teal-700", bg: "bg-teal-50 border-teal-200" },
+  cancelled: { label: "Cancelado", color: "text-red-700", bg: "bg-red-50 border-red-200" },
 };
 
 const CATEGORY_LABELS: Record<string, string> = {
-  hotel:      "🏨 Hotel",
+  hotel: "🏨 Hotel",
   restaurant: "🍽️ Restaurante",
-  tour:       "🏝️ Tour",
-  mototaxi:   "🛵 Mototaxi",
-  motocarro:  "🛺 Motocarro",
-  taxi:       "🚕 Taxi",
-  delivery:   "📦 Domicilio",
-  general:    "📋 General",
+  tour: "🏝️ Tour",
+  mototaxi: "🛵 Mototaxi",
+  motocarro: "🛺 Motocarro",
+  taxi: "🚕 Taxi",
+  delivery: "📦 Domicilio",
+  general: "📋 General",
 };
 
 // ─── Modal de Detalle ──────────────────────────────────────────────────────────
-function OrderModal({
-  order,
-  onClose,
-}: {
-  order: ConciergeRequest;
-  onClose: () => void;
-}) {
+function OrderModal({ order, onClose }: { order: ConciergeRequest; onClose: () => void }) {
   const [isPending, startTransition] = useTransition();
   const [feedback, setFeedback] = useState<string | null>(null);
 
-  const price    = order.estimatedPrice ?? 0;
-  const rate     = order.category ? (COMMISSION_RATES[order.category] ?? 0.06) : 0.06;
+  const price = order.estimatedPrice ?? 0;
+  const rate = order.category ? (COMMISSION_RATES[order.category] ?? 0.06) : 0.06;
   const commission = order.commission ?? Math.round(price * rate);
-  const neto     = price - commission;
-  const status   = order.status ?? "pending";
+  const neto = price - commission;
+  const status = order.status ?? "pending";
   const statusCfg = STATUS_CONFIG[status];
 
   function handleStatusChange(newStatus: OrderStatus) {
     if (!order.id) return;
     startTransition(async () => {
       const result = await updateOrderStatus(order.id!, newStatus);
-      setFeedback(result.success ? "Estado actualizado correctamente." : (result.error ?? "Error al actualizar."));
+      setFeedback(
+        result.success
+          ? "Estado actualizado correctamente."
+          : (result.error ?? "Error al actualizar."),
+      );
     });
   }
 
@@ -75,7 +77,9 @@ function OrderModal({
               {order.referenceCode ?? "Sin referencia"}
             </p>
             <h2 className="mt-1 text-xl font-bold text-slate-900">{order.name}</h2>
-            <span className={`mt-2 inline-block rounded-full border px-3 py-0.5 text-xs font-semibold ${statusCfg.bg} ${statusCfg.color}`}>
+            <span
+              className={`mt-2 inline-block rounded-full border px-3 py-0.5 text-xs font-semibold ${statusCfg.bg} ${statusCfg.color}`}
+            >
               {statusCfg.label}
             </span>
           </div>
@@ -89,7 +93,9 @@ function OrderModal({
 
         {/* Datos del cliente */}
         <div className="mt-6 rounded-2xl border border-slate-100 bg-slate-50 p-4 space-y-1">
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">Datos del turista</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">
+            Datos del turista
+          </p>
           <p className="text-sm text-slate-700">📧 {order.email || "Sin correo"}</p>
           <p className="text-sm text-slate-700">📱 {order.phone || "Sin teléfono"}</p>
           {order.phone && (
@@ -107,12 +113,11 @@ function OrderModal({
         {/* Solicitud extraída por Alejandro */}
         <div className="mt-4 rounded-2xl border border-slate-100 bg-slate-50 p-4">
           <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-2">
-            {order.category ? CATEGORY_LABELS[order.category] : "📋 Solicitud"} · Lo que pide el turista
+            {order.category ? CATEGORY_LABELS[order.category] : "📋 Solicitud"} · Lo que pide el
+            turista
           </p>
           <p className="text-sm leading-relaxed text-slate-700">{order.request}</p>
-          {order.advice && (
-            <p className="mt-2 text-xs italic text-slate-400">💡 {order.advice}</p>
-          )}
+          {order.advice && <p className="mt-2 text-xs italic text-slate-400">💡 {order.advice}</p>}
         </div>
 
         {/* Desglose Escrow */}
@@ -185,14 +190,8 @@ function OrderModal({
 }
 
 // ─── Tarjeta de Orden ──────────────────────────────────────────────────────────
-function OrderCard({
-  order,
-  onClick,
-}: {
-  order: ConciergeRequest;
-  onClick: () => void;
-}) {
-  const status    = order.status ?? "pending";
+function OrderCard({ order, onClick }: { order: ConciergeRequest; onClick: () => void }) {
+  const status = order.status ?? "pending";
   const statusCfg = STATUS_CONFIG[status];
   const isPending = status === "pending";
 
@@ -211,7 +210,9 @@ function OrderCard({
           </p>
           <p className="mt-2 line-clamp-2 text-sm text-slate-600">{order.request}</p>
         </div>
-        <span className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold ${statusCfg.bg} ${statusCfg.color}`}>
+        <span
+          className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold ${statusCfg.bg} ${statusCfg.color}`}
+        >
           {statusCfg.label}
         </span>
       </div>
@@ -232,10 +233,10 @@ export function OrdersPanel({ orders }: { orders: ConciergeRequest[] }) {
   const [selected, setSelected] = useState<ConciergeRequest | null>(null);
 
   const counts = {
-    pending:     orders.filter((o) => o.status === "pending").length,
-    accepted:    orders.filter((o) => o.status === "accepted").length,
+    pending: orders.filter((o) => o.status === "pending").length,
+    accepted: orders.filter((o) => o.status === "accepted").length,
     in_progress: orders.filter((o) => o.status === "in_progress").length,
-    completed:   orders.filter((o) => o.status === "completed").length,
+    completed: orders.filter((o) => o.status === "completed").length,
   };
 
   return (
@@ -244,19 +245,19 @@ export function OrdersPanel({ orders }: { orders: ConciergeRequest[] }) {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {(
           [
-            { key: "pending",     label: "Nuevos",     color: "text-amber-700",  bg: "bg-amber-50"  },
-            { key: "accepted",    label: "Aceptados",  color: "text-blue-700",   bg: "bg-blue-50"   },
-            { key: "in_progress", label: "En Camino",  color: "text-purple-700", bg: "bg-purple-50" },
-            { key: "completed",   label: "Completados",color: "text-teal-700",   bg: "bg-teal-50"   },
+            { key: "pending", label: "Nuevos", color: "text-amber-700", bg: "bg-amber-50" },
+            { key: "accepted", label: "Aceptados", color: "text-blue-700", bg: "bg-blue-50" },
+            {
+              key: "in_progress",
+              label: "En Camino",
+              color: "text-purple-700",
+              bg: "bg-purple-50",
+            },
+            { key: "completed", label: "Completados", color: "text-teal-700", bg: "bg-teal-50" },
           ] as const
         ).map((item) => (
-          <div
-            key={item.key}
-            className={`rounded-2xl border px-4 py-4 ${item.bg}`}
-          >
-            <p className={`text-3xl font-bold ${item.color}`}>
-              {counts[item.key]}
-            </p>
+          <div key={item.key} className={`rounded-2xl border px-4 py-4 ${item.bg}`}>
+            <p className={`text-3xl font-bold ${item.color}`}>{counts[item.key]}</p>
             <p className="mt-1 text-xs font-semibold uppercase tracking-widest text-slate-500">
               {item.label}
             </p>
@@ -278,19 +279,13 @@ export function OrdersPanel({ orders }: { orders: ConciergeRequest[] }) {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {orders.map((order) => (
-            <OrderCard
-              key={order.id}
-              order={order}
-              onClick={() => setSelected(order)}
-            />
+            <OrderCard key={order.id} order={order} onClick={() => setSelected(order)} />
           ))}
         </div>
       )}
 
       {/* Modal de detalle */}
-      {selected && (
-        <OrderModal order={selected} onClose={() => setSelected(null)} />
-      )}
+      {selected && <OrderModal order={selected} onClose={() => setSelected(null)} />}
     </section>
   );
 }

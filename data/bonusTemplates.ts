@@ -1,6 +1,16 @@
 import { LoyaltyBonus } from "@/types/loyalty";
 
-type BonusTemplate = Omit<LoyaltyBonus, "id" | "customer_id" | "code" | "status" | "created_at" | "expires_at" | "redeemed_on_reservation_id" | "redeemed_at">;
+type BonusTemplate = Omit<
+  LoyaltyBonus,
+  | "id"
+  | "customer_id"
+  | "code"
+  | "status"
+  | "created_at"
+  | "expires_at"
+  | "redeemed_on_reservation_id"
+  | "redeemed_at"
+>;
 
 // Constantes para días
 const ALL_DAYS: number[] = [];
@@ -27,7 +37,8 @@ export const BONUS_TEMPLATES: BonusTemplate[] = [
   },
   {
     title: "Upgrade de Habitación",
-    description: "Mejora a la siguiente categoría de habitación sin costo (Sujeto a disponibilidad).",
+    description:
+      "Mejora a la siguiente categoría de habitación sin costo (Sujeto a disponibilidad).",
     target_category: "hotel",
     type: "SPECIAL_PERK",
     valid_days: ALL_DAYS,

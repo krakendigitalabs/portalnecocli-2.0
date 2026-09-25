@@ -27,7 +27,7 @@ export function PaymentButton({ reservationId }: Props) {
   };
 
   return (
-    <button 
+    <button
       onClick={handlePayment}
       disabled={isPending}
       className="w-full relative overflow-hidden group bg-[#0014B4] hover:bg-[#001090] text-white rounded-[16px] py-4 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 disabled:opacity-70 disabled:hover:translate-y-0 disabled:cursor-not-allowed"

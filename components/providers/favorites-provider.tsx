@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuthSession } from "@/hooks/use-auth-session";
 
 type FavoritesContextType = {
@@ -46,10 +46,10 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
     }
 
     const isFav = favoriteIds.includes(businessId);
-    
+
     // Optimistic UI update
-    setFavoriteIds((prev) => 
-      isFav ? prev.filter(id => id !== businessId) : [...prev, businessId]
+    setFavoriteIds((prev) =>
+      isFav ? prev.filter((id) => id !== businessId) : [...prev, businessId],
     );
 
     try {
@@ -65,8 +65,8 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
     } catch (e) {
       console.error("Error toggling favorite", e);
       // Revertir en caso de error
-      setFavoriteIds((prev) => 
-        isFav ? [...prev, businessId] : prev.filter(id => id !== businessId)
+      setFavoriteIds((prev) =>
+        isFav ? [...prev, businessId] : prev.filter((id) => id !== businessId),
       );
     }
   };

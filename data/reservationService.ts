@@ -59,7 +59,7 @@ export async function markReservationAsPaid(
   customerId?: string,
 ): Promise<void> {
   const db = getDb();
-  
+
   const updateData: any = {
     status: "PAID" as ReservationStatus,
     escrow_transaction_id: escrowTransactionId,
@@ -70,10 +70,7 @@ export async function markReservationAsPaid(
     updateData.customer_id = customerId;
   }
 
-  await db
-    .collection("reservations")
-    .doc(reservationId)
-    .update(updateData);
+  await db.collection("reservations").doc(reservationId).update(updateData);
 }
 
 /**
@@ -131,7 +128,7 @@ export async function getReservationsByCustomer(customerId: string): Promise<Res
       .get();
 
     const reservations = snap.docs.map((doc) => doc.data() as Reservation);
-    
+
     // Ordenamiento y límite en memoria (Seguro para MVP y volúmenes moderados)
     return reservations
       .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
@@ -148,15 +145,14 @@ export async function getReservationsByCustomer(customerId: string): Promise<Res
 export async function getReservationsByBusiness(businessId: string): Promise<Reservation[]> {
   try {
     const db = getDb();
-    const snap = await db
-      .collection("reservations")
-      .where("business_id", "==", businessId)
-      .get();
+    const snap = await db.collection("reservations").where("business_id", "==", businessId).get();
 
     const reservations = snap.docs.map((doc) => doc.data() as Reservation);
-    
+
     // Ordenamiento en memoria, más recientes primero
-    return reservations.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    return reservations.sort(
+      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+    );
   } catch (error) {
     console.error("Error obteniendo reservas del negocio:", error);
     return [];
@@ -167,7 +163,9 @@ export async function getReservationsByBusiness(businessId: string): Promise<Res
  * Obtiene una reserva buscando por su reference_code.
  * Utilizado en la vista pública de checkout/pago.
  */
-export async function getReservationByReferenceCode(referenceCode: string): Promise<Reservation | null> {
+export async function getReservationByReferenceCode(
+  referenceCode: string,
+): Promise<Reservation | null> {
   const db = getDb();
   const snap = await db
     .collection("reservations")
@@ -200,4 +198,3 @@ export async function getReservationByEscrowId(escrowId: string): Promise<Reserv
 
   return snap.docs[0].data() as Reservation;
 }
-

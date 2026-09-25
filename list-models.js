@@ -1,8 +1,8 @@
-const fs = require('fs');
+const fs = require("fs");
 
 async function run() {
   try {
-    const envFile = fs.readFileSync('.env.local', 'utf8');
+    const envFile = fs.readFileSync(".env.local", "utf8");
     const match = envFile.match(/GEMINI_API_KEY="([^"]+)"/);
     if (!match) return console.log("Key not found");
     const apiKey = match[1];

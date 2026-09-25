@@ -1,9 +1,9 @@
-import { Heart, Navigation, Map } from "lucide-react";
+import { Heart, Map, Navigation } from "lucide-react";
 import Link from "next/link";
-import { requireRole } from "@/lib/auth/server";
+import { BusinessCard } from "@/components/marketplace/business-card";
 import { getCustomerFavorites } from "@/data/favoriteService";
 import { featuredBusinessesSeed } from "@/data/featured-businesses";
-import { BusinessCard } from "@/components/marketplace/business-card";
+import { requireRole } from "@/lib/auth/server";
 
 export default async function FavoritosPage() {
   const session = await requireRole(["customer", "business", "admin", "super_admin"], {
@@ -12,11 +12,11 @@ export default async function FavoritosPage() {
 
   // Fetch favorites from Firestore
   const favorites = await getCustomerFavorites(session.user.uid);
-  
-  const favoriteBusinessIds = new Set(favorites.map(f => f.business_id));
+
+  const favoriteBusinessIds = new Set(favorites.map((f) => f.business_id));
   const favoriteBusinesses = featuredBusinessesSeed
-    .filter(b => favoriteBusinessIds.has(b.id))
-    .map(b => ({
+    .filter((b) => favoriteBusinessIds.has(b.id))
+    .map((b) => ({
       id: b.id,
       name: b.name,
       slug: b.slug,
@@ -46,7 +46,7 @@ export default async function FavoritosPage() {
       ) : (
         <div className="bg-white rounded-[28px] shadow-soft border border-ink/5 p-12 flex flex-col items-center justify-center min-h-[450px] text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-amber-400/5 via-coral/5 to-transparent pointer-events-none" />
-          
+
           <div className="relative z-10">
             <div className="flex justify-center mb-8">
               <div className="relative">
@@ -56,21 +56,22 @@ export default async function FavoritosPage() {
                 </div>
               </div>
             </div>
-            
+
             <h3 className="text-2xl font-bold text-ink mb-3">Aún no tienes favoritos</h3>
             <p className="text-ink/60 max-w-md mx-auto mb-10 leading-relaxed">
-              Explora las maravillas de Necoclí y presiona el corazón en los hoteles y tours que más te gusten para guardarlos aquí.
+              Explora las maravillas de Necoclí y presiona el corazón en los hoteles y tours que más
+              te gusten para guardarlos aquí.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link 
+              <Link
                 href="/negocios"
                 className="bg-coral hover:bg-coral/90 text-white font-bold py-3.5 px-8 rounded-full transition-all shadow-soft flex items-center gap-2"
               >
                 <Map className="w-4 h-4" />
                 Ver Hoteles
               </Link>
-              <Link 
+              <Link
                 href="/tours"
                 className="bg-white border-2 border-ink/10 hover:border-teal/30 hover:bg-teal/5 text-ink font-bold py-3.5 px-8 rounded-full transition-all flex items-center gap-2"
               >

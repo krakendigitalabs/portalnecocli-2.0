@@ -24,10 +24,15 @@ export function BusinessCTAGroup({ business, compact = false }: BusinessCTAGroup
   return (
     <>
       <div
-        className={compact ? "flex flex-col gap-2 sm:flex-row flex-wrap" : "flex flex-col gap-3 sm:flex-row flex-wrap"}
+        className={
+          compact
+            ? "flex flex-col gap-2 sm:flex-row flex-wrap"
+            : "flex flex-col gap-3 sm:flex-row flex-wrap"
+        }
       >
         {/* Botón Reservar → abre el formulario de reserva o va a reservas-maritimas */}
-        {business.slug === "transporte-maritimo-sol-y-playa" || business.slug === "el-caribe-sas" ? (
+        {business.slug === "transporte-maritimo-sol-y-playa" ||
+        business.slug === "el-caribe-sas" ? (
           <Button href="/reservas-maritimas" size={sizeClass} variant="primary">
             Reservar Tour / Día de Sol
           </Button>
@@ -38,7 +43,12 @@ export function BusinessCTAGroup({ business, compact = false }: BusinessCTAGroup
         )}
 
         {/* Botón primario → enlace externo (WhatsApp / teléfono) */}
-        <Button href={business.ctaPrimaryHref} size={sizeClass} variant="secondary" className="border-teal text-teal hover:bg-teal hover:text-white">
+        <Button
+          href={business.ctaPrimaryHref}
+          size={sizeClass}
+          variant="secondary"
+          className="border-teal text-teal hover:bg-teal hover:text-white"
+        >
           {business.ctaPrimaryLabel}
         </Button>
 

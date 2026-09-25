@@ -1,4 +1,4 @@
-import { initializeApp, cert, getApps } from "firebase-admin/app";
+import { cert, getApps, initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
@@ -31,23 +31,31 @@ async function run() {
     console.log(`Syncing bonuses for user: ${user.uid}`);
 
     // Fetch user's reservations
-    const reservationsSnap = await db.collection("reservations").where("customer_id", "==", user.uid).get();
-    
+    const reservationsSnap = await db
+      .collection("reservations")
+      .where("customer_id", "==", user.uid)
+      .get();
+
     // Fetch existing stars to prevent duplicates
-    const starsSnap = await db.collection("loyalty_stars").where("customer_id", "==", user.uid).get();
-    const existingStarReservationIds = new Set(starsSnap.docs.map(doc => doc.data().reservation_id));
+    const starsSnap = await db
+      .collection("loyalty_stars")
+      .where("customer_id", "==", user.uid)
+      .get();
+    const existingStarReservationIds = new Set(
+      starsSnap.docs.map((doc) => doc.data().reservation_id),
+    );
 
     let newStarsCount = 0;
-    
+
     // We only process reservations that are valid (e.g. PAID or COMPLETED, but we'll process all for this patch to simulate)
     for (const doc of reservationsSnap.docs) {
       if (existingStarReservationIds.has(doc.id)) continue;
-      
+
       const reservation = doc.data();
       const params = {
         customerId: user.uid,
         reservationId: doc.id,
-        businessName: reservation.business_name || "Negocio Desconocido"
+        businessName: reservation.business_name || "Negocio Desconocido",
       };
 
       // Inline awardLoyaltyStar logic to avoid module resolution issues in vanilla Node script

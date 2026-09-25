@@ -1,7 +1,8 @@
-import { loadEnvConfig } from '@next/env';
+import { loadEnvConfig } from "@next/env";
+
 loadEnvConfig(process.cwd());
 
-import { processMaritimeBooking } from './app/actions/maritime-booking';
+import { processMaritimeBooking } from "./app/actions/maritime-booking";
 
 async function testBooking() {
   console.log("Iniciando prueba de reserva marítima...");
@@ -24,8 +25,8 @@ async function testBooking() {
         email: "portalnecocli@gmail.com",
         petFriendly: false,
         allergies: false,
-      }
-    ]
+      },
+    ],
   };
 
   const result = await processMaritimeBooking(payload);

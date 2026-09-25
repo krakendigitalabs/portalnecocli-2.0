@@ -1,16 +1,16 @@
 import "server-only";
-import { EscrowRepo } from "@/lib/data/repositories/escrow-repo";
 import { getFirestore } from "firebase-admin/firestore";
-import { getFirebaseAdminApp } from "@/lib/firebase/admin";
 import { featuredBusinessesSeed } from "@/data/featured-businesses";
+import { getReservationsByBusiness } from "@/data/reservationService";
+import { getTrafficSummary, type TrafficSummary } from "@/lib/analytics/analytics-api";
+import { EscrowRepo } from "@/lib/data/repositories/escrow-repo";
+import { getFirebaseAdminApp } from "@/lib/firebase/admin";
+import type { EscrowTransaction } from "@/lib/validations/schemas";
 import type { AuthScope } from "@/types/auth";
 import type { MerchantWallet } from "@/types/escrow";
 import type { FeaturedBusiness } from "@/types/featured-business";
-import type { EscrowTransaction } from "@/lib/validations/schemas";
-import { getReservationsByBusiness } from "@/data/reservationService";
-import type { Reservation } from "@/types/reservation";
-import { getTrafficSummary, type TrafficSummary } from "@/lib/analytics/analytics-api";
 import type { ConciergeRequest } from "@/types/order";
+import type { Reservation } from "@/types/reservation";
 
 type DashboardMetric = {
   label: string;
@@ -163,25 +163,32 @@ export async function getMerchantDashboardData(scope: AuthScope): Promise<Mercha
   // Usamos el tenantId como merchantId. Si no existe en Firestore, retornamos wallet en cero
   // para no bloquear el dashboard durante el onboarding de nuevos comercios.
   const merchantId = scope.tenantId ?? "unknown";
-  
-  const walletPromise = EscrowRepo.getMerchantBalance(merchantId).then((w) => ({
-    merchant_id: merchantId,
-    available_balance: w.available_balance,
-    held_balance: w.held_balance,
-    payout_method: { type: "NEQUI", account_number: "", account_holder_name: "", document_id: "" } as const
-  })).catch(() => buildEmptyWallet(merchantId));
-  
+
+  const walletPromise = EscrowRepo.getMerchantBalance(merchantId)
+    .then((w) => ({
+      merchant_id: merchantId,
+      available_balance: w.available_balance,
+      held_balance: w.held_balance,
+      payout_method: {
+        type: "NEQUI",
+        account_number: "",
+        account_holder_name: "",
+        document_id: "",
+      } as const,
+    }))
+    .catch(() => buildEmptyWallet(merchantId));
+
   const transactionsPromise = EscrowRepo.getTransactionsByBusiness(merchantId).catch(() => []);
 
   // Cargar reservas para todos los negocios de este scope
   const reservationsPromises = businesses.map((b) => getReservationsByBusiness(b.id));
 
   const [wallet, escrowTransactions, ...reservationsArrays] = await Promise.all([
-    walletPromise, 
+    walletPromise,
     transactionsPromise,
-    ...reservationsPromises
+    ...reservationsPromises,
   ]);
-  
+
   const reservations = reservationsArrays
     .flat()
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
@@ -215,10 +222,7 @@ export async function getAdminDashboardFullData(): Promise<SuperAdminDashboardDa
   // 1. Reservas globales (todos los negocios)
   const allReservationsPromises = allBusinesses.map(async (b) => {
     try {
-      const snap = await db
-        .collection("reservations")
-        .where("business_id", "==", b.id)
-        .get();
+      const snap = await db.collection("reservations").where("business_id", "==", b.id).get();
       return snap.docs.map((doc) => doc.data() as Reservation);
     } catch {
       return [];
@@ -232,16 +236,32 @@ export async function getAdminDashboardFullData(): Promise<SuperAdminDashboardDa
   const trafficPromise = getTrafficSummary();
 
   // 4. Solicitudes del Conserje
-  const conciergePromise = db.collection("concierge_requests").orderBy("createdAt", "desc").limit(20).get()
-    .then(snap => snap.docs.map(doc => ({ id: doc.id, ...doc.data() }) as ConciergeRequest & {id: string}))
+  const conciergePromise = db
+    .collection("concierge_requests")
+    .orderBy("createdAt", "desc")
+    .limit(20)
+    .get()
+    .then((snap) =>
+      snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as ConciergeRequest & { id: string }),
+    )
     .catch(() => []);
 
   // 5. Solicitudes de Comercios B2B
-  const applicationsPromise = db.collection("merchant_applications").orderBy("createdAt", "desc").limit(50).get()
-    .then(snap => snap.docs.map(doc => ({ id: doc.id, ...doc.data() })))
+  const applicationsPromise = db
+    .collection("merchant_applications")
+    .orderBy("createdAt", "desc")
+    .limit(50)
+    .get()
+    .then((snap) => snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
     .catch(() => []);
 
-  const [reservationsNested, escrowTransactions, trafficSummary, conciergeRequests, merchantApplications] = await Promise.all([
+  const [
+    reservationsNested,
+    escrowTransactions,
+    trafficSummary,
+    conciergeRequests,
+    merchantApplications,
+  ] = await Promise.all([
     Promise.all(allReservationsPromises),
     allEscrowPromise,
     trafficPromise,

@@ -31,7 +31,7 @@ export function PhotoGallery() {
   return (
     <section className="py-24 bg-ink relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-ink via-ink to-black z-0" />
-      
+
       <Container className="relative z-10 mb-16 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -85,7 +85,7 @@ export function PhotoGallery() {
           </motion.div>
         </div>
       </div>
-      
+
       {/* Sombras en los bordes para difuminar */}
       <div className="pointer-events-none absolute inset-y-0 left-0 w-1/12 bg-gradient-to-r from-ink to-transparent z-20" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-1/12 bg-gradient-to-l from-ink to-transparent z-20" />
@@ -100,20 +100,20 @@ function GalleryItem({ item }: { item: string | { src: string; isSvg: boolean } 
 
   return (
     <motion.div
-      whileHover={{ 
-        scale: 1.05, 
+      whileHover={{
+        scale: 1.05,
         zIndex: 50,
         boxShadow: "0 0 30px rgba(201, 168, 76, 0.4)", // Resplandor dorado
       }}
       className={`relative shrink-0 overflow-hidden rounded-[24px] cursor-pointer transition-all duration-300
-        ${isSvg ? 'bg-white/5 flex items-center justify-center p-8' : 'bg-white/10'}
+        ${isSvg ? "bg-white/5 flex items-center justify-center p-8" : "bg-white/10"}
         w-[250px] h-[350px] sm:w-[300px] sm:h-[400px] lg:w-[350px] lg:h-[450px]
       `}
     >
       {isSvg ? (
-        <motion.img 
-          src={src} 
-          alt="Necoclí" 
+        <motion.img
+          src={src}
+          alt="Necoclí"
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
           className="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(255,255,255,0.8)]"
@@ -125,7 +125,7 @@ function GalleryItem({ item }: { item: string | { src: string; isSvg: boolean } 
           className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
         />
       )}
-      
+
       {/* Overlay luminoso al hacer hover */}
       {!isSvg && (
         <div className="absolute inset-0 bg-gradient-to-t from-gold/40 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />

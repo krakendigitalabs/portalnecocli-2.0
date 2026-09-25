@@ -9,9 +9,9 @@
  */
 import { createHash } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
-import { getReservationByReferenceCode, markReservationAsPaid } from "@/data/reservationService";
 import { holdFunds } from "@/data/escrowService";
 import { awardLoyaltyStar } from "@/data/loyaltyService";
+import { getReservationByReferenceCode, markReservationAsPaid } from "@/data/reservationService";
 import type { EscrowTransaction, EscrowTransactionStatus } from "@/types/escrow";
 
 type WompiWebhookPayload = {
@@ -80,14 +80,18 @@ export async function POST(req: NextRequest) {
   const { transaction } = payload.data;
 
   if (transaction.status !== "APPROVED") {
-    console.log(`[Wompi Webhook] Transacción ${transaction.id} — Estado: ${transaction.status}. Ignorando.`);
+    console.log(
+      `[Wompi Webhook] Transacción ${transaction.id} — Estado: ${transaction.status}. Ignorando.`,
+    );
     return NextResponse.json({ message: "Estado no aprobado." }, { status: 200 });
   }
 
   // 3. Buscar la reserva por reference_code (que usamos como reference en Wompi)
   const reservation = await getReservationByReferenceCode(transaction.reference);
   if (!reservation) {
-    console.error(`[Wompi Webhook] ❌ Reserva con reference '${transaction.reference}' no encontrada.`);
+    console.error(
+      `[Wompi Webhook] ❌ Reserva con reference '${transaction.reference}' no encontrada.`,
+    );
     return NextResponse.json({ error: "Reservation not found" }, { status: 404 });
   }
 
@@ -102,11 +106,7 @@ export async function POST(req: NextRequest) {
 
   try {
     // 6. Marcar la reserva como PAID en Firestore
-    await markReservationAsPaid(
-      reservation.id,
-      escrowTransactionId,
-      reservation.customer_id,
-    );
+    await markReservationAsPaid(reservation.id, escrowTransactionId, reservation.customer_id);
 
     // 7. Calcular comisiones y registrar en la bóveda Escrow (HELD)
     const totalAmount = transaction.amount_in_cents;
@@ -139,7 +139,9 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    console.log(`[Wompi Webhook] ✅ Flujo completo para reserva ${reservation.id} — Escrow: ${escrowTransactionId}`);
+    console.log(
+      `[Wompi Webhook] ✅ Flujo completo para reserva ${reservation.id} — Escrow: ${escrowTransactionId}`,
+    );
     return NextResponse.json(
       { success: true, reservationId: reservation.id, escrowId: escrowTransactionId },
       { status: 200 },

@@ -1,13 +1,13 @@
 /**
  * Script de asignación de roles — Portal Necoclí 2.0
  * Ejecutar con: node scripts/set-admin-roles.mjs
- * 
+ *
  * Asigna Custom Claims de Firebase Auth para habilitar acceso al Panel SuperAdmin.
  */
-import { initializeApp, cert } from "firebase-admin/app";
+import { cert, initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 import { readFileSync } from "fs";
-import { resolve, dirname } from "path";
+import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -86,7 +86,9 @@ async function assignRole(config) {
     });
 
     console.log(`   🎯 Rol "${config.role}" asignado exitosamente.`);
-    console.log(`   ⚠️  El usuario debe cerrar sesión y volver a iniciarla para que el token se actualice.`);
+    console.log(
+      `   ⚠️  El usuario debe cerrar sesión y volver a iniciarla para que el token se actualice.`,
+    );
 
     // Verificar que los claims quedaron bien
     const updatedUser = await auth.getUser(user.uid);
@@ -95,7 +97,9 @@ async function assignRole(config) {
     return { success: true, uid: user.uid, email: config.email, role: config.role };
   } catch (error) {
     if (error.code === "auth/user-not-found") {
-      console.error(`   ❌ ERROR: Usuario con email "${config.email}" no encontrado en Firebase Auth.`);
+      console.error(
+        `   ❌ ERROR: Usuario con email "${config.email}" no encontrado en Firebase Auth.`,
+      );
       console.error(`      Asegúrate de que se haya registrado primero en el portal.`);
     } else {
       console.error(`   ❌ ERROR inesperado:`, error.message);

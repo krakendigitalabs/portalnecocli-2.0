@@ -14,7 +14,9 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     longDescription:
       "Transportes Sol y Playa S.A.S. ofrece salidas diarias desde Necoclí hacia los principales destinos del Darién (Triganá, Acandí, Playa Soledad, Bahía Aguacate, Capurganá) y planes especiales de Día de Sol. Viaja seguro con chalecos salvavidas incluidos, servicio pet friendly y parqueadero en planes turísticos.",
     image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747861219/sol_y_playa_dicoln.jpg",
-    gallery: ["https://res.cloudinary.com/dwxk79gt0/image/upload/v1747861219/sol_y_playa_dicoln.jpg"],
+    gallery: [
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747861219/sol_y_playa_dicoln.jpg",
+    ],
     tags: ["Lancha", "Día de Sol", "Seguro", "Pet Friendly"],
     propertyType: "Operador",
     reviewCount: 342,
@@ -49,7 +51,9 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     longDescription:
       "Comercializadora Marítima y Fluvial El Caribe S.A.S ofrece transporte hacia Capurganá, Triganá, Acandí, Playa Soledad y más. Cuentan con una amplia flota de yates turísticos con capacidad para hasta 87 pasajeros, equipados con chalecos certificados, asientos cómodos, sonido a bordo y pólizas vigentes.",
     image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747861218/caribe_sas_ihimfo.jpg",
-    gallery: ["https://res.cloudinary.com/dwxk79gt0/image/upload/v1747861218/caribe_sas_ihimfo.jpg"],
+    gallery: [
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747861218/caribe_sas_ihimfo.jpg",
+    ],
     tags: ["Yates", "Rutas", "Día de Sol"],
     propertyType: "Operador",
     reviewCount: 512,
@@ -83,8 +87,11 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
       "Tu mejor opción para compras rápidas y eficientes en Necoclí con domicilio el mismo día.",
     longDescription:
       "En Uraventas Supermercado encuentras alimentos frescos, artículos de limpieza, bebidas, desechables, carnes, frutas, verduras y servicio a domicilio confiable. Atención amigable y variedad de productos para tu hogar con horario extendido todos los días hasta las 9:00 p.m.",
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1738777712/LOGO_URAVENTAS_jpq4el.jpg",
-    gallery: ["https://res.cloudinary.com/dwxk79gt0/image/upload/v1738777712/LOGO_URAVENTAS_jpq4el.jpg"],
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1738777712/LOGO_URAVENTAS_jpq4el.jpg",
+    gallery: [
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1738777712/LOGO_URAVENTAS_jpq4el.jpg",
+    ],
     tags: ["Mercado", "Domicilios", "Hasta 9pm", "Carnes"],
     address: "Zona Céntrica",
     neighborhood: "Centro",
@@ -114,8 +121,11 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
       "Compra fácil, rápido y cerca de ti. Mercado diario, productos frescos y servicio de domicilio.",
     longDescription:
       "Supermercado Maracaná es tu mercado de confianza en Necoclí. Ofrece atención cercana, buenos precios, promociones especiales, y productos para el día a día. Además, cuenta con entrega a domicilio el mismo día y servicios de corresponsal Bancolombia (retiros y consignaciones).",
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1738777642/logo_maracana_1_g332ka.jpg",
-    gallery: ["https://res.cloudinary.com/dwxk79gt0/image/upload/v1738777642/logo_maracana_1_g332ka.jpg"],
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1738777642/logo_maracana_1_g332ka.jpg",
+    gallery: [
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1738777642/logo_maracana_1_g332ka.jpg",
+    ],
     tags: ["Mercado", "Domicilios", "Corresponsal", "Promos"],
     address: "Zona Céntrica",
     neighborhood: "Centro",
@@ -145,8 +155,11 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
       "Servicio profesional y personalizado, pensado para resaltar tu estilo y cuidar tu cabello.",
     longDescription:
       "En Peluquería María Eugenia Hernández te ofrecemos cortes, peinados, tinturados, mechas, cepillados, tratamientos capilares y asesoría de imagen única. Diseños modernos y clásicos para toda ocasión con acabados naturales.",
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1751910222/logo_peluqueria_njqgeo.png",
-    gallery: ["https://res.cloudinary.com/dwxk79gt0/image/upload/v1751910222/logo_peluqueria_njqgeo.png"],
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1751910222/logo_peluqueria_njqgeo.png",
+    gallery: [
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1751910222/logo_peluqueria_njqgeo.png",
+    ],
     tags: ["Belleza", "Tintes", "Cortes", "Estilo"],
     address: "Necoclí",
     neighborhood: "Centro",
@@ -176,8 +189,11 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
       "Gestiona tu hotel o restaurante con más orden, control y seguridad gracias a Portal Necoclí.",
     longDescription:
       "Kraken Digital Labs ofrece Portal Necoclí, una plataforma digital creada para simplificar la administración hotelera y gastronómica. Controla habitaciones, reservas, inventarios y toma pedidos de forma más rápida, segura y profesional. Pagos en línea por Wompi.",
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1769136402/logo-kraken-blanco-negro_nu0elt.png",
-    gallery: ["https://res.cloudinary.com/dwxk79gt0/image/upload/v1769136402/logo-kraken-blanco-negro_nu0elt.png"],
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1769136402/logo-kraken-blanco-negro_nu0elt.png",
+    gallery: [
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1769136402/logo-kraken-blanco-negro_nu0elt.png",
+    ],
     tags: ["Software", "Hotelería", "Sistemas", "Innovación"],
     address: "Oficina Virtual",
     neighborhood: "Digital",
@@ -207,8 +223,11 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
       "Reserva con tiempo. Transporte especializado para turismo local y seguro en motocarro.",
     longDescription:
       "Motocarros Motonecos ofrece transporte especializado para turismo local. Reserva con tiempo tu motocarro, disfruta de tours privados y muévete por los rincones más hermosos de Necoclí con atención garantizada.",
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747866989/Copia_de_MOTONECO_247_rlibh1.png",
-    gallery: ["https://res.cloudinary.com/dwxk79gt0/image/upload/v1747866989/Copia_de_MOTONECO_247_rlibh1.png"],
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747866989/Copia_de_MOTONECO_247_rlibh1.png",
+    gallery: [
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747866989/Copia_de_MOTONECO_247_rlibh1.png",
+    ],
     tags: ["Motocarro", "Transporte urbano", "Tours privados"],
     address: "Todo Necoclí",
     city: "Necoclí",
@@ -238,8 +257,11 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
       "Estadía tranquila cerca del mar, ideal para descansar, romance y fechas especiales.",
     longDescription:
       "Hotel Boutique Primavera Beach combina comodidad, tranquilidad y un ambiente acogedor. Perfecto para escapadas cerca del mar, aniversarios, celebraciones y descanso familiar. Cuenta con restaurante, jardín, WiFi gratis y parqueadero privado.",
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1778534954/logo_hotel_primavera_yf24u3.png",
-    gallery: ["https://res.cloudinary.com/dwxk79gt0/image/upload/v1778534954/logo_hotel_primavera_yf24u3.png"],
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1778534954/logo_hotel_primavera_yf24u3.png",
+    gallery: [
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1778534954/logo_hotel_primavera_yf24u3.png",
+    ],
     tags: ["Boutique", "Cerca del mar", "Romántico", "WiFi"],
     propertyType: "Hotel",
     reviewCount: 214,
@@ -274,8 +296,11 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
       "Experiencia de alojamiento cómoda, segura y tranquila con ubicación estratégica.",
     longDescription:
       "En Hotel Ibiza García nos especializamos en brindar una experiencia de alojamiento cómoda para viajeros individuales, parejas y familias. Ubicación estratégica cerca de los puntos de interés turístico de Necoclí con una conexión perfecta para explorar la región.",
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747861214/Copia_de_1_logo_hotel_ibiza_mysrvn.jpg",
-    gallery: ["https://res.cloudinary.com/dwxk79gt0/image/upload/v1747861214/Copia_de_1_logo_hotel_ibiza_mysrvn.jpg"],
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747861214/Copia_de_1_logo_hotel_ibiza_mysrvn.jpg",
+    gallery: [
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747861214/Copia_de_1_logo_hotel_ibiza_mysrvn.jpg",
+    ],
     tags: ["Céntrico", "Familiar", "Seguro"],
     propertyType: "Hotel",
     reviewCount: 156,
@@ -305,12 +330,13 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     tenantId: "tenant-pollos-arabe",
     name: "Pollos Árabe Necoclí",
     category: "Comida y Pollo asado",
-    shortDescription:
-      "El auténtico pollo asado al estilo árabe: jugoso, dorado y lleno de sabor.",
+    shortDescription: "El auténtico pollo asado al estilo árabe: jugoso, dorado y lleno de sabor.",
     longDescription:
       "Disfruta el auténtico sabor del pollo asado al estilo árabe. Preparado con sazón especial, textura jugosa e ideal para compartir en familia. Acompañado de papas, arroz y ensaladas en un ambiente cómodo o con pedido rápido a domicilio.",
     image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747867917/pollos_arabe_crxikl.jpg",
-    gallery: ["https://res.cloudinary.com/dwxk79gt0/image/upload/v1747867917/pollos_arabe_crxikl.jpg"],
+    gallery: [
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747867917/pollos_arabe_crxikl.jpg",
+    ],
     tags: ["Pollo Asado", "Familiar", "Domicilios"],
     propertyType: "Restaurante",
     reviewCount: 388,
@@ -344,8 +370,11 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
       "La magia de la arena y el mar combinada con una experiencia gastronómica inolvidable.",
     longDescription:
       "En Restaurante Bar Antorchas, vive el encanto de degustar exquisitos platos mientras sientes la brisa del mar en la arena. Contamos con un menú variado, platos vegetarianos, especialidades de la casa y cócteles únicos para cenas románticas o reuniones con amigos.",
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747861221/logo_antorchas_refrl7.jpg",
-    gallery: ["https://res.cloudinary.com/dwxk79gt0/image/upload/v1747861221/logo_antorchas_refrl7.jpg"],
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747861221/logo_antorchas_refrl7.jpg",
+    gallery: [
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1747861221/logo_antorchas_refrl7.jpg",
+    ],
     tags: ["Frente al mar", "Bar", "Cócteles", "Cena"],
     propertyType: "Restaurante",
     reviewCount: 290,
@@ -444,8 +473,11 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
       "Toda la oferta de servicios, experiencias y motonecos directos de Portal Necoclí.",
     longDescription:
       "Portal Necoclí es tu agencia y operador de confianza. Conecta directamente con nuestras experiencias, servicios de turismo y nuestra red oficial de motonecos para recorrer el municipio de forma segura y económica.",
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1769136402/logo-kraken-blanco-negro_nu0elt.png",
-    gallery: ["https://res.cloudinary.com/dwxk79gt0/image/upload/v1769136402/logo-kraken-blanco-negro_nu0elt.png"],
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1769136402/logo-kraken-blanco-negro_nu0elt.png",
+    gallery: [
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1769136402/logo-kraken-blanco-negro_nu0elt.png",
+    ],
     tags: ["Tours", "Servicios", "Motonecos"],
     address: "Oficina Digital",
     neighborhood: "Centro",

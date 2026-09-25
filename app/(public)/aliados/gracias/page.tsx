@@ -5,7 +5,8 @@ import { SurfaceCard } from "@/components/ui/surface-card";
 
 export const metadata: Metadata = {
   title: "Solicitud Recibida · Portal Necoclí",
-  description: "Tu solicitud de alianza fue enviada correctamente. El equipo de Portal Necoclí la revisará en breve.",
+  description:
+    "Tu solicitud de alianza fue enviada correctamente. El equipo de Portal Necoclí la revisará en breve.",
 };
 
 export default function AliadosGraciasPage() {
@@ -18,8 +19,8 @@ export default function AliadosGraciasPage() {
             ¡Bienvenido a la familia de aliados!
           </h1>
           <p className="mt-3 text-slate-600 leading-relaxed">
-            Tu solicitud fue recibida y está en revisión. Te contactaremos al correo registrado
-            en menos de <strong>48 horas hábiles</strong> para activar tu cuenta de aliado.
+            Tu solicitud fue recibida y está en revisión. Te contactaremos al correo registrado en
+            menos de <strong>48 horas hábiles</strong> para activar tu cuenta de aliado.
           </p>
           <div className="mt-4 rounded-2xl bg-teal-50 border border-teal-100 px-5 py-4 text-sm text-teal-700">
             <p>¿Tienes preguntas urgentes?</p>

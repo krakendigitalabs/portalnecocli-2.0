@@ -369,8 +369,38 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 > Tras la Sesión #22, el **Agente 7 (Tasador de Valor)** certifica oficialmente los siguientes totales acumulados de la plataforma:
 > 
 > - ⏱️ **Tiempo Total Invertido:** 75.60 Horas (Ingeniería, Diseño, DevOps y Arquitectura)
-> - 💵 **Valorización de Mercado:** $11,930 USD 
->
+> 
 > *Portal Necoclí 2.0 consolida su valor superando la barrera de los $11,900 USD. El motor de Escrow Wompi y el embudo de ventas están 100% operativos, dinámicos y sincronizados con Firestore.*
+
+---
+
+### 📝 Sesión #24: Control de Calidad, Tarifarios 2026 y Refactorización del Core de Transacciones
+- **Fecha:** 25 de Septiembre de 2026
+- **Agentes Involucrados:** Arquitecto de Software, CISO & Hacker Defensivo, Cronista de Código.
+- **Objetivo:** Auditar deuda técnica, estabilizar el flujo de correos y conectar la base de conocimiento real de la plataforma con la Inteligencia Artificial.
+- **Hitos Alcanzados:**
+  1. **Aislamiento de Fallos (Try/Catch Atómicos):** Se rediseñó el endpoint transaccional del Concierge. Anteriormente, si la API de Wompi presentaba latencia, el sistema completo abortaba silenciando el envío de correos. Ahora, cada bloque (Firestore, Wompi, Resend) se ejecuta en su propia cápsula de seguridad; si Wompi falla, el correo igual se envía, garantizando la continuidad del negocio.
+  2. **Inyección de Tarifarios 2026:** Se conectó la memoria del asistente inteligente con los tarifarios oficiales (Taxis, Mototaxis, Motocarros, Lanchas) y los menús de establecimientos aliados (Pollos Árabe, Restaurante de Mariscos). Alejandro ahora cotiza con precisión quirúrgica basándose en un catálogo de más de 120 ítems actualizados.
+  3. **UX en Pre-Reservas y Correos:** Se saneó el error de renderizado que mostraba montos `undefined` en el HTML de los emails y se integró un doble CTA ("Pagar Wompi" y "Ver/Descargar Ticket").
+  4. **Linting y Formateo Global:** Se ejecutó una barrida integral de calidad de código usando el motor de Biome (`@biomejs/biome`), formateando 211 archivos y estandarizando la deuda técnica a lo largo de toda la arquitectura.
+
+**💰 Valorización Añadida:**
+- $50 USD (Optimización arquitectónica del backend y desacoplamiento).
+- $30 USD (Mapeo de datos tarifarios 2026 al Prompt del sistema).
+- **Nuevo Valor del Módulo (Fundación & Calidad): $1.430 USD**
+- **Valorización Total Acumulada: $11.980 USD**
+
+> *«Un sistema robusto no es aquel que nunca falla, sino aquel que, al fallar una de sus partes, sigue respirando con vida propia. Hoy, Portal Necoclí aprendió a seguir enviando mensajes en medio del caos.»*
+
+### 📅 LIMPIEZA DE TUBERÍAS Y OBSERVABILIDAD (Sesión #23): Fix de Supresiones Resend
+- **⏰ Entrada:** 09:00 AM | **⏰ Salida:** 09:20 AM
+- **⏳ Horas Dedicadas:** 0.3 hrs
+- **📌 Estado:** `Listo a Producción`
+- **🧠 Nivel de Complejidad:** `Baja`
+- **💰 Valorización del Módulo/Trabajo:** `$50 USD` *(Consultoría de entregabilidad de correos, setup de observabilidad y logging).*
+- **🛠️ Relato de la Jornada:**
+  Una anomalía en la matriz de comunicaciones: Alejandro dejó de reportar entregas de correo exitosas. El Agente 7 y el Agente DevOps (4) intervinieron rápidamente, descubriendo que un par de rebotes ("Bounces") habían activado el modo de autodefensa de Resend, enviando a usuarios (e incluso al correo del sistema) a la "Lista de Supresión". Mientras el Fundador Yessy limpiaba manualmente la lista negra en el panel de Resend (ya que nuestra API Key es "Send-Only" por máxima seguridad), nosotros inyectamos un escudo de observabilidad en `resend.ts`. Ahora, cualquier falla o bloqueo en los correos dejará un rastro exacto y explícito en la consola del servidor. Las comunicaciones fluyen de nuevo.
+- **📄 Archivos Alterados:** `lib/email/resend.ts`, `docs/BITACORA_VALORIZACION.md`.
+- **📎 Evidencias:** [resend.ts (Observabilidad)](file:///c:/portal-necocli/lib/email/resend.ts)
 
 

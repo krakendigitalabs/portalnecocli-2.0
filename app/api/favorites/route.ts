@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { addFavorite, getCustomerFavorites, removeFavorite } from "@/data/favoriteService";
 import { getServerAuthSession } from "@/lib/auth/server";
-import { getCustomerFavorites, addFavorite, removeFavorite } from "@/data/favoriteService";
 
 export async function GET(request: NextRequest) {
   try {

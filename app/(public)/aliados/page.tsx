@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import { MerchantRegistrationForm } from "@/components/auth/merchant-registration-form";
 import { Container } from "@/components/ui/container";
 import { SurfaceCard } from "@/components/ui/surface-card";
-import { MerchantRegistrationForm } from "@/components/auth/merchant-registration-form";
 
 export const metadata: Metadata = {
   title: "Regístrate como Aliado · Portal Necoclí",
@@ -32,17 +32,31 @@ export default function AliadosPage() {
               Conecta tu negocio con el turismo de Necoclí
             </h1>
             <p className="mt-4 text-base leading-relaxed text-slate-600 max-w-2xl">
-              Únete a la plataforma digital de turismo más completa del Caribe colombiano.
-              Sin costo de afiliación, sin mensualidades. Solo pagas cuando generas ventas reales.
-              El sistema se encarga del cobro, la logística y los correos.{" "}
-              <strong className="text-slate-800">Tú solo te preocupas por dar el mejor servicio.</strong>
+              Únete a la plataforma digital de turismo más completa del Caribe colombiano. Sin costo
+              de afiliación, sin mensualidades. Solo pagas cuando generas ventas reales. El sistema
+              se encarga del cobro, la logística y los correos.{" "}
+              <strong className="text-slate-800">
+                Tú solo te preocupas por dar el mejor servicio.
+              </strong>
             </p>
             {/* Beneficios */}
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
               {[
-                { emoji: "🤝", title: "Alianza sin riesgo", desc: "Sin cuota mensual. Solo comisión por venta real." },
-                { emoji: "📧", title: "Órdenes automáticas", desc: "Recibe pedidos directo en tu correo desde el chatbot." },
-                { emoji: "💰", title: "Escrow seguro", desc: "El portal garantiza el pago antes de que entregues el servicio." },
+                {
+                  emoji: "🤝",
+                  title: "Alianza sin riesgo",
+                  desc: "Sin cuota mensual. Solo comisión por venta real.",
+                },
+                {
+                  emoji: "📧",
+                  title: "Órdenes automáticas",
+                  desc: "Recibe pedidos directo en tu correo desde el chatbot.",
+                },
+                {
+                  emoji: "💰",
+                  title: "Escrow seguro",
+                  desc: "El portal garantiza el pago antes de que entregues el servicio.",
+                },
               ].map((b) => (
                 <div key={b.title} className="rounded-2xl border border-slate-100 bg-white p-4">
                   <p className="text-2xl">{b.emoji}</p>

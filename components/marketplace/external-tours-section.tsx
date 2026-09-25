@@ -1,56 +1,80 @@
 "use client";
 
-import { MapPin, CheckCircle2, Ticket, ChevronUp } from "lucide-react";
-import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { CheckCircle2, ChevronUp, MapPin, Ticket } from "lucide-react";
+import { useState } from "react";
+import { BookingForm } from "@/components/marketplace/booking-form";
 import { Container } from "@/components/ui/container";
 import { SurfaceCard } from "@/components/ui/surface-card";
-import { BookingForm } from "@/components/marketplace/booking-form";
 
 const paquetesDestinos = [
   {
     id: 1,
     titulo: "Guatapé Tour",
     precio: "$129.000",
-    incluye: ["Transporte ida y regreso", "Desayuno y Almuerzo", "Guía acompañante", "Tarjeta de asistencia médica"],
-    recorrido: "Visita al Peñol (Panorámico), La casa al revés (no incluye entrada), Alto del chocho, Piedra del peñol (no incluye ascenso), Visita a la plaza de zócalos, Parque central de Guatapé, Pasaporte para Barco rumbero, Malecón.",
+    incluye: [
+      "Transporte ida y regreso",
+      "Desayuno y Almuerzo",
+      "Guía acompañante",
+      "Tarjeta de asistencia médica",
+    ],
+    recorrido:
+      "Visita al Peñol (Panorámico), La casa al revés (no incluye entrada), Alto del chocho, Piedra del peñol (no incluye ascenso), Visita a la plaza de zócalos, Parque central de Guatapé, Pasaporte para Barco rumbero, Malecón.",
     salidas: "Parque Poblado, Estación Metro Estadio (Recogida en hotel disponible)",
     image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789889388/guatape_brq8fb.jpg",
-    options: [{ id: "guatape", label: "Guatapé Tour", price: 129000 }]
+    options: [{ id: "guatape", label: "Guatapé Tour", price: 129000 }],
   },
   {
     id: 2,
     titulo: "Tour Hacienda Nápoles + Santorini",
     precio: "Básico: $259.000 | Safari: $299.000",
-    incluye: ["Transporte ida y regreso", "Desayuno", "Guía Acompañante", "Tarjeta de asistencia médica", "NO INCLUYE ALMUERZO"],
-    recorrido: "Visita a la plaza Santorini. BÁSICO: Lago de los hipopótamos, Amazon safari, Gran sabana africana, Museo memorial, Kamaria, Mariposario (No incluye piscinas). SAFARI: Incluye básico + Río Salvaje, Cataratas Victoria y Cobras.",
+    incluye: [
+      "Transporte ida y regreso",
+      "Desayuno",
+      "Guía Acompañante",
+      "Tarjeta de asistencia médica",
+      "NO INCLUYE ALMUERZO",
+    ],
+    recorrido:
+      "Visita a la plaza Santorini. BÁSICO: Lago de los hipopótamos, Amazon safari, Gran sabana africana, Museo memorial, Kamaria, Mariposario (No incluye piscinas). SAFARI: Incluye básico + Río Salvaje, Cataratas Victoria y Cobras.",
     salidas: "Punto de encuentro",
     image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789889804/NAPOLES_wfxc7m.jpg",
     options: [
       { id: "napoles_basico", label: "Pasaporte Básico", price: 259000 },
-      { id: "napoles_safari", label: "Pasaporte Safari", price: 299000 }
-    ]
+      { id: "napoles_safari", label: "Pasaporte Safari", price: 299000 },
+    ],
   },
   {
     id: 3,
     titulo: "Tour Vuelta Oriente",
     precio: "$145.000",
-    incluye: ["Transporte ida y regreso", "Almuerzo", "Guía acompañante", "Tarjeta de asistencia médica"],
-    recorrido: "Ingreso al Salto del Tequendamita. Visita al Parque del Retiro, Visita Parque de la Ceja, Visita al Parque de San Antonio de Pereira, Visita al Carmen de Viboral.",
+    incluye: [
+      "Transporte ida y regreso",
+      "Almuerzo",
+      "Guía acompañante",
+      "Tarjeta de asistencia médica",
+    ],
+    recorrido:
+      "Ingreso al Salto del Tequendamita. Visita al Parque del Retiro, Visita Parque de la Ceja, Visita al Parque de San Antonio de Pereira, Visita al Carmen de Viboral.",
     salidas: "Todos los días",
     image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789889413/oriente_aifrab.jpg",
-    options: [{ id: "oriente", label: "Tour Vuelta Oriente", price: 145000 }]
+    options: [{ id: "oriente", label: "Tour Vuelta Oriente", price: 145000 }],
   },
   {
     id: 4,
     titulo: "Chiva Rumbera",
     precio: "$70.000",
-    incluye: ["Transporte ida y regreso", "Tarjeta de asistencia médica", "Una degustación (Cerveza, Agua, Gaseosa)"],
-    recorrido: "Panorámico: Avenida 70, Puente de la 4 SUR, Parque del Poblado, Milla de Oro, Avenida 33.",
+    incluye: [
+      "Transporte ida y regreso",
+      "Tarjeta de asistencia médica",
+      "Una degustación (Cerveza, Agua, Gaseosa)",
+    ],
+    recorrido:
+      "Panorámico: Avenida 70, Puente de la 4 SUR, Parque del Poblado, Milla de Oro, Avenida 33.",
     salidas: "Estación Metro Estadio (7:00 PM), Parque Poblado (7:30 PM)",
     image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1789890122/CHIVA_ELEJIDA_huazry.jpg",
-    options: [{ id: "chiva", label: "Chiva Rumbera", price: 70000 }]
-  }
+    options: [{ id: "chiva", label: "Chiva Rumbera", price: 70000 }],
+  },
 ];
 
 export function ExternalToursSection() {
@@ -78,7 +102,9 @@ export function ExternalToursSection() {
             return (
               <div key={tour.id}>
                 {/* ─ Tour Card ─ */}
-                <SurfaceCard className={`p-0 overflow-hidden flex flex-col lg:flex-row group transition-shadow hover:shadow-2xl hover:shadow-ink/10 ${isOpen ? "rounded-b-none border-b-0" : ""}`}>
+                <SurfaceCard
+                  className={`p-0 overflow-hidden flex flex-col lg:flex-row group transition-shadow hover:shadow-2xl hover:shadow-ink/10 ${isOpen ? "rounded-b-none border-b-0" : ""}`}
+                >
                   {/* Image */}
                   <div className="w-full lg:w-[55%] h-[320px] lg:h-auto lg:min-h-[420px] relative overflow-hidden shrink-0">
                     <img
@@ -105,13 +131,17 @@ export function ExternalToursSection() {
                         {tour.precio}
                       </div>
                       <div className="mb-4">
-                        <p className="text-xs uppercase tracking-wider text-ink/40 font-bold mb-2">Recorrido</p>
+                        <p className="text-xs uppercase tracking-wider text-ink/40 font-bold mb-2">
+                          Recorrido
+                        </p>
                         <p className="text-sm text-ink/70 leading-relaxed line-clamp-3 group-hover:line-clamp-none transition-all">
                           {tour.recorrido}
                         </p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-wider text-ink/40 font-bold mb-2">Incluye</p>
+                        <p className="text-xs uppercase tracking-wider text-ink/40 font-bold mb-2">
+                          Incluye
+                        </p>
                         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                           {tour.incluye.map((item, idx) => (
                             <li key={idx} className="flex items-start text-xs text-ink/80">
@@ -135,7 +165,9 @@ export function ExternalToursSection() {
                         className="text-xs font-bold uppercase tracking-wider text-green hover:text-green/80 transition-colors inline-flex items-center gap-1"
                       >
                         {isOpen ? (
-                          <><ChevronUp className="w-4 h-4" /> Cerrar</>
+                          <>
+                            <ChevronUp className="w-4 h-4" /> Cerrar
+                          </>
                         ) : (
                           <>Reservar →</>
                         )}
