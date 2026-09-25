@@ -37,7 +37,7 @@ Esta estrategia define cómo Portal Necoclí se comunicará con cada nicho de me
 ## 👨‍👩‍👧‍👦 3. FAMILIAS Y GRUPOS
 **El Enfoque (Agente 5 - CM):** Buscan economía en volumen, seguridad para los niños y comida abundante.
 
-* **Campaña:** *"El tesoro escondido del Urabá, para toda tu familia."*
+* **Campaña:** *"El tesoro escondido de Necoclí, para toda tu familia."*
 * **El Paquete Ideal:**
   * **Acomodación Múltiple** (Ej. 5 personas a $60.500 c/u = $302.500).
   * Comida: **Picada de Carnes Grande** ($66.000) o Marea Baja ($82.500).
@@ -64,4 +64,4 @@ Esta estrategia define cómo Portal Necoclí se comunicará con cada nicho de me
 
 ### 🚀 RESUMEN TÁCTICO PARA REDES SOCIALES
 1. **Instagram/TikTok:** El Agente 5 subirá *Reels* mostrando el POV (Punto de Vista) de un nómada digital trabajando frente al mar, y otro POV de una pareja en el jacuzzi. Siempre cerrando con el Call To Action: *"Reserva todo desde el chat de Portal Necoclí. Un solo pago, cero estrés"*.
-2. **LinkedIn (B2B):** El Agente 3 redactará artículos dirigidos a gerentes de RRHH en Medellín y Bogotá: *"Por qué enviar a tus ejecutivos a Urabá es más fácil con la facturación centralizada de Portal Necoclí"*.
+2. **LinkedIn (B2B):** El Agente 3 redactará artículos dirigidos a gerentes de RRHH en Medellín y Bogotá: *"Por qué enviar a tus ejecutivos a Necoclí es más fácil con la facturación centralizada de Portal Necoclí"*.

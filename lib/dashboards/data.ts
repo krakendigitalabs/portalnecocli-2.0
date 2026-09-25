@@ -10,7 +10,7 @@ import type { EscrowTransaction } from "@/lib/validations/schemas";
 import { getReservationsByBusiness } from "@/data/reservationService";
 import type { Reservation } from "@/types/reservation";
 import { getTrafficSummary, type TrafficSummary } from "@/lib/analytics/analytics-api";
-import type { ConciergeRequest } from "@/lib/actions/concierge";
+import type { ConciergeRequest } from "@/types/order";
 
 type DashboardMetric = {
   label: string;

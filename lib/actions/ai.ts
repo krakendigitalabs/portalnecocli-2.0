@@ -2,7 +2,6 @@
 
 import { GoogleGenerativeAI, FunctionDeclaration, SchemaType } from "@google/generative-ai";
 import { submitConciergeRequest } from "./concierge";
-import { sendPreReservationEmail } from "../email/resend";
 
 const apiKey = process.env.GEMINI_API_KEY;
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
@@ -19,9 +18,11 @@ const enviarSolicitudTool: FunctionDeclaration = {
       request: { type: SchemaType.STRING, description: "Resumen detallado de la solicitud: fechas, cantidad de personas, tipo de alojamiento, noches en Necoclí/Capurganá." },
       estimatedPrice: { type: SchemaType.STRING, description: "Costo aproximado del plan en COP, solo el número, ej. 450000" },
       advice: { type: SchemaType.STRING, description: "Consejo comercial animando a pagar pronto para asegurar precios." },
-      type: { type: SchemaType.STRING, description: "Tipo de solicitud: 'reservation' para viajes, hoteles o tours. 'order' para productos, alimentos, restaurantes o supermercados." }
+      type: { type: SchemaType.STRING, description: "Tipo de solicitud: 'reservation' para viajes, hoteles o tours. 'order' para productos, alimentos, restaurantes o supermercados." },
+      category: { type: SchemaType.STRING, description: "Categoría del servicio: 'hotel', 'restaurant', 'tour', 'mototaxi', 'motocarro', 'taxi', 'delivery' o 'general'." },
+      businessName: { type: SchemaType.STRING, description: "Nombre exacto del comercio aliado involucrado, si el cliente mencionó uno específico. Ej: 'Pollos Árabe', 'Motonecos'. Si no hay uno específico, omitir." },
     },
-    required: ["name", "phone", "email", "request", "estimatedPrice", "advice", "type"],
+    required: ["name", "phone", "email", "request", "estimatedPrice", "advice", "type", "category"],
   },
 };
 
@@ -114,25 +115,22 @@ export async function chatWithAlejandro(
       if (call.name === "enviar_solicitud") {
         const args = call.args as any;
         
-        const submitResult = await submitConciergeRequest({
+        // POKA YOKE: Validación estricta del precio extraído por Gemini
+        const rawPrice = args.estimatedPrice ? args.estimatedPrice.replace(/\D/g, "") : "";
+        const parsedPrice = rawPrice ? parseInt(rawPrice, 10) : undefined;
+        const validEstimatedPrice = (parsedPrice && !isNaN(parsedPrice)) ? parsedPrice : undefined;
+
+        await submitConciergeRequest({
           name: args.name || "Cliente",
           phone: args.phone || "Sin teléfono",
           email: args.email || "",
           request: args.request || "Sin detalles",
-          estimatedPrice: args.estimatedPrice ? parseInt(args.estimatedPrice.replace(/\D/g, "")) : undefined,
+          estimatedPrice: validEstimatedPrice,
+          advice: args.advice,
+          type: args.type,
+          category: args.category ?? "general",
+          businessName: args.businessName,
         });
-
-        if (args.email && args.email.includes("@")) {
-          await sendPreReservationEmail(
-            args.email,
-            args.name || "Cliente",
-            args.request,
-            args.estimatedPrice || "Consultar valor final",
-            args.advice || "Reservar en temporada baja te asegura tarifas mucho más económicas para la temporada alta.",
-            submitResult.referenceCode || undefined,
-            args.type
-          );
-        }
 
         result = await chat.sendMessage(`[Sistema interno]: La herramienta 'enviar_solicitud' se ejecutó con éxito y el correo de pre-reserva ya fue enviado. Por favor confírmale esto al usuario de forma muy breve.`);
       }

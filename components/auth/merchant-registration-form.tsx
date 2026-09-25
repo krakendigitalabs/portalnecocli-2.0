@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import {
   submitMerchantApplication,
+} from "@/lib/actions/merchant-application";
+import {
   MERCHANT_CATEGORIES,
   type MerchantApplicationInput,
-} from "@/lib/actions/merchant-application";
+} from "@/lib/validations/merchant-schema";
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
 function FieldError({ error }: { error?: string[] }) {

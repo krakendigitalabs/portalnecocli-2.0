@@ -69,7 +69,7 @@ A continuación se detallan las tarifas oficiales estandarizadas para el servici
 
 ---
 
-## 🗺️ RUTAS INTERMUNICIPALES (URABÁ)
+## 🗺️ RUTAS INTERMUNICIPALES (NECOCLÍ Y ALREDEDORES)
 | Origen | Destino | Tarifa Diurna (COP) |
 | :--- | :--- | :--- |
 | Necoclí | El Dos | $100.000 |
@@ -86,4 +86,4 @@ A continuación se detallan las tarifas oficiales estandarizadas para el servici
 ---
 
 > **💡 Nota de Integración para Alejandro (Guía Local):**
-> Esta tabla será inyectada en la base de conocimiento. Alejandro utilizará estos precios exactos para cotizar servicios VIP de transporte en vehículos con aire acondicionado (Taxis) a turistas, delegaciones o viajeros que necesiten llegar a los aeropuertos (Necoclí / Carepa) o moverse por la región de Urabá.
+> Esta tabla será inyectada en la base de conocimiento. Alejandro utilizará estos precios exactos para cotizar servicios VIP de transporte en vehículos con aire acondicionado (Taxis) a turistas, delegaciones o viajeros que necesiten llegar a los aeropuertos (Necoclí / Carepa) o moverse por Necoclí y la región.

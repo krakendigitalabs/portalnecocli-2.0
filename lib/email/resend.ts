@@ -1,81 +1,222 @@
 import { Resend } from "resend";
 
-const resendApiKey = process.env.RESEND_API_KEY;
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
 
-// Inicializamos Resend solo si hay API Key, de lo contrario lo evitamos en entornos donde no aplique.
-const resend = resendApiKey ? new Resend(resendApiKey) : null;
+// ─── CONSTANTES DE MARCA ──────────────────────────────────────────────────────
+const BRAND = {
+  from: "Portal Necoclí <reservas@portalnecocli.com>",
+  replyTo: "guia.portalnecocli@gmail.com",
+  ops: ["portalnecocli@gmail.com", "guia.portalnecocli@gmail.com"],
+  colorPrimary: "#0a7c6e",
+  colorAccent: "#f59e0b",
+  legal:
+    "Plataforma operada por Kraken Digital Labs &bull; NIT: 8128036-5 &bull; Matr&iacute;cula: 21-579544-01 &bull; RNT: 232392 (Agencia de Viajes Operadora) &bull; C&aacute;mara de Comercio de Medell&iacute;n",
+};
 
-export async function sendPreReservationEmail(
-  customerEmail: string,
-  customerName: string,
-  itinerary: string,
-  estimatedPrice: string,
-  advice: string,
-  referenceCode?: string,
-  type?: string
-) {
+// ─── PLANTILLA HTML BASE ──────────────────────────────────────────────────────
+function buildEmailHtml(opts: {
+  customerName: string;
+  title: string;
+  subtitle: string;
+  bodyRows: string; // Filas <tr> del cuerpo del ticket
+  advice: string;
+  estimatedPrice: string;
+  checkoutUrl: string;
+  btnText: string;
+}): string {
+  return `<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:'Segoe UI',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:32px 16px;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+        <!-- HEADER -->
+        <tr>
+          <td style="background:${BRAND.colorPrimary};border-radius:12px 12px 0 0;padding:32px 40px;text-align:center;">
+            <h1 style="margin:0;color:#ffffff;font-size:28px;font-weight:800;letter-spacing:-0.5px;">
+              🌴 Portal Necocl&iacute;
+            </h1>
+            <p style="margin:8px 0 0;color:#a7f3d0;font-size:15px;">Tu puerta al para&iacute;so de Necocl&iacute;</p>
+          </td>
+        </tr>
+
+        <!-- SUBHEADER -->
+        <tr>
+          <td style="background:#065f46;padding:14px 40px;text-align:center;">
+            <p style="margin:0;color:#d1fae5;font-size:13px;letter-spacing:1px;text-transform:uppercase;font-weight:600;">
+              ${opts.title}
+            </p>
+          </td>
+        </tr>
+
+        <!-- BODY -->
+        <tr>
+          <td style="background:#ffffff;padding:36px 40px;">
+            <p style="margin:0 0 6px;font-size:20px;font-weight:700;color:#111827;">
+              ¡Hola, ${opts.customerName}!
+            </p>
+            <p style="margin:0 0 28px;font-size:15px;color:#4b5563;">${opts.subtitle}</p>
+
+            <!-- TICKET -->
+            <table width="100%" cellpadding="0" cellspacing="0"
+              style="border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;margin-bottom:24px;">
+              <tr style="background:#f9fafb;">
+                <td colspan="2" style="padding:14px 20px;font-size:12px;font-weight:700;color:#6b7280;
+                  letter-spacing:0.8px;text-transform:uppercase;border-bottom:1px solid #e5e7eb;">
+                  Detalle de la Solicitud
+                </td>
+              </tr>
+              ${opts.bodyRows}
+            </table>
+
+            <!-- NOTA ALEJANDRO -->
+            <div style="background:#fffbeb;border-left:4px solid ${BRAND.colorAccent};
+              border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:28px;">
+              <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:#92400e;">
+                💡 Nota de Alejandro, tu Gu&iacute;a Local:
+              </p>
+              <p style="margin:0;font-size:14px;color:#78350f;line-height:1.6;">${opts.advice}</p>
+            </div>
+
+            <!-- PRECIO -->
+            <div style="text-align:center;margin-bottom:28px;">
+              <p style="margin:0;font-size:13px;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;">
+                Valor Aproximado
+              </p>
+              <p style="margin:4px 0 0;font-size:32px;font-weight:800;color:#111827;">
+                $${opts.estimatedPrice} <span style="font-size:16px;color:#6b7280;">COP</span>
+              </p>
+            </div>
+
+            <!-- CTA BUTTON -->
+            <div style="text-align:center;">
+              <a href="${opts.checkoutUrl}"
+                style="display:inline-block;background:${BRAND.colorPrimary};color:#ffffff;
+                text-decoration:none;padding:16px 36px;border-radius:50px;
+                font-weight:700;font-size:16px;letter-spacing:0.3px;">
+                ${opts.btnText} &rarr;
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <!-- FOOTER LEGAL -->
+        <tr>
+          <td style="background:#f9fafb;border-top:1px solid #e5e7eb;border-radius:0 0 12px 12px;
+            padding:20px 40px;text-align:center;">
+            <p style="margin:0;font-size:11px;color:#9ca3af;line-height:1.7;">
+              &copy; ${new Date().getFullYear()} <strong>Portal Necocl&iacute;</strong><br>
+              <span style="font-size:10px;">${BRAND.legal}</span>
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
+// ─── FUNCIÓN PÚBLICA ──────────────────────────────────────────────────────────
+export async function sendPreReservationEmail(opts: {
+  customerEmail: string;
+  customerName: string;
+  itinerary: string;
+  estimatedPrice: string;
+  advice: string;
+  referenceCode?: string;
+  type?: "reservation" | "order";
+  merchantEmail?: string | null;
+}): Promise<boolean> {
   if (!resend) {
-    console.warn("No RESEND_API_KEY found, skipping email.");
+    console.warn("[Resend] Sin API Key — correo omitido.");
     return false;
   }
 
-  const code = referenceCode || `custom-plan-${Date.now()}`;
+  const {
+    customerEmail,
+    customerName,
+    itinerary,
+    estimatedPrice,
+    advice,
+    referenceCode,
+    type,
+    merchantEmail,
+  } = opts;
+
+  const isOrder = type === "order";
+  const code = referenceCode || `NEC-${Date.now()}`;
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
   const checkoutUrl = `${baseUrl}/pago/${code}`;
 
-  const isOrder = type === "order";
-  const titleText = isOrder ? "Resumen de tu Pedido" : "Resumen de tu Plan a Medida";
-  const headerSubtitle = isOrder ? "Aquí tienes el resumen de tu pedido" : "Aquí tienes la pre-reserva de tu aventura";
-  const sectionTitle = isOrder ? "Detalle del Pedido" : "Detalle del Itinerario";
-  const introText = isOrder ? "hemos tomado nota de tu pedido:" : "he armado este plan a medida para tu próximo viaje:";
-  const btnText = isOrder ? "Pagar Pedido" : "Confirmar y Garantizar Precio";
+  const title = isOrder ? "Confirmación de Pedido" : "Pre-Reserva Confirmada";
+  const subtitle = isOrder
+    ? "Soy Alejandro, tu Guía Local. Hemos recibido tu pedido y ya estamos coordinando la entrega."
+    : "Soy Alejandro, tu Guía Local. Aquí tienes el resumen de tu plan a medida en Necoclí.";
+  const btnText = isOrder ? "Pagar Pedido Ahora" : "Confirmar y Garantizar Precio";
+
+  // Filas del ticket
+  const bodyRows = `
+    <tr>
+      <td style="padding:14px 20px;font-size:14px;color:#374151;border-bottom:1px solid #f3f4f6;width:35%;font-weight:600;">
+        Referencia
+      </td>
+      <td style="padding:14px 20px;font-size:14px;color:#374151;border-bottom:1px solid #f3f4f6;">
+        <code style="font-size:13px;background:#f3f4f6;padding:2px 8px;border-radius:4px;">${code}</code>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:14px 20px;font-size:14px;color:#374151;border-bottom:1px solid #f3f4f6;font-weight:600;">
+        Detalle
+      </td>
+      <td style="padding:14px 20px;font-size:14px;color:#374151;border-bottom:1px solid #f3f4f6;line-height:1.6;white-space:pre-wrap;">
+        ${itinerary}
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:14px 20px;font-size:14px;color:#374151;font-weight:600;">Fecha</td>
+      <td style="padding:14px 20px;font-size:14px;color:#374151;">
+        ${new Date().toLocaleDateString("es-CO", { dateStyle: "full" })}
+      </td>
+    </tr>
+  `;
+
+  const html = buildEmailHtml({
+    customerName,
+    title,
+    subtitle,
+    bodyRows,
+    advice,
+    estimatedPrice,
+    checkoutUrl,
+    btnText,
+  });
+
+  // Destinatarios CC: ops internos + aliado comercial (si aplica)
+  const ccList = [
+    ...BRAND.ops,
+    ...(merchantEmail ? [merchantEmail] : []),
+  ];
 
   try {
-    const data = await resend.emails.send({
-      from: "Portal Necoclí <reservas@portalnecocli.com>", // Requiere dominio verificado en Resend
+    await resend.emails.send({
+      from: BRAND.from,
+      replyTo: BRAND.replyTo,
       to: [customerEmail],
-      bcc: ["reservas@portalnecocli.com"], // Copia de seguridad
-      subject: `${titleText} - Portal Necoclí`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1f2937;">
-          <div style="text-align: center; padding: 20px; background-color: #0f766e; color: white; border-radius: 8px 8px 0 0;">
-            <h1 style="margin: 0; font-size: 24px;">¡Hola, ${customerName}!</h1>
-            <p style="margin: 5px 0 0; font-size: 16px;">${headerSubtitle}</p>
-          </div>
-          
-          <div style="padding: 30px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-top: none;">
-            <p>Hola <strong>${customerName}</strong>,</p>
-            <p>Soy Alejandro, tu Guía Local. Tal como conversamos, ${introText}</p>
-            
-            <div style="background-color: white; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #e5e7eb;">
-              <h3 style="margin-top: 0; color: #0f766e;">${sectionTitle}</h3>
-              <p style="white-space: pre-wrap; line-height: 1.6;">${itinerary}</p>
-            </div>
-            
-            <div style="background-color: #fef3c7; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #f59e0b;">
-              <p style="margin: 0; font-weight: bold; color: #92400e;">💡 Nota Importante de Alejandro:</p>
-              <p style="margin: 5px 0 0; color: #92400e; font-size: 14px;">${advice}</p>
-            </div>
-
-            <h2 style="text-align: center; color: #111827; margin: 30px 0 10px;">Valor Aproximado: <strong>$${estimatedPrice} COP</strong></h2>
-            
-            <div style="text-align: center; margin-top: 30px;">
-              <a href="${checkoutUrl}" style="display: inline-block; background-color: #0f766e; color: white; text-decoration: none; padding: 14px 28px; border-radius: 50px; font-weight: bold; font-size: 16px;">${btnText}</a>
-            </div>
-          </div>
-          
-          <div style="text-align: center; padding: 20px; color: #6b7280; font-size: 12px;">
-            <p>© ${new Date().getFullYear()} Portal Necoclí. Todos los derechos reservados.</p>
-            <p>Kraken Digital Labs - Necoclí, Colombia</p>
-          </div>
-        </div>
-      `,
+      cc: ccList,
+      subject: `${title} — Portal Necoclí`,
+      html,
     });
 
-    console.log("Email enviado:", data);
+    console.log(`[Resend] OK → to: ${customerEmail} | cc: ${ccList.join(", ")}`);
     return true;
-  } catch (error) {
-    console.error("Error sending email:", error);
+  } catch (err) {
+    console.error("[Resend] Error al enviar correo:", err);
     return false;
   }
 }
