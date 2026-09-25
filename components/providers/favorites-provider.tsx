@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useAuthSession } from "@/hooks/use-auth-session";
 
 type FavoritesContextType = {
@@ -13,6 +14,7 @@ const FavoritesContext = createContext<FavoritesContextType | undefined>(undefin
 
 export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAuthSession();
+  const router = useRouter();
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -40,8 +42,8 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
 
   const toggleFavorite = async (businessId: string) => {
     if (!user) {
-      // Si no hay usuario, idealmente deberíamos mostrar un modal de login.
-      // Por ahora, ignoramos o redirigimos (Auth modal idealmente)
+      alert("Para guardar favoritos, por favor inicia sesión como turista.");
+      router.push("/ingresar");
       return;
     }
 
@@ -54,13 +56,15 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
 
     try {
       if (isFav) {
-        await fetch(`/api/favorites?businessId=${businessId}`, { method: "DELETE" });
+        const res = await fetch(`/api/favorites?businessId=${businessId}`, { method: "DELETE" });
+        if (!res.ok) throw new Error("Error del servidor al eliminar favorito");
       } else {
-        await fetch("/api/favorites", {
+        const res = await fetch("/api/favorites", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ businessId }),
         });
+        if (!res.ok) throw new Error("Error del servidor al agregar favorito");
       }
     } catch (e) {
       console.error("Error toggling favorite", e);
@@ -68,6 +72,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
       setFavoriteIds((prev) =>
         isFav ? [...prev, businessId] : prev.filter((id) => id !== businessId),
       );
+      alert("Hubo un error al guardar tu favorito. Inténtalo de nuevo.");
     }
   };
 

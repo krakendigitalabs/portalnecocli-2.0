@@ -99,7 +99,7 @@ export function BookingModal({
       setError("Por favor ingresa tu número de teléfono.");
       return false;
     }
-    if (!formData.check_in_date) {
+    if (mode !== "order" && !formData.check_in_date) {
       setError("Por favor selecciona una fecha de llegada o de servicio.");
       return false;
     }
@@ -294,7 +294,7 @@ export function BookingModal({
                 </div>
 
                 {/* Calendario de fechas */}
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className={mode === "order" ? "hidden" : "grid gap-4 sm:grid-cols-2"}>
                   <div>
                     <label
                       className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ink/55"

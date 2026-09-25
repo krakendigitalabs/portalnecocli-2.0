@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useFavorites } from "@/components/providers/favorites-provider";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -13,6 +13,7 @@ type BusinessCardProps = {
 };
 
 export function BusinessCard({ business }: BusinessCardProps) {
+  const router = useRouter();
   const statusLabel = business.status === "active" ? "Activo" : "Borrador";
 
   // No va a explotar si no estamos logueados porque useFavorites devuelve array vacío
@@ -25,6 +26,10 @@ export function BusinessCard({ business }: BusinessCardProps) {
     toggleFavorite(business.id);
   };
 
+  const handleCardClick = () => {
+    router.push(`/negocios/${business.id}`);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -33,7 +38,7 @@ export function BusinessCard({ business }: BusinessCardProps) {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="h-full"
     >
-      <Link href={`/negocios/${business.id}`} className="group h-full block">
+      <div onClick={handleCardClick} className="group h-full block cursor-pointer">
         <Card className="h-full rounded-[30px] border-ink/10 p-6 transition-all hover:-translate-y-1 hover:shadow-xl hover:border-gold/30">
           <div className="flex items-start justify-between gap-3">
             <div>
@@ -65,7 +70,7 @@ export function BusinessCard({ business }: BusinessCardProps) {
             <span className="font-semibold text-green">{business.priceRange}</span>
           </div>
         </Card>
-      </Link>
+      </div>
     </motion.div>
   );
 }

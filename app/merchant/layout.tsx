@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { DashboardShell } from "@/components/layout/dashboard-shell";
+import { MerchantBottomNav } from "@/components/dashboards/merchant/merchant-bottom-nav";
+import { MerchantSidebar } from "@/components/dashboards/merchant/merchant-sidebar";
 import { requireRole, requireScope } from "@/lib/auth/server";
 
 type MerchantLayoutProps = Readonly<{
@@ -20,27 +20,22 @@ export default async function MerchantLayout({ children }: MerchantLayoutProps) 
   );
 
   return (
-    <DashboardShell
-      eyebrow="Merchant Hub · Portal Necoclí"
-      title="Centro de operación del negocio"
-      description="Gestión privada del perfil comercial, saldos Escrow, y pedidos activos de turistas."
-    >
-      {/* ─── Navegación de tabs ─── */}
-      <nav className="flex gap-1 rounded-2xl border border-slate-100 bg-slate-50 p-1.5 w-fit">
-        <Link
-          href="/merchant"
-          className="rounded-xl px-5 py-2 text-sm font-semibold text-slate-600 transition hover:bg-white hover:text-slate-900 hover:shadow-sm"
-        >
-          📊 Dashboard
-        </Link>
-        <Link
-          href="/merchant/pedidos"
-          className="rounded-xl px-5 py-2 text-sm font-semibold text-slate-600 transition hover:bg-white hover:text-slate-900 hover:shadow-sm"
-        >
-          📋 Pedidos
-        </Link>
-      </nav>
-      {children}
-    </DashboardShell>
+    // Layout raíz: fila horizontal en desktop, columna en mobile
+    <div className="flex min-h-screen bg-mist">
+      {/* ── Sidebar: visible solo en tablet/desktop ── */}
+      <MerchantSidebar />
+
+      {/* ── Área de contenido principal ── */}
+      <main className="flex-1 min-w-0 overflow-x-hidden">
+        {/* Padding top estándar + padding bottom extra en mobile para la BottomNav */}
+        <div className="px-4 py-6 md:px-8 md:py-10 pb-24 md:pb-10 max-w-7xl mx-auto">
+          {children}
+        </div>
+      </main>
+
+      {/* ── Bottom Nav: visible solo en mobile ── */}
+      <MerchantBottomNav />
+    </div>
   );
 }
+

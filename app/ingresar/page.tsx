@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 type SignInPageProps = {
   searchParams?: Promise<{
     next?: string;
+    role?: "merchant" | "customer";
   }>;
 };
 
@@ -21,10 +22,11 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
   const nextPath = resolvedSearchParams?.next?.startsWith("/")
     ? resolvedSearchParams.next
     : "/negocios";
+  const requestedRole = resolvedSearchParams?.role || "customer";
 
   return (
     <div className="space-y-6 pb-14 pt-6 md:space-y-8 md:pt-10">
-      <LoginForm nextPath={nextPath} />
+      <LoginForm nextPath={nextPath} requestedRole={requestedRole} />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { SurfaceCard } from "@/components/ui/surface-card";
@@ -10,6 +11,19 @@ import { LOYALTY_STARS_PER_CYCLE } from "@/types/loyalty";
 import type { Reservation } from "@/types/reservation";
 import { QuickCollections } from "./quick-collections";
 import { ReservationCalendar } from "./reservation-calendar";
+import { useRecentlyViewed } from "@/hooks/use-recently-viewed";
+
+function ViewedCount() {
+  const { viewedIds } = useRecentlyViewed();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return "-";
+  return viewedIds.length;
+}
 
 type CustomerDashboardProps = {
   user: AuthUser;
@@ -140,25 +154,44 @@ export function CustomerDashboard({
 
       {/* ─── Métricas + Fidelización ─── */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <SurfaceCard className="rounded-[24px] p-6">
-          <p className="text-3xl font-extrabold text-teal">{loyaltyProfile.total_stars}</p>
-          <p className="mt-1 text-sm font-semibold text-ink">Estrellas totales</p>
-          <p className="mt-0.5 text-xs text-ink/45">Acumuladas en toda tu historia</p>
+        {/* Sitios Visitados (Historial) */}
+        <SurfaceCard className="rounded-[24px] p-6 flex flex-col justify-between h-full">
+          <div>
+            <p className="text-3xl font-extrabold text-teal">
+              <ViewedCount />
+            </p>
+            <p className="mt-1 text-sm font-semibold text-ink">Sitios visitados</p>
+            <p className="mt-0.5 text-xs text-ink/45">En tu historial reciente</p>
+          </div>
         </SurfaceCard>
-        <SurfaceCard className="rounded-[24px] p-6">
-          <p className="text-3xl font-extrabold text-coral">{reservations.length}</p>
-          <p className="mt-1 text-sm font-semibold text-ink">Reservas totales</p>
-          <p className="mt-0.5 text-xs text-ink/45">Histórico completo</p>
+
+        {/* Favoritos Guardados */}
+        <SurfaceCard className="rounded-[24px] p-6 flex flex-col justify-between h-full">
+          <div>
+            <p className="text-3xl font-extrabold text-coral">{favorites?.length || 0}</p>
+            <p className="mt-1 text-sm font-semibold text-ink">Tus Favoritos</p>
+            <p className="mt-0.5 text-xs text-ink/45">Lugares guardados</p>
+          </div>
         </SurfaceCard>
-        <SurfaceCard className="rounded-[24px] p-6">
-          <p className="text-3xl font-extrabold text-ink">{loyaltyProfile.bonuses_redeemed}</p>
-          <p className="mt-1 text-sm font-semibold text-ink">Bonos redimidos</p>
-          <p className="mt-0.5 text-xs text-ink/45">Al 50% de descuento</p>
+
+        {/* Reservas Totales */}
+        <SurfaceCard className="rounded-[24px] p-6 flex flex-col justify-between h-full">
+          <div>
+            <p className="text-3xl font-extrabold text-ink">{reservations.length}</p>
+            <p className="mt-1 text-sm font-semibold text-ink">Tus Reservas</p>
+            <p className="mt-0.5 text-xs text-ink/45">Histórico completo</p>
+          </div>
         </SurfaceCard>
-        <SurfaceCard className="rounded-[24px] p-6">
-          <p className="text-3xl font-extrabold text-amber-500">{pendingReservations.length}</p>
-          <p className="mt-1 text-sm font-semibold text-ink">Reservas activas</p>
-          <p className="mt-0.5 text-xs text-ink/45">Pendientes o confirmadas</p>
+
+        {/* Bonos Disponibles */}
+        <SurfaceCard className="rounded-[24px] p-6 flex flex-col justify-between h-full">
+          <div>
+            <p className="text-3xl font-extrabold text-amber-500">
+              {bonuses.filter((b) => b.status === "ACTIVE").length}
+            </p>
+            <p className="mt-1 text-sm font-semibold text-ink">Bonos activos</p>
+            <p className="mt-0.5 text-xs text-ink/45">Listos para redimir</p>
+          </div>
         </SurfaceCard>
       </div>
 

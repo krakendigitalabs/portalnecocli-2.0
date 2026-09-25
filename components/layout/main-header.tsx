@@ -82,7 +82,7 @@ export function MainHeader({ brandName }: MainHeaderProps) {
 
             <Button
               className="hidden md:inline-flex bg-green text-white hover:bg-green/90 shadow-sm rounded-full px-4 h-7 text-xs font-bold"
-              href={affiliateHref}
+              href="/ingresar?role=merchant&next=/registro-comercio"
             >
               Afiliar Comercio
             </Button>
