@@ -7,10 +7,10 @@
  */
 import "server-only";
 import { getFirestore } from "firebase-admin/firestore";
+import { BONUS_TEMPLATES } from "@/data/bonusTemplates";
 import { getFirebaseAdminApp } from "@/lib/firebase/admin";
 import type { LoyaltyBonus, LoyaltyProfile, LoyaltyStar } from "@/types/loyalty";
 import { LOYALTY_STARS_PER_CYCLE } from "@/types/loyalty";
-import { BONUS_TEMPLATES } from "@/data/bonusTemplates";
 
 function getDb() {
   return getFirestore(getFirebaseAdminApp());
@@ -83,7 +83,7 @@ export async function getLoyaltyStars(customerId: string): Promise<LoyaltyStar[]
       .get();
 
     const stars = snap.docs.map((doc) => doc.data() as LoyaltyStar);
-    
+
     return stars
       .sort((a, b) => new Date(b.earned_at).getTime() - new Date(a.earned_at).getTime())
       .slice(0, 20);
@@ -153,7 +153,7 @@ export async function awardLoyaltyStar(params: {
     let eligibleTemplates = BONUS_TEMPLATES;
     if (params.businessCategory) {
       eligibleTemplates = BONUS_TEMPLATES.filter(
-        (t) => t.target_category !== params.businessCategory
+        (t) => t.target_category !== params.businessCategory,
       );
       // Fallback si por alguna razón no hay otras categorías
       if (eligibleTemplates.length === 0) eligibleTemplates = BONUS_TEMPLATES;
@@ -166,10 +166,10 @@ export async function awardLoyaltyStar(params: {
     // Expiración rápida: 7 días
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7);
-    
+
     const bonusRef = db.collection("loyalty_bonuses").doc();
     bonusCode = generateBonusCode();
-    
+
     bonus = {
       id: bonusRef.id,
       customer_id: params.customerId,
@@ -179,7 +179,7 @@ export async function awardLoyaltyStar(params: {
       created_at: now,
       expires_at: expiresAt.toISOString(),
     } as LoyaltyBonus;
-    
+
     await bonusRef.set(bonus);
     hasActiveBonus = true;
   }
@@ -210,7 +210,7 @@ export async function getLoyaltyBonuses(customerId: string): Promise<LoyaltyBonu
       .get();
 
     const bonuses = snap.docs.map((doc) => doc.data() as LoyaltyBonus);
-    
+
     return bonuses
       .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
       .slice(0, 10);

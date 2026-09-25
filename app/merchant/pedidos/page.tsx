@@ -1,12 +1,13 @@
-import { SurfaceCard } from "@/components/ui/surface-card";
-import { OrdersPanel } from "@/components/dashboards/orders-panel";
-import { requireRole } from "@/lib/auth/server";
-import { getOrdersByMerchant } from "@/lib/actions/orders";
 import type { Metadata } from "next";
+import { OrdersPanel } from "@/components/dashboards/orders-panel";
+import { SurfaceCard } from "@/components/ui/surface-card";
+import { getOrdersByMerchant } from "@/lib/actions/orders";
+import { requireRole } from "@/lib/auth/server";
 
 export const metadata: Metadata = {
   title: "Mis Pedidos · Portal Necoclí",
-  description: "Gestiona en tiempo real los pedidos y solicitudes de turistas asignados a tu negocio.",
+  description:
+    "Gestiona en tiempo real los pedidos y solicitudes de turistas asignados a tu negocio.",
 };
 
 /** Esta página solo la pueden ver aliados con rol "business" */

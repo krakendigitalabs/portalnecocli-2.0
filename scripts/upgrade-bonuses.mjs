@@ -1,6 +1,7 @@
-import { initializeApp, cert, getApps } from "firebase-admin/app";
+import { cert, getApps, initializeApp } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
-import { getFirestore, FieldValue } from "firebase-admin/firestore";
+import { FieldValue, getFirestore } from "firebase-admin/firestore";
+
 const BONUS_TEMPLATES = [
   {
     title: "15% OFF en 2da Noche",
@@ -36,7 +37,7 @@ const BONUS_TEMPLATES = [
     target_category: "health",
     type: "SPECIAL_PERK",
     valid_days: [1, 2, 3, 4],
-  }
+  },
 ];
 
 const serviceAccount = {
@@ -67,20 +68,20 @@ async function run() {
     console.log(`Replacing old bonuses for user: ${user.uid}`);
 
     const snap = await db.collection("loyalty_bonuses").where("customer_id", "==", user.uid).get();
-    
+
     let count = 0;
     const batch = db.batch();
-    
-    snap.docs.forEach(doc => {
+
+    snap.docs.forEach((doc) => {
       const data = doc.data();
       // Si no tiene title, es un bono antiguo.
       if (!data.title) {
         const randomIndex = Math.floor(Math.random() * BONUS_TEMPLATES.length);
         const template = BONUS_TEMPLATES[randomIndex];
-        
+
         const expiresAt = new Date();
         expiresAt.setDate(expiresAt.getDate() + 7);
-        
+
         batch.update(doc.ref, {
           title: template.title,
           description: template.description,
@@ -89,7 +90,7 @@ async function run() {
           value: template.value || null,
           valid_days: template.valid_days,
           expires_at: expiresAt.toISOString(),
-          discount_percentage: FieldValue.delete()
+          discount_percentage: FieldValue.delete(),
         });
         count++;
       }
@@ -101,7 +102,6 @@ async function run() {
     } else {
       console.log(`No old bonuses found to upgrade.`);
     }
-
   } catch (err) {
     console.error("Error:", err);
   }

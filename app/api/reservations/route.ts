@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { getServerAuthSession } from "@/lib/auth/server";
 import { createReservation } from "@/data/reservationService";
+import { getServerAuthSession } from "@/lib/auth/server";
 import type { ReservationLead } from "@/types/reservation";
 
 interface CreateReservationRequestBody {

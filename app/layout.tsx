@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "@/app/globals.css";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Permanent_Marker } from "next/font/google";
+import Script from "next/script";
 import { AppShell } from "@/components/layout/app-shell";
+import { AiConciergeWidget } from "@/components/marketplace/ai-concierge-widget";
 import { AppProviders } from "@/components/providers/app-providers";
 import { brand, siteMetadata } from "@/lib/constants/site";
 import { PORTAL_APP_HEADER } from "@/lib/routing/subdomains";
-import { GoogleAnalytics } from "@next/third-parties/google";
-import Script from "next/script";
-import { AiConciergeWidget } from "@/components/marketplace/ai-concierge-widget";
 
 const tropicalFont = Permanent_Marker({
   weight: "400",
@@ -74,19 +74,22 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             children
           ) : (
             <>
-              <AppShell announcement="Reservas, afiliaciones y soporte local" brandName={brand.name}>
+              <AppShell
+                announcement="Reservas, afiliaciones y soporte local"
+                brandName={brand.name}
+              >
                 {children}
               </AppShell>
               <AiConciergeWidget />
             </>
           )}
         </AppProviders>
-        
+
         {/* Google Analytics 4 */}
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         )}
-        
+
         {/* Google Ads (Conversion Tracking) */}
         {process.env.NEXT_PUBLIC_GOOGLE_ADS_ID && (
           <Script id="google-ads-config" strategy="afterInteractive">
@@ -97,7 +100,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             `}
           </Script>
         )}
-        
+
         {/* Google AdSense */}
         {process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID && (
           <Script

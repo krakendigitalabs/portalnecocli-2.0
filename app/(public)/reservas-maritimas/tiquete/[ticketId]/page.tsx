@@ -19,7 +19,16 @@ export default async function MaritimeTicketPage({ params, searchParams }: PageP
   // For now we reconstruct from searchParams (passed via redirect from action)
   const passengers = sp.passengers
     ? JSON.parse(decodeURIComponent(sp.passengers))
-    : [{ name: "Pasajero 1", docType: "CC", docNum: "000000", phone: "", petFriendly: false, allergies: false }];
+    : [
+        {
+          name: "Pasajero 1",
+          docType: "CC",
+          docNum: "000000",
+          phone: "",
+          petFriendly: false,
+          allergies: false,
+        },
+      ];
 
   const props = {
     ticketId,
@@ -38,7 +47,8 @@ export default async function MaritimeTicketPage({ params, searchParams }: PageP
       <div className="max-w-2xl mx-auto mb-10 text-center">
         <h1 className="text-3xl font-bold text-[#0f2e21] mb-2">¡Tu Pre-reserva está Lista!</h1>
         <p className="text-gray-600">
-          Guarda o imprime este tiquete. Preséntalo en la taquilla de la naviera para confirmar tu embarque y pagar.
+          Guarda o imprime este tiquete. Preséntalo en la taquilla de la naviera para confirmar tu
+          embarque y pagar.
         </p>
       </div>
       <MaritimeBoardingPass {...props} />

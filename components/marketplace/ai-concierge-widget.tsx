@@ -1,18 +1,19 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Coffee, CheckCircle2, Heart } from "lucide-react";
-import { chatWithAlejandro, ChatMessage } from "@/lib/actions/ai";
-import { submitConciergeRequest } from "@/lib/actions/concierge";
+import { AnimatePresence, motion } from "framer-motion";
+import { CheckCircle2, Coffee, Heart, MessageCircle, Send, X } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { ChatMessage, chatWithAlejandro } from "@/lib/actions/ai";
+import { submitConciergeRequest } from "@/lib/actions/concierge";
 
 export function AiConciergeWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "model",
-      content: "¡Hola! Soy Alejandro, guía local de Portal Necoclí. Conozco cada rincón de Necoclí. ¿Para qué fechas planeas tu viaje y qué tienes en mente?",
+      content:
+        "¡Hola! Soy Alejandro, guía local de Portal Necoclí. Conozco cada rincón de Necoclí. ¿Para qué fechas planeas tu viaje y qué tienes en mente?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -32,15 +33,16 @@ export function AiConciergeWidget() {
   const handleWompiPayment = () => {
     const amountInCents = parseInt(tipAmount) * 100;
     if (isNaN(amountInCents) || amountInCents <= 0) return;
-    
+
     // Generar referencia única
     const reference = `PROPINA_ALEJANDRO_${Date.now()}`;
     // Usamos la llave pública de producción configurada en las variables de entorno
-    const publicKey = process.env.NEXT_PUBLIC_WOMPI_KEY || "pub_prod_r6V49rlDfVKH0rp2VkIFEzqw0oVwwgmi";
-    
+    const publicKey =
+      process.env.NEXT_PUBLIC_WOMPI_KEY || "pub_prod_r6V49rlDfVKH0rp2VkIFEzqw0oVwwgmi";
+
     const wompiUrl = `https://checkout.wompi.co/p/?public-key=${publicKey}&currency=COP&amount-in-cents=${amountInCents}&reference=${reference}&redirect-url=https://portalnecocli.com`;
-    
-    window.open(wompiUrl, '_blank');
+
+    window.open(wompiUrl, "_blank");
     setShowTipModal(false);
   };
   const scrollToBottom = () => {
@@ -52,13 +54,17 @@ export function AiConciergeWidget() {
   }, [messages, showForm]);
 
   const handleSend = async (messageOverride?: string) => {
-    const userMessage = (typeof messageOverride === 'string' ? messageOverride : input).trim();
+    const userMessage = (typeof messageOverride === "string" ? messageOverride : input).trim();
     if (!userMessage || isLoading) return;
 
     if (!messageOverride) setInput("");
-    
+
     // Si el usuario da señales de querer hacer un pedido
-    if (userMessage.toLowerCase().includes("solicitar") || userMessage.toLowerCase().includes("pedir") || userMessage.toLowerCase().includes("reservar")) {
+    if (
+      userMessage.toLowerCase().includes("solicitar") ||
+      userMessage.toLowerCase().includes("pedir") ||
+      userMessage.toLowerCase().includes("reservar")
+    ) {
       // setShowForm(true);
       // Podemos seguir chateando o mostrar el form. Dejamos que Alejandro lo maneje.
     }
@@ -73,7 +79,10 @@ export function AiConciergeWidget() {
     } catch (error) {
       setMessages([
         ...newMessages,
-        { role: "model", content: "Lo siento, tuve un problema de conexión. ¿Podemos intentar de nuevo?" },
+        {
+          role: "model",
+          content: "Lo siento, tuve un problema de conexión. ¿Podemos intentar de nuevo?",
+        },
       ]);
     } finally {
       setIsLoading(false);
@@ -95,7 +104,10 @@ export function AiConciergeWidget() {
       setFormStatus("success");
       setMessages([
         ...messages,
-        { role: "model", content: `¡Excelente ${formData.name}! Tu solicitud ha sido registrada y enviada a tu correo (${formData.email}). Nos pondremos en contacto pronto.` }
+        {
+          role: "model",
+          content: `¡Excelente ${formData.name}! Tu solicitud ha sido registrada y enviada a tu correo (${formData.email}). Nos pondremos en contacto pronto.`,
+        },
       ]);
       setTimeout(() => setShowForm(false), 3000);
     } else {
@@ -111,17 +123,17 @@ export function AiConciergeWidget() {
           {!isOpen && (
             <motion.button
               initial={{ scale: 0, opacity: 0, y: 50 }}
-              animate={{ 
-                scale: 1, 
-                opacity: 1, 
+              animate={{
+                scale: 1,
+                opacity: 1,
                 y: [0, -12, 0],
-                rotate: [0, -5, 5, -5, 0]
+                rotate: [0, -5, 5, -5, 0],
               }}
-              transition={{ 
+              transition={{
                 y: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
                 rotate: { duration: 5, repeat: Infinity, ease: "easeInOut", repeatDelay: 1 },
                 scale: { duration: 0.3 },
-                opacity: { duration: 0.3 }
+                opacity: { duration: 0.3 },
               }}
               exit={{ scale: 0, opacity: 0, y: 50 }}
               onClick={() => setIsOpen(true)}
@@ -132,7 +144,12 @@ export function AiConciergeWidget() {
               </div>
               {/* <MessageCircle className="w-6 h-6" /> */}
               <div className="relative w-8 h-8 rounded-full overflow-hidden border-2 border-white">
-                <Image src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1754280672/logo_pasiasano_it6yh0.png" alt="Alejandro" fill className="object-cover" />
+                <Image
+                  src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1754280672/logo_pasiasano_it6yh0.png"
+                  alt="Alejandro"
+                  fill
+                  className="object-cover"
+                />
               </div>
             </motion.button>
           )}
@@ -153,9 +170,14 @@ export function AiConciergeWidget() {
             <div className="bg-emerald-600 p-4 text-white flex items-center justify-between shadow-md relative z-10">
               <div className="flex items-center gap-3">
                 <div className="relative w-14 h-14 rounded-full overflow-hidden bg-white p-0.5 shadow-sm">
-                   <div className="relative w-full h-full rounded-full overflow-hidden bg-emerald-50">
-                     <Image src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1754280672/logo_pasiasano_it6yh0.png" alt="Alejandro" fill className="object-cover scale-110" />
-                   </div>
+                  <div className="relative w-full h-full rounded-full overflow-hidden bg-emerald-50">
+                    <Image
+                      src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1754280672/logo_pasiasano_it6yh0.png"
+                      alt="Alejandro"
+                      fill
+                      className="object-cover scale-110"
+                    />
+                  </div>
                 </div>
                 <div>
                   <h3 className="font-bold text-base tracking-wide">Alejandro</h3>
@@ -183,55 +205,61 @@ export function AiConciergeWidget() {
             {/* Modal de Propina */}
             <AnimatePresence>
               {showTipModal && (
-                <motion.div 
-                  initial={{ opacity: 0 }} 
-                  animate={{ opacity: 1 }} 
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   className="absolute inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
                 >
-                  <motion.div 
+                  <motion.div
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     className="bg-white w-full max-w-sm rounded-xl p-5 shadow-2xl relative"
                   >
-                    <button 
+                    <button
                       onClick={() => setShowTipModal(false)}
                       className="absolute top-3 right-3 text-gray-400 hover:text-gray-700"
                     >
                       <X className="w-5 h-5" />
                     </button>
-                    
+
                     <div className="text-center mb-4">
                       <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-2 text-emerald-600">
                         <Coffee className="w-6 h-6" />
                       </div>
-                      <h3 className="font-bold text-lg text-gray-900">Invítale un café a Alejandro</h3>
-                      <p className="text-sm text-gray-500">Apoya a tu guía local voluntariamente.</p>
+                      <h3 className="font-bold text-lg text-gray-900">
+                        Invítale un café a Alejandro
+                      </h3>
+                      <p className="text-sm text-gray-500">
+                        Apoya a tu guía local voluntariamente.
+                      </p>
                     </div>
 
                     <div className="mb-4">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">¿Cuánto deseas aportar? (COP)</label>
-                      <input 
-                        type="number" 
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        ¿Cuánto deseas aportar? (COP)
+                      </label>
+                      <input
+                        type="number"
                         value={tipAmount}
                         onChange={(e) => setTipAmount(e.target.value)}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 font-semibold text-lg text-gray-900"
                         placeholder="Ej: 5000"
                       />
                       <div className="flex gap-2 mt-2">
-                        {[5000, 10000, 20000].map(amt => (
+                        {[5000, 10000, 20000].map((amt) => (
                           <button
                             key={amt}
                             onClick={() => setTipAmount(amt.toString())}
-                            className={`flex-1 py-1 text-xs font-medium rounded border transition-colors ${tipAmount === amt.toString() ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'}`}
+                            className={`flex-1 py-1 text-xs font-medium rounded border transition-colors ${tipAmount === amt.toString() ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100"}`}
                           >
-                            ${(amt/1000)}k
+                            ${amt / 1000}k
                           </button>
                         ))}
                       </div>
                     </div>
 
-                    <button 
+                    <button
                       onClick={handleWompiPayment}
                       className="w-full bg-[#2733d1] hover:bg-[#1a239b] text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition-colors"
                     >
@@ -269,43 +297,47 @@ export function AiConciergeWidget() {
                   </div>
                 </div>
               )}
-              
+
               {/* Quick Replies */}
-              {!isLoading && messages.length > 0 && messages[messages.length - 1].role === "model" && !showForm && (
-                <div className="flex flex-wrap gap-2 mt-2 pb-4">
-                  {[
-                    "🏝️ Tour de Islas",
-                    "📦 Armar Paquete",
-                    "🍔 Pedir Domicilio",
-                    "🏨 Buscar Hotel",
-                    "🛺 Motocarro local ($10k)"
-                  ].map((reply) => (
-                    <button
-                      key={reply}
-                      onClick={() => {
-                        let type = "general";
-                        if (reply.includes("Hotel")) type = "hotel";
-                        if (reply.includes("Domicilio")) type = "domicilio";
-                        if (reply.includes("Paquete")) type = "paquete";
-                        if (reply.includes("Tour")) type = "tour";
-                        if (reply.includes("Motocarro") || reply.includes("Transporte")) type = "transporte";
-                        
-                        setFormType(type);
-                        setFormData(prev => ({ ...prev, request: reply }));
-                        setShowForm(true);
-                      }}
-                      className="bg-white border border-emerald-100 text-emerald-700 text-xs px-3 py-1.5 rounded-full shadow-sm hover:bg-emerald-50 hover:border-emerald-300 transition-colors"
-                    >
-                      {reply}
-                    </button>
-                  ))}
-                </div>
-              )}
-              
+              {!isLoading &&
+                messages.length > 0 &&
+                messages[messages.length - 1].role === "model" &&
+                !showForm && (
+                  <div className="flex flex-wrap gap-2 mt-2 pb-4">
+                    {[
+                      "🏝️ Tour de Islas",
+                      "📦 Armar Paquete",
+                      "🍔 Pedir Domicilio",
+                      "🏨 Buscar Hotel",
+                      "🛺 Motocarro local ($10k)",
+                    ].map((reply) => (
+                      <button
+                        key={reply}
+                        onClick={() => {
+                          let type = "general";
+                          if (reply.includes("Hotel")) type = "hotel";
+                          if (reply.includes("Domicilio")) type = "domicilio";
+                          if (reply.includes("Paquete")) type = "paquete";
+                          if (reply.includes("Tour")) type = "tour";
+                          if (reply.includes("Motocarro") || reply.includes("Transporte"))
+                            type = "transporte";
+
+                          setFormType(type);
+                          setFormData((prev) => ({ ...prev, request: reply }));
+                          setShowForm(true);
+                        }}
+                        className="bg-white border border-emerald-100 text-emerald-700 text-xs px-3 py-1.5 rounded-full shadow-sm hover:bg-emerald-50 hover:border-emerald-300 transition-colors"
+                      >
+                        {reply}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
               {showForm && (
                 <div className="bg-white border border-emerald-100 rounded-xl p-4 shadow-sm text-sm relative">
-                  <button 
-                    onClick={() => setShowForm(false)} 
+                  <button
+                    onClick={() => setShowForm(false)}
                     className="absolute top-3 right-3 p-1 text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-full transition-colors"
                   >
                     <X className="w-4 h-4" />
@@ -319,24 +351,63 @@ export function AiConciergeWidget() {
                     {formType === "general" && "Completar Solicitud"}
                   </h4>
                   <form onSubmit={handleFormSubmit} className="flex flex-col gap-2">
-                    <input required type="text" placeholder="Nombre completo" className="w-full border rounded p-2 text-xs" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
-                    <input required type="email" placeholder="Correo electrónico" className="w-full border rounded p-2 text-xs" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
-                    <input required type="tel" placeholder="Teléfono / WhatsApp" className="w-full border rounded p-2 text-xs" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
-                    <textarea required placeholder="Detalle de tu solicitud o pedido" className="w-full border rounded p-2 text-xs min-h-[60px]" value={formData.request} onChange={e => setFormData({...formData, request: e.target.value})} />
-                    <button type="submit" disabled={formStatus === "submitting" || formStatus === "success"} className="bg-emerald-600 text-white rounded py-2 text-xs font-medium hover:bg-emerald-700 transition-colors flex justify-center items-center gap-2">
-                      {formStatus === "submitting" ? "Enviando..." : formStatus === "success" ? <><CheckCircle2 className="w-4 h-4"/> ¡Enviado!</> : "Confirmar Solicitud"}
+                    <input
+                      required
+                      type="text"
+                      placeholder="Nombre completo"
+                      className="w-full border rounded p-2 text-xs"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    />
+                    <input
+                      required
+                      type="email"
+                      placeholder="Correo electrónico"
+                      className="w-full border rounded p-2 text-xs"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    />
+                    <input
+                      required
+                      type="tel"
+                      placeholder="Teléfono / WhatsApp"
+                      className="w-full border rounded p-2 text-xs"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    />
+                    <textarea
+                      required
+                      placeholder="Detalle de tu solicitud o pedido"
+                      className="w-full border rounded p-2 text-xs min-h-[60px]"
+                      value={formData.request}
+                      onChange={(e) => setFormData({ ...formData, request: e.target.value })}
+                    />
+                    <button
+                      type="submit"
+                      disabled={formStatus === "submitting" || formStatus === "success"}
+                      className="bg-emerald-600 text-white rounded py-2 text-xs font-medium hover:bg-emerald-700 transition-colors flex justify-center items-center gap-2"
+                    >
+                      {formStatus === "submitting" ? (
+                        "Enviando..."
+                      ) : formStatus === "success" ? (
+                        <>
+                          <CheckCircle2 className="w-4 h-4" /> ¡Enviado!
+                        </>
+                      ) : (
+                        "Confirmar Solicitud"
+                      )}
                     </button>
                   </form>
                 </div>
               )}
-              
+
               <div ref={messagesEndRef} />
             </div>
 
             {/* Input Area */}
             {!showForm && (
               <div className="p-3 bg-white border-t flex items-end gap-2 relative">
-                <button 
+                <button
                   type="button"
                   onClick={() => {
                     setFormType("general");

@@ -25,7 +25,7 @@ export function LuxuryHero() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const target = searchData.destination
-      ? DESTINATION_MAP[searchData.destination] ?? "/hoteles"
+      ? (DESTINATION_MAP[searchData.destination] ?? "/hoteles")
       : "/hoteles";
     router.push(target);
   };
@@ -48,7 +48,10 @@ export function LuxuryHero() {
       </video>
 
       {/* ─── Gradient overlays — subtle, only corners & bottom ─── */}
-      <div className="absolute inset-0 bg-black/40 md:bg-black/20 pointer-events-none" style={{ zIndex: 1 }} />
+      <div
+        className="absolute inset-0 bg-black/40 md:bg-black/20 pointer-events-none"
+        style={{ zIndex: 1 }}
+      />
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -57,7 +60,6 @@ export function LuxuryHero() {
             "linear-gradient(to bottom, rgba(10,14,20,0.8) 0%, transparent 25%, transparent 75%, rgba(10,14,20,0.8) 100%)",
         }}
       />
-
 
       {/* ─── Spacer para mantener el buscador abajo ─── */}
       <div className="flex-1" />
@@ -69,14 +71,9 @@ export function LuxuryHero() {
         transition={{ duration: 0.9, ease: "easeOut", delay: 0.45 }}
         className="relative z-10 w-full px-4 sm:px-6 flex justify-center pb-8 md:pb-4"
       >
-        <form
-          ref={formRef}
-          onSubmit={handleSearch}
-          className="w-full max-w-3xl"
-        >
+        <form ref={formRef} onSubmit={handleSearch} className="w-full max-w-3xl">
           {/* Glass pill wrapper */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center bg-white/[0.14] backdrop-blur-xl border border-white/25 rounded-2xl sm:rounded-full shadow-[0_8px_40px_rgba(0,0,0,0.35)] overflow-hidden">
-
             {/* — Destino — */}
             <div
               className={`flex-1 flex items-center gap-3 px-5 py-4 sm:py-3.5 cursor-pointer transition-colors ${focused === "dest" ? "bg-white/[0.18]" : "hover:bg-white/[0.1]"}`}
@@ -95,11 +92,21 @@ export function LuxuryHero() {
                   className="bg-transparent text-white text-sm font-medium outline-none appearance-none cursor-pointer w-full placeholder:text-white/50"
                   style={{ color: searchData.destination ? "white" : "rgba(255,255,255,0.55)" }}
                 >
-                  <option value="" className="text-ink">¿Qué buscas?</option>
-                  <option value="hoteles" className="text-ink">🏨 Hoteles &amp; Hospedajes</option>
-                  <option value="tours" className="text-ink">🌊 Tours &amp; Experiencias</option>
-                  <option value="restaurantes" className="text-ink">🍽️ Restaurantes</option>
-                  <option value="transporte" className="text-ink">🚐 Transporte</option>
+                  <option value="" className="text-ink">
+                    ¿Qué buscas?
+                  </option>
+                  <option value="hoteles" className="text-ink">
+                    🏨 Hoteles &amp; Hospedajes
+                  </option>
+                  <option value="tours" className="text-ink">
+                    🌊 Tours &amp; Experiencias
+                  </option>
+                  <option value="restaurantes" className="text-ink">
+                    🍽️ Restaurantes
+                  </option>
+                  <option value="transporte" className="text-ink">
+                    🚐 Transporte
+                  </option>
                 </select>
               </div>
             </div>

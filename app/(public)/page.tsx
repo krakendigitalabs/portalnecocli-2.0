@@ -61,7 +61,9 @@ export default function PublicHomePage() {
         <Container className="max-w-6xl">
           {/* Header */}
           <div className="text-center mb-16">
-            <p className="text-teal font-bold tracking-[0.2em] uppercase text-xs mb-3">Necoclí · Colombia</p>
+            <p className="text-teal font-bold tracking-[0.2em] uppercase text-xs mb-3">
+              Necoclí · Colombia
+            </p>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-ink mb-5 leading-tight">
               Necoclí te espera —<br />
               <span className="text-green">¿Cuándo vienes?</span>
@@ -83,10 +85,15 @@ export default function PublicHomePage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-7">
-                <span className="inline-block bg-teal/90 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">Turismo Local</span>
-                <h3 className="text-2xl font-bold text-white mb-2 font-tropical">Aventura en el Golfo</h3>
+                <span className="inline-block bg-teal/90 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">
+                  Turismo Local
+                </span>
+                <h3 className="text-2xl font-bold text-white mb-2 font-tropical">
+                  Aventura en el Golfo
+                </h3>
                 <p className="text-sm text-white/75 leading-relaxed">
-                  Playas vírgenes, manglares y el mar dulce más grande del mundo. Tours en lancha, kayak y avistamiento de ballenas.
+                  Playas vírgenes, manglares y el mar dulce más grande del mundo. Tours en lancha,
+                  kayak y avistamiento de ballenas.
                 </p>
               </div>
             </div>
@@ -100,10 +107,13 @@ export default function PublicHomePage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-7">
-                <span className="inline-block bg-gold/90 text-ink text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">Cultura & Patrimonio</span>
+                <span className="inline-block bg-gold/90 text-ink text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">
+                  Cultura & Patrimonio
+                </span>
                 <h3 className="text-2xl font-bold text-white mb-2 font-tropical">Historia Viva</h3>
                 <p className="text-sm text-white/75 leading-relaxed">
-                  Malecón, iglesia colonial, cementerio náutico y el Parque del Bebé. Necoclí guarda siglos de historias junto al mar.
+                  Malecón, iglesia colonial, cementerio náutico y el Parque del Bebé. Necoclí guarda
+                  siglos de historias junto al mar.
                 </p>
               </div>
             </div>
@@ -117,10 +127,15 @@ export default function PublicHomePage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-7">
-                <span className="inline-block bg-coral/90 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">Gastronomía</span>
-                <h3 className="text-2xl font-bold text-white mb-2 font-tropical">Sabores del Caribe</h3>
+                <span className="inline-block bg-coral/90 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">
+                  Gastronomía
+                </span>
+                <h3 className="text-2xl font-bold text-white mb-2 font-tropical">
+                  Sabores del Caribe
+                </h3>
                 <p className="text-sm text-white/75 leading-relaxed">
-                  Langosta, pargo frito, cazuela de mariscos y cocadas artesanales. El mar llega directo a tu plato en Necoclí.
+                  Langosta, pargo frito, cazuela de mariscos y cocadas artesanales. El mar llega
+                  directo a tu plato en Necoclí.
                 </p>
               </div>
             </div>
@@ -135,11 +150,14 @@ export default function PublicHomePage() {
               🌊 Planea tu viaje a Necoclí
               <span className="text-lg">→</span>
             </a>
-            <p className="mt-4 text-sm text-ink/40">Paquetes desde <span className="font-bold text-ink/70">$50.000 COP</span> · Reserva en minutos</p>
+            <p className="mt-4 text-sm text-ink/40">
+              Paquetes desde <span className="font-bold text-ink/70">$50.000 COP</span> · Reserva en
+              minutos
+            </p>
           </div>
         </Container>
       </section>
-      
+
       {/* Lead Magnet */}
       <WelcomeModal />
     </div>

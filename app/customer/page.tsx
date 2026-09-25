@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { CustomerDashboard } from "@/components/dashboards/customer-dashboard";
+import { getCustomerFavorites } from "@/data/favoriteService";
 import {
   getLoyaltyBonuses,
   getLoyaltyStars,
   getOrCreateLoyaltyProfile,
 } from "@/data/loyaltyService";
-import { getCustomerFavorites } from "@/data/favoriteService";
 import { getReservationsByCustomer } from "@/data/reservationService";
 import { requireRole } from "@/lib/auth/server";
 

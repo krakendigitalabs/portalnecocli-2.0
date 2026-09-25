@@ -22,9 +22,8 @@ export default function NosotrosPage() {
         <div className="prose prose-lg prose-ink mx-auto text-ink/80 text-justify">
           <p>
             <strong>Portal Necoclí 2.0</strong> nace bajo la visión de <em>Kraken Digital Labs</em>{" "}
-            como una plataforma tecnológica de alto nivel destinada a conectar a
-            turistas de todo el mundo con la riqueza natural, cultural y gastronómica de Necoclí,
-            Antioquia.
+            como una plataforma tecnológica de alto nivel destinada a conectar a turistas de todo el
+            mundo con la riqueza natural, cultural y gastronómica de Necoclí, Antioquia.
           </p>
           <p>
             Nuestro propósito es transformar la forma en la que se descubre y se consume el destino.

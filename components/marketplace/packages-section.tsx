@@ -10,8 +10,10 @@ const packages = [
   {
     id: "alojamiento-basico",
     title: "Alojamiento Básico",
-    description: "Opción económica y cómoda para hospedaje. Incluye acceso a piscina frente al mar, parqueadero, opción de alimentación a la habitación, WiFi y zonas de descanso. Ideal para el viajero práctico que busca relajarse en Necoclí.",
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1739291954/turismo_necocli_motonecos_1_mmblod.jpg",
+    description:
+      "Opción económica y cómoda para hospedaje. Incluye acceso a piscina frente al mar, parqueadero, opción de alimentación a la habitación, WiFi y zonas de descanso. Ideal para el viajero práctico que busca relajarse en Necoclí.",
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1739291954/turismo_necocli_motonecos_1_mmblod.jpg",
     highlight: "Económico · Piscina frente al mar",
     options: [
       { id: "basico_multiple", label: "Acomodación Múltiple", price: 45000 },
@@ -43,9 +45,7 @@ const packages = [
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1744003434/turismo_necocli_57_gqvstk.jpg",
     highlight: "Sáb & Dom · Pareja · Piscina + Mar",
-    options: [
-      { id: "nx_pareja", label: "Noche Express — Pareja (Sáb o Dom)", price: 250000 },
-    ],
+    options: [{ id: "nx_pareja", label: "Noche Express — Pareja (Sáb o Dom)", price: 250000 }],
   },
   {
     id: "fin-de-semana",
@@ -55,9 +55,7 @@ const packages = [
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1744003480/turismo_30_dzr8jh.jpg",
     highlight: "2 días · Hotel frente al mar · Tour local",
-    options: [
-      { id: "fds_completo", label: "Fin de Semana Completo (Sáb + Dom)", price: 500000 },
-    ],
+    options: [{ id: "fds_completo", label: "Fin de Semana Completo (Sáb + Dom)", price: 500000 }],
   },
   {
     id: "full-necocli-vip",
@@ -67,9 +65,7 @@ const packages = [
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1739243210/IMG_20241217_173322_xfanmb.jpg",
     highlight: "2 días · Todo incluido · Piscina + Mar",
-    options: [
-      { id: "vip_full", label: "Full VIP — Todo Incluido (2 días)", price: 620000 },
-    ],
+    options: [{ id: "vip_full", label: "Full VIP — Todo Incluido (2 días)", price: 620000 }],
   },
   {
     id: "en-naturaleza",
@@ -154,7 +150,12 @@ export function PackagesSection() {
                           Cerrar formulario
                         </>
                       ) : (
-                        <>Reservar Ahora <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span></>
+                        <>
+                          Reservar Ahora{" "}
+                          <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">
+                            →
+                          </span>
+                        </>
                       )}
                     </div>
                   </div>

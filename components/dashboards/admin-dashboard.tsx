@@ -76,8 +76,12 @@ function LeadRow({ reservation }: { reservation: Reservation }) {
         <p className="mt-0.5 text-xs text-ink/40 font-mono">{reservation.reference_code}</p>
       </div>
       <div className="flex items-center gap-3">
-        <p className="text-sm font-semibold text-ink">{formatCOP(reservation.total_amount / 100)}</p>
-        <span className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold ${statusColor}`}>
+        <p className="text-sm font-semibold text-ink">
+          {formatCOP(reservation.total_amount / 100)}
+        </p>
+        <span
+          className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold ${statusColor}`}
+        >
           {STATUS_LABEL[reservation.status] ?? reservation.status}
         </span>
         {reservation.escrow_transaction_id && (
@@ -101,15 +105,12 @@ function EscrowRow({ tx }: { tx: EscrowTransaction }) {
           #{(tx.id ?? "").slice(-8).toUpperCase()}
         </p>
         <p className="mt-0.5 text-xs text-ink/50">
-          Negocio: {tx.businessId ?? "—"} · {tx.createdAt instanceof Date
-            ? formatDate(tx.createdAt.toISOString())
-            : "—"}
+          Negocio: {tx.businessId ?? "—"} ·{" "}
+          {tx.createdAt instanceof Date ? formatDate(tx.createdAt.toISOString()) : "—"}
         </p>
       </div>
       <div className="flex items-center gap-3">
-        <p className="text-sm font-semibold text-ink">
-          {formatCOP(tx.netAmountToBusiness)}
-        </p>
+        <p className="text-sm font-semibold text-ink">{formatCOP(tx.netAmountToBusiness)}</p>
         <span
           className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold ${
             tx.status === "held"
@@ -119,7 +120,11 @@ function EscrowRow({ tx }: { tx: EscrowTransaction }) {
                 : "text-ink/50 bg-ink/5 border-ink/10"
           }`}
         >
-          {tx.status === "held" ? "⏳ Retenido" : tx.status === "released" ? "✓ Liberado" : tx.status}
+          {tx.status === "held"
+            ? "⏳ Retenido"
+            : tx.status === "released"
+              ? "✓ Liberado"
+              : tx.status}
         </span>
       </div>
     </div>
@@ -138,9 +143,7 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
           <p className="text-xs font-bold uppercase tracking-[0.3em] text-teal">
             🧠 Centro de Mando · Kraken Digital Labs
           </p>
-          <h1 className="mt-2 text-3xl font-black tracking-tight">
-            Panel SuperAdmin
-          </h1>
+          <h1 className="mt-2 text-3xl font-black tracking-tight">Panel SuperAdmin</h1>
           <p className="mt-1 text-white/50 text-sm">
             Monitoreo en tiempo real de leads, escrow y operaciones de Portal Necoclí
           </p>
@@ -194,9 +197,7 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
             <p className="text-xs font-semibold uppercase tracking-[0.26em] text-coral">
               Base de Leads · Oro Comercial
             </p>
-            <h2 className="mt-2 text-2xl font-bold text-ink">
-              Reservas y Solicitudes Recientes
-            </h2>
+            <h2 className="mt-2 text-2xl font-bold text-ink">Reservas y Solicitudes Recientes</h2>
             <p className="mt-1 text-sm text-ink/60">
               Capturadas por el motor de triangulación. Cada fila es un lead de valor.
             </p>
@@ -274,11 +275,16 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
         {(data.conciergeRequests?.length || 0) > 0 ? (
           <div className="grid gap-4">
             {data.conciergeRequests.map((req, i) => (
-              <div key={i} className="flex flex-col gap-3 rounded-[18px] border border-ink/8 bg-white px-5 py-4">
+              <div
+                key={i}
+                className="flex flex-col gap-3 rounded-[18px] border border-ink/8 bg-white px-5 py-4"
+              >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-ink/5 pb-3">
                   <div>
                     <p className="text-sm font-bold text-ink">{req.name}</p>
-                    <p className="text-xs text-ink/50">{req.email} · {req.phone}</p>
+                    <p className="text-xs text-ink/50">
+                      {req.email} · {req.phone}
+                    </p>
                   </div>
                   <span className="shrink-0 rounded-full bg-emerald-50 border border-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
                     {req.status === "pending" ? "Pendiente" : req.status}
@@ -293,7 +299,9 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
         ) : (
           <div className="rounded-2xl border border-ink/8 bg-emerald-50/50 px-6 py-10 text-center">
             <p className="text-3xl">☕</p>
-            <p className="mt-3 text-sm font-semibold text-emerald-900">Alejandro está esperando solicitudes</p>
+            <p className="mt-3 text-sm font-semibold text-emerald-900">
+              Alejandro está esperando solicitudes
+            </p>
             <p className="mt-1 text-xs text-emerald-700/60">
               Las peticiones de alojamiento, compras y domicilios aparecerán aquí en tiempo real.
             </p>
@@ -343,7 +351,9 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
               >
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold text-ink">{business.name}</p>
-                  <p className="text-xs text-ink/50">{business.category} · tenant {business.tenantId}</p>
+                  <p className="text-xs text-ink/50">
+                    {business.category} · tenant {business.tenantId}
+                  </p>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
                   <span className="text-xs font-semibold text-teal">

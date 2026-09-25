@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { MetricCard } from "@/components/ui/metric-card";
-import { SurfaceCard } from "@/components/ui/surface-card";
 import { ReleaseFundsButton } from "@/components/dashboards/release-funds-button";
 import { ReservationCalendar } from "@/components/dashboards/reservation-calendar";
+import { MetricCard } from "@/components/ui/metric-card";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import type { MerchantDashboardData } from "@/lib/dashboards/data";
 
 type MerchantDashboardProps = {
@@ -95,7 +95,7 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
         <h2 className="mt-4 text-2xl font-semibold tracking-tight text-ink">
           Gestión de tus reservas y garantías
         </h2>
-        
+
         {data.escrowTransactions && data.escrowTransactions.length > 0 ? (
           <div className="mt-6 space-y-4">
             {data.escrowTransactions.map((tx) => (
@@ -108,10 +108,16 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
                     Boleto #{tx.reservationId.slice(-6).toUpperCase()}
                   </p>
                   <p className="text-sm text-ink/68">
-                    Pago Neto: {formatCOP(tx.netAmountToBusiness)} · Fecha: {tx.createdAt.toLocaleDateString("es-CO")}
+                    Pago Neto: {formatCOP(tx.netAmountToBusiness)} · Fecha:{" "}
+                    {tx.createdAt.toLocaleDateString("es-CO")}
                   </p>
                   {tx.officialTicketUrl && (
-                    <a href={tx.officialTicketUrl} target="_blank" rel="noreferrer" className="text-xs font-medium text-coral hover:underline">
+                    <a
+                      href={tx.officialTicketUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-xs font-medium text-coral hover:underline"
+                    >
                       Ver Ticket Wompi
                     </a>
                   )}
@@ -155,7 +161,7 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
         <h2 className="mt-4 text-2xl font-semibold tracking-tight text-ink">
           Turistas y próximas llegadas
         </h2>
-        
+
         {data.reservations && data.reservations.length > 0 ? (
           <div className="mt-6 space-y-8">
             {/* ─── Calendario Visual ─── */}
@@ -165,30 +171,33 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
 
             {/* ─── Lista de Llegadas ─── */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-ink/70 uppercase tracking-wider mb-2 px-2">Listado de llegadas</h3>
+              <h3 className="text-sm font-semibold text-ink/70 uppercase tracking-wider mb-2 px-2">
+                Listado de llegadas
+              </h3>
               {data.reservations.map((res) => (
                 <div
-                key={res.id}
-                className="flex flex-col gap-4 rounded-[22px] border border-ink/8 bg-white px-5 py-4 md:flex-row md:items-center md:justify-between"
-              >
-                <div>
-                  <p className="text-lg font-semibold text-ink">
-                    {res.lead.full_name}
-                  </p>
-                  <p className="text-sm text-ink/68">
-                    Contacto: {res.lead.email} {res.lead.phone ? `· ${res.lead.phone}` : ""}
-                  </p>
-                  <p className="text-sm text-ink/68">
-                    Llegada: {res.lead.check_in_date ? res.lead.check_in_date : "Por confirmar"} · Negocio: {res.business_name}
-                  </p>
+                  key={res.id}
+                  className="flex flex-col gap-4 rounded-[22px] border border-ink/8 bg-white px-5 py-4 md:flex-row md:items-center md:justify-between"
+                >
+                  <div>
+                    <p className="text-lg font-semibold text-ink">{res.lead.full_name}</p>
+                    <p className="text-sm text-ink/68">
+                      Contacto: {res.lead.email} {res.lead.phone ? `· ${res.lead.phone}` : ""}
+                    </p>
+                    <p className="text-sm text-ink/68">
+                      Llegada: {res.lead.check_in_date ? res.lead.check_in_date : "Por confirmar"} ·
+                      Negocio: {res.business_name}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-semibold uppercase ${res.status === "PAID" || res.status === "COMPLETED" ? "bg-teal/10 text-teal" : "bg-coral/10 text-coral"}`}
+                    >
+                      {res.status === "PAID" ? "PAGADO" : res.status}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase ${res.status === 'PAID' || res.status === 'COMPLETED' ? 'bg-teal/10 text-teal' : 'bg-coral/10 text-coral'}`}>
-                    {res.status === 'PAID' ? 'PAGADO' : res.status}
-                  </span>
-                </div>
-              </div>
-            ))}
+              ))}
             </div>
           </div>
         ) : (
@@ -293,9 +302,10 @@ export function MerchantDashboard({ data }: MerchantDashboardProps) {
               Destaca tu negocio en Portal Necoclí
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-ink/70">
-              Nuestro modelo te permite estar visible <strong>sin costo fijo anual</strong>. Solo pagas
-              comisión cuando generas ventas reales. Si deseas captar más turistas este fin de semana,
-              adquiere un <strong>Boost de Posicionamiento</strong> y aparece de primero en las búsquedas.
+              Nuestro modelo te permite estar visible <strong>sin costo fijo anual</strong>. Solo
+              pagas comisión cuando generas ventas reales. Si deseas captar más turistas este fin de
+              semana, adquiere un <strong>Boost de Posicionamiento</strong> y aparece de primero en
+              las búsquedas.
             </p>
           </div>
           <button className="shrink-0 rounded-full bg-teal px-6 py-3 font-semibold text-white shadow-soft transition hover:bg-teal/90">

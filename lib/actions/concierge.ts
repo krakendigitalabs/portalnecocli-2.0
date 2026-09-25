@@ -1,39 +1,38 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { getFirebaseAdminApp } from "@/lib/firebase/admin";
-import { createReservation } from "@/data/reservationService";
 import { getMerchantEmail } from "@/data/merchantDirectory";
+import { createReservation } from "@/data/reservationService";
 import { sendPreReservationEmail } from "@/lib/email/resend";
-import { COMMISSION_RATES } from "@/types/order";
+import { getFirebaseAdminApp } from "@/lib/firebase/admin";
 import type { ConciergeRequest, RequestCategory } from "@/types/order";
+import { COMMISSION_RATES } from "@/types/order";
 
 // ─── ACCIÓN PRINCIPAL ─────────────────────────────────────────────────────────
 export async function submitConciergeRequest(data: ConciergeRequest) {
+  // ── PASO 1: Calcular comisión y precio válido ──────────────────────────────
+  const rate = COMMISSION_RATES[data.category as RequestCategory] ?? COMMISSION_RATES.general;
+  const validPrice =
+    typeof data.estimatedPrice === "number" &&
+    !isNaN(data.estimatedPrice) &&
+    data.estimatedPrice > 0
+      ? data.estimatedPrice
+      : 0;
+  const commission = validPrice > 0 ? Math.round(validPrice * rate) : 0;
+  const referenceCode = `NEC-${Date.now().toString(36).toUpperCase()}`;
+  const merchantEmail = data.businessName ? getMerchantEmail(data.businessName) : null;
+
+  // ── PASO 2: Persistir en Firestore (CRÍTICO — si falla, retorna error) ─────
+  let docId: string;
   try {
     const db = getFirestore(getFirebaseAdminApp());
 
-    // 1. Calcular comisión segura (POKA YOKE: Fallback a general si el LLM alucina la categoría)
-    const rate = COMMISSION_RATES[data.category as RequestCategory] ?? COMMISSION_RATES.general;
-    // POKA YOKE: Asegurar que estimatedPrice es un número válido mayor a 0
-    const validPrice = (typeof data.estimatedPrice === "number" && !isNaN(data.estimatedPrice) && data.estimatedPrice > 0) 
-      ? data.estimatedPrice 
-      : 0;
-    
-    const commission = validPrice > 0 ? Math.round(validPrice * rate) : 0;
+    // Limpiar undefined properties manualmente para no romper Firestore
+    const cleanData = Object.fromEntries(Object.entries(data).filter(([_, v]) => v !== undefined));
 
-    // 2. Generar código de referencia único y legible
-    const referenceCode = `NEC-${Date.now().toString(36).toUpperCase()}`;
-
-    // 3. Buscar correo del aliado comercial (si aplica)
-    const merchantEmail = data.businessName
-      ? getMerchantEmail(data.businessName)
-      : null;
-
-    // 4. Persistir en Firestore (fuente de verdad)
     const docRef = await db.collection("concierge_requests").add({
-      ...data,
-      estimatedPrice: validPrice > 0 ? validPrice : null, // Guardar null si no es válido
+      ...cleanData,
+      estimatedPrice: validPrice > 0 ? validPrice : null,
       referenceCode,
       commission,
       merchantEmail,
@@ -41,10 +40,17 @@ export async function submitConciergeRequest(data: ConciergeRequest) {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
+    docId = docRef.id;
+    console.log(`[concierge] ✅ Firestore OK → id: ${docId}`);
+  } catch (err) {
+    console.error("[concierge] ❌ Error guardando en Firestore:", err);
+    return { success: false, error: "No se pudo guardar la solicitud." };
+  }
 
-    // 5. Crear reserva formal en Wompi (solo si hay precio válido > 0)
-    let wompiReferenceCode: string | null = null;
-    if (validPrice > 0) {
+  // ── PASO 3: Crear link de pago en Wompi (OPCIONAL — error no bloquea nada) ─
+  let wompiReferenceCode: string | null = null;
+  if (validPrice > 0) {
+    try {
       const reservation = await createReservation({
         businessId: "portal-necocli-concierge",
         businessName: data.businessName || "Portal Necoclí (Plan a Medida)",
@@ -58,25 +64,37 @@ export async function submitConciergeRequest(data: ConciergeRequest) {
         },
       });
       wompiReferenceCode = reservation.reference_code;
+      console.log(`[concierge] ✅ Wompi OK → ref: ${wompiReferenceCode}`);
+    } catch (err) {
+      // ⚠️ NO retornamos error — el correo SÍ se envía aunque Wompi falle
+      console.warn("[concierge] ⚠️ Wompi falló (no crítico, el correo se enviará igual):", err);
     }
+  }
 
-    // 6. Disparar 4 correos simultáneos (cliente + ops + aliado)
-    if (data.email?.includes("@")) {
+  // ── PASO 4: Enviar correo (CRÍTICO — se envía SIEMPRE si hay email válido) ─
+  if (data.email?.includes("@")) {
+    try {
+      // Formatear precio de forma segura
+      const priceDisplay = validPrice > 0 ? validPrice.toLocaleString("es-CO") : "Por confirmar";
+
       await sendPreReservationEmail({
         customerEmail: data.email,
         customerName: data.name,
         itinerary: data.request,
-        estimatedPrice: data.estimatedPrice?.toLocaleString("es-CO") ?? "Por confirmar",
+        estimatedPrice: priceDisplay,
         advice: data.advice ?? "Reservar con anticipación garantiza el mejor precio.",
         referenceCode: wompiReferenceCode ?? referenceCode,
-        type: data.type,
+        type: data.type ?? "reservation",
         merchantEmail,
       });
+      console.log(`[concierge] ✅ Correo enviado → ${data.email}`);
+    } catch (err) {
+      // Log pero no retorna error — la solicitud ya fue guardada en Firestore
+      console.error("[concierge] ❌ Error enviando correo:", err);
     }
-
-    return { success: true, id: docRef.id, referenceCode };
-  } catch (error) {
-    console.error("[concierge] Error al procesar solicitud:", error);
-    return { success: false, error: "No se pudo procesar la solicitud." };
+  } else {
+    console.warn(`[concierge] ⚠️ Correo omitido — email inválido: "${data.email}"`);
   }
+
+  return { success: true, id: docId!, referenceCode };
 }

@@ -1,9 +1,9 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { useForm } from "react-hook-form";
+import { AnimatePresence, motion } from "framer-motion";
+import { AlertCircle, CheckCircle2, Loader2, Send } from "lucide-react";
 import { useState } from "react";
-import { CheckCircle2, Loader2, Send, AlertCircle } from "lucide-react";
+import { useForm } from "react-hook-form";
 
 type ContactFormData = {
   name: string;

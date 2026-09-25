@@ -189,6 +189,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, errors: error.issues }, { status: 400 });
     }
     console.error("[Contact API]", error);
-    return NextResponse.json({ success: false, error: "Error interno del servidor" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Error interno del servidor" },
+      { status: 500 },
+    );
   }
 }

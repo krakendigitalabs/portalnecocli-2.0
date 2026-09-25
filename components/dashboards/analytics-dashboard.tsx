@@ -1,17 +1,17 @@
 "use client";
 
-import { SurfaceCard } from "@/components/ui/surface-card";
 import { BarChart3 } from "lucide-react";
-import { 
-  AreaChart, 
-  Area, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Legend,
   ResponsiveContainer,
-  Legend
+  Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import type { TrafficSummary } from "@/lib/analytics/analytics-api";
 
 export function AnalyticsDashboard({ data }: { data: TrafficSummary }) {
@@ -39,11 +39,15 @@ export function AnalyticsDashboard({ data }: { data: TrafficSummary }) {
         </div>
         <div className="rounded-[20px] border border-ink/8 bg-ink/[0.03] px-6 py-4">
           <p className="text-xs font-semibold uppercase text-ink/60 mb-1">Sesiones Totales</p>
-          <p className="text-3xl font-extrabold text-emerald-700">{data.totalSessions.toLocaleString()}</p>
+          <p className="text-3xl font-extrabold text-emerald-700">
+            {data.totalSessions.toLocaleString()}
+          </p>
         </div>
         <div className="rounded-[20px] border border-ink/8 bg-ink/[0.03] px-6 py-4">
           <p className="text-xs font-semibold uppercase text-ink/60 mb-1">Usuarios Activos</p>
-          <p className="text-3xl font-extrabold text-coral">{data.totalActiveUsers.toLocaleString()}</p>
+          <p className="text-3xl font-extrabold text-coral">
+            {data.totalActiveUsers.toLocaleString()}
+          </p>
         </div>
       </div>
 
@@ -64,8 +68,8 @@ export function AnalyticsDashboard({ data }: { data: TrafficSummary }) {
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-            <XAxis 
-              dataKey="date" 
+            <XAxis
+              dataKey="date"
               axisLine={false}
               tickLine={false}
               tick={{ fontSize: 12, fill: "#6b7280" }}
@@ -75,33 +79,33 @@ export function AnalyticsDashboard({ data }: { data: TrafficSummary }) {
                 return val;
               }}
             />
-            <YAxis 
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 12, fill: "#6b7280" }}
-            />
-            <Tooltip 
-              contentStyle={{ borderRadius: "12px", border: "none", boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)" }}
+            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "#6b7280" }} />
+            <Tooltip
+              contentStyle={{
+                borderRadius: "12px",
+                border: "none",
+                boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+              }}
               labelStyle={{ fontWeight: "bold", color: "#1f2937", marginBottom: "4px" }}
             />
             <Legend verticalAlign="top" height={36} iconType="circle" />
-            <Area 
-              type="monotone" 
-              dataKey="screenPageViews" 
+            <Area
+              type="monotone"
+              dataKey="screenPageViews"
               name="Vistas"
-              stroke="#0f2e21" 
+              stroke="#0f2e21"
               strokeWidth={2}
-              fillOpacity={1} 
-              fill="url(#colorViews)" 
+              fillOpacity={1}
+              fill="url(#colorViews)"
             />
-            <Area 
-              type="monotone" 
-              dataKey="activeUsers" 
+            <Area
+              type="monotone"
+              dataKey="activeUsers"
               name="Usuarios"
-              stroke="#ff6b4a" 
+              stroke="#ff6b4a"
               strokeWidth={2}
-              fillOpacity={1} 
-              fill="url(#colorUsers)" 
+              fillOpacity={1}
+              fill="url(#colorUsers)"
             />
           </AreaChart>
         </ResponsiveContainer>

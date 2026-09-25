@@ -1,8 +1,8 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { getFirebaseAdminApp } from "@/lib/firebase/admin";
 import { revalidatePath } from "next/cache";
+import { getFirebaseAdminApp } from "@/lib/firebase/admin";
 
 export async function confirmTicketOfflinePayment(ticketId: string) {
   try {
@@ -11,10 +11,14 @@ export async function confirmTicketOfflinePayment(ticketId: string) {
     // Let's try doc ID first
     let ref = db.collection("reservations").doc(ticketId);
     let snap = await ref.get();
-    
+
     if (!snap.exists) {
       // Try escrow_transaction_id
-      const query = await db.collection("reservations").where("escrow_transaction_id", "==", ticketId).limit(1).get();
+      const query = await db
+        .collection("reservations")
+        .where("escrow_transaction_id", "==", ticketId)
+        .limit(1)
+        .get();
       if (query.empty) {
         return { success: false, error: "Tiquete no encontrado" };
       }
@@ -30,7 +34,7 @@ export async function confirmTicketOfflinePayment(ticketId: string) {
     await ref.update({
       status: "COMPLETED",
       offline_payment_confirmed: true,
-      offline_payment_date: new Date().toISOString()
+      offline_payment_date: new Date().toISOString(),
     });
 
     // Send email notification to admin
@@ -48,7 +52,7 @@ export async function confirmTicketOfflinePayment(ticketId: string) {
             <p>Monto aproximado de reserva: $${(data?.total_amount || 0).toLocaleString("es-CO")} COP</p>
             <p>Estado actualizado exitosamente a COMPLETED en el sistema.</p>
           </div>
-        `
+        `,
       });
     }
 

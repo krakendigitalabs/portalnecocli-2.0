@@ -91,9 +91,10 @@ export async function getTrafficSummary(): Promise<TrafficSummary> {
       response.rows.forEach((row) => {
         const dateRaw = row.dimensionValues?.[0]?.value ?? "";
         // Format YYYYMMDD to YYYY-MM-DD for easier reading
-        const formattedDate = dateRaw.length === 8 
-          ? `${dateRaw.slice(0, 4)}-${dateRaw.slice(4, 6)}-${dateRaw.slice(6, 8)}` 
-          : dateRaw;
+        const formattedDate =
+          dateRaw.length === 8
+            ? `${dateRaw.slice(0, 4)}-${dateRaw.slice(4, 6)}-${dateRaw.slice(6, 8)}`
+            : dateRaw;
 
         const sessions = Number(row.metricValues?.[0]?.value ?? 0);
         const activeUsers = Number(row.metricValues?.[1]?.value ?? 0);
@@ -128,7 +129,7 @@ function getMockTrafficSummary(): TrafficSummary {
   // Generate fake data for the last 15 days
   const trafficByDate: TrafficData[] = [];
   const today = new Date();
-  
+
   let totalSessions = 0;
   let totalActiveUsers = 0;
   let totalPageViews = 0;
@@ -137,7 +138,7 @@ function getMockTrafficSummary(): TrafficSummary {
     const d = new Date(today);
     d.setDate(d.getDate() - i);
     const formattedDate = d.toISOString().split("T")[0];
-    
+
     // Randomize some realistic looking data
     const sessions = Math.floor(Math.random() * 50) + 20;
     const activeUsers = Math.floor(sessions * (0.7 + Math.random() * 0.3));

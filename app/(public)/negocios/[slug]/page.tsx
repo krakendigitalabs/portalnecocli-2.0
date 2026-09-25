@@ -159,7 +159,11 @@ export default async function BusinessDetailPage({ params }: BusinessDetailPageP
       <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
         <Card className="overflow-hidden rounded-[34px] border-ink/10">
           <div className="aspect-[1.35/1] overflow-hidden bg-sand">
-            <img alt={business.name} className="h-full w-full object-contain p-4 bg-white" src={business.image} />
+            <img
+              alt={business.name}
+              className="h-full w-full object-contain p-4 bg-white"
+              src={business.image}
+            />
           </div>
         </Card>
         <div className="space-y-4">

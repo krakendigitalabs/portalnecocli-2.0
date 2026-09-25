@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { Loader2, Unlock, CheckCircle2 } from "lucide-react";
-import { releaseEscrowFunds } from "@/lib/actions/merchant";
+import { CheckCircle2, Loader2, Unlock } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { releaseEscrowFunds } from "@/lib/actions/merchant";
 
 type ReleaseFundsButtonProps = {
   transactionId: string;
@@ -56,9 +56,7 @@ export function ReleaseFundsButton({ transactionId }: ReleaseFundsButtonProps) {
   if (state === "error") {
     return (
       <div className="flex flex-col items-end gap-1">
-        <span className="text-xs font-semibold text-red-600">
-          Error: {errorMessage}
-        </span>
+        <span className="text-xs font-semibold text-red-600">Error: {errorMessage}</span>
         <button
           type="button"
           onClick={() => setState("idle")}

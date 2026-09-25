@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { SurfaceCard } from "@/components/ui/surface-card";
+import type { CustomerFavorite } from "@/data/favoriteService";
 import type { AuthUser } from "@/types/auth";
 import type { LoyaltyBonus, LoyaltyProfile, LoyaltyStar } from "@/types/loyalty";
 import { LOYALTY_STARS_PER_CYCLE } from "@/types/loyalty";
 import type { Reservation } from "@/types/reservation";
-import type { CustomerFavorite } from "@/data/favoriteService";
-import { ReservationCalendar } from "./reservation-calendar";
 import { QuickCollections } from "./quick-collections";
+import { ReservationCalendar } from "./reservation-calendar";
 
 type CustomerDashboardProps = {
   user: AuthUser;
@@ -177,9 +177,9 @@ export function CustomerDashboard({
             </p>
             <h3 className="mt-2 text-xl font-bold text-ink">Acumula 5 experiencias → 6ta al 50%</h3>
             <p className="mt-1 text-sm text-ink/60">
-              Cada reserva oficial te otorga una estrella dorada. Al juntar 5, Portal Necoclí te regala 
-              un bono del <strong>50% de descuento</strong> (subvencionado por nosotros y nuestros aliados premium) 
-              para tu próximo viaje a Necoclí.
+              Cada reserva oficial te otorga una estrella dorada. Al juntar 5, Portal Necoclí te
+              regala un bono del <strong>50% de descuento</strong> (subvencionado por nosotros y
+              nuestros aliados premium) para tu próximo viaje a Necoclí.
             </p>
           </div>
           <div className="shrink-0 text-5xl">🌴</div>
@@ -234,28 +234,28 @@ export function CustomerDashboard({
                         {formatDate(reservation.created_at)} · {reservation.reference_code}
                       </p>
                     </div>
-                  <div className="flex flex-col items-end gap-2">
-                    <span
-                      className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold ${RESERVATION_STATUS_COLOR[reservation.status] ?? "text-ink/50"}`}
-                    >
-                      {RESERVATION_STATUS_LABEL[reservation.status] ?? reservation.status}
-                    </span>
-                    {reservation.status === "PENDING_PAYMENT" ? (
-                      <Link
-                        href={`/pago/${reservation.reference_code}`}
-                        className="text-[10px] font-bold uppercase tracking-wider text-white bg-green-500 hover:bg-green-600 px-3 py-1.5 rounded-full transition-colors"
+                    <div className="flex flex-col items-end gap-2">
+                      <span
+                        className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-semibold ${RESERVATION_STATUS_COLOR[reservation.status] ?? "text-ink/50"}`}
                       >
-                        Pagar Reserva
-                      </Link>
-                    ) : reservation.escrow_transaction_id ? (
-                      <Link
-                        href={`/tickets/${reservation.escrow_transaction_id}`}
-                        className="text-[10px] font-bold uppercase tracking-wider text-teal hover:underline"
-                      >
-                        Ver Ticket Escrow →
-                      </Link>
-                    ) : null}
-                  </div>
+                        {RESERVATION_STATUS_LABEL[reservation.status] ?? reservation.status}
+                      </span>
+                      {reservation.status === "PENDING_PAYMENT" ? (
+                        <Link
+                          href={`/pago/${reservation.reference_code}`}
+                          className="text-[10px] font-bold uppercase tracking-wider text-white bg-green-500 hover:bg-green-600 px-3 py-1.5 rounded-full transition-colors"
+                        >
+                          Pagar Reserva
+                        </Link>
+                      ) : reservation.escrow_transaction_id ? (
+                        <Link
+                          href={`/tickets/${reservation.escrow_transaction_id}`}
+                          className="text-[10px] font-bold uppercase tracking-wider text-teal hover:underline"
+                        >
+                          Ver Ticket Escrow →
+                        </Link>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               ))}

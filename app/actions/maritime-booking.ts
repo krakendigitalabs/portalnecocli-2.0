@@ -7,7 +7,10 @@ const PassengerSchema = z.object({
   docType: z.enum(["CC", "CE", "TI", "PAS"]),
   docNum: z.string().min(5, "Número de documento requerido"),
   phone: z.string().optional().default(""),
-  email: z.union([z.string().email("Correo inválido"), z.literal("")]).optional().default(""),
+  email: z
+    .union([z.string().email("Correo inválido"), z.literal("")])
+    .optional()
+    .default(""),
   petFriendly: z.boolean().default(false),
   allergies: z.boolean().default(false),
 });
@@ -39,11 +42,21 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
 
     // 3. Prepare flat payload for Google Sheets row
     const p1 = validatedData.passengers[0];
-    
+
     // Obtener fecha y hora de Colombia para el registro
     const now = new Date();
-    const registerDate = new Intl.DateTimeFormat("es-CO", { timeZone: "America/Bogota", year: "numeric", month: "2-digit", day: "2-digit" }).format(now);
-    const registerTime = new Intl.DateTimeFormat("es-CO", { timeZone: "America/Bogota", hour: "2-digit", minute: "2-digit", hour12: true }).format(now);
+    const registerDate = new Intl.DateTimeFormat("es-CO", {
+      timeZone: "America/Bogota",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(now);
+    const registerTime = new Intl.DateTimeFormat("es-CO", {
+      timeZone: "America/Bogota",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    }).format(now);
 
     const googleSheetsPayload = {
       ticketId,
@@ -59,39 +72,42 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
       totalPrice: validatedData.totalPrice,
       solidarity: validatedData.isSolidarityActive ? "SI ($5.000 COP Motonecos)" : "NO",
       passengerCount: validatedData.passengers.length,
-      
+
       // Datos del Titular / Representante
       name: p1?.name || "Sin nombre",
       docType: p1?.docType || "",
       docNum: p1?.docNum || "",
       phone: p1?.phone || "",
       email: p1?.email || "",
-      
+
       // Indicadores booleanos
       petFriendly: validatedData.passengers.some((p) => p.petFriendly) ? "SI" : "NO",
       allergies: validatedData.passengers.some((p) => p.allergies) ? "SI" : "NO",
-      
+
       // Consolidado para el resto de pasajeros separados por coma (No agrupados con texto adicional)
-      allNames: validatedData.passengers.map(p => p.name).join(", "),
-      allDocs: validatedData.passengers.map(p => `${p.docType} ${p.docNum}`).join(", "),
-      allPhones: validatedData.passengers.map(p => p.phone || "N/A").join(", "),
-      allEmails: validatedData.passengers.map(p => p.email || "N/A").join(", "),
+      allNames: validatedData.passengers.map((p) => p.name).join(", "),
+      allDocs: validatedData.passengers.map((p) => `${p.docType} ${p.docNum}`).join(", "),
+      allPhones: validatedData.passengers.map((p) => p.phone || "N/A").join(", "),
+      allEmails: validatedData.passengers.map((p) => p.email || "N/A").join(", "),
     };
 
     // 4. Send to Google Sheets via Apps Script webhook(s) (non-blocking if not configured)
     let webhookEnv = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
-    
+
     // Soporte para enrutamiento a planillas separadas por naviera
     if (validatedData.operator === "caribe" && process.env.GOOGLE_SHEETS_WEBHOOK_CARIBE) {
       webhookEnv = process.env.GOOGLE_SHEETS_WEBHOOK_CARIBE;
-    } else if (validatedData.operator === "sol_playa" && process.env.GOOGLE_SHEETS_WEBHOOK_SOLPLAYA) {
+    } else if (
+      validatedData.operator === "sol_playa" &&
+      process.env.GOOGLE_SHEETS_WEBHOOK_SOLPLAYA
+    ) {
       webhookEnv = process.env.GOOGLE_SHEETS_WEBHOOK_SOLPLAYA;
     }
 
     if (webhookEnv) {
       // Soporta múltiples webhooks separados por coma
       const webhookUrls = webhookEnv.split(",").map((url) => url.trim());
-      
+
       for (const url of webhookUrls) {
         if (!url) continue;
         try {
@@ -107,7 +123,9 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
           console.log(`[MaritimeBooking] GS Response (${res.status}):`, textResponse);
 
           if (!res.ok) {
-            console.error(`[MaritimeBooking] Google Sheets webhook error at ${url} : ${res.status}`);
+            console.error(
+              `[MaritimeBooking] Google Sheets webhook error at ${url} : ${res.status}`,
+            );
           }
         } catch (err) {
           console.warn("[MaritimeBooking] Failed to call webhook", url, err);
@@ -119,8 +137,12 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
 
     // 5. Send emails
     const firstPassengerEmail = validatedData.passengers[0]?.email;
-    const operatorName = validatedData.operator === "caribe" ? "El Caribe S.A.S." : "Sol y Playa S.A.S.";
-    const operatorEmail = validatedData.operator === "caribe" ? "reservas@elcaribesas.com" : "reservas@solyplayasas.com"; // TODO: Actualizar correos reales en variables de entorno
+    const operatorName =
+      validatedData.operator === "caribe" ? "El Caribe S.A.S." : "Sol y Playa S.A.S.";
+    const operatorEmail =
+      validatedData.operator === "caribe"
+        ? "reservas@elcaribesas.com"
+        : "reservas@solyplayasas.com"; // TODO: Actualizar correos reales en variables de entorno
 
     if (process.env.RESEND_API_KEY && firstPassengerEmail) {
       try {
@@ -163,14 +185,14 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
               </div>
               <p style="font-size: 14px; color: #64748b; text-align: center;">Te esperamos en el muelle. Gracias por elegir <a href="https://portalnecocli.com" style="color: #0ea5e9; text-decoration: none;">Portal Necoclí</a>.</p>
             </div>
-          `
+          `,
         });
       } catch (emailErr) {
         console.warn("[MaritimeBooking] Failed to send email:", emailErr);
       }
     }
 
-    let wompiLink = undefined;
+    let wompiLink;
     // WOMPI DESACTIVADO HASTA NUEVA ORDEN - Pago directo en taquillas
     /*
     if (validatedData.isSolidarityActive) {
@@ -186,7 +208,6 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
       message: "Pre-reserva generada con éxito",
       data: googleSheetsPayload,
     };
-
   } catch (error) {
     if (error instanceof z.ZodError) {
       const firstIssue = error.issues[0];

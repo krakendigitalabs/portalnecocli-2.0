@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
 import { SurfaceCard } from "@/components/ui/surface-card";
-import {
-  submitMerchantApplication,
-} from "@/lib/actions/merchant-application";
+import { submitMerchantApplication } from "@/lib/actions/merchant-application";
 import {
   MERCHANT_CATEGORIES,
   type MerchantApplicationInput,
@@ -83,8 +81,7 @@ export function MerchantRegistrationForm() {
   });
 
   function set(field: keyof MerchantApplicationInput) {
-    return (value: string | boolean) =>
-      setForm((prev) => ({ ...prev, [field]: value }));
+    return (value: string | boolean) => setForm((prev) => ({ ...prev, [field]: value }));
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -174,7 +171,10 @@ export function MerchantRegistrationForm() {
           />
         </div>
         <div className="mt-5">
-          <label htmlFor="description" className="block text-sm font-semibold text-slate-700 mb-1.5">
+          <label
+            htmlFor="description"
+            className="block text-sm font-semibold text-slate-700 mb-1.5"
+          >
             Descripción breve <span className="text-slate-400 font-normal">(opcional)</span>
           </label>
           <textarea
@@ -264,14 +264,17 @@ export function MerchantRegistrationForm() {
         </p>
         <div className="grid gap-2 sm:grid-cols-3 mb-5">
           {[
-            { cat: "🏨 Hoteles",        rate: "10%" },
-            { cat: "🍽️ Restaurantes",   rate: "6%"  },
-            { cat: "🏝️ Tours",          rate: "12%" },
-            { cat: "🚕 Taxis",           rate: "10%" },
-            { cat: "📦 Domicilios",      rate: "6%"  },
-            { cat: "🏪 Comercios",       rate: "6%"  },
+            { cat: "🏨 Hoteles", rate: "10%" },
+            { cat: "🍽️ Restaurantes", rate: "6%" },
+            { cat: "🏝️ Tours", rate: "12%" },
+            { cat: "🚕 Taxis", rate: "10%" },
+            { cat: "📦 Domicilios", rate: "6%" },
+            { cat: "🏪 Comercios", rate: "6%" },
           ].map((item) => (
-            <div key={item.cat} className="flex justify-between rounded-xl bg-white border border-teal-100 px-4 py-2.5 text-sm">
+            <div
+              key={item.cat}
+              className="flex justify-between rounded-xl bg-white border border-teal-100 px-4 py-2.5 text-sm"
+            >
               <span className="text-slate-600">{item.cat}</span>
               <span className="font-bold text-teal-700">{item.rate}</span>
             </div>
@@ -286,9 +289,9 @@ export function MerchantRegistrationForm() {
             className="mt-0.5 h-4 w-4 accent-teal-600 shrink-0"
           />
           <span className="text-sm text-slate-700 leading-relaxed">
-            Acepto las comisiones de la plataforma Portal Necoclí y entiendo que el portal opera bajo un{" "}
-            <strong>modelo Escrow (depósito en garantía)</strong>. Los fondos son retenidos y liberados
-            tras la confirmación del servicio.
+            Acepto las comisiones de la plataforma Portal Necoclí y entiendo que el portal opera
+            bajo un <strong>modelo Escrow (depósito en garantía)</strong>. Los fondos son retenidos
+            y liberados tras la confirmación del servicio.
           </span>
         </label>
         <FieldError error={fieldErrors.termsAccepted} />

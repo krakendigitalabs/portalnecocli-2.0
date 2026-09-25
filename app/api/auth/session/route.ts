@@ -49,7 +49,10 @@ export async function GET() {
     });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    return NextResponse.json({ error: "Unauthorized", status: 401, details: errorMessage }, { status: 401 });
+    return NextResponse.json(
+      { error: "Unauthorized", status: 401, details: errorMessage },
+      { status: 401 },
+    );
   }
 }
 
@@ -110,7 +113,10 @@ export async function POST(request: Request) {
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
     console.error("[Session API] POST failed:", errorMessage);
-    return NextResponse.json({ error: "Unauthorized", status: 401, details: errorMessage }, { status: 401 });
+    return NextResponse.json(
+      { error: "Unauthorized", status: 401, details: errorMessage },
+      { status: 401 },
+    );
   }
 }
 

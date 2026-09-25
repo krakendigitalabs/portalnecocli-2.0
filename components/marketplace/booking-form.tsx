@@ -62,7 +62,9 @@ export function BookingForm({
   // Find the selected option price
   const selectedOption = packageOptions.find((opt) => opt.id === selectedOptionId);
   const totalAmount =
-    routingType === "CASE_A" && selectedOption ? selectedOption.price * guestsCount * daysCount : undefined;
+    routingType === "CASE_A" && selectedOption
+      ? selectedOption.price * guestsCount * daysCount
+      : undefined;
 
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
@@ -101,8 +103,8 @@ export function BookingForm({
     const ticketUrl = response.reservationId
       ? `/tickets/${response.reservationId}`
       : response.ticketId
-      ? `/tickets/${response.ticketId}`
-      : null;
+        ? `/tickets/${response.ticketId}`
+        : null;
 
     // Wompi link for direct payment
     const wompiKey = process.env.NEXT_PUBLIC_WOMPI_KEY;
@@ -286,7 +288,9 @@ export function BookingForm({
         {/* Total a Pagar section for CASE_A */}
         {routingType === "CASE_A" && totalAmount !== undefined && (
           <div className="p-4 rounded-xl bg-ink/5 border border-ink/10 flex justify-between items-center">
-            <span className="text-sm font-bold text-ink/70 uppercase tracking-widest">Total a pagar:</span>
+            <span className="text-sm font-bold text-ink/70 uppercase tracking-widest">
+              Total a pagar:
+            </span>
             <span className="text-xl font-bold text-teal">
               ${totalAmount.toLocaleString("es-CO")} COP
             </span>

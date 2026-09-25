@@ -2,12 +2,13 @@
  * Ticket Digital Oficial — Portal Necoclí 2.0
  * Comprobante de Recaudo Escrow con QR real, datos legales completos e impresión en 1 página.
  */
-import { getReservationByEscrowId, getReservationById } from "@/data/reservationService";
-import { notFound } from "next/navigation";
-import { CheckCircle2, ShieldCheck, CreditCard } from "lucide-react";
-import Link from "next/link";
-import { PrintTicketButton } from "@/components/checkout/print-ticket-button";
+
+import { CheckCircle2, CreditCard, ShieldCheck } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { PrintTicketButton } from "@/components/checkout/print-ticket-button";
+import { getReservationByEscrowId, getReservationById } from "@/data/reservationService";
 
 type Props = {
   params: Promise<{
@@ -19,7 +20,8 @@ export async function generateMetadata({ params }: Props) {
   const { ticketId } = await params;
   return {
     title: `Ticket Escrow #${ticketId.slice(-8).toUpperCase()} | Portal Necoclí`,
-    description: "Comprobante oficial de reserva y recaudo con modelo de garantía Escrow — Kraken Digital Labs.",
+    description:
+      "Comprobante oficial de reserva y recaudo con modelo de garantía Escrow — Kraken Digital Labs.",
   };
 }
 
@@ -39,8 +41,15 @@ export default async function EscrowTicketPage({ params }: Props) {
     notFound();
   }
 
-  const { lead, business_name, total_amount, reference_code, created_at, id: reservId } = reservation;
-  
+  const {
+    lead,
+    business_name,
+    total_amount,
+    reference_code,
+    created_at,
+    id: reservId,
+  } = reservation;
+
   // total_amount is stored directly in COP (not cents)
   const amountFormatted = total_amount.toLocaleString("es-CO");
   const dateFormatted = new Date(created_at).toLocaleDateString("es-CO", {
@@ -71,11 +80,9 @@ export default async function EscrowTicketPage({ params }: Props) {
 
   // QR apuntando al dominio real del portal
   const publicTicketUrl = `https://tours.portalnecocli.com/tickets/${ticketId}`;
-  
+
   // API pública gratuita para generar QR real (sin instalar dependencias)
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(publicTicketUrl)}&bgcolor=ffffff&color=0f2e21&margin=4&format=png`;
-
-
 
   return (
     <>
@@ -129,12 +136,9 @@ export default async function EscrowTicketPage({ params }: Props) {
       {/* ─── Área principal ─── */}
       <main className="print:min-h-0 print:py-0 min-h-screen bg-white py-8 px-4 sm:px-6">
         <div className="ticket-wrapper max-w-2xl mx-auto space-y-5 print:space-y-0">
-
           {/* Barra de acciones (impresión/descarga) */}
           <div className="print:hidden flex items-center justify-between mb-4">
-            <p className="text-xs font-mono text-gray-400">
-              Comprobante oficial · {ticketId}
-            </p>
+            <p className="text-xs font-mono text-gray-400">Comprobante oficial · {ticketId}</p>
             <div className="flex gap-2">
               <PrintTicketButton />
             </div>
@@ -152,7 +156,9 @@ export default async function EscrowTicketPage({ params }: Props) {
                 <CreditCard className="w-5 h-5" />
                 Pagar ahora con Wompi — ${amountFormatted} COP
               </a>
-              <p className="text-center text-xs text-gray-400 mt-2">Pago seguro con tarjeta, Nequi o PSE</p>
+              <p className="text-center text-xs text-gray-400 mt-2">
+                Pago seguro con tarjeta, Nequi o PSE
+              </p>
             </div>
           )}
 
@@ -160,7 +166,6 @@ export default async function EscrowTicketPage({ params }: Props) {
                TICKET CARD
           ───────────────────────────────────────── */}
           <div className="ticket-card rounded-2xl overflow-hidden border border-gray-200 shadow-lg">
-
             {/* ── Cabecera oscura del ticket ── */}
             <div className="ticket-header bg-[#0f2e21] p-6 text-white">
               <div className="flex justify-between items-start">
@@ -209,7 +214,8 @@ export default async function EscrowTicketPage({ params }: Props) {
                   Comprobante de Recaudo Escrow
                 </p>
                 <p className="text-4xl font-black text-white">
-                  <span className="text-emerald-400 mr-1">$</span>{amountFormatted}
+                  <span className="text-emerald-400 mr-1">$</span>
+                  {amountFormatted}
                   <span className="text-lg font-semibold text-white/40 ml-1">COP</span>
                 </p>
                 <p className="text-white/40 text-[10px] mt-1">
@@ -220,7 +226,6 @@ export default async function EscrowTicketPage({ params }: Props) {
 
             {/* ── Cuerpo blanco del ticket ── */}
             <div className="ticket-body bg-white p-6 grid grid-cols-2 gap-x-6 gap-y-5">
-
               {/* ID Transacción */}
               <div>
                 <p className="text-[9px] text-gray-400 uppercase tracking-widest font-bold mb-0.5">
@@ -304,7 +309,6 @@ export default async function EscrowTicketPage({ params }: Props) {
 
               {/* QR Real + Datos legales — misma fila */}
               <div className="col-span-2 border-t border-gray-100 pt-4 flex items-start gap-6">
-                
                 {/* QR Real generado por api.qrserver.com */}
                 <div className="flex flex-col items-center gap-1.5 shrink-0">
                   <p className="text-[9px] text-gray-400 uppercase tracking-widest font-bold">
@@ -359,9 +363,7 @@ export default async function EscrowTicketPage({ params }: Props) {
                     <p className="text-[11px] text-gray-500">
                       📞 <strong className="text-gray-700">3217511866</strong>
                     </p>
-                    <p className="text-[11px] text-gray-500">
-                      soporte@portalnecocli.com
-                    </p>
+                    <p className="text-[11px] text-gray-500">soporte@portalnecocli.com</p>
                   </div>
                 </div>
               </div>
@@ -373,11 +375,13 @@ export default async function EscrowTicketPage({ params }: Props) {
                 ⭐ ¡Queremos saber de ti!
               </h4>
               <p className="text-xs text-sky-800 leading-relaxed max-w-md mx-auto mb-3">
-                Para estar pendiente de tu experiencia de principio a fin, notifica a <strong>Portal Necoclí</strong> que ya estás próximo a embarcar y haz un comentario para que otras personas se vean motivadas a vivir esta maravillosa experiencia.
+                Para estar pendiente de tu experiencia de principio a fin, notifica a{" "}
+                <strong>Portal Necoclí</strong> que ya estás próximo a embarcar y haz un comentario
+                para que otras personas se vean motivadas a vivir esta maravillosa experiencia.
               </p>
-              <a 
-                href="https://g.page/r/CRFcMAbI46COEAE/review" 
-                target="_blank" 
+              <a
+                href="https://g.page/r/CRFcMAbI46COEAE/review"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-white border border-sky-200 text-sky-700 px-4 py-2 rounded-full text-xs font-bold shadow-sm hover:bg-sky-50 hover:text-sky-800 transition-colors"
               >
@@ -388,17 +392,21 @@ export default async function EscrowTicketPage({ params }: Props) {
             {/* ── Footer legal del ticket ── */}
             <div className="ticket-footer bg-gray-50 px-6 py-4 border-t border-gray-100 text-center">
               <p className="text-[10px] text-gray-400 leading-relaxed max-w-lg mx-auto">
-                Este comprobante es emitido por <strong className="text-gray-600">Portal Necoclí</strong>,
-                plataforma operada bajo el modelo de depósito en garantía (Escrow) por{" "}
-                <strong className="text-gray-600">Kraken Digital Labs S.A.S</strong> —
-                NIT 8128036-5. Los fondos son transferidos al comercio aliado única y
-                exclusivamente tras la confirmación del servicio prestado, garantizando
-                total seguridad al turista. Consultas: {" "}
+                Este comprobante es emitido por{" "}
+                <strong className="text-gray-600">Portal Necoclí</strong>, plataforma operada bajo
+                el modelo de depósito en garantía (Escrow) por{" "}
+                <strong className="text-gray-600">Kraken Digital Labs S.A.S</strong> — NIT
+                8128036-5. Los fondos son transferidos al comercio aliado única y exclusivamente
+                tras la confirmación del servicio prestado, garantizando total seguridad al turista.
+                Consultas:{" "}
                 <a href="tel:3217511866" className="text-emerald-600 font-bold hover:underline">
                   3217511866
                 </a>
                 {" · "}
-                <a href="mailto:soporte@portalnecocli.com" className="underline hover:text-gray-600">
+                <a
+                  href="mailto:soporte@portalnecocli.com"
+                  className="underline hover:text-gray-600"
+                >
                   soporte@portalnecocli.com
                 </a>
               </p>
@@ -431,7 +439,6 @@ export default async function EscrowTicketPage({ params }: Props) {
               ))}
             </div>
           </nav>
-
         </div>
       </main>
     </>

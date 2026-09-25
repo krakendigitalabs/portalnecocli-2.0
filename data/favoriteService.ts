@@ -34,21 +34,24 @@ export async function getCustomerFavorites(customerId: string): Promise<Customer
 /**
  * Agrega un negocio a los favoritos de un turista.
  */
-export async function addFavorite(customerId: string, businessId: string): Promise<CustomerFavorite | null> {
+export async function addFavorite(
+  customerId: string,
+  businessId: string,
+): Promise<CustomerFavorite | null> {
   try {
     const db = getDb();
-    
+
     // Primero verificamos que no exista
     const snap = await db
       .collection("customer_favorites")
       .where("customer_id", "==", customerId)
       .where("business_id", "==", businessId)
       .get();
-      
+
     if (!snap.empty) {
       return snap.docs[0].data() as CustomerFavorite;
     }
-    
+
     const docRef = db.collection("customer_favorites").doc();
     const favorite: CustomerFavorite = {
       id: docRef.id,
@@ -56,7 +59,7 @@ export async function addFavorite(customerId: string, businessId: string): Promi
       business_id: businessId,
       created_at: new Date().toISOString(),
     };
-    
+
     await docRef.set(favorite);
     return favorite;
   } catch (error) {
@@ -76,16 +79,16 @@ export async function removeFavorite(customerId: string, businessId: string): Pr
       .where("customer_id", "==", customerId)
       .where("business_id", "==", businessId)
       .get();
-      
+
     if (snap.empty) {
       return true;
     }
-    
+
     const batch = db.batch();
     snap.docs.forEach((doc) => {
       batch.delete(doc.ref);
     });
-    
+
     await batch.commit();
     return true;
   } catch (error) {

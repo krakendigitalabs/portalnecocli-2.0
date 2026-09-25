@@ -1,9 +1,9 @@
 "use server";
 
-import { markReservationAsPaid, getReservationById } from "@/data/reservationService";
-import { awardLoyaltyStar } from "@/data/loyaltyService";
-import { requireRole } from "@/lib/auth/server";
 import { redirect } from "next/navigation";
+import { awardLoyaltyStar } from "@/data/loyaltyService";
+import { getReservationById, markReservationAsPaid } from "@/data/reservationService";
+import { requireRole } from "@/lib/auth/server";
 
 export async function processSimulatedPayment(reservationId: string) {
   // Asegurarnos de que el usuario está logueado para acumular sus recompensas
@@ -16,7 +16,7 @@ export async function processSimulatedPayment(reservationId: string) {
   try {
     // 1. Obtener datos de la reserva
     const reservation = await getReservationById(reservationId);
-    
+
     if (reservation.status !== "PENDING_PAYMENT") {
       throw new Error("La reserva no está pendiente de pago.");
     }
@@ -30,7 +30,7 @@ export async function processSimulatedPayment(reservationId: string) {
 
     // 4. Otorgar Estrella de Fidelidad (Recompensa)
     // Pasamos el customer_id definitivo
-    
+
     await awardLoyaltyStar({
       customerId: targetCustomerId,
       reservationId: reservationId,
@@ -43,7 +43,7 @@ export async function processSimulatedPayment(reservationId: string) {
     console.error("Error al procesar el pago simulado:", error);
     throw new Error("No se pudo procesar el pago. Intente nuevamente.");
   }
-  
+
   // Hacemos el redirect fuera del bloque try/catch porque throw Error de redirect es capturado
   redirect("/customer?payment_success=true");
 }

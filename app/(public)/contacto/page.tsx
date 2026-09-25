@@ -1,13 +1,6 @@
+import { Clock, Mail, MapPin, MessageCircle, Phone, Star } from "lucide-react";
 import { Metadata } from "next";
 import { ContactForm } from "@/components/contact/contact-form";
-import {
-  Phone,
-  Mail,
-  MapPin,
-  MessageCircle,
-  Clock,
-  Star,
-} from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Contacto y Asesoría | Portal Necoclí",
@@ -17,9 +10,7 @@ export const metadata: Metadata = {
     title: "Contacto y Asesoría | Portal Necoclí",
     description:
       "Solicita tu asesoría personalizada para vivir Necoclí de forma premium. Tours de islas, yates privados, hoteles y más.",
-    images: [
-      "https://res.cloudinary.com/dr50ioh9h/image/upload/v1752722255/familia_22_febopw.png",
-    ],
+    images: ["https://res.cloudinary.com/dr50ioh9h/image/upload/v1752722255/familia_22_febopw.png"],
   },
 };
 
@@ -129,8 +120,7 @@ export default function ContactoPage() {
         <div
           className="pointer-events-none absolute inset-0 opacity-10"
           style={{
-            backgroundImage:
-              "radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1px)",
+            backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1px)",
             backgroundSize: "40px 40px",
           }}
         />
@@ -173,10 +163,7 @@ export default function ContactoPage() {
             xmlns="http://www.w3.org/2000/svg"
             className="w-full block"
           >
-            <path
-              d="M0 40 C360 80 1080 0 1440 40 L1440 80 L0 80 Z"
-              fill="#fcfaf6"
-            />
+            <path d="M0 40 C360 80 1080 0 1440 40 L1440 80 L0 80 Z" fill="#fcfaf6" />
           </svg>
         </div>
       </section>
@@ -184,7 +171,6 @@ export default function ContactoPage() {
       {/* ── MAIN CONTENT ─────────────────────────────────────────── */}
       <section className="py-20 md:py-28 max-w-7xl mx-auto px-4 xl:px-8">
         <div className="grid gap-10 lg:grid-cols-[1fr_480px] xl:grid-cols-[1fr_540px] lg:items-start lg:gap-16">
-
           {/* LEFT: Info Column */}
           <div className="space-y-10">
             {/* Intro */}

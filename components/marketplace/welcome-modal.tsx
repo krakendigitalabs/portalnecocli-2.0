@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Gift } from "lucide-react";
-import { Button } from "@/components/ui/button";
-
+import { Gift, X } from "lucide-react";
+import { useEffect, useState } from "react";
 // A simple server action that could be implemented to subscribe and grant bonus
 import { subscribeAndGrantWelcomeBonus } from "@/app/actions/newsletter";
+import { Button } from "@/components/ui/button";
 
 export function WelcomeModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,7 +40,7 @@ export function WelcomeModal() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-    
+
     setIsSubmitting(true);
     try {
       await subscribeAndGrantWelcomeBonus(email);
@@ -84,11 +83,11 @@ export function WelcomeModal() {
             >
               <X className="w-5 h-5" />
             </button>
-            
+
             {/* Premium Header */}
             <div className="relative p-10 text-center overflow-hidden bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A]">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-50" />
-              
+
               <div className="relative z-10 flex flex-col items-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(251,191,36,0.3)]">
                   <Gift className="w-8 h-8 text-black" />
@@ -101,7 +100,7 @@ export function WelcomeModal() {
                 </p>
               </div>
             </div>
-            
+
             {/* Content Area */}
             <div className="p-8 text-center bg-[#0B1120]">
               {success ? (
@@ -112,12 +111,19 @@ export function WelcomeModal() {
                 >
                   <div className="w-16 h-16 bg-amber-400/10 border border-amber-400/30 text-amber-400 rounded-full flex items-center justify-center mx-auto">
                     <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                   </div>
                   <h4 className="text-xl font-serif text-white">¡Membresía Activada!</h4>
                   <p className="text-sm text-gray-400 leading-relaxed">
-                    Hemos enviado tu bono del <span className="text-amber-400 font-bold">10% de descuento</span> a tu correo. Revisa tu bandeja de entrada o spam.
+                    Hemos enviado tu bono del{" "}
+                    <span className="text-amber-400 font-bold">10% de descuento</span> a tu correo.
+                    Revisa tu bandeja de entrada o spam.
                   </p>
                 </motion.div>
               ) : (
@@ -133,15 +139,15 @@ export function WelcomeModal() {
                         className="w-full px-5 py-4 bg-[#1E293B] border border-[#334155] rounded-lg focus:outline-none focus:ring-1 focus:ring-amber-400 focus:border-amber-400 text-white placeholder:text-gray-500 text-center transition-all"
                       />
                     </div>
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       disabled={isSubmitting}
                       className="w-full h-14 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black rounded-lg font-bold text-lg shadow-[0_0_20px_rgba(245,158,11,0.2)] hover:shadow-[0_0_30px_rgba(245,158,11,0.4)] transition-all uppercase tracking-wider"
                     >
                       {isSubmitting ? "Procesando..." : "Quiero mi 10% OFF"}
                     </Button>
                   </form>
-                  <button 
+                  <button
                     onClick={handleClose}
                     className="mt-6 text-xs font-medium text-gray-500 hover:text-gray-300 transition-colors uppercase tracking-widest"
                   >

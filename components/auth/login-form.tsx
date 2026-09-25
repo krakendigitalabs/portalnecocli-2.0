@@ -7,6 +7,7 @@ import { SurfaceCard } from "@/components/ui/surface-card";
 import { useAuthSession } from "@/hooks/use-auth-session";
 import { signInWithGoogle } from "@/lib/firebase/auth";
 import {
+  firebaseConfig,
   getFirebasePublicConfigDiagnostics,
   getMissingFirebasePublicConfig,
 } from "@/lib/firebase/config";
@@ -14,7 +15,6 @@ import {
   getFirebaseAuthErrorDetails,
   getFirebaseConfigurationWarning,
 } from "@/lib/firebase/errors";
-import { firebaseConfig } from "@/lib/firebase/config";
 
 function getErrorMessage(error: unknown): string {
   const details = getFirebaseAuthErrorDetails(error, firebaseConfig);
@@ -111,8 +111,8 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
           Inicia sesión en Portal Necoclí
         </h1>
         <p className="mt-4 text-base leading-7 text-ink/72">
-          Usa tu cuenta de Google autorizada para entrar al backoffice, al hub de negocios y a futuros módulos
-          operativos del portal.
+          Usa tu cuenta de Google autorizada para entrar al backoffice, al hub de negocios y a
+          futuros módulos operativos del portal.
         </p>
         <ul className="mt-6 space-y-3 text-sm leading-7 text-ink/68">
           <li>Acceso seguro y rápido (OAuth 2.0).</li>
@@ -131,7 +131,7 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
           >
             {isSubmitting ? "Conectando con Google..." : "Continuar con Google"}
           </button>
-          
+
           <div className="flex justify-center">
             <Button className="w-full sm:w-auto" href="/" size="lg" variant="secondary">
               Volver al inicio

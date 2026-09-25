@@ -1,8 +1,6 @@
 import { Resend } from "resend";
 
-const resend = process.env.RESEND_API_KEY
-  ? new Resend(process.env.RESEND_API_KEY)
-  : null;
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 // ─── CONSTANTES DE MARCA ──────────────────────────────────────────────────────
 const BRAND = {
@@ -20,10 +18,11 @@ function buildEmailHtml(opts: {
   customerName: string;
   title: string;
   subtitle: string;
-  bodyRows: string; // Filas <tr> del cuerpo del ticket
+  bodyRows: string;
   advice: string;
   estimatedPrice: string;
   checkoutUrl: string;
+  ticketUrl: string;
   btnText: string;
 }): string {
   return `<!DOCTYPE html>
@@ -88,18 +87,39 @@ function buildEmailHtml(opts: {
                 Valor Aproximado
               </p>
               <p style="margin:4px 0 0;font-size:32px;font-weight:800;color:#111827;">
-                $${opts.estimatedPrice} <span style="font-size:16px;color:#6b7280;">COP</span>
+                ${
+                  opts.estimatedPrice &&
+                  opts.estimatedPrice !== "undefined" &&
+                  opts.estimatedPrice !== "0" &&
+                  opts.estimatedPrice !== "null"
+                    ? `$${opts.estimatedPrice} <span style="font-size:16px;color:#6b7280;">COP</span>`
+                    : `<span style="font-size:20px;color:#6b7280;font-weight:600;">Por confirmar con el equipo</span>`
+                }
               </p>
             </div>
 
-            <!-- CTA BUTTON -->
+            <!-- CTA BUTTONS -->
             <div style="text-align:center;">
+              <!-- Botón principal: Pagar -->
               <a href="${opts.checkoutUrl}"
                 style="display:inline-block;background:${BRAND.colorPrimary};color:#ffffff;
                 text-decoration:none;padding:16px 36px;border-radius:50px;
                 font-weight:700;font-size:16px;letter-spacing:0.3px;">
                 ${opts.btnText} &rarr;
               </a>
+              <!-- Separador -->
+              <div style="margin:16px 0;border-top:1px solid #e5e7eb;"></div>
+              <!-- Botón secundario: Ver Ticket Descargable -->
+              <a href="${opts.ticketUrl}"
+                style="display:inline-block;background:#ffffff;color:${BRAND.colorPrimary};
+                text-decoration:none;padding:14px 32px;border-radius:50px;
+                font-weight:700;font-size:15px;letter-spacing:0.3px;
+                border:2px solid ${BRAND.colorPrimary};">
+                🎫 Ver y Descargar mi Ticket
+              </a>
+              <p style="margin:10px 0 0;font-size:12px;color:#9ca3af;">
+                Haz clic en el ticket para imprimirlo o guardarlo como PDF
+              </p>
             </div>
           </td>
         </tr>
@@ -153,6 +173,7 @@ export async function sendPreReservationEmail(opts: {
   const code = referenceCode || `NEC-${Date.now()}`;
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
   const checkoutUrl = `${baseUrl}/pago/${code}`;
+  const ticketUrl = `${baseUrl}/pago/${code}`; // Pre-reserva pública (antes del pago)
 
   const title = isOrder ? "Confirmación de Pedido" : "Pre-Reserva Confirmada";
   const subtitle = isOrder
@@ -194,17 +215,19 @@ export async function sendPreReservationEmail(opts: {
     advice,
     estimatedPrice,
     checkoutUrl,
+    ticketUrl,
     btnText,
   });
 
   // Destinatarios CC: ops internos + aliado comercial (si aplica)
-  const ccList = [
-    ...BRAND.ops,
-    ...(merchantEmail ? [merchantEmail] : []),
-  ];
+  const ccList = [...BRAND.ops, ...(merchantEmail ? [merchantEmail] : [])];
 
   try {
-    await resend.emails.send({
+    console.log(
+      `[Resend] ⏳ Intentando enviar correo → to: ${customerEmail} | from: ${BRAND.from}`,
+    );
+
+    const { data, error } = await resend.emails.send({
       from: BRAND.from,
       replyTo: BRAND.replyTo,
       to: [customerEmail],
@@ -213,10 +236,19 @@ export async function sendPreReservationEmail(opts: {
       html,
     });
 
-    console.log(`[Resend] OK → to: ${customerEmail} | cc: ${ccList.join(", ")}`);
+    if (error) {
+      // ❌ Resend devolvió un error de negocio (dominio no verificado, API key inválida, etc.)
+      console.error("[Resend] ❌ Error de API:", JSON.stringify(error, null, 2));
+      console.error(`[Resend] ❌ Detalle: name=${error.name} | message=${error.message}`);
+      return false;
+    }
+
+    console.log(
+      `[Resend] ✅ OK → id: ${data?.id} | to: ${customerEmail} | cc: ${ccList.join(", ")}`,
+    );
     return true;
-  } catch (err) {
-    console.error("[Resend] Error al enviar correo:", err);
+  } catch (err: any) {
+    console.error("[Resend] ❌ Excepción al enviar correo:", err?.message || err);
     return false;
   }
 }
