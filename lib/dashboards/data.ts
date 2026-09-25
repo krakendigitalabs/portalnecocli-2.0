@@ -50,6 +50,8 @@ export type SuperAdminDashboardData = {
   trafficSummary: TrafficSummary;
   /** Solicitudes del conserje de IA */
   conciergeRequests: ConciergeRequest[];
+  /** Solicitudes de nuevos comercios aliados */
+  merchantApplications: any[];
 };
 
 export type MerchantDashboardData = {
@@ -234,11 +236,17 @@ export async function getAdminDashboardFullData(): Promise<SuperAdminDashboardDa
     .then(snap => snap.docs.map(doc => ({ id: doc.id, ...doc.data() }) as ConciergeRequest & {id: string}))
     .catch(() => []);
 
-  const [reservationsNested, escrowTransactions, trafficSummary, conciergeRequests] = await Promise.all([
+  // 5. Solicitudes de Comercios B2B
+  const applicationsPromise = db.collection("merchant_applications").orderBy("createdAt", "desc").limit(50).get()
+    .then(snap => snap.docs.map(doc => ({ id: doc.id, ...doc.data() })))
+    .catch(() => []);
+
+  const [reservationsNested, escrowTransactions, trafficSummary, conciergeRequests, merchantApplications] = await Promise.all([
     Promise.all(allReservationsPromises),
     allEscrowPromise,
     trafficPromise,
     conciergePromise,
+    applicationsPromise,
   ]);
 
   const recentReservations = reservationsNested
@@ -273,5 +281,6 @@ export async function getAdminDashboardFullData(): Promise<SuperAdminDashboardDa
     serviceTypeSummary: getServiceTypeSummary(allBusinesses),
     trafficSummary,
     conciergeRequests,
+    merchantApplications,
   };
 }

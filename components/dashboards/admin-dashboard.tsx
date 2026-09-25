@@ -4,6 +4,7 @@ import type { SuperAdminDashboardData } from "@/lib/dashboards/data";
 import type { EscrowTransaction } from "@/lib/validations/schemas";
 import type { Reservation } from "@/types/reservation";
 import { AnalyticsDashboard } from "./analytics-dashboard";
+import { MerchantApplicationsPanel } from "./merchant-applications-panel";
 
 type AdminDashboardProps = {
   data: SuperAdminDashboardData;
@@ -299,6 +300,11 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
           </div>
         )}
       </SurfaceCard>
+
+      <div className="h-px w-full bg-ink/8" />
+
+      {/* ─── Solicitudes de Nuevos Aliados B2B ─── */}
+      <MerchantApplicationsPanel applications={data.merchantApplications || []} />
 
       <div className="h-px w-full bg-ink/8" />
 
