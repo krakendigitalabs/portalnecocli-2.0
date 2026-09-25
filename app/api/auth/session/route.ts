@@ -86,6 +86,20 @@ export async function POST(request: Request) {
   try {
     const decodedToken = await getFirebaseAdminAuth().verifyIdToken(idToken, true);
 
+    // Revisar si ya existe una sesión válida
+    const cookieStore = await cookies();
+    const existingSessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+    
+    if (existingSessionCookie) {
+      try {
+        await getFirebaseAdminAuth().verifySessionCookie(existingSessionCookie, true);
+        // La sesión actual aún es válida, no es necesario crear una nueva
+        return NextResponse.json({ ok: true, refreshed: false });
+      } catch (e) {
+        // La sesión expiró o es inválida, continuaremos para crear una nueva
+      }
+    }
+
     if (
       typeof decodedToken.auth_time === "number" &&
       Date.now() - decodedToken.auth_time * 1000 > RECENT_SIGN_IN_WINDOW_MS
@@ -97,7 +111,7 @@ export async function POST(request: Request) {
       expiresIn: SESSION_MAX_AGE_MS,
     });
 
-    const response = NextResponse.json({ ok: true });
+    const response = NextResponse.json({ ok: true, refreshed: true });
 
     response.cookies.set({
       name: SESSION_COOKIE_NAME,

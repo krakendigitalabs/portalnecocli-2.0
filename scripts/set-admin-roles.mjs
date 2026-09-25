@@ -50,19 +50,27 @@ const app = initializeApp({
 const auth = getAuth(app);
 
 // ─────────────────────────────────────────────
-//  CONFIGURACIÓN DE ROLES
+//  CONFIGURACIÓN DE ROLES — Portal Necoclí 2.0
 // ─────────────────────────────────────────────
 
 const USERS_TO_CONFIGURE = [
   {
     email: "krakendigitalabs@gmail.com",
-    role: "super_admin",
-    description: "🔱 Propietario / La Matrix — Kraken Digital Labs",
+    roles: ["super_admin"],
+    scope: { global: true, tenantId: null, businessIds: [], serviceTypes: [] },
+    description: "🔱 SuperAdmin / Propietario — Kraken Digital Labs",
   },
   {
     email: "portalnecocli@gmail.com",
-    role: "admin",
-    description: "🛡️ Administrador del Portal Necoclí",
+    roles: ["business"],
+    scope: { global: false, tenantId: "portal-necocli", businessIds: [], serviceTypes: [] },
+    description: "🏪 Comercio Aliado — Portal Necoclí (cuenta de prueba)",
+  },
+  {
+    email: "yessyalh@gmail.com",
+    roles: ["customer"],
+    scope: { global: false, tenantId: null, businessIds: [], serviceTypes: [] },
+    description: "🌴 Turista — Cuenta de prueba (Yessy)",
   },
 ];
 
@@ -72,34 +80,29 @@ const USERS_TO_CONFIGURE = [
 
 async function assignRole(config) {
   console.log(`\n📋 Procesando: ${config.description}`);
-  console.log(`   Email: ${config.email} → rol: ${config.role}`);
+  console.log(`   Email: ${config.email} → roles: ${config.roles.join(", ")}`);
 
   try {
-    // Buscar el usuario por email
     const user = await auth.getUserByEmail(config.email);
     console.log(`   ✅ Usuario encontrado: UID = ${user.uid}`);
 
-    // Asignar el Custom Claim del rol
+    // Custom Claims: role (string principal) + roles (array) + scope
     await auth.setCustomUserClaims(user.uid, {
-      role: config.role,
-      roles: [config.role],
+      role: config.roles[0],
+      roles: config.roles,
+      scope: config.scope,
     });
 
-    console.log(`   🎯 Rol "${config.role}" asignado exitosamente.`);
-    console.log(
-      `   ⚠️  El usuario debe cerrar sesión y volver a iniciarla para que el token se actualice.`,
-    );
+    console.log(`   🎯 Roles asignados: ${config.roles.join(", ")}`);
+    console.log(`   ⚠️  Debe cerrar sesión y volver a iniciar para actualizar el token.`);
 
-    // Verificar que los claims quedaron bien
     const updatedUser = await auth.getUser(user.uid);
     console.log(`   🔍 Claims actuales:`, JSON.stringify(updatedUser.customClaims, null, 2));
 
-    return { success: true, uid: user.uid, email: config.email, role: config.role };
+    return { success: true, uid: user.uid, email: config.email, roles: config.roles };
   } catch (error) {
     if (error.code === "auth/user-not-found") {
-      console.error(
-        `   ❌ ERROR: Usuario con email "${config.email}" no encontrado en Firebase Auth.`,
-      );
+      console.error(`   ❌ ERROR: "${config.email}" no encontrado en Firebase Auth.`);
       console.error(`      Asegúrate de que se haya registrado primero en el portal.`);
     } else {
       console.error(`   ❌ ERROR inesperado:`, error.message);
@@ -110,8 +113,8 @@ async function assignRole(config) {
 
 async function main() {
   console.log("═══════════════════════════════════════════════════════");
-  console.log("  🧠 PORTAL NECOCLÍ — Asignación de Roles SuperAdmin");
-  console.log("  🏴‍☠️ Kraken Digital Labs — Script de Administración");
+  console.log("  🏴‍☠️  PORTAL NECOCLÍ — Asignación de Roles de Prueba");
+  console.log("  🦑  Kraken Digital Labs — Script de Administración");
   console.log("═══════════════════════════════════════════════════════");
 
   const results = [];
@@ -124,16 +127,19 @@ async function main() {
   console.log("\n\n══════════════ RESUMEN FINAL ══════════════");
   for (const r of results) {
     if (r.success) {
-      console.log(`✅ ${r.email} → ${r.role} → UID: ${r.uid}`);
+      console.log(`✅ ${r.email} → ${r.roles.join(", ")} → UID: ${r.uid}`);
     } else {
       console.log(`❌ ${r.email} → ERROR: ${r.error}`);
     }
   }
 
   console.log("\n📌 PRÓXIMOS PASOS:");
-  console.log("   1. Ambos usuarios deben cerrar sesión en el portal.");
-  console.log("   2. Volver a iniciar sesión para refrescar el token.");
-  console.log("   3. Acceder a https://portal-necocli.vercel.app/admin");
+  console.log("   1. Los 3 usuarios deben cerrar sesión en el portal.");
+  console.log("   2. Volver a iniciar sesión para refrescar el token JWT.");
+  console.log("   3. Rutas de acceso:");
+  console.log("      🔱 SuperAdmin  → /admin");
+  console.log("      🏪 Comercio    → /merchant");
+  console.log("      🌴 Turista     → /customer");
   console.log("═══════════════════════════════════════════════════════\n");
 
   process.exit(0);
@@ -143,3 +149,4 @@ main().catch((err) => {
   console.error("Error fatal:", err);
   process.exit(1);
 });
+

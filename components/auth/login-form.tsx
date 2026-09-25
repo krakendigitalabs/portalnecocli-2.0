@@ -24,9 +24,10 @@ function getErrorMessage(error: unknown): string {
 
 type LoginFormProps = {
   nextPath?: string;
+  requestedRole?: "merchant" | "customer";
 };
 
-export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
+export function LoginForm({ nextPath = "/negocios", requestedRole = "customer" }: LoginFormProps) {
   const router = useRouter();
   const session = useAuthSession();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -101,6 +102,8 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
     );
   }
 
+  const isMerchant = requestedRole === "merchant";
+
   return (
     <div className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
       <SurfaceCard className="rounded-[30px] p-8">
@@ -108,16 +111,21 @@ export function LoginForm({ nextPath = "/negocios" }: LoginFormProps) {
           Acceso seguro
         </p>
         <h1 className="mt-4 text-3xl font-semibold tracking-tight text-ink">
-          Inicia sesión en Portal Necoclí
+          {isMerchant ? "Afiliar o ingresar tu comercio" : "Inicia sesión para tu viaje"}
         </h1>
         <p className="mt-4 text-base leading-7 text-ink/72">
-          Usa tu cuenta de Google autorizada para entrar al backoffice, al hub de negocios y a
-          futuros módulos operativos del portal.
+          {isMerchant
+            ? "Conecta tu hotel, restaurante o tour operadora con Portal Necoclí. Gestiona tus reservas y libera tus fondos Escrow de forma segura."
+            : "Usa tu cuenta de Google para guardar favoritos, ver tus reservas oficiales y acumular estrellas para bonos de descuento."}
         </p>
         <ul className="mt-6 space-y-3 text-sm leading-7 text-ink/68">
           <li>Acceso seguro y rápido (OAuth 2.0).</li>
           <li>Sin contraseñas que recordar.</li>
-          <li>Roles leídos desde claims del token.</li>
+          {isMerchant ? (
+            <li>Panel de administración para negocios.</li>
+          ) : (
+            <li>Gestión centralizada de tu itinerario.</li>
+          )}
         </ul>
       </SurfaceCard>
 

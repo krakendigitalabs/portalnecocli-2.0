@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useFavorites } from "@/components/providers/favorites-provider";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { FeaturedBusiness } from "@/types/featured-business";
@@ -58,6 +61,8 @@ interface BookingBusinessCardProps {
 export function BookingBusinessCard({ business }: BookingBusinessCardProps) {
   // Generar la URL de la ficha
   const href = `/negocios/${business.slug}`;
+  const { favoriteIds, toggleFavorite } = useFavorites();
+  const isFavorite = favoriteIds.includes(business.id);
 
   return (
     <Card className="flex flex-col overflow-hidden rounded-2xl border-ink/10 bg-white transition hover:border-teal/30 hover:shadow-md sm:flex-row">
@@ -73,13 +78,23 @@ export function BookingBusinessCard({ business }: BookingBusinessCardProps) {
           />
         </Link>
         {/* Favorito (corazón) flotante */}
-        <button className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white text-ink/40 shadow-sm transition hover:text-coral">
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleFavorite(business.id);
+          }}
+          className={`absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full shadow-sm transition ${
+            isFavorite ? "bg-coral/10 text-coral" : "bg-white text-ink/40 hover:text-coral"
+          }`}
+          aria-label={isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="18"
             height="18"
             viewBox="0 0 24 24"
-            fill="none"
+            fill={isFavorite ? "currentColor" : "none"}
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"

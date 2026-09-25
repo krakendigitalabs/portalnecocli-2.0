@@ -90,7 +90,7 @@ export function AuthEntry() {
         ) : (
           <div className="p-3 border-t border-ink/5 bg-sand/30">
             <Link
-              href="/ingresar"
+              href="/ingresar?role=customer"
               className="block text-center w-full bg-green hover:bg-green/90 text-white font-bold text-xs py-2.5 rounded-lg transition-colors shadow-sm"
             >
               Iniciar sesión / Registrarse
