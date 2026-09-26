@@ -86,7 +86,7 @@ export async function GET(request: Request) {
       report,
       data: {
         reservationCode: paidReservation.reference_code,
-        ticketUrl: `http://localhost:3000/tickets/${paidReservation.escrow_transaction_id}`,
+        ticketUrl: `${process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL !== "http://localhost:3000" ? process.env.NEXT_PUBLIC_BASE_URL : "https://tours.portalnecocli.com"}/tickets/${paidReservation.escrow_transaction_id}`,
       },
     });
   } catch (error: any) {
