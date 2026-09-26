@@ -9,6 +9,7 @@ import { AiConciergeWidget } from "@/components/marketplace/ai-concierge-widget"
 import { AppProviders } from "@/components/providers/app-providers";
 import { brand, siteMetadata } from "@/lib/constants/site";
 import { PORTAL_APP_HEADER } from "@/lib/routing/subdomains";
+import { PwaRegistry } from "@/components/pwa-registry";
 
 const tropicalFont = Permanent_Marker({
   weight: "400",
@@ -42,6 +43,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1755929246/icono_portal_necocli_nw9wle.png",
   },
+  manifest: "/manifest.json",
   robots: {
     index: true,
     follow: true,
@@ -64,7 +66,8 @@ type RootLayoutProps = Readonly<{
 export default async function RootLayout({ children }: RootLayoutProps) {
   const requestHeaders = await headers();
   const portalApp = requestHeaders.get(PORTAL_APP_HEADER) ?? "public";
-  const isDashboardApp = portalApp === "admin" || portalApp === "business";
+  const isStandalone = requestHeaders.get("x-standalone-route") === "true";
+  const isDashboardApp = portalApp === "admin" || portalApp === "business" || isStandalone;
 
   return (
     <html lang="es">
@@ -110,6 +113,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             strategy="afterInteractive"
           />
         )}
+        <PwaRegistry />
       </body>
     </html>
   );

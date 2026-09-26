@@ -7,7 +7,7 @@ type MerchantLayoutProps = Readonly<{
 }>;
 
 export default async function MerchantLayout({ children }: MerchantLayoutProps) {
-  await requireRole(["business"], {
+  await requireRole(["business", "driver"], {
     nextPath: "/merchant",
   });
   await requireScope(

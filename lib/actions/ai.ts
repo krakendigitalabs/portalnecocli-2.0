@@ -49,6 +49,26 @@ const enviarSolicitudTool: FunctionDeclaration = {
   },
 };
 
+const solicitarCarreraTool: FunctionDeclaration = {
+  name: "solicitar_carrera",
+  description:
+    "Crea una solicitud de carrera de transporte (mototaxi, motocarro o taxi). " +
+    "Úsalo cuando el cliente quiera un transporte AHORA o en las próximas horas. " +
+    "Necesitas: destino, tipo de vehículo, y nombre/teléfono del cliente.",
+  parameters: {
+    type: SchemaType.OBJECT,
+    properties: {
+      destination: { type: SchemaType.STRING, description: "Destino exacto del viaje" },
+      vehicleType: { type: SchemaType.STRING, description: "mototaxi, motocarro o taxi" },
+      clientName: { type: SchemaType.STRING, description: "Nombre del cliente" },
+      clientPhone: { type: SchemaType.STRING, description: "Teléfono del cliente" },
+      passengerCount: { type: SchemaType.NUMBER, description: "Cantidad de pasajeros" },
+      notes: { type: SchemaType.STRING, description: "Notas adicionales (equipaje, hora)" },
+    },
+    required: ["destination", "vehicleType", "clientName", "clientPhone"],
+  },
+};
+
 const SYSTEM_PROMPT = `
 Eres Alejandro, guía local de Portal Necoclí. Eres amable, experto en ventas y sirves de puente entre el turista y la oferta local.
 
@@ -88,13 +108,14 @@ VÍA MONCHOLO: La Y $5.000 | Moncholo $12.000 | Nuevo Oriente $17.000
 VÍA CAÑA FLECHAL: Mirador $4.000 | San Sebastián $6.000 | Peniel $8.000 | Río $12.000 | Marimonda $25.000 | Cerro del Águila $60.000
 
 --- 4. TARIFARIO MOTOCARRO 2026 ---
-CASCO URBANO: Carrera base $6.000 COP
-VÍA SAN SEBASTIÁN: Mirador $7.000 | Las Flores $10.000 | Peniel $15.000 | Río Necoclí $27.000 | La Mesa $36.000 | Marimonda $60.000 | Lechugal $75.000
-VÍA MELLITO: Aeropuerto $12.000 | Caribia $45.000 | Mellito $35.000 | Limoncito $55.000 | Cativo $60.000 | Zapata $85.000
-VÍA PUEBLO NUEVO: Bobal $12.000 | Pueblo Nuevo $60.000 | Brisas del Río $70.000 | Tulapita $90.000 | Paraíso Tulapa $100.000
-VÍA TOTUMO: Casa Blanca $18.000 | Totumo $25.000 | Puente Caimán $35.000
-VÍA GARITON: Guacamaya $30.000 | Gariton $40.000 | Almácigo $65.000
-VÍA MONCHOLO: La Y $12.000 | Moncholo $24.000 | Nuevo Oriente $30.000 | Finca La Gloria $50.000
+NOTA: Tarifa Nocturna (después de 8pm) es el DOBLE del precio normal.
+CASCO URBANO: Carrera base $6.600 COP
+VÍA SAN SEBASTIÁN: Mirador $7.700 | Las Flores $11.000 | Peniel $16.500 | Río Necoclí $29.700 | La Mesa $39.600 | Marimonda $66.000 | Lechugal $82.500
+VÍA MELLITO: Aeropuerto $13.200 | Caribia $49.500 | Mellito $38.500 | Limoncito $60.500 | Cativo $66.000 | Zapata $93.500
+VÍA PUEBLO NUEVO: Bobal $13.200 | Pueblo Nuevo $66.000 | Brisas del Río $77.000 | Tulapita $99.000 | Paraíso Tulapa $110.000
+VÍA TOTUMO: Casa Blanca $19.800 | Totumo $27.500 | Puente Caimán $38.500
+VÍA GARITON: Guacamaya $33.000 | Gariton $44.000 | Almácigo $71.500
+VÍA MONCHOLO: La Y $13.200 | Moncholo $26.400 | Nuevo Oriente $33.000 | Finca La Gloria $55.000
 
 --- 5. TARIFARIO TAXI AMARILLO 2026 ---
 RUTAS URBANAS: Urbana $9.000 | Hospital-Aeropuerto $18.000 | Plaza-Aeropuerto $15.000
@@ -158,7 +179,7 @@ export async function chatWithAlejandro(history: ChatMessage[], newMessage: stri
     const model = genAI.getGenerativeModel({
       model: "gemini-flash-lite-latest",
       systemInstruction: SYSTEM_PROMPT,
-      tools: [{ functionDeclarations: [enviarSolicitudTool] }],
+      tools: [{ functionDeclarations: [enviarSolicitudTool, solicitarCarreraTool] }],
       generationConfig: {
         temperature: 0.7,
       },
@@ -214,6 +235,26 @@ export async function chatWithAlejandro(history: ChatMessage[], newMessage: stri
 
         result = await chat.sendMessage(
           `[Sistema interno]: La herramienta 'enviar_solicitud' se ejecutó con éxito y el correo de pre-reserva ya fue enviado. Por favor confírmale esto al usuario de forma muy breve.`,
+        );
+
+      } else if (call.name === "solicitar_carrera") {
+        const args = call.args as any;
+        
+        const { createRideAction } = await import("@/lib/rides/ride-actions");
+        
+        await createRideAction({
+          origin: "Centro de Necoclí (O lugar acordado)",
+          destination: args.destination || "",
+          vehicleType: args.vehicleType || "motocarro",
+          clientName: args.clientName || "Cliente",
+          clientPhone: args.clientPhone || "",
+          passengerCount: args.passengerCount || 1,
+          notes: args.notes || "",
+          source: "chatbot",
+        });
+
+        result = await chat.sendMessage(
+          `[Sistema interno]: La herramienta 'solicitar_carrera' se ejecutó con éxito. La carrera ha sido publicada en el tablero de los conductores. Por favor confírmale al usuario que su transporte ya fue solicitado y que pronto un conductor lo contactará.`,
         );
       }
     }
