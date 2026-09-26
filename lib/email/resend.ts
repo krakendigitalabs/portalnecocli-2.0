@@ -171,9 +171,12 @@ export async function sendPreReservationEmail(opts: {
 
   const isOrder = type === "order";
   const code = referenceCode || `NEC-${Date.now()}`;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL !== "http://localhost:3000"
+    ? process.env.NEXT_PUBLIC_BASE_URL
+    : "https://tours.portalnecocli.com";
+
   const checkoutUrl = `${baseUrl}/pago/${code}`;
-  const ticketUrl = `${baseUrl}/pago/${code}`; // Pre-reserva pública (antes del pago)
+  const ticketUrl = `${baseUrl}/tickets/${code}`; // Pre-reserva pública (antes del pago)
 
   const title = isOrder ? "Confirmación de Pedido" : "Pre-Reserva Confirmada";
   const subtitle = isOrder
