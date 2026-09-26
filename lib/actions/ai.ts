@@ -49,6 +49,26 @@ const enviarSolicitudTool: FunctionDeclaration = {
   },
 };
 
+const solicitarCarreraTool: FunctionDeclaration = {
+  name: "solicitar_carrera",
+  description:
+    "Crea una solicitud de carrera de transporte (mototaxi, motocarro o taxi). " +
+    "Úsalo cuando el cliente quiera un transporte AHORA o en las próximas horas. " +
+    "Necesitas: destino, tipo de vehículo, y nombre/teléfono del cliente.",
+  parameters: {
+    type: SchemaType.OBJECT,
+    properties: {
+      destination: { type: SchemaType.STRING, description: "Destino exacto del viaje" },
+      vehicleType: { type: SchemaType.STRING, description: "mototaxi, motocarro o taxi" },
+      clientName: { type: SchemaType.STRING, description: "Nombre del cliente" },
+      clientPhone: { type: SchemaType.STRING, description: "Teléfono del cliente" },
+      passengerCount: { type: SchemaType.NUMBER, description: "Cantidad de pasajeros" },
+      notes: { type: SchemaType.STRING, description: "Notas adicionales (equipaje, hora)" },
+    },
+    required: ["destination", "vehicleType", "clientName", "clientPhone"],
+  },
+};
+
 const SYSTEM_PROMPT = `
 Eres Alejandro, guía local de Portal Necoclí. Eres amable, experto en ventas y sirves de puente entre el turista y la oferta local.
 
@@ -159,7 +179,7 @@ export async function chatWithAlejandro(history: ChatMessage[], newMessage: stri
     const model = genAI.getGenerativeModel({
       model: "gemini-flash-lite-latest",
       systemInstruction: SYSTEM_PROMPT,
-      tools: [{ functionDeclarations: [enviarSolicitudTool] }],
+      tools: [{ functionDeclarations: [enviarSolicitudTool, solicitarCarreraTool] }],
       generationConfig: {
         temperature: 0.7,
       },
@@ -215,6 +235,26 @@ export async function chatWithAlejandro(history: ChatMessage[], newMessage: stri
 
         result = await chat.sendMessage(
           `[Sistema interno]: La herramienta 'enviar_solicitud' se ejecutó con éxito y el correo de pre-reserva ya fue enviado. Por favor confírmale esto al usuario de forma muy breve.`,
+        );
+
+      } else if (call.name === "solicitar_carrera") {
+        const args = call.args as any;
+        
+        const { createRideAction } = await import("@/lib/rides/ride-actions");
+        
+        await createRideAction({
+          origin: "Centro de Necoclí (O lugar acordado)",
+          destination: args.destination || "",
+          vehicleType: args.vehicleType || "motocarro",
+          clientName: args.clientName || "Cliente",
+          clientPhone: args.clientPhone || "",
+          passengerCount: args.passengerCount || 1,
+          notes: args.notes || "",
+          source: "chatbot",
+        });
+
+        result = await chat.sendMessage(
+          `[Sistema interno]: La herramienta 'solicitar_carrera' se ejecutó con éxito. La carrera ha sido publicada en el tablero de los conductores. Por favor confírmale al usuario que su transporte ya fue solicitado y que pronto un conductor lo contactará.`,
         );
       }
     }

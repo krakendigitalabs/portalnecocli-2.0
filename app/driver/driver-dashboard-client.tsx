@@ -67,23 +67,39 @@ const DEMO_RIDES: Ride[] = [
   },
 ];
 
+import { useAvailableRides } from "@/lib/rides/use-rides";
+import { acceptRideAction } from "@/lib/rides/ride-actions";
+
 export function DriverDashboardClient() {
-  const [rides, setRides] = useState<Ride[]>(DEMO_RIDES);
+  const driverId = "drv_demo"; // TODO: Reemplazar con el UID de Firebase Auth del usuario logueado
+  const { rides: liveRides, loading } = useAvailableRides(driverId);
+  
+  // Si no hay carreras reales, mostramos la demo para no perder el aspecto visual, 
+  // pero marcadas visualmente o solo las reales si hay.
+  const rides = liveRides.length > 0 ? liveRides : (loading ? [] : DEMO_RIDES);
+
   const [driverName] = useState("Carlos 'La Fiera'");
-  const [walletBalance] = useState(15400);
+  const [walletBalance, setWalletBalance] = useState(15400); // Demo local
   const [isOnline, setIsOnline] = useState(true);
 
   async function handleAcceptRide(rideId: string) {
-    // Simular delay de red
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    const rideToAccept = rides.find(r => r.id === rideId);
+    if (!rideToAccept) return;
+    
+    // Si es una carrera demo, solo simulamos en memoria
+    if (rideId.startsWith("ride_00")) {
+       alert("Esta es una carrera de DEMO. Pídele una real al Chatbot Alejandro.");
+       return;
+    }
 
-    setRides((prev) =>
-      prev.map((r) =>
-        r.id === rideId
-          ? { ...r, status: "ACCEPTED" as const, driver_id: "drv_demo", driver_name: driverName }
-          : r,
-      ),
-    );
+    // Llamada real al Server Action atómico
+    const res = await acceptRideAction(rideId, driverId);
+    if (!res.success) {
+      alert("Error al aceptar: " + res.error);
+    } else {
+      // El estado cambiará automáticamente gracias al onSnapshot!
+      alert("¡Carrera Aceptada Oficialmente!");
+    }
   }
 
   return (

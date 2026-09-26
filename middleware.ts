@@ -33,9 +33,9 @@ export function middleware(request: NextRequest) {
 
   requestHeaders.set(PORTAL_APP_HEADER, app);
 
-  // Marcar rutas de ticket como standalone (sin AppShell)
+  // Marcar rutas de ticket o dashboard de conductor como standalone (sin AppShell)
   const pathname = request.nextUrl.pathname;
-  if (pathname.startsWith("/tickets")) {
+  if (pathname.startsWith("/tickets") || pathname.startsWith("/driver")) {
     requestHeaders.set("x-standalone-route", "true");
   }
 

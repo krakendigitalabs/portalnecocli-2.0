@@ -1,4 +1,3 @@
-"use server";
 
 /**
  * Tariff Lookup Service — Busca el precio oficial de una carrera por destino.

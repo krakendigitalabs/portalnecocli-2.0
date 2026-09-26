@@ -1,4 +1,3 @@
-"use server";
 
 import type { Ride, RideStatus, WalletTransaction } from "@/types/ride";
 import type { DriverProfile } from "@/types/driver";
