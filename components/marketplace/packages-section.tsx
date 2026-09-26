@@ -76,10 +76,10 @@ const packages = [
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1739291954/turismo_necocli_motonecos_1_mmblod.jpg",
     highlight: "Flexible · 1 noche · Elige tus comidas",
     options: [
-      { id: "nat_solo", label: "Solo Alojamiento (1 noche)", price: 60000 },
-      { id: "nat_1c", label: "Alojamiento + 1 Comida", price: 77000 },
-      { id: "nat_2c", label: "Alojamiento + 2 Comidas", price: 94000 },
-      { id: "nat_3c", label: "Alojamiento + Desayuno, Almuerzo y Cena", price: 111000 },
+      { id: "nat_solo", label: "Solo Alojamiento con Aire (1 noche)", price: 65000 },
+      { id: "nat_1c", label: "Alojamiento con Aire + 1 Comida", price: 82000 },
+      { id: "nat_2c", label: "Alojamiento con Aire + 2 Comidas", price: 99000 },
+      { id: "nat_3c", label: "Alojamiento con Aire + 3 Comidas", price: 116000 },
     ],
   },
   {
