@@ -80,12 +80,20 @@ export default function ConductoresPage() {
           <p className="text-ink/60 mb-8">
             Necesitas crear una cuenta o iniciar sesión para poder registrar tu vehículo.
           </p>
-          <Link
-            href="/conductores/registro"
-            className="inline-block w-full sm:w-auto px-8 py-4 bg-teal text-white font-bold text-lg rounded-2xl hover:bg-teal/90 active:scale-[0.98] transition-all duration-200 shadow-lg shadow-teal/25"
-          >
-            Iniciar sesión y Registrarme 🚀
-          </Link>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/conductores/registro"
+              className="w-full sm:w-auto px-8 py-4 bg-teal text-white font-bold text-lg rounded-2xl hover:bg-teal/90 active:scale-[0.98] transition-all duration-200 shadow-lg shadow-teal/25"
+            >
+              Crear mi cuenta 🚀
+            </Link>
+            <Link
+              href="/ingresar?next=/driver"
+              className="w-full sm:w-auto px-8 py-4 bg-ink/5 text-ink font-bold text-lg rounded-2xl hover:bg-ink/10 active:scale-[0.98] transition-all duration-200 border border-ink/10"
+            >
+              Ya tengo cuenta
+            </Link>
+          </div>
         </div>
       </section>
     </main>

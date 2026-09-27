@@ -593,19 +593,19 @@ Cada municipio sería un **tenant** en nuestra arquitectura multi-tenant:
 
 ### Prioridad de Implementación
 
-| Fase | Módulo | Sprint | Agentes Responsables |
-|---|---|---|---|
-| **MVP-1** | Tipos TypeScript (`driver.ts`, `ride.ts`) | 1 día | Agente 1 |
-| **MVP-2** | Registro de Conductores (form + Firestore) | 2 días | Agente 1, 3 |
-| **MVP-3** | Tablero de Viajes en Tiempo Real | 3 días | Agente 1, 3, 6 |
-| **MVP-4** | Motor de Claiming (Server Action + Transaction) | 2 días | Agente 1, 8, 9 |
-| **MVP-5** | Billetera Virtual + Movimientos | 2 días | Agente 1, 8 |
-| **MVP-6** | Integración Alejandro (Tool `solicitar_carrera`) | 1 día | Agente 2 |
-| **MVP-7** | Landing `/conductores` | 1 día | Agente 3, 5 |
-| **MVP-8** | Seguridad (Rules + Validaciones) | 1 día | Agente 9 |
-| **MVP-9** | PWA Manifest + FCM básico | 1 día | Agente 4 |
-| **MVP-10** | Testing E2E + Bitácora | 1 día | Agente 7, 4 |
-| | **TOTAL ESTIMADO** | **~15 días** | |
+| Fase | Módulo | Sprint | Estado | Agentes Responsables |
+|---|---|---|---|---|
+| **MVP-1** | Tipos TypeScript (`driver.ts`, `ride.ts`) | 1 día | ✅ COMPLETADO | Agente 1 |
+| **MVP-2** | Registro de Conductores (form + Firestore) | 2 días | ✅ COMPLETADO | Agente 1, 3 |
+| **MVP-3** | Tablero de Viajes en Tiempo Real | 3 días | ✅ COMPLETADO | Agente 1, 3, 6 |
+| **MVP-4** | Motor de Claiming (Server Action + Transaction) | 2 días | ✅ COMPLETADO | Agente 1, 8, 9 |
+| **MVP-5** | Billetera Virtual + Movimientos | 2 días | ✅ COMPLETADO | Agente 1, 8 |
+| **MVP-6** | Integración Alejandro (Tool `solicitar_carrera`) | 1 día | ⏳ PENDIENTE | Agente 2 |
+| **MVP-7** | Landing `/conductores` | 1 día | ✅ COMPLETADO | Agente 3, 5 |
+| **MVP-8** | Seguridad (Rules + Validaciones) | 1 día | ✅ COMPLETADO | Agente 9 |
+| **MVP-9** | PWA Manifest + FCM básico | 1 día | ⏳ PENDIENTE | Agente 4 |
+| **MVP-10** | Testing E2E + Bitácora | 1 día | 🔄 EN CURSO | Agente 7, 4 |
+| | **TOTAL ESTIMADO** | **~15 días** | | |
 
 ### Decisiones que Necesitamos de Yessy
 

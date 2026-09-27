@@ -15,6 +15,6 @@ export const navigationLinks = [
   { href: "/negocios", label: "Explora negocios" },
   { href: "/turistas", label: "Paquetes" },
   { href: "/reservas-maritimas", label: "Tour Islas" },
-  // { href: "/tarifario", label: "Tarifario" },
+  { href: "/turismo-local", label: "Turismo Local" },
   { href: "/contacto", label: "Contacto" },
 ] as const;
