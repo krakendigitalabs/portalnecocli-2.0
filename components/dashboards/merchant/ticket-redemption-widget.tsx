@@ -113,7 +113,8 @@ export function TicketRedemptionWidget() {
         </div>
 
         <p className="text-xs text-ink/40">
-          El cliente puede mostrarte el código desde su correo de confirmación o desde su ticket digital.
+          El cliente puede mostrarte el código desde su correo de confirmación o desde su ticket
+          digital.
         </p>
       </div>
 
@@ -186,9 +187,13 @@ export function TicketRedemptionWidget() {
             <AlertCircle className="h-8 w-8 text-amber-500 mx-auto" />
             <p className="font-bold text-amber-800">Ticket no encontrado</p>
             <p className="text-sm text-amber-700">
-              El código <strong>{code}</strong> no existe o ya fue redimido. Verifica con el cliente.
+              El código <strong>{code}</strong> no existe o ya fue redimido. Verifica con el
+              cliente.
             </p>
-            <button onClick={handleReset} className="text-sm font-semibold text-amber-700 underline">
+            <button
+              onClick={handleReset}
+              className="text-sm font-semibold text-amber-700 underline"
+            >
               Buscar otro código
             </button>
           </motion.div>
@@ -211,7 +216,8 @@ export function TicketRedemptionWidget() {
             </motion.div>
             <p className="text-xl font-bold text-teal">¡Fondos Liberados!</p>
             <p className="text-sm text-ink/60">
-              El servicio fue confirmado. El dinero retenido en Escrow ya está disponible en tu saldo.
+              El servicio fue confirmado. El dinero retenido en Escrow ya está disponible en tu
+              saldo.
             </p>
             <button
               onClick={handleReset}
@@ -243,8 +249,8 @@ export function TicketRedemptionWidget() {
       <div className="flex items-start gap-3 rounded-2xl border border-ink/8 bg-sand p-4 text-sm text-ink/50">
         <span className="text-lg shrink-0">📷</span>
         <p>
-          <strong className="text-ink/70">Escaneo QR próximamente:</strong> La cámara integrada
-          para leer QR estará disponible en la próxima actualización del dashboard.
+          <strong className="text-ink/70">Escaneo QR próximamente:</strong> La cámara integrada para
+          leer QR estará disponible en la próxima actualización del dashboard.
         </p>
       </div>
     </div>

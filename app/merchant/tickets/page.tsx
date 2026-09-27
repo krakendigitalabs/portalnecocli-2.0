@@ -24,7 +24,8 @@ export default async function TicketsPage() {
           Redención de Tickets
         </h1>
         <p className="text-sm text-ink/55 max-w-xl">
-          Ingresa el código del ticket del cliente para confirmar el servicio prestado y liberar los fondos retenidos en Escrow.
+          Ingresa el código del ticket del cliente para confirmar el servicio prestado y liberar los
+          fondos retenidos en Escrow.
         </p>
       </div>
 

@@ -5,6 +5,7 @@ import type { VehicleType } from "@/types/driver";
 
 type FormData = {
   full_name: string;
+  email: string;
   phone: string;
   whatsapp: string;
   vehicle_type: VehicleType;
@@ -24,6 +25,7 @@ const VEHICLE_OPTIONS: { value: VehicleType; label: string; icon: string }[] = [
 export function DriverRegisterForm() {
   const [form, setForm] = useState<FormData>({
     full_name: "",
+    email: "",
     phone: "",
     whatsapp: "",
     vehicle_type: "motocarro",
@@ -70,31 +72,54 @@ export function DriverRegisterForm() {
       <div className="text-center py-12 px-6">
         <div className="text-6xl mb-4">🎉</div>
         <h3 className="text-2xl font-bold text-ink mb-2">¡Registro Exitoso!</h3>
-        <p className="text-ink/70 max-w-md mx-auto">
+        <p className="text-ink/70 max-w-md mx-auto mb-8">
           Tu solicitud fue enviada. Nuestro equipo revisará tus datos y te contactaremos por
           WhatsApp cuando tu cuenta esté activa. ¡Prepárate para recibir carreras!
         </p>
+        <a
+          href="/driver"
+          className="inline-block px-8 py-4 bg-teal text-white font-bold text-lg rounded-2xl hover:bg-teal/90 transition-all shadow-lg shadow-teal/25"
+        >
+          Ir a mi Tablero
+        </a>
       </div>
     );
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 max-w-lg mx-auto">
-      {/* Nombre */}
-      <div>
-        <label htmlFor="full_name" className="block text-sm font-semibold text-ink mb-1.5">
-          Nombre completo
-        </label>
-        <input
-          id="full_name"
-          name="full_name"
-          type="text"
-          required
-          value={form.full_name}
-          onChange={handleChange}
-          placeholder="Ej: Carlos Pérez"
-          className="w-full px-4 py-3 bg-white border border-ink/15 rounded-xl text-ink placeholder:text-ink/40 focus:outline-none focus:ring-2 focus:ring-teal/50 focus:border-teal transition-colors"
-        />
+      {/* Nombre y Correo */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="full_name" className="block text-sm font-semibold text-ink mb-1.5">
+            Nombre completo
+          </label>
+          <input
+            id="full_name"
+            name="full_name"
+            type="text"
+            required
+            value={form.full_name}
+            onChange={handleChange}
+            placeholder="Ej: Carlos Pérez"
+            className="w-full px-4 py-3 bg-white border border-ink/15 rounded-xl text-ink placeholder:text-ink/40 focus:outline-none focus:ring-2 focus:ring-teal/50 focus:border-teal transition-colors"
+          />
+        </div>
+        <div>
+          <label htmlFor="email" className="block text-sm font-semibold text-ink mb-1.5">
+            Correo electrónico
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            value={form.email}
+            onChange={handleChange}
+            placeholder="correo@ejemplo.com"
+            className="w-full px-4 py-3 bg-white border border-ink/15 rounded-xl text-ink placeholder:text-ink/40 focus:outline-none focus:ring-2 focus:ring-teal/50 focus:border-teal transition-colors"
+          />
+        </div>
       </div>
 
       {/* Celular */}

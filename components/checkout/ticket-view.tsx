@@ -17,9 +17,10 @@ export function TicketView({
   const amountInCents = escrow.amountCollected * 100;
 
   // URL de redirección dinámica según el entorno
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL !== "http://localhost:3000"
-    ? process.env.NEXT_PUBLIC_BASE_URL
-    : "https://tours.portalnecocli.com";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL !== "http://localhost:3000"
+      ? process.env.NEXT_PUBLIC_BASE_URL
+      : "https://tours.portalnecocli.com";
   const redirectUrl = `${baseUrl}/tickets/${escrow.id!}`;
 
   return (

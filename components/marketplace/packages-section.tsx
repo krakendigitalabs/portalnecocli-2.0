@@ -143,7 +143,7 @@ export function PackagesSection() {
                     <p className="text-white/75 text-sm leading-relaxed mb-5 line-clamp-2 group-hover:line-clamp-none transition-all">
                       {pkg.description}
                     </p>
-                    
+
                     <div className="flex items-end justify-between mt-auto">
                       <div className="text-white">
                         <span className="text-[10px] font-bold uppercase tracking-widest text-white/60 block mb-0.5">
@@ -157,7 +157,7 @@ export function PackagesSection() {
                           }).format(Math.min(...pkg.options.map((opt) => opt.price)))}
                         </span>
                       </div>
-                      
+
                       <div className="inline-flex items-center text-gold font-bold text-sm tracking-widest uppercase bg-ink/40 px-4 py-2 rounded-full backdrop-blur-sm border border-gold/20 hover:bg-gold hover:text-ink transition-colors">
                         {isOpen ? (
                           <>

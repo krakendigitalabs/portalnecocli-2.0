@@ -38,6 +38,10 @@ export type SuperAdminDashboardData = {
     pendingPaymentCount: number;
     paidCount: number;
     completedCount: number;
+    // --- Nuevos KPIs para Neco-Dispatch ---
+    necoDispatchCompletedRides: number;
+    necoDispatchTotalSales: number;
+    necoDispatchTotalCommission: number;
   };
   /** Últimas reservas (leads) de todos los negocios */
   recentReservations: Reservation[];
@@ -52,6 +56,8 @@ export type SuperAdminDashboardData = {
   conciergeRequests: ConciergeRequest[];
   /** Solicitudes de nuevos comercios aliados */
   merchantApplications: any[];
+  /** Todos los conductores de Neco-Dispatch (pendientes, activos, rechazados) */
+  allDrivers: any[];
 };
 
 export type MerchantDashboardData = {
@@ -255,18 +261,48 @@ export async function getAdminDashboardFullData(): Promise<SuperAdminDashboardDa
     .then((snap) => snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
     .catch(() => []);
 
+  // 6. Todos los conductores Neco-Dispatch
+  const driversPromise = db
+    .collection("drivers")
+    .orderBy("created_at", "desc")
+    .limit(100)
+    .get()
+    .then((snap) => snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
+    .catch(() => []);
+
+  // 7. KPIs Neco-Dispatch: Carreras completadas
+  const completedRidesPromise = db
+    .collection("rides")
+    .where("status", "==", "COMPLETED")
+    .get()
+    .then((snap) => snap.docs.map((doc) => doc.data()))
+    .catch(() => []);
+
+  // 8. KPIs Neco-Dispatch: Recaudo (Comisiones cobradas)
+  const commissionsPromise = db
+    .collection("wallet_transactions")
+    .where("type", "==", "commission_charge")
+    .get()
+    .then((snap) => snap.docs.map((doc) => doc.data()))
+    .catch(() => []);
   const [
     reservationsNested,
     escrowTransactions,
     trafficSummary,
     conciergeRequests,
     merchantApplications,
+    allDrivers,
+    completedRides,
+    commissions,
   ] = await Promise.all([
     Promise.all(allReservationsPromises),
     allEscrowPromise,
     trafficPromise,
     conciergePromise,
     applicationsPromise,
+    driversPromise,
+    completedRidesPromise,
+    commissionsPromise,
   ]);
 
   const recentReservations = reservationsNested
@@ -285,6 +321,10 @@ export async function getAdminDashboardFullData(): Promise<SuperAdminDashboardDa
 
   const allReservationsFlat = reservationsNested.flat();
 
+  // 4. Cálculos Neco-Dispatch
+  const necoDispatchTotalSales = completedRides.reduce((sum, ride) => sum + (ride.fare || 0), 0);
+  const necoDispatchTotalCommission = commissions.reduce((sum, tx) => sum + (tx.amount || 0), 0);
+
   return {
     kpis: {
       totalReservations: allReservationsFlat.length,
@@ -294,6 +334,9 @@ export async function getAdminDashboardFullData(): Promise<SuperAdminDashboardDa
       pendingPaymentCount: allReservationsFlat.filter((r) => r.status === "PENDING_PAYMENT").length,
       paidCount: allReservationsFlat.filter((r) => r.status === "PAID").length,
       completedCount: allReservationsFlat.filter((r) => r.status === "COMPLETED").length,
+      necoDispatchCompletedRides: completedRides.length,
+      necoDispatchTotalSales,
+      necoDispatchTotalCommission,
     },
     recentReservations,
     escrowTransactions,
@@ -302,5 +345,6 @@ export async function getAdminDashboardFullData(): Promise<SuperAdminDashboardDa
     trafficSummary,
     conciergeRequests,
     merchantApplications,
+    allDrivers,
   };
 }

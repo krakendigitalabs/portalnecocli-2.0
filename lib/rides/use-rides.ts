@@ -22,7 +22,7 @@ export function useAvailableRides(driverId: string) {
     const q = query(
       ridesRef,
       // Idealmente ordenar por created_at desc, pero requiere índice compuesto si usamos 'in'
-      orderBy("created_at", "desc")
+      orderBy("created_at", "desc"),
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -30,9 +30,12 @@ export function useAvailableRides(driverId: string) {
       snapshot.forEach((doc) => {
         const data = doc.data() as Omit<Ride, "id">;
         const ride = { id: doc.id, ...data };
-        
+
         // Filtrar en memoria para evitar requerir index compuesto inmediatamente
-        if (ride.status === "OPEN" || (ride.driver_id === driverId && ride.status !== "COMPLETED")) {
+        if (
+          ride.status === "OPEN" ||
+          (ride.driver_id === driverId && ride.status !== "COMPLETED")
+        ) {
           liveRides.push(ride);
         }
       });
@@ -42,6 +45,47 @@ export function useAvailableRides(driverId: string) {
 
     return () => unsubscribe();
   }, [driverId]);
+
+  return { rides, loading };
+}
+
+/**
+ * Hook para escuchar las carreras de un pasajero específico en tiempo real.
+ */
+export function useCustomerRides(clientUid: string | undefined) {
+  const [rides, setRides] = useState<Ride[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!clientUid) {
+      setRides([]);
+      setLoading(false);
+      return;
+    }
+
+    const db = getFirebaseDb();
+    if (!db) return;
+
+    const ridesRef = collection(db, "rides");
+    const q = query(ridesRef, orderBy("created_at", "desc"));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const customerRides: Ride[] = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data() as Omit<Ride, "id">;
+        const ride = { id: doc.id, ...data };
+
+        // Filtramos en memoria (o en query si hay índices)
+        if (ride.client_uid === clientUid) {
+          customerRides.push(ride);
+        }
+      });
+      setRides(customerRides);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [clientUid]);
 
   return { rides, loading };
 }

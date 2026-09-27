@@ -2,7 +2,11 @@
 
 import { getFirebaseAdminApp, hasFirebaseAdminConfig } from "@/lib/firebase/admin";
 import { getFirestore, FieldValue } from "firebase-admin/firestore";
-import { validateDriverCanAccept, validateDriverCanComplete, buildCommissionTransaction } from "./ride-service";
+import {
+  validateDriverCanAccept,
+  validateDriverCanComplete,
+  buildCommissionTransaction,
+} from "./ride-service";
 import type { Ride } from "@/types/ride";
 import type { DriverProfile } from "@/types/driver";
 
@@ -38,6 +42,7 @@ export async function acceptRideAction(rideId: string, driverId: string) {
         driver_id: driver.id,
         driver_name: driver.full_name,
         driver_vehicle: `${driver.vehicle_type} - ${driver.vehicle_plate}`,
+        driver_phone: driver.phone,
         accepted_at: new Date().toISOString(),
       });
 
@@ -127,16 +132,18 @@ export async function createRideAction(data: {
   vehicleType: string;
   clientName: string;
   clientPhone: string;
+  clientUid?: string;
   passengerCount: number;
   notes?: string;
   source: string;
+  estimatedFare?: number;
 }) {
   if (!hasFirebaseAdminConfig()) throw new Error("Firebase Admin no configurado");
   const db = getFirestore(getFirebaseAdminApp());
 
-  // 1. Buscar tarifa oficial base
+  // 1. Buscar tarifa oficial base o usar la estimada por el mapa GPS
   const tariff = lookupMotocarroTariff(data.destination);
-  const basePrice = tariff ? tariff.price : 6600; // Casco urbano por defecto
+  const basePrice = data.estimatedFare ? data.estimatedFare : tariff ? tariff.price : 6600;
   const routeKey = tariff ? tariff.route : "urbano";
 
   // 2. Calcular pricing con regla diurna/nocturna
@@ -151,6 +158,7 @@ export async function createRideAction(data: {
     ...pricing,
     client_name: data.clientName,
     client_phone: data.clientPhone,
+    client_uid: data.clientUid || undefined,
     status: "OPEN" as RideStatus,
     source: data.source as RideSource,
     created_at: new Date().toISOString(),
@@ -168,4 +176,3 @@ export async function createRideAction(data: {
     return { success: false, error: error.message };
   }
 }
-

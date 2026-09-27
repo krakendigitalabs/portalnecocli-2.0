@@ -6,8 +6,10 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { ChatMessage, chatWithAlejandro } from "@/lib/actions/ai";
 import { submitConciergeRequest } from "@/lib/actions/concierge";
+import { useAuthSession } from "@/hooks/use-auth-session";
 
 export function AiConciergeWidget() {
+  const { user } = useAuthSession();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -74,7 +76,7 @@ export function AiConciergeWidget() {
     setIsLoading(true);
 
     try {
-      const response = await chatWithAlejandro(messages, userMessage);
+      const response = await chatWithAlejandro(messages, userMessage, user?.uid);
       setMessages([...newMessages, { role: "model", content: response }]);
     } catch (error) {
       setMessages([

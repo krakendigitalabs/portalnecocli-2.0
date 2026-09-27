@@ -1,0 +1,65 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- RIDES ---
+    match /rides/{rideId} {
+      // Un conductor activo puede leer las carreras (para el tablero)
+      // O un pasajero puede leer sus propias carreras
+      allow read: if request.auth != null && (
+        (exists(/databases/$(database)/documents/drivers/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/drivers/$(request.auth.uid)).data.status == 'active')
+        ||
+        (resource.data.client_uid == request.auth.uid)
+      );
+
+      // Solo el sistema (Server Actions) puede crear rides
+      allow create: if false;
+
+      // Un conductor solo puede actualizar el estado de una carrera que él mismo aceptó
+      // o un pasajero puede cancelar su carrera (si está OPEN)
+      allow update: if request.auth != null && (
+        (request.resource.data.driver_id == request.auth.uid && 
+         resource.data.status in ['ACCEPTED', 'IN_PROGRESS'] && 
+         request.resource.data.status in ['IN_PROGRESS', 'COMPLETED', 'CANCELLED'])
+        ||
+        (resource.data.client_uid == request.auth.uid && 
+         resource.data.status == 'OPEN' && 
+         request.resource.data.status == 'CANCELLED')
+      );
+      
+      allow delete: if false;
+    }
+
+    // --- DRIVERS ---
+    match /drivers/{driverId} {
+      // El conductor puede leer su propio perfil, o un admin puede leer todos
+      allow read: if request.auth != null && request.auth.uid == driverId;
+
+      // El registro lo hace el Admin SDK (Server Action), por tanto:
+      allow create: if false;
+
+      // El conductor puede actualizar ciertos datos, pero NUNCA su wallet_balance
+      allow update: if request.auth != null 
+        && request.auth.uid == driverId 
+        && !('wallet_balance' in request.resource.data.diff(resource.data));
+        
+      allow delete: if false;
+    }
+
+    // --- WALLET TRANSACTIONS ---
+    match /wallet_transactions/{transactionId} {
+      // El conductor puede leer su propio historial de transacciones
+      allow read: if request.auth != null && resource.data.driver_id == request.auth.uid;
+
+      // Solo el Admin SDK (Server Action) o Functions pueden crearlas y mutarlas
+      allow create, update, delete: if false;
+    }
+
+    // Default: Deny todo lo demás
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

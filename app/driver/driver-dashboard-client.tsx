@@ -70,26 +70,38 @@ const DEMO_RIDES: Ride[] = [
 import { useAvailableRides } from "@/lib/rides/use-rides";
 import { acceptRideAction } from "@/lib/rides/ride-actions";
 
-export function DriverDashboardClient() {
-  const driverId = "drv_demo"; // TODO: Reemplazar con el UID de Firebase Auth del usuario logueado
+export function DriverDashboardClient({
+  driverId,
+  initialDriverName,
+  initialWalletBalance,
+  initialRidesCompleted,
+  initialDriverStatus,
+}: {
+  driverId: string;
+  initialDriverName: string;
+  initialWalletBalance: number;
+  initialRidesCompleted: number;
+  initialDriverStatus: string;
+}) {
   const { rides: liveRides, loading } = useAvailableRides(driverId);
-  
-  // Si no hay carreras reales, mostramos la demo para no perder el aspecto visual, 
-  // pero marcadas visualmente o solo las reales si hay.
-  const rides = liveRides.length > 0 ? liveRides : (loading ? [] : DEMO_RIDES);
 
-  const [driverName] = useState("Carlos 'La Fiera'");
-  const [walletBalance, setWalletBalance] = useState(15400); // Demo local
+  // Si no hay carreras reales, mostramos la demo para no perder el aspecto visual,
+  // pero marcadas visualmente o solo las reales si hay.
+  const rides = liveRides.length > 0 ? liveRides : loading ? [] : DEMO_RIDES;
+
+  const [driverName] = useState(initialDriverName || "Conductor Nuevo");
+  const [walletBalance, setWalletBalance] = useState(initialWalletBalance || 0);
+  const [ridesCompleted] = useState(initialRidesCompleted || 0);
   const [isOnline, setIsOnline] = useState(true);
 
   async function handleAcceptRide(rideId: string) {
-    const rideToAccept = rides.find(r => r.id === rideId);
+    const rideToAccept = rides.find((r) => r.id === rideId);
     if (!rideToAccept) return;
-    
+
     // Si es una carrera demo, solo simulamos en memoria
     if (rideId.startsWith("ride_00")) {
-       alert("Esta es una carrera de DEMO. Pídele una real al Chatbot Alejandro.");
-       return;
+      alert("Esta es una carrera de DEMO. Pídele una real al Chatbot Alejandro.");
+      return;
     }
 
     // Llamada real al Server Action atómico
@@ -130,10 +142,23 @@ export function DriverDashboardClient() {
       {/* Contenido principal */}
       <main className="max-w-lg mx-auto px-4 pt-4 space-y-4">
         {/* Billetera */}
-        <WalletSummary balance={walletBalance} ridesCompleted={47} totalEarnings={2_340_000} />
+        <WalletSummary
+          balance={walletBalance}
+          ridesCompleted={ridesCompleted}
+          totalEarnings={walletBalance}
+        />
 
         {/* Tablero de carreras */}
-        {isOnline ? (
+        {initialDriverStatus === "pending_approval" ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center bg-[#2A2D35] rounded-3xl p-6 border border-amber-500/30">
+            <span className="text-5xl mb-4">⏳</span>
+            <h3 className="text-xl font-bold text-amber-400 mb-2">Cuenta en Revisión</h3>
+            <p className="text-sm text-white/70 max-w-xs">
+              Tu solicitud está siendo revisada por nuestro equipo. Te notificaremos cuando tu
+              cuenta esté activa para empezar a recibir carreras.
+            </p>
+          </div>
+        ) : isOnline ? (
           <RideBoard rides={rides} walletBalance={walletBalance} onAcceptRide={handleAcceptRide} />
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center">

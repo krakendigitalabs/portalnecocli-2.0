@@ -5,6 +5,9 @@ import type { EscrowTransaction } from "@/lib/validations/schemas";
 import type { Reservation } from "@/types/reservation";
 import { AnalyticsDashboard } from "./analytics-dashboard";
 import { MerchantApplicationsPanel } from "./merchant-applications-panel";
+import { DriverApplicationsPanel } from "./driver-applications-panel";
+import { AllDriversPanel } from "./all-drivers-panel";
+import { DriverCrmPanel } from "./driver-crm-panel";
 
 type AdminDashboardProps = {
   data: SuperAdminDashboardData;
@@ -183,6 +186,33 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
         </div>
       </div>
 
+      {/* ─── Contabilidad Neco-Dispatch ─── */}
+      <div>
+        <p className="mb-4 text-xs font-semibold uppercase tracking-[0.26em] text-indigo-600">
+          Neco-Dispatch · Contabilidad Global
+        </p>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <KpiCard
+            label="Viajes Completados"
+            value={String(kpis.necoDispatchCompletedRides)}
+            sub="Carreras finalizadas exitosamente"
+            accent="text-indigo-600"
+          />
+          <KpiCard
+            label="Total Ventas (Conductores)"
+            value={formatCOP(kpis.necoDispatchTotalSales)}
+            sub="Volumen bruto movido por la flota"
+            accent="text-teal"
+          />
+          <KpiCard
+            label="Recaudo del Portal"
+            value={formatCOP(kpis.necoDispatchTotalCommission)}
+            sub="Comisiones ingresadas por Neco-Dispatch"
+            accent="text-green-600"
+          />
+        </div>
+      </div>
+
       <div className="h-px w-full bg-ink/8" />
 
       {/* ─── Dashboard de Analítica de Tráfico (Nativo GA4) ─── */}
@@ -313,6 +343,21 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
 
       {/* ─── Solicitudes de Nuevos Aliados B2B ─── */}
       <MerchantApplicationsPanel applications={data.merchantApplications || []} />
+
+      <div className="h-px w-full bg-ink/8" />
+
+      {/* ─── Solicitudes de Conductores (Neco-Dispatch) ─── */}
+      <DriverApplicationsPanel
+        applications={(data.allDrivers || []).filter((d) => d.status === "pending_approval")}
+      />
+
+      {/* ─── Conductores Activos y Rechazados ─── */}
+      <AllDriversPanel drivers={data.allDrivers || []} />
+
+      <div className="h-px w-full bg-ink/8" />
+
+      {/* ─── CRM de Conductores (Mailing) ─── */}
+      <DriverCrmPanel drivers={data.allDrivers || []} />
 
       <div className="h-px w-full bg-ink/8" />
 
