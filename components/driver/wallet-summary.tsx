@@ -10,7 +10,11 @@ interface WalletSummaryProps {
  * Resumen compacto de la billetera virtual del conductor.
  * Siempre visible en la parte superior del dashboard.
  */
-export function WalletSummary({ balance, totalEarnings = 0, ridesCompleted = 0 }: WalletSummaryProps) {
+export function WalletSummary({
+  balance,
+  totalEarnings = 0,
+  ridesCompleted = 0,
+}: WalletSummaryProps) {
   const isLow = balance < 5000;
 
   return (
@@ -20,7 +24,9 @@ export function WalletSummary({ balance, totalEarnings = 0, ridesCompleted = 0 }
           <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-0.5">
             Tu saldo
           </p>
-          <p className={`text-2xl font-bold ${isLow ? "text-red-400 animate-pulse" : "text-teal-400"}`}>
+          <p
+            className={`text-2xl font-bold ${isLow ? "text-red-400 animate-pulse" : "text-teal-400"}`}
+          >
             ${balance.toLocaleString("es-CO")}
           </p>
         </div>

@@ -70,11 +70,7 @@ export function MerchantSidebar() {
           className="ml-auto flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-ink/40 transition hover:bg-ink/8 hover:text-ink"
           aria-label={collapsed ? "Expandir menú" : "Colapsar menú"}
         >
-          {collapsed ? (
-            <ChevronRight className="h-4 w-4" />
-          ) : (
-            <ChevronLeft className="h-4 w-4" />
-          )}
+          {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </button>
       </div>
 
@@ -89,9 +85,7 @@ export function MerchantSidebar() {
               href={href}
               aria-current={isActive ? "page" : undefined}
               className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 min-h-[44px] text-sm font-medium transition-all duration-200 ${
-                isActive
-                  ? "bg-teal/10 text-teal"
-                  : "text-ink/55 hover:bg-ink/5 hover:text-ink"
+                isActive ? "bg-teal/10 text-teal" : "text-ink/55 hover:bg-ink/5 hover:text-ink"
               }`}
             >
               {/* Indicador activo */}

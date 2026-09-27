@@ -12,6 +12,7 @@ import type { Reservation } from "@/types/reservation";
 import { QuickCollections } from "./quick-collections";
 import { ReservationCalendar } from "./reservation-calendar";
 import { useRecentlyViewed } from "@/hooks/use-recently-viewed";
+import { useCustomerRides } from "@/lib/rides/use-rides";
 
 function ViewedCount() {
   const { viewedIds } = useRecentlyViewed();
@@ -107,6 +108,12 @@ export function CustomerDashboard({
     (r) => r.status === "PENDING_PAYMENT" || r.status === "CONFIRMED",
   );
 
+  // Carreras de Neco-Dispatch del pasajero
+  const { rides } = useCustomerRides(user?.uid);
+  const activeRides = rides.filter(
+    (r) => r.status !== "COMPLETED" && r.status !== "CANCELLED" && r.status !== "EXPIRED",
+  );
+
   return (
     <section className="space-y-8">
       {/* ─── Saludo personalizado ─── */}
@@ -148,6 +155,62 @@ export function CustomerDashboard({
                 {activeBonus.code}
               </p>
             </div>
+          </div>
+        </SurfaceCard>
+      )}
+
+      {/* ─── Transporte en Curso (Neco-Dispatch) ─── */}
+      {activeRides.length > 0 && (
+        <SurfaceCard className="rounded-[28px] p-7 border border-teal/20 bg-teal/5">
+          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-teal">
+            Neco-Dispatch
+          </p>
+          <h3 className="mt-2 text-xl font-bold text-ink">Tu transporte está en curso</h3>
+          <div className="mt-4 space-y-3">
+            {activeRides.map((ride) => (
+              <div
+                key={ride.id}
+                className="flex flex-col gap-3 rounded-xl border border-teal/20 bg-white p-4 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div>
+                  <p className="font-bold text-ink text-sm">
+                    {ride.origin} → {ride.destination}
+                  </p>
+                  <p className="text-xs text-ink/60 mt-0.5">
+                    {ride.vehicle_type_requested === "motocarro"
+                      ? "🛺 Motocarro"
+                      : ride.vehicle_type_requested === "mototaxi"
+                        ? "🏍️ Mototaxi"
+                        : "🚕 Taxi"}
+                    {ride.driver_name && ` · Conductor: ${ride.driver_name}`}
+                  </p>
+                </div>
+                <div className="flex flex-col sm:items-end">
+                  <span
+                    className={`inline-block text-center rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${
+                      ride.status === "OPEN"
+                        ? "bg-amber-100 text-amber-700"
+                        : ride.status === "ACCEPTED"
+                          ? "bg-teal text-white"
+                          : ride.status === "IN_PROGRESS"
+                            ? "bg-blue-500 text-white"
+                            : "bg-gray-100 text-gray-500"
+                    }`}
+                  >
+                    {ride.status === "OPEN"
+                      ? "Buscando Conductor..."
+                      : ride.status === "ACCEPTED"
+                        ? "En Camino"
+                        : ride.status === "IN_PROGRESS"
+                          ? "En Viaje"
+                          : ride.status}
+                  </span>
+                  <p className="text-sm font-bold text-ink mt-1">
+                    ${ride.final_price.toLocaleString("es-CO")}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </SurfaceCard>
       )}

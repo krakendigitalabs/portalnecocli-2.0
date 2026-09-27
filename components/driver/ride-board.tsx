@@ -53,33 +53,19 @@ export function RideBoard({ rides, walletBalance, onAcceptRide }: RideBoardProps
 
   if (activeRide) {
     return (
-      <div className="bg-[#2A2D35] rounded-3xl p-5 border border-emerald-500/30 shadow-lg shadow-emerald-500/10">
-        <div className="flex items-center gap-2 mb-4">
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 mb-2 px-1">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           <h2 className="text-sm font-bold text-emerald-400 uppercase tracking-widest">
             Carrera en Curso
           </h2>
         </div>
-        
-        <h3 className="text-2xl font-bold text-white mb-2">📍 {activeRide.destination}</h3>
-        <p className="text-emerald-400 font-bold text-xl mb-4">${activeRide.final_price.toLocaleString("es-CO")} COP</p>
-
-        <div className="bg-white/5 rounded-xl p-4 mb-6">
-          <p className="text-white font-medium mb-1">👤 {activeRide.client_name}</p>
-          <a href={`tel:${activeRide.client_phone}`} className="text-blue-400 font-bold block mb-2">
-            📞 Llamar: {activeRide.client_phone}
-          </a>
-          <p className="text-white/60 text-sm">👥 {activeRide.passenger_count} pasajeros</p>
-          {activeRide.notes && <p className="text-white/60 text-sm mt-2">💬 {activeRide.notes}</p>}
-        </div>
-
-        <button
-          onClick={handleComplete}
-          disabled={completing}
-          className="w-full py-4 bg-emerald-500 text-white font-bold text-lg rounded-2xl hover:bg-emerald-400 disabled:opacity-50"
-        >
-          {completing ? "Completando..." : "✅ TERMINÉ LA CARRERA"}
-        </button>
+        <RideCard
+          ride={activeRide}
+          onAccept={handleAccept}
+          isAccepting={false}
+          walletBalance={walletBalance}
+        />
       </div>
     );
   }

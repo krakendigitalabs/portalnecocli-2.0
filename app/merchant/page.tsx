@@ -34,7 +34,8 @@ export default async function MerchantPage() {
           {getGreeting()}, {session.user.displayName?.split(" ")[0] ?? "Aliado"}! 👋
         </h1>
         <p className="text-sm text-ink/55 max-w-xl">
-          Aquí tienes el resumen de tu operación. Tus saldos Escrow y reservas activas en tiempo real.
+          Aquí tienes el resumen de tu operación. Tus saldos Escrow y reservas activas en tiempo
+          real.
         </p>
       </div>
 

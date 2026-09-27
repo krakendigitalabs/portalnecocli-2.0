@@ -1,7 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { UploadCloud, CheckCircle2, Building2, Tag, FileText, ChevronRight, CreditCard } from "lucide-react";
+import {
+  UploadCloud,
+  CheckCircle2,
+  Building2,
+  Tag,
+  FileText,
+  ChevronRight,
+  CreditCard,
+} from "lucide-react";
 import { SurfaceCard } from "@/components/ui/surface-card";
 
 type OnboardingFormProps = {
@@ -45,7 +53,8 @@ export function OnboardingForm({ userEmail, userName }: OnboardingFormProps) {
           </div>
           <h2 className="text-3xl font-bold text-ink mb-4">¡Solicitud Enviada con Éxito!</h2>
           <p className="text-ink/70 max-w-md mx-auto mb-8 text-lg">
-            Hemos recibido los datos de tu comercio y el RUT. Nuestro equipo de Kraken Digital Labs verificará la información y activará tu panel de Merchant en las próximas 24 horas.
+            Hemos recibido los datos de tu comercio y el RUT. Nuestro equipo de Kraken Digital Labs
+            verificará la información y activará tu panel de Merchant en las próximas 24 horas.
           </p>
           <a
             href="/merchant"
@@ -71,7 +80,9 @@ export function OnboardingForm({ userEmail, userName }: OnboardingFormProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">Nombre Completo del Comercio</label>
+            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">
+              Nombre Completo del Comercio
+            </label>
             <input
               type="text"
               required
@@ -81,22 +92,30 @@ export function OnboardingForm({ userEmail, userName }: OnboardingFormProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">Categoría</label>
+            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">
+              Categoría
+            </label>
             <select
               required
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="w-full bg-sand/50 border border-ink/10 rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all appearance-none"
             >
-              <option value="" disabled>Selecciona el rubro principal</option>
+              <option value="" disabled>
+                Selecciona el rubro principal
+              </option>
               {CATEGORIES.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
               ))}
             </select>
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">Teléfono de Contacto</label>
+            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">
+              Teléfono de Contacto
+            </label>
             <input
               type="tel"
               required
@@ -106,7 +125,9 @@ export function OnboardingForm({ userEmail, userName }: OnboardingFormProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">Correo Electrónico Oficial</label>
+            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">
+              Correo Electrónico Oficial
+            </label>
             <input
               type="email"
               required
@@ -116,7 +137,9 @@ export function OnboardingForm({ userEmail, userName }: OnboardingFormProps) {
           </div>
 
           <div className="space-y-2 md:col-span-2">
-            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">Dirección Física en Necoclí</label>
+            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">
+              Dirección Física en Necoclí
+            </label>
             <input
               type="text"
               required
@@ -135,18 +158,24 @@ export function OnboardingForm({ userEmail, userName }: OnboardingFormProps) {
           </div>
           <div>
             <h3 className="text-xl font-bold text-ink">Datos Bancarios para Pagos</h3>
-            <p className="text-sm text-ink/60 mt-1">Aquí transferiremos el dinero de tus reservas (Sistema Escrow).</p>
+            <p className="text-sm text-ink/60 mt-1">
+              Aquí transferiremos el dinero de tus reservas (Sistema Escrow).
+            </p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">Banco o Entidad</label>
+            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">
+              Banco o Entidad
+            </label>
             <select
               required
               className="w-full bg-sand/50 border border-ink/10 rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 transition-all appearance-none"
             >
-              <option value="" disabled selected>Selecciona tu banco</option>
+              <option value="" disabled selected>
+                Selecciona tu banco
+              </option>
               <option value="nequi">Nequi</option>
               <option value="bancolombia">Bancolombia (Ahorros)</option>
               <option value="bancolombia_corriente">Bancolombia (Corriente)</option>
@@ -156,7 +185,9 @@ export function OnboardingForm({ userEmail, userName }: OnboardingFormProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">Número de Cuenta</label>
+            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">
+              Número de Cuenta
+            </label>
             <input
               type="text"
               required
@@ -175,12 +206,16 @@ export function OnboardingForm({ userEmail, userName }: OnboardingFormProps) {
           </div>
           <div>
             <h3 className="text-xl font-bold text-ink">Oferta Gancho (Promoción)</h3>
-            <p className="text-sm text-ink/60 mt-1">Atrae a tu primer cliente con un combo o promoción especial diaria.</p>
+            <p className="text-sm text-ink/60 mt-1">
+              Atrae a tu primer cliente con un combo o promoción especial diaria.
+            </p>
           </div>
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">¿Cuál será tu oferta especial inicial?</label>
+          <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">
+            ¿Cuál será tu oferta especial inicial?
+          </label>
           <textarea
             required
             rows={3}
@@ -207,7 +242,11 @@ export function OnboardingForm({ userEmail, userName }: OnboardingFormProps) {
             </div>
             <h4 className="font-bold text-ink mb-1">Logo del Comercio</h4>
             <p className="text-xs text-ink/50 mb-4">PNG, JPG hasta 5MB</p>
-            <input type="file" accept="image/*" className="text-sm text-ink/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-teal/10 file:text-teal hover:file:bg-teal/20" />
+            <input
+              type="file"
+              accept="image/*"
+              className="text-sm text-ink/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-teal/10 file:text-teal hover:file:bg-teal/20"
+            />
           </div>
 
           {/* RUT Upload */}
@@ -217,7 +256,12 @@ export function OnboardingForm({ userEmail, userName }: OnboardingFormProps) {
             </div>
             <h4 className="font-bold text-ink mb-1">RUT o Cámara de Comercio</h4>
             <p className="text-xs text-ink/50 mb-4">PDF obligatorio para pagos Escrow</p>
-            <input type="file" required accept=".pdf,image/*" className="text-sm text-ink/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-coral/10 file:text-coral hover:file:bg-coral/20" />
+            <input
+              type="file"
+              required
+              accept=".pdf,image/*"
+              className="text-sm text-ink/60 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-coral/10 file:text-coral hover:file:bg-coral/20"
+            />
           </div>
         </div>
       </SurfaceCard>

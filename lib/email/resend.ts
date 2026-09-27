@@ -142,6 +142,44 @@ function buildEmailHtml(opts: {
 </html>`;
 }
 
+// ─── FUNCIÓN GENÉRICA PARA EMAILS ──────────────────────────────────────────────
+export async function sendEmail(opts: {
+  to: string | string[];
+  subject: string;
+  html: string;
+  cc?: string[];
+}): Promise<boolean> {
+  if (!resend) {
+    console.warn("[Resend] Sin API Key — correo omitido.");
+    return false;
+  }
+
+  try {
+    const to = Array.isArray(opts.to) ? opts.to : [opts.to];
+    console.log(`[Resend] ⏳ Intentando enviar correo genérico → to: ${to.join(", ")}`);
+
+    const { data, error } = await resend.emails.send({
+      from: BRAND.from,
+      replyTo: BRAND.replyTo,
+      to,
+      cc: opts.cc,
+      subject: opts.subject,
+      html: opts.html,
+    });
+
+    if (error) {
+      console.error("[Resend] ❌ Error de API:", JSON.stringify(error, null, 2));
+      return false;
+    }
+
+    console.log(`[Resend] ✅ OK → id: ${data?.id}`);
+    return true;
+  } catch (err: any) {
+    console.error("[Resend] ❌ Excepción al enviar correo:", err?.message || err);
+    return false;
+  }
+}
+
 // ─── FUNCIÓN PÚBLICA ──────────────────────────────────────────────────────────
 export async function sendPreReservationEmail(opts: {
   customerEmail: string;
@@ -171,9 +209,10 @@ export async function sendPreReservationEmail(opts: {
 
   const isOrder = type === "order";
   const code = referenceCode || `NEC-${Date.now()}`;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL !== "http://localhost:3000"
-    ? process.env.NEXT_PUBLIC_BASE_URL
-    : "https://tours.portalnecocli.com";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL !== "http://localhost:3000"
+      ? process.env.NEXT_PUBLIC_BASE_URL
+      : "https://tours.portalnecocli.com";
 
   const checkoutUrl = `${baseUrl}/pago/${code}`;
   const ticketUrl = `${baseUrl}/tickets/${code}`; // Pre-reserva pública (antes del pago)

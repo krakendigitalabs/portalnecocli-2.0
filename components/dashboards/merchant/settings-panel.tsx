@@ -37,12 +37,14 @@ export function SettingsPanel() {
           <div className="flex items-center justify-between p-4 rounded-2xl border border-ink/10 bg-white">
             <div>
               <h4 className="font-semibold text-ink">Recibir nuevas reservas</h4>
-              <p className="text-xs text-ink/60">Si se apaga, tu comercio aparecerá como "Lleno" o "Cerrado temporalmente".</p>
+              <p className="text-xs text-ink/60">
+                Si se apaga, tu comercio aparecerá como "Lleno" o "Cerrado temporalmente".
+              </p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                className="sr-only peer" 
+              <input
+                type="checkbox"
+                className="sr-only peer"
                 checked={acceptingReservations}
                 onChange={(e) => setAcceptingReservations(e.target.checked)}
               />
@@ -56,12 +58,14 @@ export function SettingsPanel() {
                 <AlertTriangle className="w-4 h-4 text-amber-600" />
                 <h4 className="font-semibold text-amber-900">Modo Vacaciones</h4>
               </div>
-              <p className="text-xs text-amber-700/80 mt-1">Oculta temporalmente tu comercio del listado público sin perder tu información.</p>
+              <p className="text-xs text-amber-700/80 mt-1">
+                Oculta temporalmente tu comercio del listado público sin perder tu información.
+              </p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
-              <input 
-                type="checkbox" 
-                className="sr-only peer" 
+              <input
+                type="checkbox"
+                className="sr-only peer"
                 checked={vacationMode}
                 onChange={(e) => setVacationMode(e.target.checked)}
               />
@@ -79,13 +83,17 @@ export function SettingsPanel() {
           </div>
           <div>
             <h2 className="text-xl font-bold text-ink">Cuenta para Liquidación (Escrow)</h2>
-            <p className="text-sm text-ink/60 mt-1">Donde giraremos el dinero liberado de tus ventas.</p>
+            <p className="text-sm text-ink/60 mt-1">
+              Donde giraremos el dinero liberado de tus ventas.
+            </p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">Entidad Financiera</label>
+            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">
+              Entidad Financiera
+            </label>
             <select
               value={bank}
               onChange={(e) => setBank(e.target.value)}
@@ -99,7 +107,9 @@ export function SettingsPanel() {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">Número de Cuenta</label>
+            <label className="text-sm font-semibold text-ink/80 uppercase tracking-wide">
+              Número de Cuenta
+            </label>
             <input
               type="text"
               required
@@ -128,19 +138,39 @@ export function SettingsPanel() {
             <div className="relative flex items-center justify-center">
               <input type="checkbox" defaultChecked className="peer sr-only" />
               <div className="w-5 h-5 border-2 border-ink/30 rounded flex items-center justify-center peer-checked:bg-teal peer-checked:border-teal transition-colors">
-                <svg className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <svg
+                  className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
               </div>
             </div>
-            <span className="text-sm text-ink/80 group-hover:text-ink font-medium">Notificar reservas nuevas vía Email</span>
+            <span className="text-sm text-ink/80 group-hover:text-ink font-medium">
+              Notificar reservas nuevas vía Email
+            </span>
           </label>
           <label className="flex items-center gap-3 cursor-pointer group">
             <div className="relative flex items-center justify-center">
               <input type="checkbox" defaultChecked className="peer sr-only" />
               <div className="w-5 h-5 border-2 border-ink/30 rounded flex items-center justify-center peer-checked:bg-teal peer-checked:border-teal transition-colors">
-                <svg className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <svg
+                  className="w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
               </div>
             </div>
-            <span className="text-sm text-ink/80 group-hover:text-ink font-medium">Enviar reporte semanal de liquidaciones Escrow</span>
+            <span className="text-sm text-ink/80 group-hover:text-ink font-medium">
+              Enviar reporte semanal de liquidaciones Escrow
+            </span>
           </label>
         </div>
       </SurfaceCard>

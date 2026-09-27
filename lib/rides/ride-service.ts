@@ -1,9 +1,8 @@
-
 import type { Ride, RideStatus, WalletTransaction } from "@/types/ride";
 import type { DriverProfile } from "@/types/driver";
 
 /** Comisión del portal sobre cada carrera de transporte */
-const PORTAL_TRANSPORT_COMMISSION = 0.10;
+const PORTAL_TRANSPORT_COMMISSION = 0.1;
 
 /** Minutos antes de que una carrera abierta expire */
 const RIDE_EXPIRY_MINUTES = 5;
@@ -52,10 +51,7 @@ export function generateRideReference(): string {
  * Valida si un conductor puede aceptar una carrera.
  * Retorna null si puede, o un string con el motivo del bloqueo.
  */
-export function validateDriverCanAccept(
-  driver: DriverProfile,
-  ride: Ride,
-): string | null {
+export function validateDriverCanAccept(driver: DriverProfile, ride: Ride): string | null {
   if (driver.status !== "active") {
     return "Tu cuenta no está activa. Contacta al administrador.";
   }
@@ -77,10 +73,7 @@ export function validateDriverCanAccept(
 /**
  * Valida si un conductor puede marcar una carrera como completada.
  */
-export function validateDriverCanComplete(
-  driver: DriverProfile,
-  ride: Ride,
-): string | null {
+export function validateDriverCanComplete(driver: DriverProfile, ride: Ride): string | null {
   if (ride.status !== "ACCEPTED" && ride.status !== "IN_PROGRESS") {
     return "Esta carrera no está en un estado que permita completarla.";
   }

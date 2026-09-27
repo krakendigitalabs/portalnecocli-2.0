@@ -24,11 +24,15 @@ export default async function RegistroComercioPage() {
             Afilia tu Comercio
           </h1>
           <p className="text-base text-ink/70 max-w-xl mx-auto">
-            Completa la información de tu negocio para activar tu panel Escrow y empezar a recibir reservas y compras de turistas verificados.
+            Completa la información de tu negocio para activar tu panel Escrow y empezar a recibir
+            reservas y compras de turistas verificados.
           </p>
         </div>
 
-        <OnboardingForm userEmail={session.user.email ?? ""} userName={session.user.displayName ?? ""} />
+        <OnboardingForm
+          userEmail={session.user.email ?? ""}
+          userName={session.user.displayName ?? ""}
+        />
       </div>
     </main>
   );

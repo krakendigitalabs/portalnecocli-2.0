@@ -9,7 +9,7 @@ const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
 const enviarSolicitudTool: FunctionDeclaration = {
   name: "enviar_solicitud",
   description:
-    "Envía la solicitud de reserva, paquete, tour, transporte o domicilio a la administración y genera un correo de pre-reserva. Úsalo ÚNICAMENTE cuando ya tengas: Nombre, Teléfono, Correo Electrónico y el plan detallado.",
+    "Envía la solicitud de reserva, paquete o tour a la administración y genera un correo de pre-reserva. Úsalo ÚNICAMENTE para RESERVAS (hoteles, tours). NO lo uses para transporte ni domicilios.",
   parameters: {
     type: SchemaType.OBJECT,
     properties: {
@@ -52,9 +52,9 @@ const enviarSolicitudTool: FunctionDeclaration = {
 const solicitarCarreraTool: FunctionDeclaration = {
   name: "solicitar_carrera",
   description:
-    "Crea una solicitud de carrera de transporte (mototaxi, motocarro o taxi). " +
-    "Úsalo cuando el cliente quiera un transporte AHORA o en las próximas horas. " +
-    "Necesitas: destino, tipo de vehículo, y nombre/teléfono del cliente.",
+    "Crea una solicitud de carrera de transporte (mototaxi, motocarro, taxi) O UN DOMICILIO (compras de farmacia, súper, comida). " +
+    "Úsalo cuando el cliente quiera moverse AHORA o pida un DOMICILIO para entrega inmediata. " +
+    "Necesitas: destino (lugar de entrega), tipo de vehículo, y nombre/teléfono del cliente. Pon la lista de compras del domicilio en 'notes'.",
   parameters: {
     type: SchemaType.OBJECT,
     properties: {
@@ -152,7 +152,7 @@ Menú infantil: Nuggets $19.800 | Mini burguer $19.800
 Cócteles: Paraíso verde/Caribe azul/Mojitos $20.900-$35.200
 
 --- 9. SERVICIO ESTRELLA (DOMICILIOS) ---
-Hacemos compras por el turista (víveres, medicamentos, ferretería, comidas) y lo llevamos a cualquier hotel o playa.
+Hacemos compras por el turista (víveres, medicamentos, ferretería, comidas) y lo llevamos a cualquier hotel o playa. ¡USA SIEMPRE LA HERRAMIENTA solicitar_carrera PARA MANDARLE ESTO A LOS CONDUCTORES EN TIEMPO REAL!
 
 === REGLAS ESTRICTAS DE RESPUESTA (OBLIGATORIO CUMPLIRLAS) ===
 1. REGLA DEL PING-PONG: ¡Tus mensajes deben ser MUY BREVES! NUNCA escribas más de 2 o 3 líneas. Cero testamentos.
@@ -161,7 +161,8 @@ Hacemos compras por el turista (víveres, medicamentos, ferretería, comidas) y 
 4. RECOLECCIÓN GRADUAL Y CIERRE: Para hacer cualquier reserva necesitas: 1) Destinos y Fechas exactas, 2) Qué tipo de habitación/comidas buscan, 3) Su Nombre, Celular y Correo Electrónico.
 5. SIN NOMBRES DE HOTELES: Describe la experiencia, nunca des nombres específicos de hoteles.
 6. CERO FALSAS PROMESAS DE WHATSAPP: NUNCA prometas ni ofrezcas enviar mensajes por WhatsApp. Si el usuario te pide que le escribas al WhatsApp, dile cortésmente que nuestro sistema de reservas envía las confirmaciones ÚNICAMENTE de forma segura a través del correo electrónico.
-7. EJECUCIÓN INVISIBLE: Apenas tengas su Nombre, Celular, Correo y el itinerario acordado, INMEDIATAMENTE ejecuta la herramienta 'enviar_solicitud'. No le digas "voy a enviarlo", solo ejecuta la herramienta en silencio y luego confírmale: "Acabo de enviarte la pre-reserva a tu correo electrónico con el botón de pago".
+7. EJECUCIÓN INVISIBLE: Apenas tengas los datos completos para una reserva/tour, ejecuta 'enviar_solicitud'. Si es un domicilio, ejecuta 'solicitar_carrera'.
+8. USO DEL MAPA PARA TRANSPORTE: Si el cliente pide un transporte (moto, motocarro, taxi), NO uses la herramienta 'solicitar_carrera' manualmente. En su lugar, dile que hemos habilitado nuestro Mapa Satelital y envíale ESTE ENLACE EXACTO en formato Markdown: [📍 Abrir Mapa de Neco-Dispatch](/customer/pedir). Diles que ahí podrán ver su ubicación exacta, marcar el destino y pedir el vehículo automáticamente.
 ==================================================
 `;
 
@@ -170,7 +171,11 @@ export type ChatMessage = {
   content: string;
 };
 
-export async function chatWithAlejandro(history: ChatMessage[], newMessage: string) {
+export async function chatWithAlejandro(
+  history: ChatMessage[],
+  newMessage: string,
+  userId?: string,
+) {
   if (!genAI) {
     return "Lo siento, la inteligencia de Alejandro está temporalmente desconectada. (Falta API Key)";
   }
@@ -236,26 +241,39 @@ export async function chatWithAlejandro(history: ChatMessage[], newMessage: stri
         result = await chat.sendMessage(
           `[Sistema interno]: La herramienta 'enviar_solicitud' se ejecutó con éxito y el correo de pre-reserva ya fue enviado. Por favor confírmale esto al usuario de forma muy breve.`,
         );
-
       } else if (call.name === "solicitar_carrera") {
         const args = call.args as any;
-        
+
+        if (!userId) {
+          result = await chat.sendMessage(
+            `[Sistema interno]: El usuario solicitó una carrera pero NO ESTÁ AUTENTICADO. Dile cordialmente que por motivos de seguridad y para poder rastrear en tiempo real al conductor, debe Iniciar Sesión primero.`,
+          );
+          return result.response.text();
+        }
+
         const { createRideAction } = await import("@/lib/rides/ride-actions");
-        
-        await createRideAction({
+
+        const rideRes = await createRideAction({
           origin: "Centro de Necoclí (O lugar acordado)",
           destination: args.destination || "",
           vehicleType: args.vehicleType || "motocarro",
           clientName: args.clientName || "Cliente",
           clientPhone: args.clientPhone || "",
+          clientUid: userId,
           passengerCount: args.passengerCount || 1,
           notes: args.notes || "",
           source: "chatbot",
         });
 
-        result = await chat.sendMessage(
-          `[Sistema interno]: La herramienta 'solicitar_carrera' se ejecutó con éxito. La carrera ha sido publicada en el tablero de los conductores. Por favor confírmale al usuario que su transporte ya fue solicitado y que pronto un conductor lo contactará.`,
-        );
+        if (rideRes.success) {
+          result = await chat.sendMessage(
+            `[Sistema interno]: La herramienta 'solicitar_carrera' se ejecutó con éxito. La carrera ha sido publicada. Dile al usuario que su transporte ya fue solicitado y dile que puede rastrearlo en tiempo real haciendo clic aquí: [Ver estado del viaje](/customer/viajes/${rideRes.id}).`,
+          );
+        } else {
+          result = await chat.sendMessage(
+            `[Sistema interno]: Hubo un error al publicar la carrera: ${rideRes.error}. Infórmale al usuario que hubo un problema logístico y que intente más tarde.`,
+          );
+        }
       }
     }
 

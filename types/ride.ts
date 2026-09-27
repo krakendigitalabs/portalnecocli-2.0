@@ -60,12 +60,16 @@ export interface Ride {
   client_phone: string;
   /** Correo electrónico del cliente (opcional) */
   client_email?: string;
+  /** UID de Firebase del pasajero (si estaba logueado al pedir) */
+  client_uid?: string;
   /** ID del conductor asignado (se puebla al aceptar) */
   driver_id?: string;
   /** Nombre del conductor asignado (denormalizado para UI) */
   driver_name?: string;
   /** Descripción del vehículo del conductor (denormalizado para UI) */
   driver_vehicle?: string;
+  /** Teléfono de contacto del conductor */
+  driver_phone?: string;
 
   // --- Estado ---
   /** Estado actual de la carrera */
@@ -98,6 +102,8 @@ export interface Ride {
   rating_comment?: string;
   /** Motivo de cancelación si status === CANCELLED */
   cancellation_reason?: string;
+  /** Quién canceló la carrera */
+  cancelled_by?: "driver" | "customer" | "admin";
 }
 
 /**
@@ -108,12 +114,7 @@ export interface Ride {
  * - adjustment: Ajuste manual del administrador.
  * - bonus: Bonificación promocional.
  */
-export type WalletTransactionType =
-  | "topup"
-  | "commission"
-  | "refund"
-  | "adjustment"
-  | "bonus";
+export type WalletTransactionType = "topup" | "commission" | "refund" | "adjustment" | "bonus";
 
 /**
  * Registro individual de un movimiento en la billetera virtual del conductor.

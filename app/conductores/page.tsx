@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DriverRegisterForm } from "@/components/driver/driver-register-form";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Regístrate como Conductor | Portal Necoclí",
@@ -73,14 +73,19 @@ export default function ConductoresPage() {
         </div>
       </section>
 
-      {/* Formulario */}
-      <section className="pb-24 px-4">
-        <div className="max-w-xl mx-auto bg-white rounded-3xl shadow-xl shadow-ink/5 border border-ink/5 p-6 sm:p-10">
-          <h2 className="text-xl font-bold text-ink mb-1 text-center">Formulario de Registro</h2>
-          <p className="text-sm text-ink/50 text-center mb-8">
-            Completa tus datos y te contactaremos pronto.
+      {/* Call To Action */}
+      <section className="pb-24 px-4 text-center">
+        <div className="max-w-xl mx-auto bg-white rounded-3xl shadow-xl shadow-ink/5 border border-ink/5 p-10">
+          <h2 className="text-2xl font-bold text-ink mb-4">¿Listo para unirte?</h2>
+          <p className="text-ink/60 mb-8">
+            Necesitas crear una cuenta o iniciar sesión para poder registrar tu vehículo.
           </p>
-          <DriverRegisterForm />
+          <Link
+            href="/conductores/registro"
+            className="inline-block w-full sm:w-auto px-8 py-4 bg-teal text-white font-bold text-lg rounded-2xl hover:bg-teal/90 active:scale-[0.98] transition-all duration-200 shadow-lg shadow-teal/25"
+          >
+            Iniciar sesión y Registrarme 🚀
+          </Link>
         </div>
       </section>
     </main>

@@ -89,7 +89,7 @@ export async function POST(request: Request) {
     // Revisar si ya existe una sesión válida
     const cookieStore = await cookies();
     const existingSessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
-    
+
     if (existingSessionCookie) {
       try {
         await getFirebaseAdminAuth().verifySessionCookie(existingSessionCookie, true);

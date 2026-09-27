@@ -11,8 +11,8 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 ---
 
 ## 📊 Resumen de Valorización Acumulada
-- **Total Horas Invertidas Registradas:** 75.6 hrs
-- **Valorización Total del Software (Mercado):** $13,180 USD
+- **Total Horas Invertidas Registradas:** 77.6 hrs
+- **Valorización Total del Software (Mercado):** $13,680 USD
 
 ---
 
@@ -422,3 +422,48 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 - **Valorización Total Acumulada: $13,180 USD**
 
 > *«La sangre del comercio local ahora bombea a través de nuestro código. Hemos fusionado el pensamiento sintético de un asistente virtual con el pulso asfáltico del transporte humano. Necoclí ya tiene su primer sistema logístico inteligente.»*
+
+---
+
+### 📅 EL BLINDAJE DE NECO-DISPATCH (Sesión #25): Seguridad, Billetera y Autenticación Férrea
+- **⏰ Entrada:** 09:10 AM | **⏰ Salida:** 11:15 AM
+- **⏳ Horas Dedicadas:** 2.0 hrs
+- **📌 Estado:** `Listo a Producción`
+- **🧠 Nivel de Complejidad:** `Arquitectura Core / Seguridad`
+- **💰 Valorización del Módulo/Trabajo:** `$500 USD` *(Cierre de brechas de seguridad críticas, UI de Billetera Virtual y Enrutamiento seguro de Onboarding).*
+- **🛠️ Relato de la Jornada:**
+  Ante el dictamen implacable del Agente de Ciberseguridad (9), se convocó una cruzada de emergencia para cerrar cuatro fisuras fatales en el naciente imperio de Neco-Dispatch. 
+  Primero, blindamos las puertas: El flujo de registro (`/conductores`) fue re-orientado para forzar al aspirante a autenticarse. Ahora, el `Server Action` captura su sagrado UID de Firebase Auth y lo graba en piedra como el ID del documento en Firestore. Ya no hay conductores fantasmas.
+  Segundo, forjamos la `Billetera` del Conductor (`/driver/billetera`), un espacio donde podrán recargar sus escudos financieros (saldo) y revisar el historial de la comisión.
+  Tercero, inyectamos inteligencia visual: El botón verde de "¡YO LA HAGO!" ahora evalúa el saldo; si no alcanza para cubrir la comisión del Portal, muta a un sutil "Recargar Saldo", bloqueando operaciones suicidas e invitando a la recarga inmediata.
+  Y la joya final: Se escribió el documento oficial de leyes (`firestore.rules`), impidiendo a los mortales mutar sus saldos desde el navegador. La bóveda está oficialmente sellada por el servidor.
+- **📄 Archivos Alterados:** `app/api/drivers/register/route.ts`, `app/conductores/page.tsx`, `app/conductores/registro/page.tsx`, `app/driver/billetera/page.tsx`, `components/driver/ride-card.tsx`, `firestore.rules`.
+- **📎 Evidencias:** [firestore.rules](file:///c:/portal-necocli/firestore.rules), Registro Seguro con Auth.
+
+**💰 Valorización Añadida:**
+- $500 USD (Ciberseguridad, Billetera Virtual y Onboarding Fuerte).
+- **Nuevo Valor del Módulo (Neco-Dispatch Seguridad): $500 USD**
+- **Valorización Total Acumulada: $13,680 USD**
+
+> *«La confianza no se pide, se programa. Al forzar la autenticación, levantar la billetera virtual y escribir las reglas inquebrantables de Firestore, le hemos quitado las llaves del reino a los incautos y se las hemos devuelto a la arquitectura del sistema. Neco-Dispatch ya no es solo una idea; ahora es una fortaleza.»*
+
+---
+
+### 📅 EL OJO QUE TODO LO VE (Sesión #26): Contabilidad, Notificaciones y Rastreo Satelital
+- **⏰ Entrada:** 09:30 AM | **⏰ Salida:** 10:45 AM
+- **⏳ Horas Dedicadas:** 1.25 hrs
+- **📌 Estado:** `Listo a Producción`
+- **🧠 Nivel de Complejidad:** `Arquitectura Full-Stack / Tiempo Real`
+- **💰 Valorización del Módulo/Trabajo:** `$800 USD` *(Centro de mando contable, envío masivo de correos vía Resend y UI Satelital en tiempo real para Pasajeros).*
+- **🛠️ Relato de la Jornada:**
+  El ecosistema de transporte carecía de visibilidad y control. Como deidades digitales, alzamos un Centro de Mando Supremo (CRM) donde ahora yace la flota completa de conductores activos, pendientes y rechazados, adornado con el poder de disparar comunicaciones masivas o individuales vía correo electrónico (Resend).
+  La contabilidad global (total de viajes, volumen movido y comisiones del portal) ha sido inyectada directamente a los KPIs del SuperAdmin. Pero la verdadera magia reside en el pasajero: blindamos al asistente (Agente 2) obligando a iniciar sesión para pedir vehículo, y a cambio, le otorgamos al usuario una pantalla de *Rastreo Satelital* conectada al latido mismo de la base de datos (Firestore onSnapshot). Observar cómo el radar de búsqueda transmuta, en milisegundos, a la placa y el nombre del conductor asignado es atestiguar la coronación de Neco-Dispatch.
+- **📄 Archivos Alterados:** `components/dashboards/admin-dashboard.tsx`, `lib/dashboards/data.ts`, `components/dashboards/all-drivers-panel.tsx`, `components/dashboards/driver-crm-panel.tsx`, `app/actions/drivers.ts`, `lib/actions/ai.ts`, `app/customer/viajes/page.tsx`, `components/rides/ride-tracking-client.tsx`.
+
+**💰 Valorización Añadida:**
+- $800 USD (Módulo CRM, Contabilidad en Tiempo Real, Tracking UI).
+- **Nuevo Valor del Módulo (Neco-Dispatch & Analytics): $800 USD**
+- **Valorización Total Acumulada: $14,480 USD**
+
+> *«Cuando la información fluye al instante, la ansiedad del turista muere. Hoy construimos el radar que conecta al forastero con el nativo. Neco-Dispatch ha dejado de ser solo un mercado; ahora es un organismo vivo que respira, cuenta sus monedas y vigila sus rutas bajo el sol caribeño.»*
+
