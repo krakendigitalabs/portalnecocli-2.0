@@ -10,6 +10,8 @@ interface WalletSummaryProps {
  * Resumen compacto de la billetera virtual del conductor.
  * Siempre visible en la parte superior del dashboard.
  */
+import Link from "next/link";
+
 export function WalletSummary({
   balance,
   totalEarnings = 0,
@@ -30,9 +32,12 @@ export function WalletSummary({
             ${balance.toLocaleString("es-CO")}
           </p>
         </div>
-        <button className="bg-teal-500/20 text-teal-400 text-xs font-bold px-4 py-2 rounded-xl hover:bg-teal-500/30 transition-colors border border-teal-500/20">
+        <Link 
+          href="/driver/billetera"
+          className="bg-teal-500/20 text-teal-400 text-xs font-bold px-4 py-2 rounded-xl hover:bg-teal-500/30 transition-colors border border-teal-500/20"
+        >
           + Recargar
-        </button>
+        </Link>
       </div>
 
       {(totalEarnings > 0 || ridesCompleted > 0) && (

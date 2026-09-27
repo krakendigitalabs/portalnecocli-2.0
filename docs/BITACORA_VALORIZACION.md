@@ -467,3 +467,41 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 
 > *«Cuando la información fluye al instante, la ansiedad del turista muere. Hoy construimos el radar que conecta al forastero con el nativo. Neco-Dispatch ha dejado de ser solo un mercado; ahora es un organismo vivo que respira, cuenta sus monedas y vigila sus rutas bajo el sol caribeño.»*
 
+---
+
+### 📅 EL TRIUNFO SOBRE VERCEL (Sesión #27): Resolución de Errores SSR y Renderizado Dinámico
+- **⏰ Entrada:** 12:00 PM | **⏰ Salida:** 12:35 PM
+- **⏳ Horas Dedicadas:** 0.5 hrs
+- **📌 Estado:** `Listo a Producción`
+- **🧠 Nivel de Complejidad:** `Media / Core Frontend`
+- **💰 Valorización del Módulo/Trabajo:** `$150 USD` *(Resolución de Bugs en Edge Runtime de Next.js, Enrutamiento Híbrido)*
+- **🛠️ Relato de la Jornada:**
+  El ojo estricto de Vercel nos detuvo en la puerta de producción con un error de compilación. Las leyes del App Router en Next.js 15 prohíben estrictamente el uso de `ssr: false` dentro de componentes de servidor (`page.tsx`). Con la mente fría, el equipo forjó un envoltorio protector (`ride-map-wrapper.tsx`), marcándolo como territorio de cliente (`"use client"`) y delegando allí el renderizado dinámico de Leaflet, el cual requiere el objeto *window*. Con esta maniobra, el radar satelital del pasajero fue purgado de errores, y el código fluyó con éxito hacia los servidores mundiales de Vercel. La plataforma vuelve a estar en verde puro.
+- **📄 Archivos Alterados:** `app/customer/pedir/page.tsx`, `components/rides/ride-map-wrapper.tsx`.
+
+**💰 Valorización Añadida:**
+- $150 USD (Fix SSR y Renderizado Dinámico)
+- **Nuevo Valor del Módulo (Estabilización Frontend): $150 USD**
+- **Valorización Total Acumulada: $14,630 USD**
+
+> *«Los servidores no perdonan, pero los ingenieros de Kraken se adaptan. A veces, para avanzar, solo hay que envolver la magia en el componente correcto.»*
+
+---
+
+### 📅 BILLETERA DIGITAL Y ESCROW (Sesión #28): Neco-Dispatch Fintech Fase 2
+- **⏰ Entrada:** 12:40 PM | **⏰ Salida:** 01:00 PM
+- **⏳ Horas Dedicadas:** 0.3 hrs
+- **📌 Estado:** `Listo a Producción`
+- **🧠 Nivel de Complejidad:** `Alta / FinTech & Webhooks`
+- **💰 Valorización del Módulo/Trabajo:** `$600 USD` *(Integración de Pasarela Wompi para recargas de saldo, manejo de transacciones atómicas y seguridad SHA-256)*
+- **🛠️ Relato de la Jornada:**
+  El Director QA exigió trabajar en orden táctico, pero al revisar el estado del proyecto, nos dimos cuenta de que la Fase 1 (CRM Admin) ¡ya había sido forjada en una sesión anterior por los dioses del código! Así que el Agente 8 (FinTech) entró inmediatamente a la cancha para liberar la Fase 2.
+  Se reemplazaron los botones "estáticos" de la Billetera del Conductor por un motor Reactivo (`wallet-recharge.tsx`) que firma criptográficamente cada intento de recarga contra los servidores de Wompi. Luego, inyectamos inteligencia en el Webhook central (`/api/webhooks/wompi/route.ts`): si un pago entra con la bandera `TOPUP_`, el sistema realiza una *Transacción Atómica* (`runTransaction`) inyectando el dinero real convertido desde centavos directo al `wallet_balance` del conductor en milisegundos, escribiendo además en la nueva tabla `wallet_transactions` para el registro histórico inmutable del piloto.
+- **📄 Archivos Alterados:** `components/driver/wallet-recharge.tsx`, `app/driver/billetera/page.tsx`, `data/driverService.ts`, `app/api/webhooks/wompi/route.ts`.
+
+**💰 Valorización Añadida:**
+- $600 USD (Modelo de Recargas Wompi para Conductores)
+- **Nuevo Valor del Módulo (Fintech Flota): $600 USD**
+- **Valorización Total Acumulada: $15,230 USD**
+
+> *«La sangre del comercio local no es solo información; es dinero fluyendo de forma segura. Hoy abrimos las válvulas financieras. Los conductores ya pueden capitalizar su billetera.»*

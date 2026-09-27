@@ -13,6 +13,8 @@ import { holdFunds } from "@/data/escrowService";
 import { awardLoyaltyStar } from "@/data/loyaltyService";
 import { getReservationByReferenceCode, markReservationAsPaid } from "@/data/reservationService";
 import type { EscrowTransaction, EscrowTransactionStatus } from "@/types/escrow";
+import { getFirestore } from "firebase-admin/firestore";
+import { getFirebaseAdminApp } from "@/lib/firebase/admin";
 
 type WompiWebhookPayload = {
   event: string;
@@ -86,7 +88,55 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Estado no aprobado." }, { status: 200 });
   }
 
-  // 3. Buscar la reserva por reference_code (que usamos como reference en Wompi)
+  // 3. Identificar si es una Recarga de Billetera (Neco-Dispatch) o una Reserva
+  if (transaction.reference.startsWith("TOPUP_")) {
+    const [, userId, timestampStr] = transaction.reference.split("_");
+    
+    if (!userId) {
+      console.error("[Wompi Webhook] ❌ Referencia TOPUP inválida:", transaction.reference);
+      return NextResponse.json({ error: "Invalid TOPUP reference" }, { status: 400 });
+    }
+
+    try {
+      const db = getFirestore(getFirebaseAdminApp());
+      const amountCOP = transaction.amount_in_cents / 100; // Convertimos de centavos a COP
+
+      await db.runTransaction(async (t) => {
+        const driverRef = db.collection("drivers").doc(userId);
+        const driverDoc = await t.get(driverRef);
+
+        if (!driverDoc.exists) {
+          throw new Error("Driver not found");
+        }
+
+        const currentBalance = driverDoc.data()?.wallet_balance || 0;
+        
+        // Sumar la recarga al saldo
+        t.update(driverRef, {
+          wallet_balance: currentBalance + amountCOP,
+        });
+
+        // Registrar la transacción
+        const txRef = db.collection("wallet_transactions").doc(`WOMPI-${transaction.id}`);
+        t.set(txRef, {
+          driver_id: userId,
+          type: "TOPUP",
+          amount: amountCOP,
+          gateway_ref: transaction.id,
+          created_at: new Date().toISOString(),
+          status: "APPROVED"
+        });
+      });
+
+      console.log(`[Wompi Webhook] ✅ Recarga exitosa de ${amountCOP} para conductor ${userId}`);
+      return NextResponse.json({ success: true, topup: true }, { status: 200 });
+    } catch (error) {
+      console.error("[Wompi Webhook] ❌ Error recargando saldo:", error);
+      return NextResponse.json({ error: "Topup processing error" }, { status: 500 });
+    }
+  }
+
+  // 4. Si no es TOPUP, buscar la reserva por reference_code
   const reservation = await getReservationByReferenceCode(transaction.reference);
   if (!reservation) {
     console.error(
@@ -95,20 +145,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Reservation not found" }, { status: 404 });
   }
 
-  // 4. Idempotencia — no reprocesar si ya está pagada
+  // 5. Idempotencia — no reprocesar si ya está pagada
   if (reservation.status === "PAID" || reservation.status === "COMPLETED") {
     console.log(`[Wompi Webhook] ℹ️ Reserva ${reservation.id} ya procesada. Idempotente.`);
     return NextResponse.json({ message: "Already processed" }, { status: 200 });
   }
 
-  // 5. ID de transacción Escrow = WOMPI- + transaction.id de Wompi
+  // 6. ID de transacción Escrow = WOMPI- + transaction.id de Wompi
   const escrowTransactionId = `WOMPI-${transaction.id}`;
 
   try {
-    // 6. Marcar la reserva como PAID en Firestore
+    // 7. Marcar la reserva como PAID en Firestore
     await markReservationAsPaid(reservation.id, escrowTransactionId, reservation.customer_id);
 
-    // 7. Calcular comisiones y registrar en la bóveda Escrow (HELD)
+    // 8. Calcular comisiones y registrar en la bóveda Escrow (HELD)
     const totalAmount = transaction.amount_in_cents;
     const PLATFORM_FEE_RATE = 0.08; // 8% Take Rate del Portal
     const platformFee = Math.round(totalAmount * PLATFORM_FEE_RATE);
@@ -130,7 +180,7 @@ export async function POST(req: NextRequest) {
 
     await holdFunds(escrowData);
 
-    // 8. Otorgar Estrella de Fidelidad al turista
+    // 9. Otorgar Estrella de Fidelidad al turista
     if (reservation.customer_id) {
       await awardLoyaltyStar({
         customerId: reservation.customer_id,

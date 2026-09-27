@@ -35,3 +35,23 @@ export async function getDriverProfile(uid: string): Promise<DriverProfile | nul
     return null;
   }
 }
+
+export async function getWalletTransactions(driverId: string) {
+  try {
+    const db = getFirestore(getFirebaseAdminApp());
+    const snapshot = await db
+      .collection("wallet_transactions")
+      .where("driver_id", "==", driverId)
+      .orderBy("created_at", "desc")
+      .limit(10)
+      .get();
+      
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+  } catch (err) {
+    console.error("Error fetching wallet transactions:", err);
+    return [];
+  }
+}

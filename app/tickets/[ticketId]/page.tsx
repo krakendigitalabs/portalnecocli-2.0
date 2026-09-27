@@ -8,7 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PrintTicketButton } from "@/components/checkout/print-ticket-button";
-import { getReservationByEscrowId, getReservationById } from "@/data/reservationService";
+import { getReservationByEscrowId, getReservationById, getReservationByReferenceCode } from "@/data/reservationService";
 
 type Props = {
   params: Promise<{
@@ -33,8 +33,16 @@ export default async function EscrowTicketPage({ params }: Props) {
   try {
     reservation = await getReservationById(ticketId);
   } catch {
-    // Not found by reservationId, try escrow ID
-    reservation = await getReservationByEscrowId(ticketId);
+    try {
+      // 2. Try by reference_code (from email)
+      reservation = await getReservationByReferenceCode(ticketId);
+      if (!reservation) {
+        // 3. Not found by referenceCode, try escrow ID
+        reservation = await getReservationByEscrowId(ticketId);
+      }
+    } catch {
+      reservation = null;
+    }
   }
 
   if (!reservation) {

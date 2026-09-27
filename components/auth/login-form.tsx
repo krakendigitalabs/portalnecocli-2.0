@@ -24,10 +24,10 @@ function getErrorMessage(error: unknown): string {
 
 type LoginFormProps = {
   nextPath?: string;
-  requestedRole?: "merchant" | "customer";
+  requestedRole?: "merchant" | "customer" | "driver";
 };
 
-export function LoginForm({ nextPath = "/negocios", requestedRole = "customer" }: LoginFormProps) {
+export function LoginForm({ nextPath, requestedRole }: LoginFormProps) {
   const router = useRouter();
   const session = useAuthSession();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -35,13 +35,16 @@ export function LoginForm({ nextPath = "/negocios", requestedRole = "customer" }
   const firebaseDiagnostics = getFirebasePublicConfigDiagnostics();
   const configurationWarning = getFirebaseConfigurationWarning();
 
-  async function handleGoogleSignIn() {
+  async function handleGoogleSignIn(overrideNextPath?: string) {
     setIsSubmitting(true);
     setErrorMessage(null);
 
     try {
       await signInWithGoogle();
-      router.push(nextPath);
+      // Si hay un nextPath forzado por URL (ej. checkout), lo respetamos.
+      // Si no, usamos la ruta específica del rol que seleccionó.
+      const finalPath = nextPath || overrideNextPath || "/";
+      router.push(finalPath);
       router.refresh();
     } catch (error) {
       setErrorMessage(getErrorMessage(error));
@@ -129,18 +132,65 @@ export function LoginForm({ nextPath = "/negocios", requestedRole = "customer" }
         </ul>
       </SurfaceCard>
 
-      <SurfaceCard className="flex flex-col justify-center rounded-[30px] p-8">
-        <div className="space-y-6">
+      <SurfaceCard className="flex flex-col justify-center rounded-[30px] p-8 md:p-12 border-0 shadow-2xl shadow-ink/5">
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold text-ink tracking-tight mb-6">Selecciona tu perfil</h2>
+
+          {/* Opción Turista */}
           <button
-            className="inline-flex w-full items-center justify-center rounded-full bg-ink px-6 py-4 text-sm font-semibold text-white shadow-soft transition hover:bg-ink/90 disabled:cursor-not-allowed disabled:opacity-60"
+            onClick={() => handleGoogleSignIn("/customer")}
             disabled={isSubmitting}
-            onClick={handleGoogleSignIn}
             type="button"
+            className="w-full group relative flex items-center justify-between p-5 rounded-2xl border-2 border-ink/5 bg-white hover:border-ink hover:bg-ink/5 transition-all text-left disabled:opacity-50"
           >
-            {isSubmitting ? "Conectando con Google..." : "Continuar con Google"}
+            <div>
+              <p className="text-base font-bold text-ink">Turista</p>
+              <p className="text-sm text-ink/60 mt-0.5">Explora, reserva y viaja</p>
+            </div>
+            <div className="w-10 h-10 rounded-full bg-ink/5 flex items-center justify-center group-hover:bg-ink group-hover:text-white transition-colors">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </div>
           </button>
 
-          <div className="flex justify-center">
+          {/* Opción Conductor */}
+          <button
+            onClick={() => handleGoogleSignIn("/driver")}
+            disabled={isSubmitting}
+            type="button"
+            className="w-full group relative flex items-center justify-between p-5 rounded-2xl border-2 border-ink/5 bg-white hover:border-ink hover:bg-ink transition-all text-left disabled:opacity-50"
+          >
+            <div>
+              <p className="text-base font-bold text-ink group-hover:text-white transition-colors">Conductor Aliado</p>
+              <p className="text-sm text-ink/60 mt-0.5 group-hover:text-white/70 transition-colors">Recibe carreras y gana</p>
+            </div>
+            <div className="w-10 h-10 rounded-full bg-ink/5 flex items-center justify-center group-hover:bg-white group-hover:text-ink transition-colors">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </div>
+          </button>
+
+          {/* Opción Comercio */}
+          <button
+            onClick={() => handleGoogleSignIn("/merchant")}
+            disabled={isSubmitting}
+            type="button"
+            className="w-full group relative flex items-center justify-between p-5 rounded-2xl border-2 border-ink/5 bg-white hover:border-ink hover:bg-ink/5 transition-all text-left disabled:opacity-50"
+          >
+            <div>
+              <p className="text-base font-bold text-ink">Comercio</p>
+              <p className="text-sm text-ink/60 mt-0.5">Hoteles, restaurantes y tours</p>
+            </div>
+            <div className="w-10 h-10 rounded-full bg-ink/5 flex items-center justify-center group-hover:bg-ink group-hover:text-white transition-colors">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </div>
+          </button>
+
+          <div className="flex justify-center pt-6 border-t border-ink/10 mt-6">
             <Button className="w-full sm:w-auto" href="/" size="lg" variant="secondary">
               Volver al inicio
             </Button>
