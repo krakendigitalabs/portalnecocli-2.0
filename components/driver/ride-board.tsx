@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
 import { RideCard } from "@/components/driver/ride-card";
 import type { Ride } from "@/types/ride";
@@ -22,7 +22,7 @@ export function RideBoard({ rides, walletBalance, onAcceptRide }: RideBoardProps
   const activeRide = rides.find((r) => r.status === "ACCEPTED" || r.status === "IN_PROGRESS");
   const [completing, setCompleting] = useState(false);
 
-  async function handleAccept(rideId: string) {
+  const handleAccept = useCallback(async (rideId: string) => {
     setAcceptingId(rideId);
     try {
       await onAcceptRide(rideId);
@@ -31,7 +31,7 @@ export function RideBoard({ rides, walletBalance, onAcceptRide }: RideBoardProps
     } finally {
       setAcceptingId(null);
     }
-  }
+  }, [onAcceptRide]);
 
   async function handleComplete() {
     if (!activeRide) return;
@@ -84,11 +84,11 @@ export function RideBoard({ rides, walletBalance, onAcceptRide }: RideBoardProps
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between px-1 mb-2">
-        <h2 className="text-sm font-bold text-white/50 uppercase tracking-widest">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-1 mb-2">
+        <h2 className="text-sm font-bold text-white/50 uppercase tracking-widest break-words">
           🛺 Carreras Disponibles
         </h2>
-        <span className="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full">
+        <span className="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
           {openRides.length} {openRides.length === 1 ? "nueva" : "nuevas"}
         </span>
       </div>

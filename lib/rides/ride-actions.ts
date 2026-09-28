@@ -60,6 +60,38 @@ export async function acceptRideAction(rideId: string, driverId: string) {
 }
 
 /**
+ * Server Action: El conductor recoge al pasajero e inicia el viaje.
+ * Cambia el estado a IN_PROGRESS.
+ */
+export async function startRideAction(rideId: string, driverId: string) {
+  if (!hasFirebaseAdminConfig()) throw new Error("Firebase Admin no configurado");
+  const db = getFirestore(getFirebaseAdminApp());
+
+  const rideRef = db.collection("rides").doc(rideId);
+
+  try {
+    await db.runTransaction(async (t) => {
+      const rideDoc = await t.get(rideRef);
+      if (!rideDoc.exists) throw new Error("La carrera no existe");
+
+      const ride = rideDoc.data() as Ride;
+      if (ride.driver_id !== driverId) throw new Error("No eres el conductor de esta carrera");
+      if (ride.status !== "ACCEPTED") throw new Error("Solo las carreras aceptadas se pueden iniciar");
+
+      t.update(rideRef, {
+        status: "IN_PROGRESS",
+        started_at: new Date().toISOString(),
+      });
+    });
+
+    return { success: true };
+  } catch (error: any) {
+    console.error(`[NECO-DISPATCH] Error al iniciar carrera ${rideId}:`, error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
  * Server Action: Un conductor completa una carrera en curso.
  * Ejecuta el cobro de la comisión (10%) de forma atómica.
  */

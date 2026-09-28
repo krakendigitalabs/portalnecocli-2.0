@@ -280,13 +280,42 @@ export function AiConciergeWidget() {
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[80%] p-3 rounded-2xl text-sm shadow-sm ${
+                    className={`max-w-[80%] p-3 rounded-2xl text-sm shadow-sm whitespace-pre-wrap ${
                       msg.role === "user"
                         ? "bg-emerald-600 text-white rounded-tr-sm"
                         : "bg-white text-gray-800 border border-gray-100 rounded-tl-sm"
                     }`}
                   >
-                    {msg.content}
+                    {msg.content.split(/(\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s]+)/g).map((part, i) => {
+                      const mdMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+                      if (mdMatch) {
+                        return (
+                          <a
+                            key={i}
+                            href={mdMatch[2]}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 hover:underline font-semibold"
+                          >
+                            {mdMatch[1]}
+                          </a>
+                        );
+                      }
+                      if (part.match(/^(https?:\/\/[^\s]+)$/)) {
+                        return (
+                          <a
+                            key={i}
+                            href={part}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 hover:underline break-all"
+                          >
+                            {part}
+                          </a>
+                        );
+                      }
+                      return <span key={i}>{part}</span>;
+                    })}
                   </div>
                 </div>
               ))}
@@ -299,42 +328,6 @@ export function AiConciergeWidget() {
                   </div>
                 </div>
               )}
-
-              {/* Quick Replies */}
-              {!isLoading &&
-                messages.length > 0 &&
-                messages[messages.length - 1].role === "model" &&
-                !showForm && (
-                  <div className="flex flex-wrap gap-2 mt-2 pb-4">
-                    {[
-                      "🏝️ Tour de Islas",
-                      "📦 Armar Paquete",
-                      "🍔 Pedir Domicilio",
-                      "🏨 Buscar Hotel",
-                      "🛺 Motocarro local ($10k)",
-                    ].map((reply) => (
-                      <button
-                        key={reply}
-                        onClick={() => {
-                          let type = "general";
-                          if (reply.includes("Hotel")) type = "hotel";
-                          if (reply.includes("Domicilio")) type = "domicilio";
-                          if (reply.includes("Paquete")) type = "paquete";
-                          if (reply.includes("Tour")) type = "tour";
-                          if (reply.includes("Motocarro") || reply.includes("Transporte"))
-                            type = "transporte";
-
-                          setFormType(type);
-                          setFormData((prev) => ({ ...prev, request: reply }));
-                          setShowForm(true);
-                        }}
-                        className="bg-white border border-emerald-100 text-emerald-700 text-xs px-3 py-1.5 rounded-full shadow-sm hover:bg-emerald-50 hover:border-emerald-300 transition-colors"
-                      >
-                        {reply}
-                      </button>
-                    ))}
-                  </div>
-                )}
 
               {showForm && (
                 <div className="bg-white border border-emerald-100 rounded-xl p-4 shadow-sm text-sm relative">
@@ -408,17 +401,25 @@ export function AiConciergeWidget() {
 
             {/* Input Area */}
             {!showForm && (
-              <div className="p-3 bg-white border-t flex items-end gap-2 relative">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setFormType("general");
-                    setShowForm(true);
-                  }}
-                  className="absolute -top-10 left-1/2 -translate-x-1/2 bg-emerald-100 text-emerald-800 text-xs px-4 py-1.5 rounded-full font-bold shadow-[0_0_15px_rgba(16,185,129,0.4)] border border-emerald-300 hover:bg-emerald-200 transition-colors whitespace-nowrap animate-pulse"
-                >
-                  Generar Solicitud Oficial
-                </button>
+              <div className="p-3 bg-white border-t flex items-end gap-2 relative mt-4">
+                <div className="absolute -top-10 left-0 w-full flex justify-center gap-2 px-2">
+                  <a
+                    href="/customer/pedir"
+                    className="bg-indigo-100 text-indigo-800 text-xs px-4 py-1.5 rounded-full font-bold shadow-[0_0_15px_rgba(79,70,229,0.4)] border border-indigo-300 hover:bg-indigo-200 transition-colors whitespace-nowrap flex items-center gap-1"
+                  >
+                    <span>🛺</span> Pedir Vehículo
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormType("general");
+                      setShowForm(true);
+                    }}
+                    className="bg-emerald-100 text-emerald-800 text-xs px-4 py-1.5 rounded-full font-bold shadow-[0_0_15px_rgba(16,185,129,0.4)] border border-emerald-300 hover:bg-emerald-200 transition-colors whitespace-nowrap animate-pulse flex items-center gap-1"
+                  >
+                    <span>📝</span> Otras Solicitudes
+                  </button>
+                </div>
                 <textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}

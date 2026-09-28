@@ -76,7 +76,7 @@ export function MainHeader({ brandName }: MainHeaderProps) {
 
           {/* User Actions (Corregido Botón Verde) */}
           <div className="flex items-center gap-4">
-            <div className="hidden sm:block text-sm">
+            <div className="block text-sm">
               <AuthEntry />
             </div>
 

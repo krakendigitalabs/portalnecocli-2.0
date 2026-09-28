@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import type { Ride } from "@/types/ride";
 import { updateRideFareAction, cancelRideAction } from "@/lib/rides/ride-operations";
-import { completeRideAction } from "@/lib/rides/ride-actions";
+import { completeRideAction, startRideAction } from "@/lib/rides/ride-actions";
+import { SwipeButton } from "@/components/ui/swipe-button";
 
 interface RideCardProps {
   ride: Ride;
@@ -14,7 +15,7 @@ interface RideCardProps {
   walletBalance: number;
 }
 
-export function RideCard({ ride, onAccept, isAccepting, walletBalance }: RideCardProps) {
+export const RideCard = memo(function RideCard({ ride, onAccept, isAccepting, walletBalance }: RideCardProps) {
   const hasEnoughBalance = walletBalance >= ride.portal_commission;
 
   const [isPending, startTransition] = useTransition();
@@ -24,13 +25,18 @@ export function RideCard({ ride, onAccept, isAccepting, walletBalance }: RideCar
   const [showUpdateFare, setShowUpdateFare] = useState(false);
   const [newFare, setNewFare] = useState(ride.base_price.toString());
 
+  const handleStartRide = () => {
+    startTransition(async () => {
+      const res = await startRideAction(ride.id, ride.driver_id!);
+      if (!res.success) alert(res.error);
+    });
+  };
+
   const handleComplete = () => {
-    if (confirm("¿Confirmas que completaste esta carrera y recibiste el pago?")) {
-      startTransition(async () => {
-        const res = await completeRideAction(ride.id, ride.driver_id!);
-        if (!res.success) alert(res.error);
-      });
-    }
+    startTransition(async () => {
+      const res = await completeRideAction(ride.id, ride.driver_id!);
+      if (!res.success) alert(res.error);
+    });
   };
 
   const handleCancel = () => {
@@ -54,6 +60,35 @@ export function RideCard({ ride, onAccept, isAccepting, walletBalance }: RideCar
     });
   };
 
+  const renderLocation = (loc: string, isDest: boolean) => {
+    if (loc.includes(" - GPS: ")) {
+      const [address, gps] = loc.split(" - GPS: ");
+      return (
+        <div className="flex flex-col">
+          <span className={isDest ? "text-lg font-bold text-white leading-tight" : "text-sm text-white font-medium leading-tight"}>{address}</span>
+          <span className="text-[10px] text-white/30 font-mono mt-0.5">GPS: {gps}</span>
+        </div>
+      );
+    }
+    return <span className={isDest ? "text-lg font-bold text-white" : "text-sm text-white font-medium"}>{loc}</span>;
+  };
+
+  const extractGps = (loc: string) => {
+    if (loc.includes(" - GPS: ")) {
+      const gps = loc.split(" - GPS: ")[1];
+      const coords = gps.split(", ");
+      if (coords.length === 2) return { lat: coords[0], lng: coords[1] };
+    } else if (loc.startsWith("GPS: ")) {
+      const gps = loc.replace("GPS: ", "");
+      const coords = gps.split(", ");
+      if (coords.length === 2) return { lat: coords[0], lng: coords[1] };
+    }
+    return null;
+  };
+
+  const originCoords = extractGps(ride.origin);
+  const destCoords = extractGps(ride.destination);
+
   return (
     <motion.div
       layout
@@ -69,21 +104,21 @@ export function RideCard({ ride, onAccept, isAccepting, walletBalance }: RideCar
     >
       {/* Destino */}
       <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <span className="text-xl">{ride.status === "ACCEPTED" ? "🟢" : "📍"}</span>
-          <h3 className="text-lg font-bold text-white">{ride.destination}</h3>
+        <div className="flex items-start gap-2">
+          <span className="text-xl mt-0.5">{ride.status === "ACCEPTED" ? "🟢" : "📍"}</span>
+          {renderLocation(ride.destination, true)}
         </div>
         {ride.is_night_rate && (
-          <span className="bg-amber-500/20 text-amber-400 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-amber-500/30">
+          <span className="bg-amber-500/20 text-amber-400 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-amber-500/30 shrink-0">
             🌙 Noche
           </span>
         )}
       </div>
 
       {/* Origen */}
-      <div className="mb-4">
-        <p className="text-xs text-white/50 uppercase tracking-widest font-bold">Recoger en:</p>
-        <p className="text-sm text-white font-medium">{ride.origin}</p>
+      <div className="mb-4 pl-7">
+        <p className="text-xs text-white/50 uppercase tracking-widest font-bold mb-1">Recoger en:</p>
+        {renderLocation(ride.origin, false)}
       </div>
 
       {/* Precio */}
@@ -93,7 +128,7 @@ export function RideCard({ ride, onAccept, isAccepting, walletBalance }: RideCar
         </span>
         {ride.is_night_rate && (
           <span className="text-xs text-white/40 line-through">
-            ${ride.base_price.toLocaleString("es-CO")}
+          ${ride.base_price.toLocaleString("es-CO")}
           </span>
         )}
         <span className="text-xs text-white/30">COP</span>
@@ -162,13 +197,15 @@ export function RideCard({ ride, onAccept, isAccepting, walletBalance }: RideCar
       {/* Botón de acción */}
       {ride.status === "OPEN" &&
         (hasEnoughBalance ? (
-          <button
-            onClick={() => onAccept(ride.id)}
-            disabled={isAccepting}
-            className="w-full py-4 bg-emerald-500 text-white font-bold text-lg rounded-2xl hover:bg-emerald-400 active:scale-[0.97] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/30 animate-pulse-soft"
-          >
-            {isAccepting ? "Asignando..." : "¡YO LA HAGO! 🚀"}
-          </button>
+          <div className="pt-2">
+            <SwipeButton 
+              onConfirm={() => onAccept(ride.id)} 
+              text="DESLIZA PARA ACEPTAR 🚀" 
+              disabled={isAccepting} 
+              isPending={isAccepting} 
+              theme="emerald" 
+            />
+          </div>
         ) : (
           <div className="text-center">
             <p className="text-xs text-red-400 mb-2">
@@ -184,7 +221,7 @@ export function RideCard({ ride, onAccept, isAccepting, walletBalance }: RideCar
         ))}
 
       {/* Acciones de viaje en curso */}
-      {ride.status === "ACCEPTED" && (
+      {(ride.status === "ACCEPTED" || ride.status === "IN_PROGRESS") && (
         <div className="space-y-3">
           <div className="flex flex-col gap-2">
             <a
@@ -203,13 +240,52 @@ export function RideCard({ ride, onAccept, isAccepting, walletBalance }: RideCar
             </a>
           </div>
 
-          <button
-            onClick={handleComplete}
-            disabled={isPending}
-            className="w-full py-4 bg-emerald-500 text-white font-black text-lg rounded-2xl hover:bg-emerald-400 shadow-lg shadow-emerald-500/30 disabled:opacity-50"
-          >
-            {isPending ? "Completando..." : "✅ FINALIZAR CARRERA"}
-          </button>
+          {/* Navegación con Waze */}
+          {(originCoords && ride.status === "ACCEPTED") && (
+            <a
+              href={`https://waze.com/ul?ll=${originCoords.lat},${originCoords.lng}&navigate=yes`}
+              target="_blank"
+              rel="noreferrer"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-[#0099FF]/20 border border-[#0099FF]/50 text-[#0099FF] rounded-xl text-xs font-bold hover:bg-[#0099FF]/30 transition-all"
+            >
+              🗺️ Navegar a Recogida (Waze)
+            </a>
+          )}
+          
+          {(destCoords && ride.status === "IN_PROGRESS") && (
+            <a
+              href={`https://waze.com/ul?ll=${destCoords.lat},${destCoords.lng}&navigate=yes`}
+              target="_blank"
+              rel="noreferrer"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-purple-500/20 border border-purple-500/50 text-purple-400 rounded-xl text-xs font-bold hover:bg-purple-500/30 transition-all"
+            >
+              🗺️ Navegar al Destino (Waze)
+            </a>
+          )}
+
+          {ride.status === "ACCEPTED" && (
+            <div className="pt-2">
+              <SwipeButton 
+                onConfirm={handleStartRide} 
+                text="DESLIZA SI RECOGISTE" 
+                disabled={isPending} 
+                isPending={isPending} 
+                theme="teal" 
+              />
+            </div>
+          )}
+
+          {ride.status === "IN_PROGRESS" && (
+            <div className="pt-2">
+              <SwipeButton 
+                onConfirm={handleComplete} 
+                text="DESLIZA PARA FINALIZAR" 
+                disabled={isPending} 
+                isPending={isPending} 
+                theme="blue" 
+              />
+            </div>
+          )}
 
           {!showCancel ? (
             <button
@@ -255,6 +331,23 @@ export function RideCard({ ride, onAccept, isAccepting, walletBalance }: RideCar
           )}
         </div>
       )}
+
+      {/* Manejo del estado CANCELADO por el cliente */}
+      {ride.status === "CANCELLED" && (
+        <div className="mt-4 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl text-center space-y-2">
+          <p className="text-2xl">⚠️</p>
+          <p className="text-sm font-bold text-red-400">VIAJE CANCELADO</p>
+          <p className="text-xs text-white/60">
+            {ride.cancellation_reason || "El pasajero ha cancelado esta carrera."}
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-2 w-full py-2 bg-white/10 hover:bg-white/20 rounded-xl text-xs font-bold transition-colors"
+          >
+            Entendido
+          </button>
+        </div>
+      )}
     </motion.div>
   );
-}
+});

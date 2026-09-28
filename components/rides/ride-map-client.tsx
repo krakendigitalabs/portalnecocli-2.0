@@ -87,6 +87,8 @@ export default function RideMapClient({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const [notes, setNotes] = useState("");
+
   // Get user location on mount
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -124,22 +126,42 @@ export default function RideMapClient({
     ? Math.max(6600, Math.round(6600 + Math.max(0, distance - 3) * 1500))
     : 0;
 
+  async function getAddressFromCoords(lat: number, lng: number): Promise<string> {
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
+      const data = await res.json();
+      if (data && data.address) {
+        const road = data.address.road || data.address.pedestrian || "";
+        const neighbourhood = data.address.neighbourhood || data.address.suburb || data.address.village || data.address.town || "Necoclí";
+        let address = road ? `${road}, ${neighbourhood}` : neighbourhood;
+        return `${address} - GPS: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+      }
+    } catch (e) {
+      console.error("Geocoding failed", e);
+    }
+    return `GPS: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+  }
+
   async function handleRequestRide() {
     if (!origin || !destination) return;
     setLoading(true);
     setError("");
 
     try {
+      const originAddress = await getAddressFromCoords(origin.lat, origin.lng);
+      const destAddress = await getAddressFromCoords(destination.lat, destination.lng);
+
       const res = await createRideAction({
         clientUid: userId,
         clientName: userName,
         clientPhone: userPhone || "0000000000",
-        origin: `GPS: ${origin.lat.toFixed(5)}, ${origin.lng.toFixed(5)}`,
-        destination: `GPS: ${destination.lat.toFixed(5)}, ${destination.lng.toFixed(5)}`,
+        origin: originAddress,
+        destination: destAddress,
         vehicleType: "motocarro",
         passengerCount: 1,
         source: "web_form",
         estimatedFare: estimatedFare,
+        notes: notes,
       });
 
       if (res.success && res.id) {
@@ -169,7 +191,7 @@ export default function RideMapClient({
         </MapContainer>
 
         {/* Overlay Instructions */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[1000] bg-white/90 backdrop-blur px-4 py-2 rounded-full shadow-lg border border-ink/10 pointer-events-none">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[1000] bg-white/90 backdrop-blur px-4 py-2 rounded-full shadow-lg border border-ink/10 pointer-events-none w-11/12 max-w-sm">
           <p className="text-xs font-bold text-ink text-center">
             {destination ? "✅ Destino seleccionado" : "👆 Toca el mapa para marcar tu destino"}
           </p>
@@ -177,8 +199,21 @@ export default function RideMapClient({
       </div>
 
       <SurfaceCard className="p-6 rounded-[24px]">
-        <div className="flex flex-col md:flex-row gap-6 justify-between items-center">
-          <div className="space-y-1 text-center md:text-left">
+        <div className="mb-6">
+          <label className="block text-xs font-bold text-ink/60 uppercase tracking-wider mb-2">
+            Detalles de ubicación (Opcional)
+          </label>
+          <input
+            type="text"
+            placeholder="Ej: Casa azul de dos pisos, frente a la tienda..."
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl border border-ink/10 bg-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-teal/30 transition-all placeholder:text-ink/30"
+          />
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-6 justify-between items-center pt-4 border-t border-ink/5">
+          <div className="space-y-1 text-center md:text-left w-full md:w-auto">
             <p className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">
               Resumen del Viaje
             </p>
@@ -201,9 +236,9 @@ export default function RideMapClient({
             onClick={handleRequestRide}
             disabled={!destination || loading}
             size="lg"
-            className="w-full md:w-auto rounded-full font-bold tracking-wide"
+            className="w-full md:w-auto rounded-full font-bold tracking-wide py-6"
           >
-            {loading ? "Localizando conductores..." : "📍 Solicitar Vehículo Ahora"}
+            {loading ? "Procesando..." : "📍 Solicitar Vehículo"}
           </Button>
         </div>
         {error && <p className="text-red-500 text-xs text-center mt-4 font-bold">{error}</p>}

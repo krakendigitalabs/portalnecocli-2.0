@@ -59,6 +59,14 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport = {
+  themeColor: "#1A1D23",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 type RootLayoutProps = Readonly<{
   children: React.ReactNode;
 }>;
