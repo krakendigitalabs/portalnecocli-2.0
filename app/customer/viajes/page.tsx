@@ -25,14 +25,13 @@ export default async function CustomerRidesPage() {
   const pastRides = rides.filter((r) => r.status === "COMPLETED" || r.status === "CANCELLED");
 
   return (
-    <main className="min-h-screen bg-sand px-4 py-8 md:p-12">
-      <div className="mx-auto max-w-4xl space-y-8">
-        <div>
-          <h1 className="text-3xl font-black text-ink tracking-tight">Mis Viajes y Domicilios</h1>
-          <p className="mt-2 text-ink/60">
-            Historial y rastreo de tus transportes con Neco-Dispatch.
-          </p>
-        </div>
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-3xl font-black text-ink tracking-tight">Mis Viajes y Domicilios</h2>
+        <p className="mt-2 text-ink/60">
+          Historial y rastreo de tus transportes con Neco-Dispatch.
+        </p>
+      </div>
 
         <section>
           <h2 className="text-lg font-bold text-ink mb-4 flex items-center gap-2">
@@ -163,7 +162,6 @@ export default async function CustomerRidesPage() {
             <p className="text-ink/40 text-sm">No hay historial de viajes.</p>
           )}
         </section>
-      </div>
-    </main>
+    </div>
   );
 }

@@ -41,9 +41,9 @@ export function LoginForm({ nextPath, requestedRole }: LoginFormProps) {
 
     try {
       await signInWithGoogle();
-      // Si hay un nextPath forzado por URL (ej. checkout), lo respetamos.
-      // Si no, usamos la ruta específica del rol que seleccionó.
-      const finalPath = nextPath || overrideNextPath || "/";
+      // Si hay un overrideNextPath (botón explícito), lo usamos.
+      // Si no, respetamos el nextPath de la URL.
+      const finalPath = overrideNextPath || nextPath || "/";
       router.push(finalPath);
       router.refresh();
     } catch (error) {

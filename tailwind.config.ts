@@ -42,6 +42,7 @@ const config: Config = {
         "fade-in-up": "fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         marquee: "marquee 40s linear infinite",
+        shimmer: "shimmer 2s infinite linear",
       },
       keyframes: {
         fadeInUp: {
@@ -52,6 +53,10 @@ const config: Config = {
           "0%": { transform: "translateX(0%)" },
           "100%": { transform: "translateX(-50%)" },
         },
+        shimmer: {
+          "0%": { backgroundPosition: "200% 0" },
+          "100%": { backgroundPosition: "-200% 0" },
+        }
       },
     },
   },

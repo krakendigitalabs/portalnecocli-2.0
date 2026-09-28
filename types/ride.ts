@@ -70,6 +70,8 @@ export interface Ride {
   driver_vehicle?: string;
   /** Teléfono de contacto del conductor */
   driver_phone?: string;
+  /** Geolocalización en tiempo real del conductor (si está transmitiendo) */
+  driver_location?: { lat: number; lng: number };
 
   // --- Estado ---
   /** Estado actual de la carrera */

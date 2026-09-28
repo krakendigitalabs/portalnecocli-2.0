@@ -79,7 +79,7 @@ export function FirebaseAuthProvider({ children }: FirebaseAuthProviderProps) {
           try {
             await clearServerSession();
           } catch (error) {
-            console.error("Failed to clear server session.", { error });
+            console.warn("Failed to clear server session.", { error });
           }
 
           setSession({
@@ -102,7 +102,7 @@ export function FirebaseAuthProvider({ children }: FirebaseAuthProviderProps) {
             hasFirebaseConfig: true,
           });
         } catch (error) {
-          console.error("Failed to refresh authenticated server session.", {
+          console.warn("Failed to refresh authenticated server session.", {
             error,
           });
 

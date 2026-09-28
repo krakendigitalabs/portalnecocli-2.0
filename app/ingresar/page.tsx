@@ -21,7 +21,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const nextPath = resolvedSearchParams?.next?.startsWith("/")
     ? resolvedSearchParams.next
-    : "/negocios";
+    : undefined;
   const requestedRole = resolvedSearchParams?.role || "customer";
 
   return (

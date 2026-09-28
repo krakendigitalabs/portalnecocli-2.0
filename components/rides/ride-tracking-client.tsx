@@ -7,6 +7,16 @@ import type { Ride } from "@/types/ride";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import Link from "next/link";
 import { cancelRideAction } from "@/lib/rides/ride-operations";
+import dynamic from "next/dynamic";
+
+const DriverTrackingMap = dynamic(() => import("./driver-tracking-map"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[250px] w-full rounded-2xl bg-ink/5 animate-pulse flex items-center justify-center">
+      <span className="text-ink/40 font-bold text-xs">Cargando GPS...</span>
+    </div>
+  ),
+});
 
 export function RideTrackingClient({ rideId, userId }: { rideId: string; userId: string }) {
   const [ride, setRide] = useState<Ride | null>(null);
@@ -32,32 +42,45 @@ export function RideTrackingClient({ rideId, userId }: { rideId: string; userId:
   useEffect(() => {
     const db = getFirebaseDb();
     if (!db) return;
-    const rideRef = doc(db, "rides", rideId);
-
-    const unsubscribe = onSnapshot(
-      rideRef,
-      (docSnap) => {
-        setLoading(false);
-        if (docSnap.exists()) {
-          const data = docSnap.data() as Ride;
-          // Simple security check (client side, true security should be in rules)
-          if (data.client_uid && data.client_uid !== userId) {
-            setError("No tienes permiso para ver este viaje.");
-            return;
-          }
-          setRide({ ...data, id: docSnap.id });
+    
+    // Importamos auth dinámicamente o de lib
+    import("firebase/auth").then(({ getAuth, onAuthStateChanged }) => {
+      const auth = getAuth();
+      const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // El usuario ya está autenticado en el cliente, ahora sí podemos escuchar
+          const rideRef = doc(db, "rides", rideId);
+          const unsubscribeSnapshot = onSnapshot(
+            rideRef,
+            (docSnap) => {
+              setLoading(false);
+              if (docSnap.exists()) {
+                const data = docSnap.data() as Ride;
+                if (data.client_uid && data.client_uid !== userId) {
+                  setError("No tienes permiso para ver este viaje.");
+                  return;
+                }
+                setRide({ ...data, id: docSnap.id });
+              } else {
+                setError("La carrera no existe o fue cancelada.");
+              }
+            },
+            (err) => {
+              setError("Error al conectar con el servidor.");
+              setLoading(false);
+            },
+          );
+          
+          // Limpiamos el snapshot si el componente se desmonta o cambia el auth state
+          return () => unsubscribeSnapshot();
         } else {
-          setError("La carrera no existe o fue cancelada.");
+          // Aún no hay usuario en el cliente, Next.js cookie session might exist but client is loading
         }
-      },
-      (err) => {
-        console.error(err);
-        setError("Error al conectar con el servidor.");
-        setLoading(false);
-      },
-    );
+      });
+      
+      return () => unsubscribeAuth();
+    });
 
-    return () => unsubscribe();
   }, [rideId, userId]);
 
   if (loading) {
@@ -81,6 +104,19 @@ export function RideTrackingClient({ rideId, userId }: { rideId: string; userId:
       </SurfaceCard>
     );
   }
+
+  const renderLocation = (loc: string) => {
+    if (loc.includes(" - GPS: ")) {
+      const [address, gps] = loc.split(" - GPS: ");
+      return (
+        <div className="flex flex-col">
+          <span className="text-sm font-semibold text-ink mt-0.5 leading-tight">{address}</span>
+          <span className="text-[10px] text-ink/40 font-mono mt-0.5">GPS: {gps}</span>
+        </div>
+      );
+    }
+    return <p className="text-sm font-semibold text-ink mt-0.5">{loc}</p>;
+  };
 
   return (
     <div className="space-y-6">
@@ -118,6 +154,18 @@ export function RideTrackingClient({ rideId, userId }: { rideId: string; userId:
             </>
           )}
 
+          {ride.status === "IN_PROGRESS" && (
+            <>
+              <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center mb-4 ring-4 ring-indigo-200">
+                <span className="text-2xl">🛺</span>
+              </div>
+              <h2 className="text-xl font-bold text-indigo-700">En camino al destino</h2>
+              <p className="text-sm text-indigo-700/60 mt-1">
+                Estás a bordo. ¡Disfruta el viaje!
+              </p>
+            </>
+          )}
+
           {ride.status === "COMPLETED" && (
             <>
               <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
@@ -146,11 +194,11 @@ export function RideTrackingClient({ rideId, userId }: { rideId: string; userId:
           <div className="space-y-4">
             <div>
               <p className="text-xs font-bold text-ink/40 uppercase tracking-wider">Origen</p>
-              <p className="text-sm font-semibold text-ink mt-0.5">{ride.origin}</p>
+              {renderLocation(ride.origin)}
             </div>
             <div>
               <p className="text-xs font-bold text-ink/40 uppercase tracking-wider">Destino</p>
-              <p className="text-sm font-semibold text-ink mt-0.5">{ride.destination}</p>
+              {renderLocation(ride.destination)}
             </div>
             <div>
               <p className="text-xs font-bold text-ink/40 uppercase tracking-wider">
@@ -173,8 +221,30 @@ export function RideTrackingClient({ rideId, userId }: { rideId: string; userId:
               </p>
             </div>
 
-            {ride.status === "ACCEPTED" && (
+            {(ride.status === "ACCEPTED" || ride.status === "IN_PROGRESS") && (
               <div className="mt-4 pt-4 border-t border-ink/10">
+                <p className="text-xs font-bold text-teal uppercase tracking-wider mb-3">
+                  Ubicación en tiempo real
+                </p>
+                {ride.driver_location ? (
+                  <div className="mb-4 relative rounded-2xl overflow-hidden shadow-sm border border-ink/5">
+                    <DriverTrackingMap
+                      driverLat={ride.driver_location.lat}
+                      driverLng={ride.driver_location.lng}
+                      driverName={ride.driver_name || "Tu conductor"}
+                      plate={ride.driver_vehicle?.split("-")[1] || "PENDIENTE"}
+                    />
+                  </div>
+                ) : (
+                  <div className="h-[250px] w-full rounded-2xl bg-gradient-to-r from-ink/5 via-ink/10 to-ink/5 bg-[length:200%_100%] animate-[shimmer_2s_infinite] border border-ink/5 flex flex-col items-center justify-center mb-4 relative overflow-hidden">
+                    <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-ink to-transparent" />
+                    <span className="text-4xl animate-bounce mb-2">🛰️</span>
+                    <p className="text-xs font-bold text-ink/50 text-center px-4 relative z-10 tracking-widest uppercase">
+                      Localizando Motocarro...
+                    </p>
+                  </div>
+                )}
+                
                 <p className="text-xs font-bold text-teal uppercase tracking-wider">
                   Conductor Asignado
                 </p>

@@ -11,7 +11,7 @@ service cloud.firestore {
         (exists(/databases/$(database)/documents/drivers/$(request.auth.uid)) && 
          get(/databases/$(database)/documents/drivers/$(request.auth.uid)).data.status == 'active')
         ||
-        (resource.data.client_uid == request.auth.uid)
+        ( 'client_uid' in resource.data && resource.data.client_uid == request.auth.uid )
       );
 
       // Solo el sistema (Server Actions) puede crear rides

@@ -280,12 +280,14 @@ export async function chatWithAlejandro(
     return result.response.text();
   } catch (error: any) {
     console.error("Error in AI chat:", error.message || error);
+    
+    const isOverloaded = error.message && error.message.includes("503");
 
-    // Mensaje de contingencia comercial humano (Fallback) + Error para debug
-    return (
-      "¡Vaya! He tenido un pequeño enredo con mi conexión: " +
-      (error.message || error) +
-      ". Para no hacerte esperar más, ¿te importaría escribirme directamente al WhatsApp y allí cuadro tu plan de inmediato? Haz clic aquí o envíame la solicitud oficial abajo."
-    );
+    // Mensaje de contingencia comercial humano (Fallback) limpio, sin errores crudos.
+    if (isOverloaded) {
+      return "¡Vaya! En este preciso instante tengo a muchos turistas preguntándome cosas y mi línea está un poco saturada. 😅 ¿Te importaría intentar de nuevo en unos segundos o escribirme por WhatsApp para cuadrar tu plan de inmediato?";
+    }
+
+    return "¡Uy! He tenido un pequeño enredo técnico con mi conexión. Para no hacerte esperar más, ¿te importaría escribirme directamente al WhatsApp y allí cuadro tu plan de inmediato? También puedes enviarme la solicitud oficial usando el botón de abajo.";
   }
 }
