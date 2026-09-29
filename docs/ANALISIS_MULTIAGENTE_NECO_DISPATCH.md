@@ -561,6 +561,31 @@ match /drivers/{driverId} {
 
 > **En USD (TRM ~4.200):** ~$51,400 USD/año solo del módulo de transporte.
 
+### Pitch para Inversionistas Privados (Capital Semilla / Ángeles)
+
+**Propuesta de Valor (1 párrafo para el Inversionista):**
+
+> *"Portal Necoclí no es una app tradicional; es una infraestructura digital de monopolio natural para el turismo local. Al invertir $20 millones, estás inyectando capital en un ecosistema que ya procesa reservas hoteleras, venta de tours y transporte de última milla (Neco-Dispatch) con inteligencia artificial integrada, operando con costos marginales cercanos a cero y con el potencial de replicarse en todos los pueblos patrimoniales de Colombia."*
+
+#### Proyección de Ventas y Rendimiento (ROI)
+Basado en datos conservadores solo para el municipio de Necoclí (sin contar la expansión regional a otros pueblos):
+
+- **Ingresos Brutos Proyectados (Año 1):** ~$500.000.000 COP.
+  - *Desglose:* $216M (Comisiones de Transporte Neco-Dispatch) + $150M (Comisiones de Reservas Hoteleras y Tours) + $134M (Pautas Ads, Posicionamiento y Suscripciones B2B).
+- **Utilidad Neta Estimada (Margen operativo del 60%):** ~$300.000.000 COP/año. *(La plataforma está 100% automatizada, lo que garantiza costos fijos extremadamente bajos).*
+
+#### ¿Qué pasa por cada $20 Millones invertidos?
+Por cada ticket de inversión de **$20.000.000 COP**, el inversionista entra en un **Modelo de Rendimiento por Utilidades (Equity/Revenue Share)**:
+
+1. **¿Cómo ganará?** 
+   - El inversionista recibe una participación directa y vitalicia del **3% sobre las utilidades netas globales** de todo el ecosistema de Portal Necoclí.
+2. **¿Cada cuánto recibe su dinero?** 
+   - Los dividendos se liquidan y pagan de forma **Trimestral** (cada 3 meses) directamente a su cuenta bancaria. Todo respaldado por reportes financieros transparentes en tiempo real desde el SuperAdmin.
+3. **Análisis de Retorno de Inversión (ROI):**
+   - Con la utilidad base proyectada ($300M/año), el 3% representa **$9.000.000 COP anuales** en ingresos totalmente pasivos.
+   - **Tiempo de Recuperación (Payback):** 26 meses (poco más de 2 años) para recuperar el 100% de su capital inicial.
+   - **ROI Anual:** ~45%. Además, si la plataforma se expande a Guatapé o Salento como está planeado, las utilidades se multiplican y el inversionista escala sus ganancias exponencialmente **sin poner un solo peso adicional**.
+
 ### Pitch para Alcaldías y Gobernaciones
 
 **Propuesta de Valor (1 párrafo para el Alcalde):**
