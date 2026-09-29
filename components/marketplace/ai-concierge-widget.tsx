@@ -120,7 +120,7 @@ export function AiConciergeWidget() {
   return (
     <>
       {/* Botón flotante */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-[100]">
         <AnimatePresence>
           {!isOpen && (
             <motion.button
@@ -166,7 +166,7 @@ export function AiConciergeWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 w-[90vw] sm:w-[380px] h-[600px] max-h-[85vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-gray-100 font-sans"
+            className="fixed bottom-0 right-0 sm:bottom-8 sm:right-8 z-[100] w-full sm:w-[380px] h-[100dvh] sm:h-[600px] sm:max-h-[85vh] bg-white sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-gray-100 font-sans"
           >
             {/* Header */}
             <div className="bg-emerald-600 p-4 text-white flex items-center justify-between shadow-md relative z-10">
@@ -197,9 +197,9 @@ export function AiConciergeWidget() {
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="text-emerald-100 hover:text-white transition-colors p-1"
+                  className="text-emerald-100 hover:text-white transition-colors p-2 -mr-1"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-6 h-6" />
                 </button>
               </div>
             </div>
