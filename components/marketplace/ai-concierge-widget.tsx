@@ -120,7 +120,7 @@ export function AiConciergeWidget() {
   return (
     <>
       {/* Botón flotante */}
-      <div className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-[100]">
+      <div className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-[9000]">
         <AnimatePresence>
           {!isOpen && (
             <motion.button
@@ -144,7 +144,6 @@ export function AiConciergeWidget() {
               <div className="absolute -top-10 -left-10 bg-white px-3 py-1 rounded-lg text-emerald-800 text-xs font-medium shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                 ¡Habla con Alejandro!
               </div>
-              {/* <MessageCircle className="w-6 h-6" /> */}
               <div className="relative w-8 h-8 rounded-full overflow-hidden border-2 border-white">
                 <Image
                   src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1754280672/logo_pasiasano_it6yh0.png"
@@ -166,12 +165,12 @@ export function AiConciergeWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-0 right-0 sm:bottom-8 sm:right-8 z-[100] w-full sm:w-[380px] h-[100dvh] sm:h-[600px] sm:max-h-[85vh] bg-white sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-gray-100 font-sans"
+            className="fixed inset-0 sm:inset-auto sm:bottom-8 sm:right-8 z-[9999] w-full sm:w-[380px] h-[100dvh] sm:h-[600px] sm:max-h-[85vh] bg-gradient-to-b from-gray-50 to-emerald-50/20 sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-gray-100 font-sans"
           >
             {/* Header */}
             <div className="bg-emerald-600 p-4 text-white flex items-center justify-between shadow-md relative z-10">
               <div className="flex items-center gap-3">
-                <div className="relative w-14 h-14 rounded-full overflow-hidden bg-white p-0.5 shadow-sm">
+                <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden bg-white p-0.5 shadow-sm">
                   <div className="relative w-full h-full rounded-full overflow-hidden bg-emerald-50">
                     <Image
                       src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1754280672/logo_pasiasano_it6yh0.png"
@@ -193,7 +192,7 @@ export function AiConciergeWidget() {
                   title="Dar propina al Conserje"
                 >
                   <Heart className="w-3.5 h-3.5 fill-white" />
-                  <span className="font-bold">Propina</span>
+                  <span className="font-bold hidden sm:inline">Propina</span>
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
@@ -273,17 +272,17 @@ export function AiConciergeWidget() {
             </AnimatePresence>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4 bg-gray-50 flex flex-col gap-4">
+            <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4 scroll-smooth">
               {messages.map((msg, index) => (
                 <div
                   key={index}
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[80%] p-3 rounded-2xl text-sm shadow-sm whitespace-pre-wrap ${
+                    className={`max-w-[85%] px-4 py-3 text-sm shadow-md whitespace-pre-wrap leading-snug ${
                       msg.role === "user"
-                        ? "bg-emerald-600 text-white rounded-tr-sm"
-                        : "bg-white text-gray-800 border border-gray-100 rounded-tl-sm"
+                        ? "bg-emerald-600 text-white rounded-2xl rounded-tr-sm shadow-emerald-500/20"
+                        : "bg-white text-gray-800 border border-gray-100/60 rounded-2xl rounded-tl-sm shadow-black/5"
                     }`}
                   >
                     {msg.content.split(/(\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s]+)/g).map((part, i) => {
@@ -321,16 +320,16 @@ export function AiConciergeWidget() {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="max-w-[80%] p-3 rounded-2xl bg-white text-gray-500 border border-gray-100 rounded-tl-sm flex gap-1 items-center">
-                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></span>
-                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-75"></span>
-                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-150"></span>
+                  <div className="max-w-[80%] px-4 py-3 bg-white border border-gray-100/60 rounded-2xl rounded-tl-sm shadow-md shadow-black/5 flex gap-1.5 items-center h-10">
+                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce"></span>
+                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce delay-75"></span>
+                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce delay-150"></span>
                   </div>
                 </div>
               )}
 
               {showForm && (
-                <div className="bg-white border border-emerald-100 rounded-xl p-4 shadow-sm text-sm relative">
+                <div className="bg-white border border-emerald-100 rounded-xl p-4 shadow-sm text-sm relative mt-2">
                   <button
                     onClick={() => setShowForm(false)}
                     className="absolute top-3 right-3 p-1 text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-full transition-colors"
@@ -350,7 +349,7 @@ export function AiConciergeWidget() {
                       required
                       type="text"
                       placeholder="Nombre completo"
-                      className="w-full border rounded p-2 text-xs"
+                      className="w-full border rounded-lg p-2.5 text-xs focus:ring-2 focus:ring-emerald-500/50 outline-none"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     />
@@ -358,7 +357,7 @@ export function AiConciergeWidget() {
                       required
                       type="email"
                       placeholder="Correo electrónico"
-                      className="w-full border rounded p-2 text-xs"
+                      className="w-full border rounded-lg p-2.5 text-xs focus:ring-2 focus:ring-emerald-500/50 outline-none"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     />
@@ -366,21 +365,21 @@ export function AiConciergeWidget() {
                       required
                       type="tel"
                       placeholder="Teléfono / WhatsApp"
-                      className="w-full border rounded p-2 text-xs"
+                      className="w-full border rounded-lg p-2.5 text-xs focus:ring-2 focus:ring-emerald-500/50 outline-none"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     />
                     <textarea
                       required
                       placeholder="Detalle de tu solicitud o pedido"
-                      className="w-full border rounded p-2 text-xs min-h-[60px]"
+                      className="w-full border rounded-lg p-2.5 text-xs min-h-[60px] focus:ring-2 focus:ring-emerald-500/50 outline-none resize-none"
                       value={formData.request}
                       onChange={(e) => setFormData({ ...formData, request: e.target.value })}
                     />
                     <button
                       type="submit"
                       disabled={formStatus === "submitting" || formStatus === "success"}
-                      className="bg-emerald-600 text-white rounded py-2 text-xs font-medium hover:bg-emerald-700 transition-colors flex justify-center items-center gap-2"
+                      className="bg-emerald-600 text-white rounded-lg py-2.5 mt-1 text-xs font-semibold hover:bg-emerald-700 transition-colors flex justify-center items-center gap-2"
                     >
                       {formStatus === "submitting" ? (
                         "Enviando..."
@@ -396,18 +395,19 @@ export function AiConciergeWidget() {
                 </div>
               )}
 
-              <div ref={messagesEndRef} />
+              <div ref={messagesEndRef} className="h-2" />
             </div>
 
-            {/* Input Area */}
+            {/* Input Area (Dock) */}
             {!showForm && (
-              <div className="p-3 bg-white border-t flex items-end gap-2 relative mt-4">
-                <div className="absolute -top-10 left-0 w-full flex justify-center gap-2 px-2">
+              <div className="bg-white/80 backdrop-blur-md border-t border-gray-100 flex flex-col shrink-0">
+                {/* Chips flotantes internos */}
+                <div className="flex items-center gap-2 px-3 pt-3 overflow-x-auto snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                   <a
                     href="/customer/pedir"
-                    className="bg-indigo-100 text-indigo-800 text-xs px-4 py-1.5 rounded-full font-bold shadow-[0_0_15px_rgba(79,70,229,0.4)] border border-indigo-300 hover:bg-indigo-200 transition-colors whitespace-nowrap flex items-center gap-1"
+                    className="snap-start shrink-0 bg-indigo-50 text-indigo-700 text-xs px-4 py-2 rounded-full font-semibold border border-indigo-100 hover:bg-indigo-100 hover:border-indigo-200 transition-all shadow-sm flex items-center gap-1.5"
                   >
-                    <span>🛺</span> Pedir Vehículo
+                    <span className="text-sm">🛺</span> Pedir Vehículo
                   </a>
                   <button
                     type="button"
@@ -415,26 +415,29 @@ export function AiConciergeWidget() {
                       setFormType("general");
                       setShowForm(true);
                     }}
-                    className="bg-emerald-100 text-emerald-800 text-xs px-4 py-1.5 rounded-full font-bold shadow-[0_0_15px_rgba(16,185,129,0.4)] border border-emerald-300 hover:bg-emerald-200 transition-colors whitespace-nowrap animate-pulse flex items-center gap-1"
+                    className="snap-start shrink-0 bg-emerald-50 text-emerald-700 text-xs px-4 py-2 rounded-full font-semibold border border-emerald-100 hover:bg-emerald-100 hover:border-emerald-200 transition-all shadow-sm flex items-center gap-1.5 animate-pulse"
                   >
-                    <span>📝</span> Otras Solicitudes
+                    <span className="text-sm">📝</span> Otras Solicitudes
                   </button>
                 </div>
-                <textarea
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Escribe tu mensaje..."
-                  className="flex-1 max-h-32 min-h-[44px] bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none overflow-y-auto"
-                  rows={1}
-                />
-                <button
-                  onClick={() => handleSend()}
-                  disabled={!input.trim() || isLoading}
-                  className="bg-emerald-600 text-white rounded-xl p-2.5 h-[44px] w-[44px] flex items-center justify-center hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shrink-0"
-                >
-                  <Send className="w-4 h-4 ml-0.5" />
-                </button>
+
+                <div className="p-3 flex items-end gap-2">
+                  <textarea
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Escribe tu mensaje..."
+                    className="flex-1 max-h-32 min-h-[44px] bg-white border border-gray-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 resize-none overflow-y-auto shadow-inner"
+                    rows={1}
+                  />
+                  <button
+                    onClick={() => handleSend()}
+                    disabled={!input.trim() || isLoading}
+                    className="bg-emerald-600 text-white rounded-full p-2 h-[44px] w-[44px] flex items-center justify-center hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md shrink-0 active:scale-95"
+                  >
+                    <Send className="w-4 h-4 ml-0.5" />
+                  </button>
+                </div>
               </div>
             )}
           </motion.div>
@@ -443,3 +446,4 @@ export function AiConciergeWidget() {
     </>
   );
 }
+
