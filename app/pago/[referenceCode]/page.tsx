@@ -2,6 +2,7 @@ import { ArrowLeft, CheckCircle2, CreditCard, Lock, ShieldCheck } from "lucide-r
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { PaymentButton } from "@/components/checkout/payment-button";
+import { DirectReservationButton } from "@/components/checkout/direct-reservation-button";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import { getLoyaltyBonuses } from "@/data/loyaltyService";
 import { getReservationByReferenceCode } from "@/data/reservationService";
@@ -31,10 +32,8 @@ export default async function PagoCheckoutPage({ params }: Props) {
 
   // Calculamos el valor en formato moneda
   const amountFormatted = (total_amount / 100).toLocaleString("es-CO");
-
   // Extraemos bonos del cliente
   const bonuses = customer_id ? await getLoyaltyBonuses(customer_id) : [];
-
   return (
     <main className="min-h-screen bg-sand/30 py-12 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto space-y-8">
@@ -173,10 +172,7 @@ export default async function PagoCheckoutPage({ params }: Props) {
                     <PaymentButton reservationId={reservation.id} />
                   </div>
 
-                  <p className="text-[10px] text-center text-ink/40 mt-4 leading-relaxed font-semibold">
-                    Al hacer clic, aceptas nuestros Términos y Condiciones. Tus datos están
-                    encriptados y procesados de manera segura.
-                  </p>
+                  <DirectReservationButton reservationId={reservation.id} />
                 </div>
               </SurfaceCard>
             </div>
