@@ -2,9 +2,59 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronUp } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BookingForm } from "@/components/marketplace/booking-form";
 import { Container } from "@/components/ui/container";
+
+function PackageImageCarousel({ images, title }: { images: string[]; title: string }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 3000);
+
+    return () => clearInterval(timer);
+  }, [images.length]);
+
+  return (
+    <div className="absolute inset-0 w-full h-full group">
+      <AnimatePresence initial={false}>
+        <motion.img
+          key={currentIndex}
+          src={images[currentIndex]}
+          alt={`${title} - imagen ${currentIndex + 1}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+        />
+      </AnimatePresence>
+
+      <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent lg:hidden pointer-events-none" />
+
+      {images.length > 1 && (
+        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20 lg:bottom-4">
+          {images.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentIndex(idx);
+              }}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                idx === currentIndex ? "bg-white scale-125" : "bg-white/50 hover:bg-white/80"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 const packages = [
   {
@@ -12,13 +62,18 @@ const packages = [
     title: "Alojamiento Básico",
     description:
       "Opción económica y cómoda para hospedaje. Incluye acceso a piscina frente al mar, parqueadero, opción de alimentación a la habitación, WiFi y zonas de descanso. Ideal para el viajero práctico que busca relajarse en Necoclí.",
+    images: [
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790716675/hab_sencilla_atuadx.jpg",
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790716687/triple33_ymv8ww.jpg",
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790716721/PERFIL_109_qlweuj.jpg",
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790716754/9_habitacion_1_cama_213_sdhfdo.jpg",
+    ],
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1739291954/turismo_necocli_motonecos_1_mmblod.jpg",
     highlight: "Económico · Piscina frente al mar",
     options: [
-      { id: "basico_multiple", label: "Acomodación Múltiple", price: 45000 },
-      { id: "basico_ventilador", label: "Solo Alojamiento - Ventilador", price: 50000 },
-      { id: "basico_aire", label: "Solo Alojamiento - Aire Acondicionado", price: 60000 },
+      { id: "basico_ventilador", label: "Alojamiento - Ventilador", price: 70000 },
+      { id: "basico_aire", label: "Alojamiento - Aire Acondicionado", price: 70000 },
       { id: "piscina_persona", label: "Alojamiento + Piscina (Por persona)", price: 90000 },
       { id: "piscina_pareja", label: "Alojamiento + Piscina (Plan Pareja)", price: 175000 },
       { id: "mar_persona", label: "Vista al Mar (Por persona)", price: 90000 },
@@ -41,10 +96,16 @@ const packages = [
     id: "noche-express",
     title: "Noche Express",
     description:
-      "Ideal para parejas que buscan una escapada de fin de semana. Alojamiento con alimento, transporte en motocarro hacia el sitio con piscina y acceso al mar, y regreso al hotel incluido. Disponible sábados y domingos.",
+      "Ideal para parejas que buscan una escapada de fin de semana. Alojamiento con alimento, transporte en motocarro hacia el sitio con piscina y a una cuadra del mar, y regreso al hotel incluido. Disponible sábados y domingos.",
+    images: [
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790714003/18_doeyfe.jpg",
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790714007/12_yvzosx.jpg",
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790714004/13_gwyils.jpg",
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1777075437/5_rgphce.jpg"
+    ],
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1744003434/turismo_necocli_57_gqvstk.jpg",
-    highlight: "Sáb & Dom · Pareja · Piscina + Mar",
+    highlight: "Sáb & Dom · Pareja · Piscina + A una cuadra del mar",
     options: [{ id: "nx_pareja", label: "Noche Express — Pareja (Sáb o Dom)", price: 250000 }],
   },
   {
@@ -103,81 +164,110 @@ export function PackagesSection() {
   const [openId, setOpenId] = useState<string | null>(null);
 
   return (
-    <section className="py-24 relative bg-sand/30">
-      <Container>
+    <section className="py-24 relative bg-sand/30 overflow-hidden" id="packages">
+      <div className="absolute inset-0 bg-ink/5 pointer-events-none" />
+      <Container className="relative z-10">
         <div className="mb-16 text-center max-w-3xl mx-auto">
-          <p className="text-green font-bold tracking-widest uppercase text-sm mb-3">
+          <p className="text-gold font-bold tracking-widest uppercase text-sm mb-3">
             Explora por Experiencia
           </p>
-          <h2 className="text-4xl lg:text-5xl font-bold text-ink mb-6">Paquetes Premium</h2>
+          <h2 className="text-4xl lg:text-5xl font-bold text-ink mb-6 font-tropical tracking-wide">
+            Paquetes Premium
+          </h2>
           <p className="text-lg lg:text-xl text-ink/70">
             Hemos diseñado estas experiencias pensando en tu confort. Escoge tu vibra y deja que
             nosotros nos encarguemos de la magia.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-10 relative z-10">
           {packages.map((pkg) => {
             const isOpen = openId === pkg.id;
+            const minPrice = Math.min(...pkg.options.map((opt) => opt.price));
+
             return (
-              <div key={pkg.id} className="flex flex-col">
-                {/* ─ Card ─ */}
-                <button
-                  onClick={() => setOpenId(isOpen ? null : pkg.id)}
-                  className={`group relative h-[420px] w-full rounded-[32px] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 bg-ink text-left flex-shrink-0 ${isOpen ? "ring-4 ring-teal rounded-b-none" : ""}`}
+              <div key={pkg.id}>
+                {/* ─ Premium Horizontal Card ─ */}
+                <div
+                  className={`bg-white overflow-hidden flex flex-col lg:flex-row group transition-all duration-500 shadow-lg hover:shadow-2xl hover:shadow-ink/10 border border-ink/5 ${
+                    isOpen ? "rounded-t-[32px] rounded-b-none border-b-0" : "rounded-[32px]"
+                  }`}
                 >
-                  <div className="absolute inset-0 bg-ink/25 z-10 group-hover:bg-ink/10 transition-colors duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/40 to-transparent z-10" />
-                  <img
-                    src={pkg.image}
-                    alt={pkg.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-90 group-hover:opacity-100"
-                  />
-                  <div className="absolute inset-0 z-20 p-7 flex flex-col justify-end">
-                    <span className="mb-3 self-start text-[10px] font-bold uppercase tracking-widest bg-white/15 text-gold/90 border border-gold/30 backdrop-blur-sm px-3 py-1 rounded-full">
-                      {pkg.highlight}
-                    </span>
-                    <h3 className="text-2xl font-bold text-white mb-2 font-tropical tracking-wide">
-                      {pkg.title}
-                    </h3>
-                    <p className="text-white/75 text-sm leading-relaxed mb-5 line-clamp-2 group-hover:line-clamp-none transition-all">
+                  {/* Image Section */}
+                  <div className="w-full lg:w-[45%] h-[320px] lg:h-auto lg:min-h-[400px] relative overflow-hidden shrink-0">
+                    {pkg.images ? (
+                      <PackageImageCarousel images={pkg.images} title={pkg.title} />
+                    ) : (
+                      <>
+                        <img
+                          src={pkg.image}
+                          alt={pkg.title}
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent lg:hidden pointer-events-none" />
+                      </>
+                    )}
+                    
+                    <div className="absolute bottom-6 left-6 right-6 lg:hidden pointer-events-none z-30">
+                      <span className="mb-2 inline-block text-[10px] font-bold uppercase tracking-widest bg-white/20 text-white border border-white/30 backdrop-blur-sm px-3 py-1 rounded-full">
+                        {pkg.highlight}
+                      </span>
+                      <h3 className="text-3xl font-bold text-white leading-tight font-tropical tracking-wide drop-shadow-md">
+                        {pkg.title}
+                      </h3>
+                    </div>
+                  </div>
+
+                  {/* Content Section */}
+                  <div className="p-8 sm:p-10 lg:p-12 flex-1 flex flex-col justify-center bg-white relative z-10">
+                    <div className="hidden lg:block mb-4">
+                      <span className="inline-block text-[10px] font-bold uppercase tracking-widest bg-sand/50 text-gold border border-gold/20 px-3 py-1 rounded-full mb-3">
+                        {pkg.highlight}
+                      </span>
+                      <h3 className="text-4xl font-bold text-ink font-tropical tracking-wide">
+                        {pkg.title}
+                      </h3>
+                    </div>
+
+                    <p className="text-sm sm:text-base text-ink/70 leading-relaxed mb-8">
                       {pkg.description}
                     </p>
 
-                    <div className="flex items-end justify-between mt-auto">
-                      <div className="text-white">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-white/60 block mb-0.5">
+                    <div className="mt-auto flex flex-col sm:flex-row sm:items-end justify-between pt-6 border-t border-ink/10 gap-4">
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-ink/40 mb-1">
                           Desde
-                        </span>
-                        <span className="text-lg font-bold">
+                        </p>
+                        <p className="text-2xl font-black text-ink">
                           {new Intl.NumberFormat("es-CO", {
                             style: "currency",
                             currency: "COP",
                             maximumFractionDigits: 0,
-                          }).format(Math.min(...pkg.options.map((opt) => opt.price)))}
-                        </span>
+                          }).format(minPrice)}
+                        </p>
                       </div>
 
-                      <div className="inline-flex items-center text-gold font-bold text-sm tracking-widest uppercase bg-ink/40 px-4 py-2 rounded-full backdrop-blur-sm border border-gold/20 hover:bg-gold hover:text-ink transition-colors">
+                      <button
+                        onClick={() => setOpenId(isOpen ? null : pkg.id)}
+                        className={`inline-flex items-center justify-center px-6 py-3 rounded-full font-bold text-sm tracking-widest uppercase transition-all duration-300 ${
+                          isOpen
+                            ? "bg-ink/5 text-ink hover:bg-ink/10"
+                            : "bg-ink text-white hover:bg-gold hover:text-ink shadow-lg shadow-ink/20 hover:shadow-gold/30 hover:-translate-y-0.5"
+                        }`}
+                      >
                         {isOpen ? (
                           <>
-                            <ChevronUp className="w-4 h-4 mr-1.5" />
-                            Cerrar
+                            <ChevronUp className="w-4 h-4 mr-2" /> Cerrar
                           </>
                         ) : (
-                          <>
-                            Reservar
-                            <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">
-                              →
-                            </span>
-                          </>
+                          <>Reservar →</>
                         )}
-                      </div>
+                      </button>
                     </div>
                   </div>
-                </button>
+                </div>
 
-                {/* ─ Inline form below card ─ */}
+                {/* ─ Inline Booking Form ─ */}
                 <AnimatePresence>
                   {isOpen && (
                     <motion.div
@@ -188,20 +278,21 @@ export function PackagesSection() {
                       transition={{ duration: 0.35, ease: "easeInOut" }}
                       className="overflow-hidden"
                     >
-                      <div className="bg-white border-2 border-teal border-t-0 rounded-b-[32px] shadow-xl shadow-teal/10">
-                        {/* Package mini-header inside form */}
-                        <div className="px-6 pt-5 pb-4 border-b border-ink/8 bg-teal/5">
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-teal mb-0.5">
+                      <div className="bg-white border-2 border-t-0 border-ink/5 rounded-b-[32px] shadow-2xl shadow-ink/10">
+                        <div className="px-8 pt-6 pb-5 border-b border-ink/8 bg-sand/10">
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-gold mb-1">
                             {pkg.highlight}
                           </p>
-                          <p className="text-sm font-bold text-ink">{pkg.title}</p>
+                          <p className="text-lg font-bold text-ink">Configura tu reserva</p>
                         </div>
-                        <BookingForm
-                          businessId="portal_necocli_internal"
-                          baseServiceName={`Paquete: ${pkg.title}`}
-                          routingType="CASE_A"
-                          packageOptions={pkg.options}
-                        />
+                        <div className="p-2 sm:p-4">
+                          <BookingForm
+                            businessId="portal_necocli_internal"
+                            baseServiceName={`Paquete: ${pkg.title}`}
+                            routingType="CASE_A"
+                            packageOptions={pkg.options}
+                          />
+                        </div>
                       </div>
                     </motion.div>
                   )}
