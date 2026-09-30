@@ -95,12 +95,12 @@ export function AuthEntry() {
             </button>
           </div>
         ) : (
-          <div className="p-3 border-t border-ink/5 bg-sand/30">
+          <div className="p-4 border-t border-ink/5 bg-sand/30">
             <Link
               href="/ingresar?role=customer"
-              className="block text-center w-full bg-green hover:bg-green/90 text-white font-bold text-xs py-2.5 rounded-lg transition-colors shadow-sm"
+              className="block text-center w-full bg-green hover:bg-green/90 text-white font-bold text-sm py-2.5 rounded-full transition-colors shadow-sm"
             >
-              Iniciar sesión / Registrarse
+              Ingresar / Registrarme
             </Link>
           </div>
         )}

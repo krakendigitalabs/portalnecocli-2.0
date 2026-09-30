@@ -35,6 +35,7 @@ export type TrafficSummary = {
   totalSessions: number;
   totalActiveUsers: number;
   totalPageViews: number;
+  realtimeActiveUsers: number;
   trafficByDate: TrafficData[];
 };
 
@@ -113,10 +114,27 @@ export async function getTrafficSummary(): Promise<TrafficSummary> {
       });
     }
 
+    // Obtener datos en tiempo real (últimos 30 minutos)
+    let realtimeActiveUsers = 0;
+    try {
+      const [realtimeResponse] = await client.runRealtimeReport({
+        property: `properties/${propertyId}`,
+        metrics: [
+          {
+            name: "activeUsers",
+          },
+        ],
+      });
+      realtimeActiveUsers = Number(realtimeResponse.rows?.[0]?.metricValues?.[0]?.value ?? 0);
+    } catch (realtimeError) {
+      console.error("Error fetching realtime GA4 traffic data:", realtimeError);
+    }
+
     return {
       totalSessions,
       totalActiveUsers,
       totalPageViews,
+      realtimeActiveUsers,
       trafficByDate,
     };
   } catch (error) {
@@ -160,6 +178,7 @@ function getMockTrafficSummary(): TrafficSummary {
     totalSessions,
     totalActiveUsers,
     totalPageViews,
+    realtimeActiveUsers: Math.floor(Math.random() * 5) + 1, // Mock de usuarios en tiempo real
     trafficByDate,
   };
 }

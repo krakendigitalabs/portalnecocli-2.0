@@ -1,5 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import { SurfaceCard } from "@/components/ui/surface-card";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import type { SuperAdminDashboardData } from "@/lib/dashboards/data";
 import type { EscrowTransaction } from "@/lib/validations/schemas";
 import type { Reservation } from "@/types/reservation";
@@ -134,8 +137,12 @@ function EscrowRow({ tx }: { tx: EscrowTransaction }) {
   );
 }
 
+import { SurfaceCard } from "@/components/ui/surface-card";
+
 export function AdminDashboard({ data }: AdminDashboardProps) {
   const { kpis, recentReservations, escrowTransactions, businesses, serviceTypeSummary } = data;
+  const [showLeads, setShowLeads] = useState(false);
+  const [showEscrow, setShowEscrow] = useState(false);
 
   return (
     <section className="space-y-10">
@@ -222,7 +229,11 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
 
       {/* ─── Monitor de Leads ─── */}
       <SurfaceCard className="rounded-[28px] p-8">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-6">
+        <button
+          type="button"
+          onClick={() => setShowLeads(!showLeads)}
+          className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-2 focus:outline-none text-left"
+        >
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.26em] text-coral">
               Base de Leads · Oro Comercial
@@ -232,24 +243,35 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
               Capturadas por el motor de triangulación. Cada fila es un lead de valor.
             </p>
           </div>
-          <span className="shrink-0 rounded-full bg-teal/10 px-4 py-1.5 text-xs font-bold text-teal">
-            {recentReservations.length} registros
-          </span>
-        </div>
-
-        {recentReservations.length > 0 ? (
-          <div className="space-y-3">
-            {recentReservations.map((res) => (
-              <LeadRow key={res.id} reservation={res} />
-            ))}
+          <div className="flex items-center gap-4 mt-4 sm:mt-0">
+            <span className="shrink-0 rounded-full bg-teal/10 px-4 py-1.5 text-xs font-bold text-teal">
+              {recentReservations.length} registros
+            </span>
+            {showLeads ? (
+              <ChevronUp className="w-5 h-5 text-ink/40" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-ink/40" />
+            )}
           </div>
-        ) : (
-          <div className="rounded-2xl border border-ink/8 bg-sand/40 px-6 py-10 text-center">
-            <p className="text-3xl">📭</p>
-            <p className="mt-3 text-sm font-semibold text-ink">No hay leads capturados aún</p>
-            <p className="mt-1 text-xs text-ink/50">
-              Las reservas comenzarán a aparecer aquí a medida que los turistas usen el portal
-            </p>
+        </button>
+
+        {showLeads && (
+          <div className="mt-6">
+            {recentReservations.length > 0 ? (
+              <div className="space-y-3">
+                {recentReservations.map((res) => (
+                  <LeadRow key={res.id} reservation={res} />
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-ink/8 bg-sand/40 px-6 py-10 text-center">
+                <p className="text-3xl">📭</p>
+                <p className="mt-3 text-sm font-semibold text-ink">No hay leads capturados aún</p>
+                <p className="mt-1 text-xs text-ink/50">
+                  Las reservas comenzarán a aparecer aquí a medida que los turistas usen el portal
+                </p>
+              </div>
+            )}
           </div>
         )}
       </SurfaceCard>
@@ -258,26 +280,46 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
 
       {/* ─── Monitor Escrow Global ─── */}
       <SurfaceCard className="rounded-[28px] p-8">
-        <div className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-coral">
-            Bóveda Escrow · Flujo de Fondos Global
-          </p>
-          <h2 className="mt-2 text-2xl font-bold text-ink">
-            Transacciones de Retención y Liberación
-          </h2>
-        </div>
-
-        {escrowTransactions.length > 0 ? (
-          <div className="space-y-3">
-            {escrowTransactions.map((tx) => (
-              <EscrowRow key={tx.id} tx={tx} />
-            ))}
+        <button
+          type="button"
+          onClick={() => setShowEscrow(!showEscrow)}
+          className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-2 focus:outline-none text-left"
+        >
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-coral">
+              Bóveda Escrow · Flujo de Fondos Global
+            </p>
+            <h2 className="mt-2 text-2xl font-bold text-ink">
+              Transacciones de Retención y Liberación
+            </h2>
           </div>
-        ) : (
-          <p className="text-sm text-ink/50">
-            No hay transacciones Escrow registradas aún. Se crearán automáticamente cuando se
-            confirmen los pagos de Wompi.
-          </p>
+          <div className="flex items-center gap-4 mt-4 sm:mt-0">
+            <span className="shrink-0 rounded-full bg-amber-500/10 px-4 py-1.5 text-xs font-bold text-amber-600">
+              {escrowTransactions.length} registros
+            </span>
+            {showEscrow ? (
+              <ChevronUp className="w-5 h-5 text-ink/40" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-ink/40" />
+            )}
+          </div>
+        </button>
+
+        {showEscrow && (
+          <div className="mt-6">
+            {escrowTransactions.length > 0 ? (
+              <div className="space-y-3">
+                {escrowTransactions.map((tx) => (
+                  <EscrowRow key={tx.id} tx={tx} />
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-ink/50">
+                No hay transacciones Escrow registradas aún. Se crearán automáticamente cuando se
+                confirmen los pagos de Wompi.
+              </p>
+            )}
+          </div>
         )}
       </SurfaceCard>
 

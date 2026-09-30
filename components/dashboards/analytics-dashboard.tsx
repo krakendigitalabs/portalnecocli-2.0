@@ -32,7 +32,7 @@ export function AnalyticsDashboard({ data }: { data: TrafficSummary }) {
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3 mb-8">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
         <div className="rounded-[20px] border border-ink/8 bg-ink/[0.03] px-6 py-4">
           <p className="text-xs font-semibold uppercase text-ink/60 mb-1">Vistas de Página</p>
           <p className="text-3xl font-extrabold text-ink">{data.totalPageViews.toLocaleString()}</p>
@@ -44,9 +44,19 @@ export function AnalyticsDashboard({ data }: { data: TrafficSummary }) {
           </p>
         </div>
         <div className="rounded-[20px] border border-ink/8 bg-ink/[0.03] px-6 py-4">
-          <p className="text-xs font-semibold uppercase text-ink/60 mb-1">Usuarios Activos</p>
+          <p className="text-xs font-semibold uppercase text-ink/60 mb-1">Usuarios Activos (30d)</p>
           <p className="text-3xl font-extrabold text-coral">
             {data.totalActiveUsers.toLocaleString()}
+          </p>
+        </div>
+        <div className="rounded-[20px] border border-coral/30 bg-coral/5 px-6 py-4 relative overflow-hidden">
+          <div className="absolute top-4 right-4 flex h-3 w-3">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-coral opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-coral"></span>
+          </div>
+          <p className="text-xs font-semibold uppercase text-coral mb-1">En Tiempo Real (30m)</p>
+          <p className="text-3xl font-extrabold text-coral">
+            {data.realtimeActiveUsers?.toLocaleString() || 0}
           </p>
         </div>
       </div>

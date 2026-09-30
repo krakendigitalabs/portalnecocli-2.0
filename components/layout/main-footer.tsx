@@ -211,8 +211,16 @@ export async function MainFooter() {
         <div className="mt-16 pt-8 border-t border-white/10 text-xs text-white/50 flex flex-col md:flex-row justify-between items-center gap-4">
           <p>Portal Necoclí 2.0 | La plataforma turística del golfo.</p>
           <p>
-            Copyright © {new Date().getFullYear()} Kraken Digital Labs. Todos los derechos
-            reservados.
+            Copyright &copy; {new Date().getFullYear()}{" "}
+            <a
+              href="https://www.krakendigitalabs.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative inline-block font-black bg-gradient-to-r from-amber-300 via-yellow-500 to-amber-300 bg-clip-text text-transparent animate-pulse hover:animate-none hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_8px_rgba(252,211,77,0.8)]"
+            >
+              Kraken Digital Labs
+            </a>
+            . Todos los derechos reservados.
           </p>
         </div>
       </Container>

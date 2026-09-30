@@ -474,9 +474,9 @@ export const featuredBusinessesSeed: FeaturedBusiness[] = [
     longDescription:
       "Portal Necoclí es tu agencia y operador de confianza. Conecta directamente con nuestras experiencias, servicios de turismo y nuestra red oficial de motonecos para recorrer el municipio de forma segura y económica.",
     image:
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1769136402/logo-kraken-blanco-negro_nu0elt.png",
+      "https://res.cloudinary.com/dr50ioh9h/image/upload/v1752731766/logo_portal_necocli_dp7xcv.png",
     gallery: [
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1769136402/logo-kraken-blanco-negro_nu0elt.png",
+      "https://res.cloudinary.com/dr50ioh9h/image/upload/v1752731766/logo_portal_necocli_dp7xcv.png",
     ],
     tags: ["Tours", "Servicios", "Motonecos"],
     address: "Oficina Digital",

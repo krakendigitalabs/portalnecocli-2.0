@@ -83,7 +83,7 @@ export default async function ReservasPage() {
                   {reservation.status === "PENDING_PAYMENT" && (
                     <Link
                       href={`/pago/${reservation.reference_code}`}
-                      className="text-sm font-bold bg-green-500 hover:bg-green-600 text-white py-2 px-5 rounded-full shadow-soft transition-all transform hover:-translate-y-0.5 whitespace-nowrap"
+                      className="text-sm font-bold bg-white border border-ink/20 hover:bg-sand text-ink py-2 px-5 rounded-full shadow-soft transition-all transform hover:-translate-y-0.5 whitespace-nowrap"
                     >
                       Pagar Reserva
                     </Link>
