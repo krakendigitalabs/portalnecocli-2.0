@@ -47,13 +47,13 @@ export function DriverDashboardClient({
           const { latitude, longitude } = position.coords;
           // Actualizamos directamente en Firestore sin pasar por un server action pesado
           updateDoc(rideRef, {
-            driver_location: { lat: latitude, lng: longitude }
-          }).catch(e => console.warn("No se pudo actualizar ubicación en vivo", e));
+            driver_location: { lat: latitude, lng: longitude },
+          }).catch((e) => console.warn("No se pudo actualizar ubicación en vivo", e));
         },
         (error) => {
           console.warn("Error en GPS background:", error);
         },
-        { enableHighAccuracy: true, maximumAge: 10000, timeout: 10000 }
+        { enableHighAccuracy: true, maximumAge: 10000, timeout: 10000 },
       );
     }
 
@@ -64,14 +64,17 @@ export function DriverDashboardClient({
     };
   }, [isOnline, activeRide?.id]);
 
-  const handleAcceptRide = useCallback(async (rideId: string) => {
-    // Llamada real al Server Action atómico (Fase 1: Desacoplado de UI)
-    const res = await acceptRideAction(rideId, driverId);
-    if (!res.success) {
-      alert("Error al aceptar: " + res.error);
-    }
-    // Fase 3: Transición suave, el onSnapshot actualizará la UI instantáneamente sin alertas bloqueantes
-  }, [driverId]);
+  const handleAcceptRide = useCallback(
+    async (rideId: string) => {
+      // Llamada real al Server Action atómico (Fase 1: Desacoplado de UI)
+      const res = await acceptRideAction(rideId, driverId);
+      if (!res.success) {
+        alert("Error al aceptar: " + res.error);
+      }
+      // Fase 3: Transición suave, el onSnapshot actualizará la UI instantáneamente sin alertas bloqueantes
+    },
+    [driverId],
+  );
 
   const toggleOnline = () => {
     setIsOnline(!isOnline);
@@ -137,7 +140,11 @@ export function DriverDashboardClient({
             </p>
           </div>
         ) : isOnline ? (
-          <RideBoard rides={liveRides} walletBalance={walletBalance} onAcceptRide={handleAcceptRide} />
+          <RideBoard
+            rides={liveRides}
+            walletBalance={walletBalance}
+            onAcceptRide={handleAcceptRide}
+          />
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <span className="text-5xl mb-4 opacity-30">😴</span>
@@ -148,7 +155,6 @@ export function DriverDashboardClient({
           </div>
         )}
       </main>
-
     </div>
   );
 }

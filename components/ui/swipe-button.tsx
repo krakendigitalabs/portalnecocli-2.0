@@ -11,22 +11,48 @@ interface SwipeButtonProps {
   disabled?: boolean;
 }
 
-export function SwipeButton({ onConfirm, text, isPending, theme = "emerald", disabled = false }: SwipeButtonProps) {
+export function SwipeButton({
+  onConfirm,
+  text,
+  isPending,
+  theme = "emerald",
+  disabled = false,
+}: SwipeButtonProps) {
   const [isSuccess, setIsSuccess] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const x = useMotionValue(0);
   const controls = useAnimation();
-  
+
   // Theme styling mapping
   const themes = {
-    emerald: { bg: "bg-emerald-500", text: "text-emerald-400", border: "border-emerald-500/30", bgSoft: "bg-emerald-500/10" },
-    teal: { bg: "bg-teal-500", text: "text-teal-400", border: "border-teal-500/30", bgSoft: "bg-teal-500/10" },
+    emerald: {
+      bg: "bg-emerald-500",
+      text: "text-emerald-400",
+      border: "border-emerald-500/30",
+      bgSoft: "bg-emerald-500/10",
+    },
+    teal: {
+      bg: "bg-teal-500",
+      text: "text-teal-400",
+      border: "border-teal-500/30",
+      bgSoft: "bg-teal-500/10",
+    },
     coral: { bg: "bg-coral", text: "text-coral", border: "border-coral/30", bgSoft: "bg-coral/10" },
-    indigo: { bg: "bg-indigo-500", text: "text-indigo-400", border: "border-indigo-500/30", bgSoft: "bg-indigo-500/10" },
-    blue: { bg: "bg-blue-600", text: "text-blue-400", border: "border-blue-600/30", bgSoft: "bg-blue-600/10" },
+    indigo: {
+      bg: "bg-indigo-500",
+      text: "text-indigo-400",
+      border: "border-indigo-500/30",
+      bgSoft: "bg-indigo-500/10",
+    },
+    blue: {
+      bg: "bg-blue-600",
+      text: "text-blue-400",
+      border: "border-blue-600/30",
+      bgSoft: "bg-blue-600/10",
+    },
   };
-  
+
   const selectedTheme = themes[theme];
   const thumbWidth = 64; // 4rem (w-16)
 
@@ -69,16 +95,16 @@ export function SwipeButton({ onConfirm, text, isPending, theme = "emerald", dis
   const textOpacity = useTransform(x, [0, (containerWidth - thumbWidth) / 2], [1, 0]);
 
   return (
-    <div 
+    <div
       ref={containerRef}
-      className={`relative h-[68px] w-full rounded-[20px] overflow-hidden border-2 ${selectedTheme.border} ${selectedTheme.bgSoft} flex items-center justify-center ${disabled ? 'opacity-50 pointer-events-none' : ''}`}
+      className={`relative h-[68px] w-full rounded-[20px] overflow-hidden border-2 ${selectedTheme.border} ${selectedTheme.bgSoft} flex items-center justify-center ${disabled ? "opacity-50 pointer-events-none" : ""}`}
     >
-      <motion.div 
+      <motion.div
         className={`absolute inset-0 origin-left ${selectedTheme.bg}`}
         style={{ opacity: bgOpacity }}
       />
-      
-      <motion.span 
+
+      <motion.span
         style={{ opacity: textOpacity }}
         className={`z-10 font-black text-sm uppercase tracking-widest pl-10 ${isPending || isSuccess ? "text-white" : selectedTheme.text}`}
       >
@@ -102,7 +128,15 @@ export function SwipeButton({ onConfirm, text, isPending, theme = "emerald", dis
         ) : isSuccess ? (
           <span className="text-white text-xl">✅</span>
         ) : (
-          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
+          <svg
+            className="w-6 h-6 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+          </svg>
         )}
       </motion.div>
     </div>

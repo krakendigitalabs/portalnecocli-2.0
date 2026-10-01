@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
   // 3. Identificar si es una Recarga de Billetera (Neco-Dispatch) o una Reserva
   if (transaction.reference.startsWith("TOPUP_")) {
     const [, userId, timestampStr] = transaction.reference.split("_");
-    
+
     if (!userId) {
       console.error("[Wompi Webhook] ❌ Referencia TOPUP inválida:", transaction.reference);
       return NextResponse.json({ error: "Invalid TOPUP reference" }, { status: 400 });
@@ -110,7 +110,7 @@ export async function POST(req: NextRequest) {
         }
 
         const currentBalance = driverDoc.data()?.wallet_balance || 0;
-        
+
         // Sumar la recarga al saldo
         t.update(driverRef, {
           wallet_balance: currentBalance + amountCOP,
@@ -124,7 +124,7 @@ export async function POST(req: NextRequest) {
           amount: amountCOP,
           gateway_ref: transaction.id,
           created_at: new Date().toISOString(),
-          status: "APPROVED"
+          status: "APPROVED",
         });
       });
 

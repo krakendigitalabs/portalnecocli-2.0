@@ -49,25 +49,31 @@ export default async function DriverWalletPage() {
           <div className="space-y-3">
             {transactions.length > 0 ? (
               transactions.map((tx: any) => (
-                <div key={tx.id} className="bg-white/5 rounded-2xl p-4 flex justify-between items-center border border-white/5">
+                <div
+                  key={tx.id}
+                  className="bg-white/5 rounded-2xl p-4 flex justify-between items-center border border-white/5"
+                >
                   <div>
                     <p className="font-bold text-sm">
                       {tx.type === "TOPUP" ? "Recarga Nequi/Tarjeta" : "Comisión por Carrera"}
                     </p>
                     <p className="text-xs text-white/40">
-                      Ref: {tx.gateway_ref || tx.ride_id || tx.id} · {new Date(tx.created_at).toLocaleDateString()}
+                      Ref: {tx.gateway_ref || tx.ride_id || tx.id} ·{" "}
+                      {new Date(tx.created_at).toLocaleDateString()}
                     </p>
                   </div>
-                  <p className={`font-bold text-sm ${tx.type === "TOPUP" ? "text-emerald-400" : "text-red-400"}`}>
-                    {tx.type === "TOPUP" ? "+ " : "- "}
-                    ${tx.amount.toLocaleString("es-CO")}
+                  <p
+                    className={`font-bold text-sm ${tx.type === "TOPUP" ? "text-emerald-400" : "text-red-400"}`}
+                  >
+                    {tx.type === "TOPUP" ? "+ " : "- "}${tx.amount.toLocaleString("es-CO")}
                   </p>
                 </div>
               ))
             ) : (
-              <p className="text-center text-sm text-white/40 py-4">No hay movimientos recientes.</p>
+              <p className="text-center text-sm text-white/40 py-4">
+                No hay movimientos recientes.
+              </p>
             )}
-
           </div>
         </div>
       </main>

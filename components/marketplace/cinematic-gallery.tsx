@@ -18,14 +18,78 @@ interface GalleryItem {
 }
 
 const ITEMS: GalleryItem[] = [
-  { id: "1", url: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1739292149/Turismo_necocli_33_lnwvxw.jpg", title: "Nirvana Paradise", category: "Alojamiento", location: "Playa Principal", description: "Un santuario de descanso donde el mar Caribe besa la arena. Disfruta de atardeceres inolvidables y servicio de clase mundial." },
-  { id: "2", url: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737933627/Playa_necocli_2_z5rgq9.jpg", title: "Atardecer de Oro", category: "Experiencias", location: "Playa El Pescador", description: "Siente la brisa cálida mientras el sol tiñe el horizonte de tonos cobrizos. Una experiencia fotográfica sin igual." },
-  { id: "3", url: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1754277470/PLATO_1_oehl7j.jpg", title: "Sabor a Mar", category: "Alimentos", location: "Malecón Turístico", description: "La pesca del día convertida en alta cocina. Saborea la verdadera esencia de Necoclí en cada bocado." },
-  { id: "4", url: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1743914983/turismo_necocli_1_3_-_copia_kzgmvt.jpg", title: "Ciénaga de Rionegro", category: "Experiencias", location: "Reserva Natural", description: "Adéntrate en los manglares vírgenes. Un ecosistema vibrante que es hogar de cientos de especies exóticas." },
-  { id: "5", url: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744002694/volcan_de_lodo_el_cobre_qxrgzn.png", title: "Volcán El Cobre", category: "Experiencias", location: "Vía Arboletes", description: "Sumérgete en la tierra. Un spa natural milenario con propiedades curativas únicas en el mundo." },
-  { id: "6", url: "https://res.cloudinary.com/dr50ioh9h/image/upload/v1752722144/motonecos1_pmd8an.png", title: "Motonecos", category: "Transporte", location: "Centro Histórico", description: "La forma más auténtica y emocionante de recorrer las calles de nuestro paraíso terrenal." },
-  { id: "7", url: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737936904/slider_3_mymktw.png", title: "Eco-Lodge Premium", category: "Alojamiento", location: "Zona Rural", description: "Despierta con el sonido de las aves en una cabaña de lujo inmersa en la exuberante selva tropical." },
-  { id: "8", url: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790714007/12_yvzosx.jpg", title: "Festín Costero", category: "Alimentos", location: "Bahía Sur", description: "Una explosión de sabores caribeños. Mariscos frescos y recetas ancestrales preparadas para impresionar." },
+  {
+    id: "1",
+    url: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1739292149/Turismo_necocli_33_lnwvxw.jpg",
+    title: "Nirvana Paradise",
+    category: "Alojamiento",
+    location: "Playa Principal",
+    description:
+      "Un santuario de descanso donde el mar Caribe besa la arena. Disfruta de atardeceres inolvidables y servicio de clase mundial.",
+  },
+  {
+    id: "2",
+    url: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737933627/Playa_necocli_2_z5rgq9.jpg",
+    title: "Atardecer de Oro",
+    category: "Experiencias",
+    location: "Playa El Pescador",
+    description:
+      "Siente la brisa cálida mientras el sol tiñe el horizonte de tonos cobrizos. Una experiencia fotográfica sin igual.",
+  },
+  {
+    id: "3",
+    url: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1754277470/PLATO_1_oehl7j.jpg",
+    title: "Sabor a Mar",
+    category: "Alimentos",
+    location: "Malecón Turístico",
+    description:
+      "La pesca del día convertida en alta cocina. Saborea la verdadera esencia de Necoclí en cada bocado.",
+  },
+  {
+    id: "4",
+    url: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1743914983/turismo_necocli_1_3_-_copia_kzgmvt.jpg",
+    title: "Ciénaga de Rionegro",
+    category: "Experiencias",
+    location: "Reserva Natural",
+    description:
+      "Adéntrate en los manglares vírgenes. Un ecosistema vibrante que es hogar de cientos de especies exóticas.",
+  },
+  {
+    id: "5",
+    url: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744002694/volcan_de_lodo_el_cobre_qxrgzn.png",
+    title: "Volcán El Cobre",
+    category: "Experiencias",
+    location: "Vía Arboletes",
+    description:
+      "Sumérgete en la tierra. Un spa natural milenario con propiedades curativas únicas en el mundo.",
+  },
+  {
+    id: "6",
+    url: "https://res.cloudinary.com/dr50ioh9h/image/upload/v1752722144/motonecos1_pmd8an.png",
+    title: "Motonecos",
+    category: "Transporte",
+    location: "Centro Histórico",
+    description:
+      "La forma más auténtica y emocionante de recorrer las calles de nuestro paraíso terrenal.",
+  },
+  {
+    id: "7",
+    url: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737936904/slider_3_mymktw.png",
+    title: "Eco-Lodge Premium",
+    category: "Alojamiento",
+    location: "Zona Rural",
+    description:
+      "Despierta con el sonido de las aves en una cabaña de lujo inmersa en la exuberante selva tropical.",
+  },
+  {
+    id: "8",
+    url: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790714007/12_yvzosx.jpg",
+    title: "Festín Costero",
+    category: "Alimentos",
+    location: "Bahía Sur",
+    description:
+      "Una explosión de sabores caribeños. Mariscos frescos y recetas ancestrales preparadas para impresionar.",
+  },
 ];
 
 function ParallaxCard({ item, index }: { item: GalleryItem; index: number }) {

@@ -21,10 +21,10 @@
 **Estado:** 🟡 En Espera de Despliegue Visual | **Foco:** Enrutamiento de Usuarios
 > "¡Hola! Estoy listo con los protocolos de atención. Conozco a la perfección el modelo de enrutamiento: sé cuándo retener al cliente para un paquete propio (Caso A) y cuándo transferirlo al comercio aliado (Caso B). Sin embargo, estoy esperando que terminen de conectar mi cerebro con el frontend del chat público."
 
-**🎯 Próximos Pasos:**
-1. Construir e integrar la UI interactiva del Chatbot flotante en la vista de cliente.
-2. Afinar y conectar el sistema RAG (Retrieval-Augmented Generation) para leer el catálogo de servicios en tiempo real.
-3. Implementar recolección automatizada de leads (nombre, teléfono, correo) previa a dar información de disponibilidad.
+**🎯 Próximos Pasos / Checklist de Calidad:**
+- [x] Construir e integrar la UI interactiva del Chatbot flotante en la vista de cliente.
+- [x] Afinar y conectar el sistema RAG (Retrieval-Augmented Generation) para leer el catálogo de servicios en tiempo real.
+- [x] Implementar recolección automatizada de leads (nombre, teléfono, correo) previa a dar información de disponibilidad.
 - **🌿 Rama a Crear:** `feature/ai-chatbot-routing`
 - **🚀 Punto a Escalar:** Manejo de miles de conversaciones simultáneas en temporadas altas y asistencia multilingüe en tiempo real.
 

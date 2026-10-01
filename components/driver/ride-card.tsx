@@ -15,7 +15,12 @@ interface RideCardProps {
   walletBalance: number;
 }
 
-export const RideCard = memo(function RideCard({ ride, onAccept, isAccepting, walletBalance }: RideCardProps) {
+export const RideCard = memo(function RideCard({
+  ride,
+  onAccept,
+  isAccepting,
+  walletBalance,
+}: RideCardProps) {
   const hasEnoughBalance = walletBalance >= ride.portal_commission;
 
   const [isPending, startTransition] = useTransition();
@@ -65,12 +70,24 @@ export const RideCard = memo(function RideCard({ ride, onAccept, isAccepting, wa
       const [address, gps] = loc.split(" - GPS: ");
       return (
         <div className="flex flex-col">
-          <span className={isDest ? "text-lg font-bold text-white leading-tight" : "text-sm text-white font-medium leading-tight"}>{address}</span>
+          <span
+            className={
+              isDest
+                ? "text-lg font-bold text-white leading-tight"
+                : "text-sm text-white font-medium leading-tight"
+            }
+          >
+            {address}
+          </span>
           <span className="text-[10px] text-white/30 font-mono mt-0.5">GPS: {gps}</span>
         </div>
       );
     }
-    return <span className={isDest ? "text-lg font-bold text-white" : "text-sm text-white font-medium"}>{loc}</span>;
+    return (
+      <span className={isDest ? "text-lg font-bold text-white" : "text-sm text-white font-medium"}>
+        {loc}
+      </span>
+    );
   };
 
   const extractGps = (loc: string) => {
@@ -117,7 +134,9 @@ export const RideCard = memo(function RideCard({ ride, onAccept, isAccepting, wa
 
       {/* Origen */}
       <div className="mb-4 pl-7">
-        <p className="text-xs text-white/50 uppercase tracking-widest font-bold mb-1">Recoger en:</p>
+        <p className="text-xs text-white/50 uppercase tracking-widest font-bold mb-1">
+          Recoger en:
+        </p>
         {renderLocation(ride.origin, false)}
       </div>
 
@@ -128,7 +147,7 @@ export const RideCard = memo(function RideCard({ ride, onAccept, isAccepting, wa
         </span>
         {ride.is_night_rate && (
           <span className="text-xs text-white/40 line-through">
-          ${ride.base_price.toLocaleString("es-CO")}
+            ${ride.base_price.toLocaleString("es-CO")}
           </span>
         )}
         <span className="text-xs text-white/30">COP</span>
@@ -198,12 +217,12 @@ export const RideCard = memo(function RideCard({ ride, onAccept, isAccepting, wa
       {ride.status === "OPEN" &&
         (hasEnoughBalance ? (
           <div className="pt-2">
-            <SwipeButton 
-              onConfirm={() => onAccept(ride.id)} 
-              text="DESLIZA PARA ACEPTAR 🚀" 
-              disabled={isAccepting} 
-              isPending={isAccepting} 
-              theme="emerald" 
+            <SwipeButton
+              onConfirm={() => onAccept(ride.id)}
+              text="DESLIZA PARA ACEPTAR 🚀"
+              disabled={isAccepting}
+              isPending={isAccepting}
+              theme="emerald"
             />
           </div>
         ) : (
@@ -241,7 +260,7 @@ export const RideCard = memo(function RideCard({ ride, onAccept, isAccepting, wa
           </div>
 
           {/* Navegación con Waze */}
-          {(originCoords && ride.status === "ACCEPTED") && (
+          {originCoords && ride.status === "ACCEPTED" && (
             <a
               href={`https://waze.com/ul?ll=${originCoords.lat},${originCoords.lng}&navigate=yes`}
               target="_blank"
@@ -251,8 +270,8 @@ export const RideCard = memo(function RideCard({ ride, onAccept, isAccepting, wa
               🗺️ Navegar a Recogida (Waze)
             </a>
           )}
-          
-          {(destCoords && ride.status === "IN_PROGRESS") && (
+
+          {destCoords && ride.status === "IN_PROGRESS" && (
             <a
               href={`https://waze.com/ul?ll=${destCoords.lat},${destCoords.lng}&navigate=yes`}
               target="_blank"
@@ -265,24 +284,24 @@ export const RideCard = memo(function RideCard({ ride, onAccept, isAccepting, wa
 
           {ride.status === "ACCEPTED" && (
             <div className="pt-2">
-              <SwipeButton 
-                onConfirm={handleStartRide} 
-                text="DESLIZA SI RECOGISTE" 
-                disabled={isPending} 
-                isPending={isPending} 
-                theme="teal" 
+              <SwipeButton
+                onConfirm={handleStartRide}
+                text="DESLIZA SI RECOGISTE"
+                disabled={isPending}
+                isPending={isPending}
+                theme="teal"
               />
             </div>
           )}
 
           {ride.status === "IN_PROGRESS" && (
             <div className="pt-2">
-              <SwipeButton 
-                onConfirm={handleComplete} 
-                text="DESLIZA PARA FINALIZAR" 
-                disabled={isPending} 
-                isPending={isPending} 
-                theme="blue" 
+              <SwipeButton
+                onConfirm={handleComplete}
+                text="DESLIZA PARA FINALIZAR"
+                disabled={isPending}
+                isPending={isPending}
+                theme="blue"
               />
             </div>
           )}

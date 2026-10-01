@@ -20,10 +20,10 @@ export function LogoutButton() {
       }
       const auth = getAuth(app);
       await signOut(auth);
-      
+
       // Call our internal api to clear the cookie session
       await fetch("/api/auth/session", { method: "DELETE" });
-      
+
       router.push("/conductores");
       router.refresh();
     } catch (err) {

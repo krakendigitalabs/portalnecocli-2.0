@@ -42,7 +42,7 @@ export function RideTrackingClient({ rideId, userId }: { rideId: string; userId:
   useEffect(() => {
     const db = getFirebaseDb();
     if (!db) return;
-    
+
     // Importamos auth dinámicamente o de lib
     import("firebase/auth").then(({ getAuth, onAuthStateChanged }) => {
       const auth = getAuth();
@@ -70,17 +70,16 @@ export function RideTrackingClient({ rideId, userId }: { rideId: string; userId:
               setLoading(false);
             },
           );
-          
+
           // Limpiamos el snapshot si el componente se desmonta o cambia el auth state
           return () => unsubscribeSnapshot();
         } else {
           // Aún no hay usuario en el cliente, Next.js cookie session might exist but client is loading
         }
       });
-      
+
       return () => unsubscribeAuth();
     });
-
   }, [rideId, userId]);
 
   if (loading) {
@@ -160,9 +159,7 @@ export function RideTrackingClient({ rideId, userId }: { rideId: string; userId:
                 <span className="text-2xl">🛺</span>
               </div>
               <h2 className="text-xl font-bold text-indigo-700">En camino al destino</h2>
-              <p className="text-sm text-indigo-700/60 mt-1">
-                Estás a bordo. ¡Disfruta el viaje!
-              </p>
+              <p className="text-sm text-indigo-700/60 mt-1">Estás a bordo. ¡Disfruta el viaje!</p>
             </>
           )}
 
@@ -244,7 +241,7 @@ export function RideTrackingClient({ rideId, userId }: { rideId: string; userId:
                     </p>
                   </div>
                 )}
-                
+
                 <p className="text-xs font-bold text-teal uppercase tracking-wider">
                   Conductor Asignado
                 </p>

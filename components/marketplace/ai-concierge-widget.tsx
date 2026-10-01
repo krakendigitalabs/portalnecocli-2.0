@@ -285,36 +285,38 @@ export function AiConciergeWidget() {
                         : "bg-white text-gray-800 border border-gray-100/60 rounded-2xl rounded-tl-sm shadow-black/5"
                     }`}
                   >
-                    {msg.content.split(/(\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s]+)/g).map((part, i) => {
-                      const mdMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
-                      if (mdMatch) {
-                        return (
-                          <a
-                            key={i}
-                            href={mdMatch[2]}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-500 hover:underline font-semibold"
-                          >
-                            {mdMatch[1]}
-                          </a>
-                        );
-                      }
-                      if (part.match(/^(https?:\/\/[^\s]+)$/)) {
-                        return (
-                          <a
-                            key={i}
-                            href={part}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-500 hover:underline break-all"
-                          >
-                            {part}
-                          </a>
-                        );
-                      }
-                      return <span key={i}>{part}</span>;
-                    })}
+                    {msg.content
+                      .split(/(\[[^\]]+\]\([^)]+\)|https?:\/\/[^\s]+)/g)
+                      .map((part, i) => {
+                        const mdMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+                        if (mdMatch) {
+                          return (
+                            <a
+                              key={i}
+                              href={mdMatch[2]}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-500 hover:underline font-semibold"
+                            >
+                              {mdMatch[1]}
+                            </a>
+                          );
+                        }
+                        if (part.match(/^(https?:\/\/[^\s]+)$/)) {
+                          return (
+                            <a
+                              key={i}
+                              href={part}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-500 hover:underline break-all"
+                            >
+                              {part}
+                            </a>
+                          );
+                        }
+                        return <span key={i}>{part}</span>;
+                      })}
                   </div>
                 </div>
               ))}
@@ -446,4 +448,3 @@ export function AiConciergeWidget() {
     </>
   );
 }
-

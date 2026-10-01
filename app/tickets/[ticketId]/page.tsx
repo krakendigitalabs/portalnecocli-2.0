@@ -8,7 +8,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PrintTicketButton } from "@/components/checkout/print-ticket-button";
-import { getReservationByEscrowId, getReservationById, getReservationByReferenceCode } from "@/data/reservationService";
+import {
+  getReservationByEscrowId,
+  getReservationById,
+  getReservationByReferenceCode,
+} from "@/data/reservationService";
 
 type Props = {
   params: Promise<{
