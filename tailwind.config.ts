@@ -11,13 +11,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        sand: "#Fdfcf0", // Blanco blando
-        gold: "#C49A45", // Dorado
-        green: "#1B5E20", // Verde profundo
-        coral: "#C49A45", // Alias temporal a Dorado para evitar pantallas rotas
-        teal: "#1B5E20", // Alias temporal a Verde para contraste
-        ink: "#18202A",
-        mist: "#E8EEF0",
+        sand: "#FDFBF7", // Blanco cálido premium (Alabaster/Sand)
+        gold: "#D4AF37", // Dorado clásico luxury
+        green: "#10452F", // Verde bosque/esmeralda muy profundo
+        coral: "#E86A58", // Coral cálido real para CTAs
+        teal: "#0F5C5C", // Teal/Esmeralda corporativo elegante
+        ink: "#0F172A", // Negro tintero (Slate 900)
+        mist: "#F1F5F9", // Gris muy sutil
       },
       fontFamily: {
         tropical: ["var(--font-tropical)"],
