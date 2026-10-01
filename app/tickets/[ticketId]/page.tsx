@@ -1,10 +1,10 @@
 /**
  * Ticket Digital Oficial — Portal Necoclí 2.0
  * Comprobante de Recaudo Escrow con QR real, datos legales completos e impresión en 1 página.
+ * Diseño Ultra-Premium Luxury.
  */
 
-import { CheckCircle2, CreditCard, ShieldCheck } from "lucide-react";
-import Image from "next/image";
+import { CheckCircle2, CreditCard, ShieldCheck, Ticket } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PrintTicketButton } from "@/components/checkout/print-ticket-button";
@@ -116,7 +116,7 @@ export default async function EscrowTicketPage({ params }: Props) {
           
           /* Forzar al layout base a no ocupar espacio extra */
           body > div { min-height: 0 !important; height: auto !important; }
-          main { padding: 0 !important; margin: 0 !important; min-height: 0 !important; }
+          main { padding: 0 !important; margin: 0 !important; min-height: 0 !important; background: white !important; }
           
           /* Escalar todo al 75% para que quepa en 1 hoja A4 */
           .ticket-wrapper {
@@ -145,155 +145,153 @@ export default async function EscrowTicketPage({ params }: Props) {
         }
       `}</style>
 
-      {/* ─── Área principal ─── */}
-      <main className="print:min-h-0 print:py-0 min-h-screen bg-white py-8 px-4 sm:px-6">
-        <div className="ticket-wrapper max-w-2xl mx-auto space-y-5 print:space-y-0">
+      {/* ─── Área principal con gradiente Premium ─── */}
+      <main className="print:min-h-0 print:py-0 min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-100 via-white to-slate-50 py-12 px-4 sm:px-6 relative overflow-hidden">
+        {/* Adorno de fondo de lujo (partículas o blobs) */}
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-teal-100/40 blur-3xl pointer-events-none mix-blend-multiply" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-emerald-100/40 blur-3xl pointer-events-none mix-blend-multiply" />
+
+        <div className="ticket-wrapper max-w-[600px] mx-auto space-y-6 print:space-y-0 relative z-10">
           {/* Barra de acciones (impresión/descarga) */}
-          <div className="print:hidden flex items-center justify-between mb-4">
-            <p className="text-xs font-mono text-gray-400">Comprobante oficial · {ticketId}</p>
-            <div className="flex gap-2">
-              <PrintTicketButton />
+          <div className="print:hidden flex items-center justify-between mb-4 bg-white/60 backdrop-blur-md px-6 py-4 rounded-2xl border border-slate-200/60 shadow-sm">
+            <div className="flex items-center gap-2">
+              <Ticket className="w-5 h-5 text-teal-600" />
+              <p className="text-xs font-mono font-medium text-slate-500 uppercase tracking-widest">
+                ID: {ticketId.slice(-8).toUpperCase()}
+              </p>
             </div>
+            <PrintTicketButton />
           </div>
 
           {/* Botón Wompi — Pago en línea */}
           {wompiLink && (
-            <div className="print:hidden mb-4">
+            <div className="print:hidden mb-6 group">
               <a
                 href={wompiLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-3 w-full bg-[#7B3FE4] hover:bg-[#6a35ca] text-white font-bold text-base py-4 px-6 rounded-2xl shadow-lg shadow-[#7B3FE4]/25 transition-all hover:-translate-y-0.5 active:scale-95"
+                className="relative flex items-center justify-center gap-3 w-full bg-[#3D25A8] hover:bg-[#321c8f] text-white font-bold text-lg py-5 px-6 rounded-[24px] shadow-2xl shadow-[#3D25A8]/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden"
               >
-                <CreditCard className="w-5 h-5" />
-                Pagar ahora con Wompi — ${amountFormatted} COP
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:animate-[shimmer_1.5s_infinite]" />
+                <CreditCard className="w-6 h-6" />
+                Pagar vía Wompi — ${amountFormatted} COP
               </a>
-              <p className="text-center text-xs text-gray-400 mt-2">
-                Pago seguro con tarjeta, Nequi o PSE
+              <p className="text-center text-[11px] font-medium text-slate-400 mt-3 uppercase tracking-wider">
+                Procesamiento seguro · Tarjeta de Crédito, Nequi o PSE
               </p>
             </div>
           )}
 
           {/* ─────────────────────────────────────────
-               TICKET CARD
+               TICKET CARD (ESTILO BOARDING PASS LUXURY)
           ───────────────────────────────────────── */}
-          <div className="ticket-card rounded-2xl overflow-hidden border border-gray-200 shadow-lg">
+          <div className="ticket-card relative bg-white rounded-[32px] overflow-hidden border border-slate-200/60 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)]">
             {/* ── Cabecera oscura del ticket ── */}
-            <div className="ticket-header bg-[#0f2e21] p-6 text-white">
-              <div className="flex justify-between items-start">
+            <div className="ticket-header relative bg-slate-900 p-8 text-white overflow-hidden">
+              <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
+
+              <div className="relative z-10 flex justify-between items-start">
                 {/* Datos empresa Matrix */}
                 <div>
-                  <h1 className="text-xl font-black tracking-tight flex items-center gap-2">
+                  <h1 className="text-2xl font-display font-bold tracking-tight flex items-center gap-2 mb-1">
                     Portal Necoclí
-                    <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                    <ShieldCheck className="w-6 h-6 text-teal-400" />
                   </h1>
-                  <p className="text-white/60 text-[11px] font-mono mt-0.5">
-                    Operado por <strong className="text-white/80">Kraken Digital Labs S.A.S</strong>
+                  <p className="text-slate-400 text-[11px] font-mono mb-2 uppercase tracking-widest">
+                    By Kraken Digital Labs S.A.S
                   </p>
-                  <p className="text-white/50 text-[10px] font-mono">
-                    NIT: <strong className="text-white/70">8128036-5</strong>
-                    {" · "}
-                    <a
-                      href="https://www.krakendigitalabs.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-emerald-400 hover:underline"
-                    >
-                      www.krakendigitalabs.com
-                    </a>
-                  </p>
-                  <p className="text-white/40 text-[10px] font-mono mt-0.5">
-                    📞 Soporte: <strong className="text-white/60">3217511866</strong>
-                    {" · "}soporte@portalnecocli.com
-                  </p>
+                  <div className="flex gap-4 text-slate-300 text-[10px] font-mono mt-4">
+                    <span>NIT: 8128036-5</span>
+                    <span>TEL: 321 751 1866</span>
+                  </div>
                 </div>
 
                 {/* Sello de aprobado */}
-                <div className="text-right">
-                  <span className="inline-flex items-center gap-1.5 bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-emerald-500/30">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    Aprobado
-                  </span>
-                  <p className="text-white/30 text-[9px] mt-1.5 font-mono">
-                    #{ticketId.slice(-10).toUpperCase()}
+                <div className="text-right flex flex-col items-end">
+                  <div className="inline-flex items-center gap-1.5 bg-teal-500/10 text-teal-400 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border border-teal-500/20 shadow-[0_0_15px_rgba(45,212,191,0.2)]">
+                    <CheckCircle2 className="w-4 h-4" />
+                    Autenticado
+                  </div>
+                  <p className="text-slate-500 text-[10px] mt-2 font-mono uppercase tracking-widest">
+                    REF: {reference_code.slice(-6)}
                   </p>
                 </div>
               </div>
 
               {/* Monto */}
-              <div className="ticket-amount text-center py-5 mt-4 border-t border-white/10">
-                <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-emerald-400 mb-1">
-                  Comprobante de Recaudo Escrow
+              <div className="ticket-amount text-center py-8 mt-6 border-t border-white/10 relative">
+                <p className="text-[11px] uppercase tracking-[0.3em] font-semibold text-teal-400 mb-2">
+                  Depósito en Garantía (Escrow)
                 </p>
-                <p className="text-4xl font-black text-white">
-                  <span className="text-emerald-400 mr-1">$</span>
+                <p className="text-5xl font-display font-semibold text-white tracking-tight">
+                  <span className="text-teal-400 mr-1 opacity-80">$</span>
                   {amountFormatted}
-                  <span className="text-lg font-semibold text-white/40 ml-1">COP</span>
-                </p>
-                <p className="text-white/40 text-[10px] mt-1">
-                  Fondos retenidos en garantía · El comercio recibe el pago tras prestar el servicio
+                  <span className="text-xl font-normal text-slate-500 ml-2 uppercase">COP</span>
                 </p>
               </div>
             </div>
 
+            {/* Separador Perforado Estilo Ticket */}
+            <div className="relative h-8 bg-white print:h-2">
+              <div className="absolute top-1/2 left-0 w-full border-t-[2px] border-dashed border-slate-200" />
+              <div className="absolute top-1/2 -left-4 w-8 h-8 bg-slate-50 rounded-full -translate-y-1/2 print:hidden" />
+              <div className="absolute top-1/2 -right-4 w-8 h-8 bg-slate-50 rounded-full -translate-y-1/2 print:hidden" />
+            </div>
+
             {/* ── Cuerpo blanco del ticket ── */}
-            <div className="ticket-body bg-white p-6 grid grid-cols-2 gap-x-6 gap-y-5">
-              {/* ID Transacción */}
-              <div>
-                <p className="text-[9px] text-gray-400 uppercase tracking-widest font-bold mb-0.5">
-                  ID Transacción Wompi
+            <div className="ticket-body bg-white p-8 grid grid-cols-2 gap-x-8 gap-y-8">
+              {/* Comercio aliado */}
+              <div className="col-span-2 text-center bg-slate-50 rounded-2xl py-4 border border-slate-100">
+                <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1">
+                  Prestador del Servicio
                 </p>
-                <p className="font-mono text-xs font-bold text-gray-800 break-all">{ticketId}</p>
+                <p className="text-xl font-display font-semibold text-slate-900">{business_name}</p>
               </div>
 
-              {/* Código Reserva */}
+              {/* ID Transacción */}
               <div>
-                <p className="text-[9px] text-gray-400 uppercase tracking-widest font-bold mb-0.5">
-                  Código de Reserva
+                <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1">
+                  Reserva ID
                 </p>
-                <p className="font-mono text-xs font-bold text-gray-800">{reference_code}</p>
+                <p className="font-mono text-[13px] font-medium text-slate-900 break-all">
+                  {ticketId}
+                </p>
               </div>
 
               {/* Fecha de pago */}
               <div>
-                <p className="text-[9px] text-gray-400 uppercase tracking-widest font-bold mb-0.5">
-                  Fecha de Pago
+                <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1">
+                  Fecha de Emisión
                 </p>
-                <p className="text-xs font-bold text-gray-800">{dateFormatted}</p>
-              </div>
-
-              {/* Comercio aliado */}
-              <div>
-                <p className="text-[9px] text-gray-400 uppercase tracking-widest font-bold mb-0.5">
-                  Comercio Aliado
-                </p>
-                <p className="text-xs font-black text-teal-700">{business_name}</p>
+                <p className="text-[13px] font-medium text-slate-900">{dateFormatted}</p>
               </div>
 
               {/* Fechas del servicio */}
               {(lead.check_in_date || lead.check_out_date) && (
                 <div className="col-span-2">
-                  <p className="text-[9px] text-gray-400 uppercase tracking-widest font-bold mb-0.5">
-                    Fechas del Servicio
+                  <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-1">
+                    Fechas Programadas
                   </p>
-                  <p className="text-xs font-bold text-gray-800">
+                  <p className="text-sm font-medium text-slate-900 bg-slate-50 inline-block px-3 py-1.5 rounded-lg border border-slate-100">
                     {lead.check_in_date
                       ? new Date(lead.check_in_date).toLocaleDateString("es-CO", {
-                          weekday: "long",
+                          weekday: "short",
                           year: "numeric",
-                          month: "long",
+                          month: "short",
                           day: "numeric",
                         })
                       : "No especificada"}
                     {lead.check_out_date && (
-                      <span className="text-gray-400 font-normal">
+                      <span className="text-slate-400 mx-2">
                         {" → "}
-                        {new Date(lead.check_out_date).toLocaleDateString("es-CO", {
-                          weekday: "long",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
+                        <span className="text-slate-900 ml-2">
+                          {new Date(lead.check_out_date).toLocaleDateString("es-CO", {
+                            weekday: "short",
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </span>
                       </span>
                     )}
                   </p>
@@ -301,18 +299,18 @@ export default async function EscrowTicketPage({ params }: Props) {
               )}
 
               {/* Titular — fila completa */}
-              <div className="col-span-2 border-t border-gray-100 pt-4">
-                <p className="text-[9px] text-gray-400 uppercase tracking-widest font-bold mb-2">
-                  Datos del Titular
+              <div className="col-span-2 border-t border-slate-100 pt-6">
+                <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-3">
+                  Información del Titular
                 </p>
-                <div className="ticket-holder bg-gray-50 rounded-xl p-3 flex justify-between items-center">
+                <div className="ticket-holder bg-white border border-slate-200 rounded-[20px] p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
                   <div>
-                    <p className="font-bold text-gray-800 text-sm">{lead.full_name}</p>
-                    <p className="text-[11px] text-gray-500 mt-0.5">{lead.email}</p>
+                    <p className="font-semibold text-slate-900 text-base">{lead.full_name}</p>
+                    <p className="text-xs text-slate-500 mt-1">{lead.email}</p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-[9px] text-gray-400 uppercase font-bold">WhatsApp / Tel.</p>
-                    <p className="font-bold text-gray-800 text-sm">
+                  <div className="sm:text-right bg-slate-50 px-4 py-2 rounded-xl">
+                    <p className="text-[10px] text-slate-400 uppercase font-semibold">Contacto</p>
+                    <p className="font-mono font-medium text-slate-900 text-sm mt-0.5">
                       {lead.whatsapp ?? lead.phone ?? "—"}
                     </p>
                   </div>
@@ -320,136 +318,90 @@ export default async function EscrowTicketPage({ params }: Props) {
               </div>
 
               {/* QR Real + Datos legales — misma fila */}
-              <div className="col-span-2 border-t border-gray-100 pt-4 flex items-start gap-6">
+              <div className="col-span-2 border-t border-slate-100 pt-8 flex flex-col sm:flex-row items-center sm:items-start gap-8">
                 {/* QR Real generado por api.qrserver.com */}
-                <div className="flex flex-col items-center gap-1.5 shrink-0">
-                  <p className="text-[9px] text-gray-400 uppercase tracking-widest font-bold">
-                    Verificar autenticidad
+                <div className="flex flex-col items-center gap-3 shrink-0">
+                  <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold">
+                    Escanear para verificar
                   </p>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={qrUrl}
                     alt={`QR del ticket ${ticketId}`}
-                    width={120}
-                    height={120}
-                    className="qr-img rounded-lg border border-gray-100 p-1 bg-white"
+                    width={130}
+                    height={130}
+                    className="qr-img rounded-xl border-2 border-slate-100 p-2 bg-white shadow-sm"
                   />
-                  <p className="text-[8px] text-gray-400 font-mono text-center max-w-[130px] break-all leading-tight">
-                    {publicTicketUrl.replace("https://", "")}
-                  </p>
                 </div>
 
                 {/* Datos legales de la empresa */}
-                <div className="flex-1 space-y-3">
-                  {/* Empresa operadora — Matrix */}
-                  <div className="rounded-xl border border-emerald-100 bg-emerald-50 p-3">
-                    <p className="text-[9px] text-emerald-700 uppercase font-bold tracking-wider mb-1">
-                      🔱 Empresa Operadora (Matrix)
+                <div className="flex-1 w-full space-y-3">
+                  <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                    <p className="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-2 flex items-center gap-1.5">
+                      <ShieldCheck className="w-3.5 h-3.5 text-slate-400" />
+                      Garantía Operativa
                     </p>
-                    <p className="text-sm font-black text-emerald-900">Kraken Digital Labs S.A.S</p>
-                    <p className="text-[11px] text-emerald-700 mt-0.5">
-                      <strong>NIT:</strong> 8128036-5
+                    <p className="text-[13px] text-slate-600 leading-relaxed font-light">
+                      Este comprobante es un activo digital protegido. Los fondos están respaldados
+                      por el modelo Escrow de{" "}
+                      <strong className="font-medium text-slate-900">
+                        Kraken Digital Labs S.A.S
+                      </strong>{" "}
+                      hasta la prestación final del servicio turístico.
                     </p>
-                    <a
-                      href="https://www.krakendigitalabs.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[11px] text-emerald-600 hover:underline"
-                    >
-                      www.krakendigitalabs.com
-                    </a>
-                    <p className="text-[11px] text-emerald-700 mt-0.5">
-                      📞 <strong>3044554311</strong>
-                    </p>
-                  </div>
-
-                  {/* Portal Necoclí como producto */}
-                  <div className="rounded-xl border border-gray-100 bg-gray-50 p-3">
-                    <p className="text-[9px] text-gray-500 uppercase font-bold tracking-wider mb-1">
-                      🛡️ Portal Administrador
-                    </p>
-                    <p className="text-sm font-black text-gray-800">Portal Necoclí</p>
-                    <p className="text-[11px] text-gray-500">
-                      Plataforma de turismo · Necoclí, Antioquia · Colombia
-                    </p>
-                    <p className="text-[11px] text-gray-500">
-                      📞 <strong className="text-gray-700">3217511866</strong>
-                    </p>
-                    <p className="text-[11px] text-gray-500">soporte@portalnecocli.com</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* ── CTA Turista: Reseña en Google ── */}
-            <div className="mx-6 mb-6 mt-2 rounded-xl bg-gradient-to-r from-sky-50 to-emerald-50 border border-sky-100 p-5 text-center shadow-sm">
-              <h4 className="text-sm font-bold text-sky-900 mb-2 flex items-center justify-center gap-2">
-                ⭐ ¡Queremos saber de ti!
-              </h4>
-              <p className="text-xs text-sky-800 leading-relaxed max-w-md mx-auto mb-3">
-                Para estar pendiente de tu experiencia de principio a fin, notifica a{" "}
-                <strong>Portal Necoclí</strong> que ya estás próximo a embarcar y haz un comentario
-                para que otras personas se vean motivadas a vivir esta maravillosa experiencia.
-              </p>
-              <a
-                href="https://g.page/r/CRFcMAbI46COEAE/review"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-white border border-sky-200 text-sky-700 px-4 py-2 rounded-full text-xs font-bold shadow-sm hover:bg-sky-50 hover:text-sky-800 transition-colors"
-              >
-                Dejar comentario en Portal Necoclí
-              </a>
-            </div>
-
             {/* ── Footer legal del ticket ── */}
-            <div className="ticket-footer bg-gray-50 px-6 py-4 border-t border-gray-100 text-center">
-              <p className="text-[10px] text-gray-400 leading-relaxed max-w-lg mx-auto">
-                Este comprobante es emitido por{" "}
-                <strong className="text-gray-600">Portal Necoclí</strong>, plataforma operada bajo
-                el modelo de depósito en garantía (Escrow) por{" "}
-                <strong className="text-gray-600">Kraken Digital Labs S.A.S</strong> — NIT
-                8128036-5. Los fondos son transferidos al comercio aliado única y exclusivamente
-                tras la confirmación del servicio prestado, garantizando total seguridad al turista.
-                Consultas:{" "}
-                <a href="tel:3217511866" className="text-emerald-600 font-bold hover:underline">
-                  3217511866
+            <div className="ticket-footer bg-slate-900 px-8 py-5 text-center flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-slate-800">
+              <p className="text-[10px] text-slate-500 font-mono tracking-wider uppercase">
+                Portal Necoclí 2.0 © 2026
+              </p>
+              <div className="flex gap-4">
+                <a
+                  href="tel:3217511866"
+                  className="text-[11px] font-medium text-teal-500 hover:text-teal-400 transition-colors"
+                >
+                  📞 321 751 1866
                 </a>
-                {" · "}
+                <span className="text-slate-700">|</span>
                 <a
                   href="mailto:soporte@portalnecocli.com"
-                  className="underline hover:text-gray-600"
+                  className="text-[11px] font-medium text-slate-400 hover:text-white transition-colors"
                 >
                   soporte@portalnecocli.com
                 </a>
-              </p>
+              </div>
             </div>
           </div>
 
-          {/* ─── Navegación inferior entre páginas (solo en pantalla) ─── */}
-          <nav className="print:hidden bg-white rounded-2xl border border-gray-100 shadow-sm p-4 mt-6">
-            <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-3 text-center">
-              Explorar Portal Necoclí
+          {/* ── CTA Turista: Reseña en Google ── */}
+          <div className="print:hidden mx-auto mt-8 max-w-[500px] rounded-3xl bg-white border border-slate-200/60 p-6 text-center shadow-lg shadow-slate-200/40">
+            <h4 className="text-base font-semibold text-slate-900 mb-2">⭐ Tu opinión es oro</h4>
+            <p className="text-[13px] text-slate-500 leading-relaxed mb-5">
+              Si tu experiencia con Portal Necoclí ha sido excepcional, nos ayudarías inmensamente
+              dejando una breve reseña pública.
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {[
-                { href: "/", label: "🏠 Inicio" },
-                { href: "/negocios", label: "🗺️ Explorar" },
-                { href: "/hoteles", label: "🏨 Hoteles" },
-                { href: "/tours", label: "🌊 Tours" },
-                { href: "/restaurantes", label: "🍽️ Restaurantes" },
-                { href: "/transporte", label: "🚌 Transporte" },
-                { href: "/customer/reservas", label: "📋 Mis Reservas" },
-                { href: "/customer", label: "👤 Mi Panel" },
-              ].map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="flex items-center justify-center rounded-xl bg-gray-50 hover:bg-emerald-50 hover:text-emerald-800 px-3 py-2.5 text-xs font-semibold text-gray-600 transition-colors border border-gray-100 hover:border-emerald-100"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
+            <a
+              href="https://g.page/r/CRFcMAbI46COEAE/review"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-xl text-sm font-semibold shadow-md hover:bg-slate-800 hover:-translate-y-0.5 transition-all"
+            >
+              Calificar en Google
+            </a>
+          </div>
+
+          {/* ─── Navegación inferior entre páginas ─── */}
+          <nav className="print:hidden mt-8 text-center">
+            <Link
+              href="/customer/reservas"
+              className="inline-flex items-center justify-center text-sm font-medium text-slate-500 hover:text-teal-600 transition-colors underline underline-offset-4"
+            >
+              ← Volver a Mis Reservas
+            </Link>
           </nav>
         </div>
       </main>

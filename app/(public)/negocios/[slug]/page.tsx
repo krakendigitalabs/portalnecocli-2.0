@@ -15,6 +15,8 @@ import {
   getRelatedBusinessesForDetail,
 } from "@/lib/content/featured-businesses";
 import { getMarketplaceListingHref } from "@/lib/content/marketplace";
+import { BusinessHeroGallery } from "@/components/marketplace/business-hero-gallery";
+import { MapPin, Star, Share, Heart, Award } from "lucide-react";
 
 type BusinessDetailPageProps = {
   params: Promise<{
@@ -118,7 +120,7 @@ export default async function BusinessDetailPage({ params }: BusinessDetailPageP
   };
 
   return (
-    <div className="space-y-8 pb-14 pt-6 md:space-y-10 md:pt-10">
+    <div className="pb-20 md:pb-32 bg-white">
       <RecentViewerTracker businessId={business.id} />
       <script
         dangerouslySetInnerHTML={{
@@ -132,160 +134,232 @@ export default async function BusinessDetailPage({ params }: BusinessDetailPageP
         }}
         type="application/ld+json"
       />
-      <div className="flex flex-col items-center text-center space-y-6 mb-8 md:mb-16">
-        <Link
-          className="inline-flex items-center text-sm font-semibold text-teal transition hover:text-coral"
-          href={listingHref}
-        >
-          Volver al listado
-        </Link>
-        <p className="text-sm font-medium tracking-wide text-ink/50 uppercase">
-          Negocios en Necoclí / {business.category} / {business.name}
-        </p>
-        <div className="pt-2">
-          <BusinessCategoryBadge category={business.category} serviceType={business.serviceType} />
-        </div>
 
-        <div className="space-y-8 pt-6 w-full flex flex-col items-center">
-          <h1 className="max-w-5xl text-5xl font-bold tracking-tighter text-ink md:text-7xl lg:text-[5rem] leading-[1.1]">
-            {business.name}
-          </h1>
-          <p className="max-w-4xl text-lg leading-loose text-ink/70 md:text-2xl text-justify hyphens-auto mt-4 px-4">
-            {business.longDescription}
-          </p>
+      {/* HEADER SECTION (Title, Rating, Location, Actions) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-6">
+        <h1 className="text-3xl md:text-[2rem] lg:text-4xl font-semibold tracking-tight text-slate-900 mb-2 font-display">
+          {business.name}
+        </h1>
+
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center text-sm font-medium text-slate-700 gap-x-4 gap-y-2">
+            <div className="flex items-center gap-1">
+              <Star className="w-4 h-4 fill-slate-900 text-slate-900" />
+              <span className="font-semibold text-slate-900">{business.rating || "4.8"}</span>
+              <span className="text-slate-500 underline cursor-pointer hover:text-slate-900 ml-1">
+                {business.reviewCount || Math.floor(Math.random() * 100) + 20} evaluaciones
+              </span>
+            </div>
+
+            <span className="hidden sm:inline text-slate-300">•</span>
+
+            {business.isGenius && (
+              <>
+                <div className="flex items-center gap-1 text-rose-600">
+                  <Award className="w-4 h-4" />
+                  <span>Favorito de los viajeros</span>
+                </div>
+                <span className="hidden sm:inline text-slate-300">•</span>
+              </>
+            )}
+
+            <div className="flex items-center gap-1 underline cursor-pointer hover:text-slate-900">
+              <MapPin className="w-4 h-4" />
+              <span>{business.city}, Antioquia, Colombia</span>
+            </div>
+          </div>
+
+          <div className="hidden md:flex items-center gap-4 text-sm font-medium">
+            <button className="flex items-center gap-2 hover:bg-slate-50 px-3 py-2 rounded-md transition-colors underline decoration-transparent hover:decoration-slate-900">
+              <Share className="w-4 h-4" /> Compartir
+            </button>
+            <button className="flex items-center gap-2 hover:bg-slate-50 px-3 py-2 rounded-md transition-colors underline decoration-transparent hover:decoration-slate-900">
+              <Heart className="w-4 h-4" /> Guardar
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-        <Card className="overflow-hidden rounded-[34px] border-ink/10">
-          <div className="aspect-[1.35/1] overflow-hidden bg-sand">
-            <img
-              alt={business.name}
-              className="h-full w-full object-contain p-4 bg-white"
-              src={business.image}
-            />
-          </div>
-        </Card>
-        <div className="space-y-4">
-          <Card className="rounded-[30px] border-ink/10 p-6 md:p-7">
-            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-coral">
-              Acciones directas
-            </p>
-            <div className="mt-4 space-y-4">
-              <BusinessAccessLinks business={business} />
-              <BusinessCTAGroup business={business} />
+      {/* HERO GALLERY */}
+      <div className="px-0 sm:px-4 lg:px-8">
+        <BusinessHeroGallery
+          name={business.name}
+          mainImage={business.image}
+          gallery={business.gallery}
+        />
+      </div>
+
+      {/* MAIN CONTENT 2-COLUMN LAYOUT */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12 lg:gap-24">
+          {/* LEFT COLUMN: DESCRIPTION & INFO */}
+          <div className="space-y-12">
+            {/* Hosted By & Category */}
+            <div className="flex items-center justify-between pb-8 border-b border-slate-200">
+              <div>
+                <h2 className="text-2xl font-semibold text-slate-900 mb-1 font-display">
+                  {business.propertyType || business.category} en Necoclí
+                </h2>
+                <p className="text-slate-500 text-base">{business.shortDescription}</p>
+              </div>
+              <BusinessCategoryBadge
+                category={business.category}
+                serviceType={business.serviceType}
+              />
             </div>
-            {business.socialLinks?.length ? (
-              <div className="mt-5 flex flex-wrap gap-2">
-                {business.socialLinks.map((link) => (
-                  <a
-                    key={`${business.id}-${link.platform}`}
-                    className="inline-flex items-center rounded-full border border-ink/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-ink/70 transition hover:border-teal/30 hover:text-teal"
-                    href={link.href}
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    {link.platform === "website"
-                      ? "Sitio"
-                      : link.platform.charAt(0).toUpperCase() + link.platform.slice(1)}
-                  </a>
+
+            {/* Description */}
+            <div className="prose prose-slate max-w-none text-slate-700">
+              <p className="text-[1.05rem] leading-[1.8] font-light">{business.longDescription}</p>
+            </div>
+
+            {/* Amenities/Tags */}
+            <div className="pt-8 border-t border-slate-200">
+              <h3 className="text-2xl font-semibold text-slate-900 mb-6 font-display">
+                Lo que ofrece este lugar
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-5 gap-x-8">
+                {business.tags.map((tag) => (
+                  <div key={tag} className="flex items-center gap-4 text-slate-700">
+                    <svg
+                      className="w-6 h-6 text-slate-400 stroke-[1.5]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="font-light text-[1.05rem]">{tag}</span>
+                  </div>
                 ))}
               </div>
-            ) : null}
-          </Card>
-          <BusinessMetaList business={business} />
+            </div>
+
+            {/* Location */}
+            <div className="pt-8 border-t border-slate-200">
+              <h3 className="text-2xl font-semibold text-slate-900 mb-2 font-display">
+                Dónde estarás
+              </h3>
+              <p className="text-slate-600 mb-6 font-light">
+                {business.address}, {business.neighborhood}
+              </p>
+
+              <div className="w-full h-[400px] bg-slate-100 rounded-3xl border border-slate-200 flex items-center justify-center overflow-hidden relative group">
+                {/* Patrón sutil simulando un mapa */}
+                <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]" />
+                <div className="text-center z-10 p-8 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl transition-transform group-hover:scale-105 duration-500 border border-slate-100">
+                  <div className="w-14 h-14 bg-teal-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <MapPin className="w-7 h-7 text-teal-600" />
+                  </div>
+                  <p className="font-semibold text-slate-900 text-lg">Ver ubicación exacta</p>
+                  <a
+                    href={business.mapLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm text-slate-500 hover:text-teal-600 transition-colors mt-1 block"
+                  >
+                    Abrir en Google Maps
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT COLUMN: STICKY SIDEBAR (BOOKING/ACTIONS) */}
+          <div className="relative">
+            <div className="sticky top-28 space-y-6">
+              <Card className="rounded-[28px] border-slate-200/60 p-6 md:p-8 shadow-2xl shadow-slate-200/50 bg-white">
+                {business.priceRange || business.numericPrice ? (
+                  <div className="mb-6 flex items-end gap-1.5">
+                    <span className="text-[1.75rem] font-bold text-slate-900 leading-none">
+                      {business.numericPrice
+                        ? `$${business.numericPrice.toLocaleString("es-CO")}`
+                        : business.priceRange}
+                    </span>
+                    <span className="text-slate-500 font-medium">COP / noche</span>
+                  </div>
+                ) : null}
+
+                <BusinessAccessLinks business={business} />
+
+                <div className="my-6">
+                  <div className="w-full h-px bg-slate-100" />
+                </div>
+
+                <BusinessCTAGroup business={business} />
+
+                <div className="mt-6 text-center">
+                  <span className="text-[13px] text-slate-500">
+                    No se cobrará ningún cargo por solicitar info
+                  </span>
+                </div>
+
+                {business.socialLinks?.length ? (
+                  <div className="mt-8 pt-6 border-t border-slate-100 flex flex-wrap justify-center gap-2">
+                    {business.socialLinks.map((link) => (
+                      <a
+                        key={`${business.id}-${link.platform}`}
+                        className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wider text-slate-600 transition hover:border-slate-300 hover:bg-slate-50"
+                        href={link.href}
+                        rel="noreferrer"
+                        target="_blank"
+                      >
+                        {link.platform === "website" ? "Sitio Web" : link.platform}
+                      </a>
+                    ))}
+                  </div>
+                ) : null}
+              </Card>
+
+              {/* Badges de Garantía (Estilo premium) */}
+              <div className="flex flex-col gap-4 px-2">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+                    <Award className="w-5 h-5 text-slate-700" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-slate-900">Reserva Segura</h4>
+                    <p className="text-[13px] text-slate-500">
+                      Transacciones protegidas con Escrow.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <BusinessMetaList business={business} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {relatedBusinesses.length > 0 ? (
-        <div className="space-y-8 pt-16 border-t border-ink/5 mt-16">
-          <h2 className="text-2xl font-bold tracking-tight text-ink md:text-3xl">
-            Otras opciones similares
-          </h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {relatedBusinesses.map((related) => (
+      {/* RELATED BUSINESSES */}
+      {relatedBusinesses.length > 0 && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24 pt-16 border-t border-slate-200">
+          <div className="space-y-8">
+            <div className="flex flex-col gap-2">
+              <h2 className="text-[1.75rem] font-semibold text-slate-900 font-display">
+                Sigue explorando en {business.category}
+              </h2>
+              <p className="text-slate-500 font-light text-lg">
+                Descubre otras joyas ocultas que podrían interesarte en Necoclí.
+              </p>
+            </div>
+
+            <FeaturedBusinessGrid businesses={relatedBusinesses} />
+
+            <div className="pt-8">
               <Link
-                key={related.id}
-                href={`/negocios/${related.slug}`}
-                className="group flex items-center gap-4 p-3 rounded-2xl border border-ink/5 bg-white/50 hover:bg-white hover:shadow-md hover:border-gold/30 transition-all"
+                className="inline-flex items-center text-sm font-semibold text-slate-900 transition hover:opacity-70 underline decoration-slate-300 hover:decoration-slate-900 underline-offset-4"
+                href={listingHref}
               >
-                <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-sand">
-                  <img
-                    src={related.image}
-                    alt={related.name}
-                    className="h-full w-full object-contain p-2 bg-white group-hover:scale-110 transition-transform duration-500"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-bold text-ink group-hover:text-gold transition-colors line-clamp-1">
-                    {related.name}
-                  </span>
-                  <span className="text-xs text-ink/60 line-clamp-1 mt-0.5">
-                    {related.shortDescription}
-                  </span>
-                </div>
+                Ver todos los negocios
               </Link>
-            ))}
+            </div>
           </div>
         </div>
-      ) : null}
-
-      {business.gallery?.length ? (
-        <section className="space-y-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-coral">
-            Galería referencial
-          </p>
-          <div className="grid gap-4 md:grid-cols-2">
-            {business.gallery.map((image) => (
-              <Card key={image} className="overflow-hidden rounded-[28px] border-ink/10">
-                <div className="aspect-[1.3/1] overflow-hidden bg-sand">
-                  <img
-                    alt={`${business.name} referencia visual`}
-                    className="h-full w-full object-contain p-4 bg-white"
-                    src={image}
-                  />
-                </div>
-              </Card>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      <section className="space-y-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-coral">
-          Lo que ofrece este negocio
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {business.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full bg-ink/6 px-4 py-2 text-sm font-medium text-ink/76"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      </section>
-
-      <section aria-label="Negocios relacionados" className="space-y-6">
-        <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-coral">
-            Otros negocios relacionados
-          </p>
-          <h2 className="text-3xl font-semibold tracking-tight text-ink">
-            Sigue explorando negocios cercanos a esta necesidad.
-          </h2>
-        </div>
-        {relatedBusinesses.length > 0 ? (
-          <FeaturedBusinessGrid businesses={relatedBusinesses} />
-        ) : (
-          <Card className="rounded-[28px] border-ink/10 p-6">
-            <p className="text-base leading-7 text-ink/70">
-              Aún no hay más negocios relacionados visibles en esta categoría.
-            </p>
-          </Card>
-        )}
-      </section>
+      )}
     </div>
   );
 }

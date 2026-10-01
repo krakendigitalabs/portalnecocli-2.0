@@ -34,10 +34,10 @@
 **Estado:** 🟢 Desplegando Magia | **Foco:** Interfaz Premium
 > "El nivel visual que hemos alcanzado en el módulo de conductores es exquisito. La implementación del `swipe-button` (deslizar para aceptar) y la cabina de navegación satelital respiran exclusividad. El diseño compite cara a cara con Uber y Airbnb."
 
-**🎯 Próximos Pasos:**
-1. Diseñar el layout ultra-premium para las Fichas Detalladas de Hoteles y Cabañas (imágenes hero, grids masonry).
-2. Diseñar los "Tickets Digitales Visuales" de Escrow que el usuario recibe tras su compra.
-3. Refinar la paleta de colores corporativa para unificar las identidades del Marketplace y el módulo de aliados B2B.
+**🎯 Próximos Pasos / Checklist de Calidad:**
+- [x] Diseñar el layout ultra-premium para las Fichas Detalladas de Hoteles y Cabañas (imágenes hero, grids masonry).
+- [x] Diseñar los "Tickets Digitales Visuales" de Escrow que el usuario recibe tras su compra.
+- [x] Refinar la paleta de colores corporativa para unificar las identidades del Marketplace y el módulo de aliados B2B.
 - **🌿 Rama a Crear:** `feature/ui-luxury-marketplace`
 - **🚀 Punto a Escalar:** Empaquetar nuestros componentes Tailwind en un sistema de diseño propio ("Neco UI") exportable a otros desarrollos de Kraken Labs.
 
