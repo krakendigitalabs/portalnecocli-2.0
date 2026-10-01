@@ -76,7 +76,8 @@ export async function startRideAction(rideId: string, driverId: string) {
 
       const ride = rideDoc.data() as Ride;
       if (ride.driver_id !== driverId) throw new Error("No eres el conductor de esta carrera");
-      if (ride.status !== "ACCEPTED") throw new Error("Solo las carreras aceptadas se pueden iniciar");
+      if (ride.status !== "ACCEPTED")
+        throw new Error("Solo las carreras aceptadas se pueden iniciar");
 
       t.update(rideRef, {
         status: "IN_PROGRESS",

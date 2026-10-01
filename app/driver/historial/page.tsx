@@ -20,7 +20,7 @@ export default async function DriverHistoryPage() {
   }
 
   const db = getFirestore(getFirebaseAdminApp());
-  
+
   // Traemos todas las carreras del conductor y filtramos en memoria
   // para evitar problemas de índices compuestos faltantes en Firestore
   const ridesSnapshot = await db
@@ -29,7 +29,7 @@ export default async function DriverHistoryPage() {
     .get();
 
   const historyRides = ridesSnapshot.docs
-    .map((doc) => ({ id: doc.id, ...doc.data() } as any))
+    .map((doc) => ({ id: doc.id, ...doc.data() }) as any)
     .filter((r) => r.status === "COMPLETED" || r.status === "CANCELLED")
     .sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
 

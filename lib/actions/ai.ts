@@ -2,6 +2,7 @@
 
 import { FunctionDeclaration, GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { submitConciergeRequest } from "./concierge";
+import { getCachedMarketplaceBusinesses } from "@/app/actions/marketplace";
 
 const apiKey = process.env.GEMINI_API_KEY;
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
@@ -181,9 +182,27 @@ export async function chatWithAlejandro(
   }
 
   try {
+    const businesses = await getCachedMarketplaceBusinesses();
+    const catalogString =
+      businesses.length > 0
+        ? businesses
+            .map(
+              (b: any) =>
+                `- ${b.name} (${b.category}): ${b.shortDescription} | Precio: ${b.priceRange}`,
+            )
+            .join("\n")
+        : "No hay comercios registrados.";
+
+    const dynamicSystemPrompt = `${SYSTEM_PROMPT}
+
+=== CATÁLOGO COMERCIAL EN TIEMPO REAL (BASE DE DATOS) ===
+Estos son los aliados comerciales activos. Usa esta información para enrutarlos y ofrecer sus servicios:
+${catalogString}
+=========================================================`;
+
     const model = genAI.getGenerativeModel({
       model: "gemini-flash-lite-latest",
-      systemInstruction: SYSTEM_PROMPT,
+      systemInstruction: dynamicSystemPrompt,
       tools: [{ functionDeclarations: [enviarSolicitudTool, solicitarCarreraTool] }],
       generationConfig: {
         temperature: 0.7,
@@ -280,7 +299,7 @@ export async function chatWithAlejandro(
     return result.response.text();
   } catch (error: any) {
     console.error("Error in AI chat:", error.message || error);
-    
+
     const isOverloaded = error.message && error.message.includes("503");
 
     // Mensaje de contingencia comercial humano (Fallback) limpio, sin errores crudos.

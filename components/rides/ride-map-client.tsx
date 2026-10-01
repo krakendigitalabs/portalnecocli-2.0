@@ -128,11 +128,18 @@ export default function RideMapClient({
 
   async function getAddressFromCoords(lat: number, lng: number): Promise<string> {
     try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`,
+      );
       const data = await res.json();
       if (data && data.address) {
         const road = data.address.road || data.address.pedestrian || "";
-        const neighbourhood = data.address.neighbourhood || data.address.suburb || data.address.village || data.address.town || "Necoclí";
+        const neighbourhood =
+          data.address.neighbourhood ||
+          data.address.suburb ||
+          data.address.village ||
+          data.address.town ||
+          "Necoclí";
         let address = road ? `${road}, ${neighbourhood}` : neighbourhood;
         return `${address} - GPS: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
       }

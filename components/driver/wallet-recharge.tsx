@@ -17,7 +17,7 @@ export function WalletRecharge({ userId }: { userId: string }) {
       const newRef = `TOPUP_${userId}_${Date.now()}`;
       setReference(newRef);
       const amountInCents = amount * 100;
-      
+
       try {
         const sig = await generateWompiSignature(newRef, amountInCents, "COP");
         setSignature(sig);
@@ -25,7 +25,7 @@ export function WalletRecharge({ userId }: { userId: string }) {
         console.error("Error generando firma de Wompi:", err);
       }
     }
-    
+
     prepareSignature();
   }, [amount, userId]);
 
@@ -35,7 +35,7 @@ export function WalletRecharge({ userId }: { userId: string }) {
       <p className="text-sm text-white/60">
         Mantén tu saldo positivo para seguir recibiendo carreras. Pagos seguros por Wompi.
       </p>
-      
+
       <div className="grid grid-cols-2 gap-3 mt-4 mb-6">
         {PREDEFINED_AMOUNTS.map((val) => (
           <button

@@ -32,11 +32,11 @@ export default async function DriverProfilePage() {
 
   let totalSales = 0;
   let totalNet = 0;
-  
+
   ridesSnapshot.forEach((doc) => {
     const data = doc.data();
-    totalSales += (data.final_price || 0);
-    totalNet += (data.driver_net || data.final_price || 0);
+    totalSales += data.final_price || 0;
+    totalNet += data.driver_net || data.final_price || 0;
   });
 
   const totalRides = ridesSnapshot.size;
@@ -74,20 +74,24 @@ export default async function DriverProfilePage() {
         {/* Rendimiento Financiero (Ventas Generadas) */}
         <div className="bg-gradient-to-br from-emerald-900/40 to-[#2A2D35] rounded-3xl p-5 border border-emerald-500/20 space-y-4 shadow-lg shadow-emerald-900/20 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl" />
-          
+
           <h3 className="text-sm font-bold text-emerald-400 uppercase tracking-widest border-b border-emerald-500/20 pb-2">
             Rendimiento Histórico
           </h3>
-          
+
           <div className="grid grid-cols-2 gap-4 pt-2">
             <div>
               <p className="text-xs text-white/50 font-semibold mb-1">Ventas Generadas</p>
-              <p className="text-2xl font-black text-white">${totalSales.toLocaleString("es-CO")}</p>
+              <p className="text-2xl font-black text-white">
+                ${totalSales.toLocaleString("es-CO")}
+              </p>
               <p className="text-[10px] text-white/40 mt-1">Bruto facturado</p>
             </div>
             <div>
               <p className="text-xs text-white/50 font-semibold mb-1">Tus Ganancias</p>
-              <p className="text-2xl font-black text-emerald-400">${totalNet.toLocaleString("es-CO")}</p>
+              <p className="text-2xl font-black text-emerald-400">
+                ${totalNet.toLocaleString("es-CO")}
+              </p>
               <p className="text-[10px] text-white/40 mt-1">Libre para ti</p>
             </div>
           </div>
@@ -111,7 +115,7 @@ export default async function DriverProfilePage() {
               <p className="font-semibold">{driverProfile.phone_number}</p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-4 border-b border-white/5 pb-4">
             <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0">
               <Car className="w-5 h-5 text-purple-400" />
@@ -130,7 +134,9 @@ export default async function DriverProfilePage() {
               <ShieldCheck className="w-5 h-5 text-emerald-400" />
             </div>
             <div>
-              <p className="text-xs text-white/40 uppercase tracking-widest font-bold">Identificación</p>
+              <p className="text-xs text-white/40 uppercase tracking-widest font-bold">
+                Identificación
+              </p>
               <p className="font-semibold">CC: {driverProfile.identification_number}</p>
             </div>
           </div>

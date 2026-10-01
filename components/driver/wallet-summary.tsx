@@ -29,7 +29,7 @@ export function WalletSummary({
       {progress >= 100 && (
         <div className="absolute inset-0 bg-gradient-to-tr from-yellow-500/10 via-amber-400/5 to-transparent pointer-events-none" />
       )}
-      
+
       <div className="flex items-center justify-between mb-4 relative z-10">
         <div>
           <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-0.5">
@@ -41,7 +41,7 @@ export function WalletSummary({
             ${balance.toLocaleString("es-CO")}
           </p>
         </div>
-        <Link 
+        <Link
           href="/driver/billetera"
           className="bg-white/10 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-white/20 transition-all active:scale-95 flex items-center gap-1"
         >
@@ -55,19 +55,21 @@ export function WalletSummary({
           <div>
             <p className="text-xs font-bold text-white/80">Meta del Día</p>
             <p className="text-[10px] text-white/40 mt-0.5">
-              {progress >= 100 
+              {progress >= 100
                 ? "¡Increíble! Alcanzaste tu meta. 🏆"
                 : remaining === 1
-                ? "¡Solo 1 viaje más para la meta! 🔥"
-                : `Estás a ${remaining} viajes de tu meta.`}
+                  ? "¡Solo 1 viaje más para la meta! 🔥"
+                  : `Estás a ${remaining} viajes de tu meta.`}
             </p>
           </div>
-          <span className="text-sm font-black text-white/90">{ridesCompleted}/{dailyGoal}</span>
+          <span className="text-sm font-black text-white/90">
+            {ridesCompleted}/{dailyGoal}
+          </span>
         </div>
-        
+
         {/* Progress Bar */}
         <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
-          <motion.div 
+          <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 1, type: "spring", bounce: 0.2 }}

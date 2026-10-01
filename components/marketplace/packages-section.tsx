@@ -101,7 +101,7 @@ const packages = [
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790714003/18_doeyfe.jpg",
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790714007/12_yvzosx.jpg",
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790714004/13_gwyils.jpg",
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1777075437/5_rgphce.jpg"
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1777075437/5_rgphce.jpg",
     ],
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1744003434/turismo_necocli_57_gqvstk.jpg",
@@ -207,7 +207,7 @@ export function PackagesSection() {
                         <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent lg:hidden pointer-events-none" />
                       </>
                     )}
-                    
+
                     <div className="absolute bottom-6 left-6 right-6 lg:hidden pointer-events-none z-30">
                       <span className="mb-2 inline-block text-[10px] font-bold uppercase tracking-widest bg-white/20 text-white border border-white/30 backdrop-blur-sm px-3 py-1 rounded-full">
                         {pkg.highlight}

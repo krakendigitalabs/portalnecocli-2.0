@@ -3,7 +3,8 @@ import { CinematicGallery } from "@/components/marketplace/cinematic-gallery";
 
 export const metadata: Metadata = {
   title: "Galería y Catálogo · Portal Necoclí",
-  description: "Descubre el paraíso a través de nuestra galería inmersiva de alojamientos, experiencias y gastronomía en Necoclí.",
+  description:
+    "Descubre el paraíso a través de nuestra galería inmersiva de alojamientos, experiencias y gastronomía en Necoclí.",
 };
 
 export default function GaleriaPage() {
@@ -25,7 +26,6 @@ export default function GaleriaPage() {
 
         {/* Componente Cinemático */}
         <CinematicGallery />
-        
       </div>
     </main>
   );

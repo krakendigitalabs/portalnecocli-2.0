@@ -22,16 +22,19 @@ export function RideBoard({ rides, walletBalance, onAcceptRide }: RideBoardProps
   const activeRide = rides.find((r) => r.status === "ACCEPTED" || r.status === "IN_PROGRESS");
   const [completing, setCompleting] = useState(false);
 
-  const handleAccept = useCallback(async (rideId: string) => {
-    setAcceptingId(rideId);
-    try {
-      await onAcceptRide(rideId);
-    } catch (err) {
-      console.error("Error aceptando carrera:", err);
-    } finally {
-      setAcceptingId(null);
-    }
-  }, [onAcceptRide]);
+  const handleAccept = useCallback(
+    async (rideId: string) => {
+      setAcceptingId(rideId);
+      try {
+        await onAcceptRide(rideId);
+      } catch (err) {
+        console.error("Error aceptando carrera:", err);
+      } finally {
+        setAcceptingId(null);
+      }
+    },
+    [onAcceptRide],
+  );
 
   async function handleComplete() {
     if (!activeRide) return;

@@ -143,14 +143,24 @@ export function LoginForm({ nextPath, requestedRole }: LoginFormProps) {
             className="w-full group relative flex items-center justify-between p-5 rounded-2xl border-2 border-ink/5 bg-white hover:border-ink hover:bg-ink transition-all text-left disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <div>
-              <p className="text-base font-bold text-ink group-hover:text-white transition-colors">Turista</p>
-              <p className="text-sm text-ink/60 mt-0.5 group-hover:text-white/70 transition-colors">Explora, reserva y viaja</p>
+              <p className="text-base font-bold text-ink group-hover:text-white transition-colors">
+                Turista
+              </p>
+              <p className="text-sm text-ink/60 mt-0.5 group-hover:text-white/70 transition-colors">
+                Explora, reserva y viaja
+              </p>
             </div>
             <div className="w-10 h-10 rounded-full bg-ink/5 flex items-center justify-center group-hover:bg-white group-hover:text-ink transition-colors">
               {loadingPath === "/customer" ? (
                 <div className="w-5 h-5 border-2 border-ink/20 border-t-ink rounded-full animate-spin group-hover:border-white/40 group-hover:border-t-ink" />
               ) : (
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               )}
@@ -165,14 +175,24 @@ export function LoginForm({ nextPath, requestedRole }: LoginFormProps) {
             className="w-full group relative flex items-center justify-between p-5 rounded-2xl border-2 border-ink/5 bg-white hover:border-ink hover:bg-ink transition-all text-left disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <div>
-              <p className="text-base font-bold text-ink group-hover:text-white transition-colors">Conductor Aliado</p>
-              <p className="text-sm text-ink/60 mt-0.5 group-hover:text-white/70 transition-colors">Recibe carreras y gana</p>
+              <p className="text-base font-bold text-ink group-hover:text-white transition-colors">
+                Conductor Aliado
+              </p>
+              <p className="text-sm text-ink/60 mt-0.5 group-hover:text-white/70 transition-colors">
+                Recibe carreras y gana
+              </p>
             </div>
             <div className="w-10 h-10 rounded-full bg-ink/5 flex items-center justify-center group-hover:bg-white group-hover:text-ink transition-colors">
               {loadingPath === "/driver" ? (
                 <div className="w-5 h-5 border-2 border-ink/20 border-t-ink rounded-full animate-spin group-hover:border-white/40 group-hover:border-t-ink" />
               ) : (
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               )}
@@ -187,14 +207,24 @@ export function LoginForm({ nextPath, requestedRole }: LoginFormProps) {
             className="w-full group relative flex items-center justify-between p-5 rounded-2xl border-2 border-ink/5 bg-white hover:border-ink hover:bg-ink transition-all text-left disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <div>
-              <p className="text-base font-bold text-ink group-hover:text-white transition-colors">Comercio</p>
-              <p className="text-sm text-ink/60 mt-0.5 group-hover:text-white/70 transition-colors">Hoteles, restaurantes y tours</p>
+              <p className="text-base font-bold text-ink group-hover:text-white transition-colors">
+                Comercio
+              </p>
+              <p className="text-sm text-ink/60 mt-0.5 group-hover:text-white/70 transition-colors">
+                Hoteles, restaurantes y tours
+              </p>
             </div>
             <div className="w-10 h-10 rounded-full bg-ink/5 flex items-center justify-center group-hover:bg-white group-hover:text-ink transition-colors">
               {loadingPath === "/merchant" ? (
                 <div className="w-5 h-5 border-2 border-ink/20 border-t-ink rounded-full animate-spin group-hover:border-white/40 group-hover:border-t-ink" />
               ) : (
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               )}

@@ -76,15 +76,14 @@ export async function processDirectReservation(reservationId: string) {
 
     const db = getFirestore(getFirebaseAdminApp());
     const amountFormatted = (reservation.total_amount / 100).toLocaleString("es-CO");
-    
+
     await db.collection("mail").add({
       to: ["krakendigitalabs@gmail.com", "portalnecocli@gmail.com"],
       message: {
         subject: `Nueva Reserva Directa - ${reservation.business_name} - Cód: ${reservation.reference_code}`,
-        text: `Hola equipo de Portal Necoclí,\n\nSe ha confirmado una reserva mediante acuerdo directo.\n\nDETALLES DE LA RESERVA:\n- Comercio: ${reservation.business_name}\n- Código de Reserva: ${reservation.reference_code}\n- Total: $${amountFormatted} COP\n\nMIS DATOS:\n- Nombre: ${reservation.lead.full_name}\n- Teléfono / WhatsApp: ${reservation.lead.phone} ${reservation.lead.whatsapp ? `/ ${reservation.lead.whatsapp}` : ''}\n\nPor favor, contactar al cliente para coordinar.`
-      }
+        text: `Hola equipo de Portal Necoclí,\n\nSe ha confirmado una reserva mediante acuerdo directo.\n\nDETALLES DE LA RESERVA:\n- Comercio: ${reservation.business_name}\n- Código de Reserva: ${reservation.reference_code}\n- Total: $${amountFormatted} COP\n\nMIS DATOS:\n- Nombre: ${reservation.lead.full_name}\n- Teléfono / WhatsApp: ${reservation.lead.phone} ${reservation.lead.whatsapp ? `/ ${reservation.lead.whatsapp}` : ""}\n\nPor favor, contactar al cliente para coordinar.`,
+      },
     });
-
   } catch (error) {
     console.error("Error al procesar reserva directa:", error);
     throw new Error("No se pudo procesar la reserva. Intente nuevamente.");

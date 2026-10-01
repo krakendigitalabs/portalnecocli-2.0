@@ -21,8 +21,10 @@ const PACKAGES: PackageOption[] = [
     shortName: "Sol y Playa Express",
     price: 562500, // 375.000 + 50%
     tags: "2 NOCHES · YATE · COMIDAS INCLUIDAS",
-    description: "Una escapada completa de 2 noches. Llegás la noche anterior, disfrutás un día de sol en yate con almuerzo...",
-    imageUrl: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737933627/Playa_necocli_2_z5rgq9.jpg",
+    description:
+      "Una escapada completa de 2 noches. Llegás la noche anterior, disfrutás un día de sol en yate con almuerzo...",
+    imageUrl:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737933627/Playa_necocli_2_z5rgq9.jpg",
   },
   {
     id: "noche-express",
@@ -30,7 +32,8 @@ const PACKAGES: PackageOption[] = [
     shortName: "Noche Express",
     price: 375000, // 250.000 + 50%
     tags: "SÁB & DOM · PAREJA · PISCINA + MAR",
-    description: "Ideal para parejas que buscan una escapada rápida de fin de semana. Alojamiento premium y acceso a la playa.",
+    description:
+      "Ideal para parejas que buscan una escapada rápida de fin de semana. Alojamiento premium y acceso a la playa.",
     imageUrl: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737748238/elegida_10_qeylgb.jpg",
   },
   {
@@ -39,7 +42,8 @@ const PACKAGES: PackageOption[] = [
     shortName: "Full Necoclí VIP",
     price: 930000, // 620.000 + 50%
     tags: "2 DÍAS · TODO INCLUIDO · PISCINA + MAR",
-    description: "La experiencia definitiva. Sin preocupaciones, todo está resuelto para que vivas 2 días de puro lujo caribeño.",
+    description:
+      "La experiencia definitiva. Sin preocupaciones, todo está resuelto para que vivas 2 días de puro lujo caribeño.",
     imageUrl: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737936904/slider_3_mymktw.png",
   },
   {
@@ -48,8 +52,10 @@ const PACKAGES: PackageOption[] = [
     shortName: "Alojamiento",
     price: 67500, // 45.000 + 50%
     tags: "1 NOCHE · DESAYUNO INCLUIDO",
-    description: "Descansa cómodamente en instalaciones tradicionales con la brisa del mar y un desayuno típico para iniciar el día.",
-    imageUrl: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003514/turismo_necocli_45_mxvzea.jpg",
+    description:
+      "Descansa cómodamente en instalaciones tradicionales con la brisa del mar y un desayuno típico para iniciar el día.",
+    imageUrl:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003514/turismo_necocli_45_mxvzea.jpg",
   },
   {
     id: "tour-aventura",
@@ -57,9 +63,10 @@ const PACKAGES: PackageOption[] = [
     shortName: "Aventura Extrema",
     price: 180000, // 120.000 + 50%
     tags: "FULL DAY · TRANSPORTE · GUÍA LOCAL",
-    description: "Explora la selva, sumérgete en el lodo medicinal y finaliza con un recorrido en lancha. Ideal para aventureros.",
+    description:
+      "Explora la selva, sumérgete en el lodo medicinal y finaliza con un recorrido en lancha. Ideal para aventureros.",
     imageUrl: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744736290/guia_jontzc.jpg",
-  }
+  },
 ];
 
 export function PackageBookingForm() {
@@ -83,7 +90,7 @@ export function PackageBookingForm() {
           className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#111c24]" />
-        
+
         <div className="absolute inset-0 p-6 flex flex-col justify-between z-10">
           <div>
             <h3 className="text-3xl font-black text-white italic tracking-tight drop-shadow-md">
@@ -119,7 +126,9 @@ export function PackageBookingForm() {
       {/* ─── FORMULARIO ─── */}
       <div className="p-6 bg-white flex-1 overflow-y-auto">
         <h4 className="text-xl font-bold text-slate-900">Reserva tu lugar</h4>
-        <p className="text-sm text-slate-500 mb-6">Completa tus datos para confirmar disponibilidad.</p>
+        <p className="text-sm text-slate-500 mb-6">
+          Completa tus datos para confirmar disponibilidad.
+        </p>
 
         <form className="space-y-4">
           <div className="space-y-1.5">
@@ -152,9 +161,7 @@ export function PackageBookingForm() {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-500 tracking-wide">
-                TELÉFONO
-              </label>
+              <label className="text-xs font-bold text-slate-500 tracking-wide">TELÉFONO</label>
               <input
                 type="tel"
                 placeholder="+57 300 000 0000"
@@ -162,9 +169,7 @@ export function PackageBookingForm() {
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-500 tracking-wide">
-                CORREO
-              </label>
+              <label className="text-xs font-bold text-slate-500 tracking-wide">CORREO</label>
               <input
                 type="email"
                 placeholder="juan@email.com"
@@ -175,9 +180,7 @@ export function PackageBookingForm() {
 
           <div className="grid grid-cols-3 gap-4">
             <div className="space-y-1.5 relative">
-              <label className="text-xs font-bold text-slate-500 tracking-wide">
-                FECHA
-              </label>
+              <label className="text-xs font-bold text-slate-500 tracking-wide">FECHA</label>
               <div className="relative">
                 <input
                   type="text"
@@ -200,9 +203,7 @@ export function PackageBookingForm() {
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-500 tracking-wide">
-                HUÉSPEDES
-              </label>
+              <label className="text-xs font-bold text-slate-500 tracking-wide">HUÉSPEDES</label>
               <input
                 type="number"
                 min="1"

@@ -19,8 +19,11 @@ async function fetchMarketplaceBusinesses(): Promise<FeaturedBusiness[]> {
     }
 
     const db = getFirebaseAdminFirestore();
-    const snapshot = await db.collection(BUSINESSES_COLLECTION).where("isActive", "!=", false).get();
-    
+    const snapshot = await db
+      .collection(BUSINESSES_COLLECTION)
+      .where("isActive", "!=", false)
+      .get();
+
     if (snapshot.empty) {
       console.log("Firestore businesses collection is empty. Falling back to seed data.");
       return featuredBusinessesSeed;
@@ -45,14 +48,10 @@ async function fetchMarketplaceBusinesses(): Promise<FeaturedBusiness[]> {
  * Cached version of the businesses fetcher.
  * Bypasses Next.js unstable_cache during tests to avoid invariant errors.
  */
-export const getCachedMarketplaceBusinesses = 
-  process.env.NODE_ENV === "test" 
-    ? fetchMarketplaceBusinesses 
-    : unstable_cache(
-        fetchMarketplaceBusinesses,
-        ["marketplace-businesses-cache"],
-        {
-          revalidate: 3600, // Revalidate cache every hour
-          tags: ["marketplace-businesses"],
-        }
-      );
+export const getCachedMarketplaceBusinesses =
+  process.env.NODE_ENV === "test"
+    ? fetchMarketplaceBusinesses
+    : unstable_cache(fetchMarketplaceBusinesses, ["marketplace-businesses-cache"], {
+        revalidate: 3600, // Revalidate cache every hour
+        tags: ["marketplace-businesses"],
+      });
