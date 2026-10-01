@@ -15,7 +15,7 @@ type ToursPageProps = {
 
 export default async function ToursPage({ searchParams }: ToursPageProps) {
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
-  const data = getMarketplaceListingData(resolvedSearchParams, {
+  const data = await getMarketplaceListingData(resolvedSearchParams, {
     serviceType: "turismo",
   });
 

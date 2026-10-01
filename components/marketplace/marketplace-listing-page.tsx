@@ -11,8 +11,8 @@ type MarketplaceListingPageProps = {
   data: MarketplaceListingData;
 };
 
-export function MarketplaceListingPage({ data }: MarketplaceListingPageProps) {
-  const categoryLinks = getMarketplaceCategories();
+export async function MarketplaceListingPage({ data }: MarketplaceListingPageProps) {
+  const categoryLinks = await getMarketplaceCategories();
   const summary = getMarketplaceSearchSummary(data.filters);
   const categoryOptions = categoryLinks
     .filter((category) => category.key !== "all")

@@ -1,6 +1,7 @@
 import "server-only";
 import { type App, cert, getApp, getApps, initializeApp } from "firebase-admin/app";
 import { type Auth, getAuth } from "firebase-admin/auth";
+import { getFirestore } from "firebase-admin/firestore";
 
 type FirebaseAdminConfig = {
   projectId: string;
@@ -74,4 +75,8 @@ export function getFirebaseAdminApp(): App {
 
 export function getFirebaseAdminAuth(): Auth {
   return getAuth(getFirebaseAdminApp());
+}
+
+export function getFirebaseAdminFirestore() {
+  return getFirestore(getFirebaseAdminApp());
 }
