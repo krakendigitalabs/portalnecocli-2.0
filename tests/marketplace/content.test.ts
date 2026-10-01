@@ -20,8 +20,8 @@ describe("marketplace content", () => {
     ).toBe("domicilios");
   });
 
-  it("filters businesses by service type, location, price and rating", () => {
-    const listing = getMarketplaceListingData(
+  it("filters businesses by service type, location, price and rating", async () => {
+    const listing = await getMarketplaceListingData(
       {
         q: "playa",
         location: "Zona Playa",
@@ -46,10 +46,11 @@ describe("marketplace content", () => {
     ).toBe(true);
   });
 
-  it("exposes featured experiences and category navigation", () => {
-    const categories = getMarketplaceCategories();
+  it("exposes featured experiences and category navigation", async () => {
+    const categories = await getMarketplaceCategories();
+    const experiences = await getFeaturedExperiences(2);
 
     expect(categories.some((category) => category.href === "/hoteles")).toBe(true);
-    expect(getFeaturedExperiences(2)).toHaveLength(1);
+    expect(experiences).toHaveLength(1);
   });
 });

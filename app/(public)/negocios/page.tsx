@@ -20,7 +20,7 @@ export default async function BusinessesDirectoryPage({
   searchParams,
 }: BusinessesDirectoryPageProps) {
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
-  const data = getMarketplaceListingData(resolvedSearchParams);
+  const data = await getMarketplaceListingData(resolvedSearchParams);
 
   return <MarketplaceListingPage data={data} />;
 }

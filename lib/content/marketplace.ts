@@ -1,4 +1,4 @@
-import { featuredBusinessesSeed } from "@/data/featured-businesses";
+import { getCachedMarketplaceBusinesses } from "@/app/actions/marketplace";
 import { getServiceTypeLabel } from "@/lib/utils/business-links";
 import type { BusinessServiceType, FeaturedBusiness } from "@/types/featured-business";
 import type {
@@ -120,13 +120,14 @@ function getDefaultFilters(): MarketplaceFilters {
   };
 }
 
-export function getMarketplaceCategories() {
+export async function getMarketplaceCategories() {
+  const businesses = await getCachedMarketplaceBusinesses();
+
   return marketplaceCategories.map((category) => {
     const totalCount =
       category.serviceType === "all"
-        ? featuredBusinessesSeed.length
-        : featuredBusinessesSeed.filter((business) => business.serviceType === category.serviceType)
-            .length;
+        ? businesses.length
+        : businesses.filter((business) => business.serviceType === category.serviceType).length;
 
     return {
       ...category,
@@ -220,10 +221,11 @@ export function getMarketplaceSearchFilters(
   };
 }
 
-export function getMarketplaceBusinesses(filters: MarketplaceFilters) {
+export async function getMarketplaceBusinesses(filters: MarketplaceFilters) {
   const query = normalizeText(filters.query);
+  const allBusinesses = await getCachedMarketplaceBusinesses();
 
-  return featuredBusinessesSeed.filter((business) => {
+  return allBusinesses.filter((business) => {
     if (filters.serviceType !== "all" && business.serviceType !== filters.serviceType) {
       return false;
     }
@@ -270,13 +272,14 @@ export function getMarketplaceBusinesses(filters: MarketplaceFilters) {
   });
 }
 
-export function getMarketplaceFilterOptions(
+export async function getMarketplaceFilterOptions(
   serviceType: BusinessServiceType | "all" = "all",
-): MarketplaceFilterOptions {
+): Promise<MarketplaceFilterOptions> {
+  const allBusinesses = await getCachedMarketplaceBusinesses();
   const scopedBusinesses =
     serviceType === "all"
-      ? featuredBusinessesSeed
-      : featuredBusinessesSeed.filter((business) => business.serviceType === serviceType);
+      ? allBusinesses
+      : allBusinesses.filter((business) => business.serviceType === serviceType);
 
   return {
     locations: Array.from(
@@ -289,31 +292,34 @@ export function getMarketplaceFilterOptions(
   };
 }
 
-export function getMarketplaceListingData(
+export async function getMarketplaceListingData(
   searchParams?: MarketplaceSearchParams,
   defaults: Partial<MarketplaceFilters> = {},
-): MarketplaceListingData {
+): Promise<MarketplaceListingData> {
   const filters = getMarketplaceSearchFilters(searchParams, defaults);
-  const businesses = getMarketplaceBusinesses(filters);
+  const businesses = await getMarketplaceBusinesses(filters);
   const category = getMarketplaceCategoryByServiceType(filters.serviceType);
+  const options = await getMarketplaceFilterOptions(filters.serviceType);
 
   return {
     filters,
     businesses,
     totalCount: businesses.length,
-    options: getMarketplaceFilterOptions(filters.serviceType),
+    options,
     category,
   };
 }
 
-export function getFeaturedMarketplaceBusinesses(limit = 6) {
-  return featuredBusinessesSeed
+export async function getFeaturedMarketplaceBusinesses(limit = 6) {
+  const allBusinesses = await getCachedMarketplaceBusinesses();
+  return allBusinesses
     .filter((business) => business.featured && business.serviceType !== "turismo")
     .slice(0, limit);
 }
 
-export function getFeaturedExperiences(limit = 3) {
-  return featuredBusinessesSeed
+export async function getFeaturedExperiences(limit = 3) {
+  const allBusinesses = await getCachedMarketplaceBusinesses();
+  return allBusinesses
     .filter((business) => business.serviceType === "turismo" && business.featured)
     .slice(0, limit);
 }

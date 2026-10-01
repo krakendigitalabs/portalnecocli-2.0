@@ -12,8 +12,8 @@ import {
   getMarketplaceFilterOptions,
 } from "@/lib/content/marketplace";
 
-export default function PublicHomePage() {
-  const marketplaceCategories = getMarketplaceCategories();
+export default async function PublicHomePage() {
+  const marketplaceCategories = await getMarketplaceCategories();
   const homeCategories = businessCategories
     .filter((category) => category.slug !== "delivery")
     .map((category) => {
@@ -24,9 +24,9 @@ export default function PublicHomePage() {
         metric: match?.metric,
       };
     });
-  const featuredBusinesses = getFeaturedMarketplaceBusinesses(6);
-  const featuredExperiences = getFeaturedExperiences(3);
-  const filterOptions = getMarketplaceFilterOptions();
+  const featuredBusinesses = await getFeaturedMarketplaceBusinesses(6);
+  const featuredExperiences = await getFeaturedExperiences(3);
+  const filterOptions = await getMarketplaceFilterOptions();
 
   return (
     <div className="pb-14">

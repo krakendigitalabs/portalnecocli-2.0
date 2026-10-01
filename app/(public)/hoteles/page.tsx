@@ -15,7 +15,7 @@ type HotelsPageProps = {
 
 export default async function HotelsPage({ searchParams }: HotelsPageProps) {
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
-  const data = getMarketplaceListingData(resolvedSearchParams, {
+  const data = await getMarketplaceListingData(resolvedSearchParams, {
     serviceType: "hotel",
   });
 
