@@ -151,7 +151,7 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
         await resend.emails.send({
           from: "Portal Necoclí <reservas@portalnecocli.com>", // Asegúrate de verificar este dominio en Resend
           to: [firstPassengerEmail, "portalnecocli@gmail.com", operatorEmail],
-          reply_to: firstPassengerEmail,
+          replyTo: firstPassengerEmail,
           subject: `🎟️ Tu Pre-reserva Marítima ha sido confirmada - ${ticketId} - ${operatorName}`,
           html: `
             <div style="font-family: 'Inter', sans-serif; max-w-lg mx-auto bg-white p-8 border border-gray-100 rounded-2xl shadow-sm text-gray-800">
