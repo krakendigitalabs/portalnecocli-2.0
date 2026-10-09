@@ -141,8 +141,8 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
       validatedData.operator === "caribe" ? "El Caribe S.A.S." : "Sol y Playa S.A.S.";
     const operatorEmail =
       validatedData.operator === "caribe"
-        ? "reservas@elcaribesas.com"
-        : "reservas@solyplayasas.com"; // TODO: Actualizar correos reales en variables de entorno
+        ? process.env.CARIBE_SAS_EMAIL || "operadormaritimocaribesas@gmail.com"
+        : process.env.SOL_PLAYA_EMAIL || "reservastransportessolyplaya@gmail.com";
 
     if (process.env.RESEND_API_KEY && firstPassengerEmail) {
       try {
@@ -151,6 +151,7 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
         await resend.emails.send({
           from: "Portal Necoclí <reservas@portalnecocli.com>", // Asegúrate de verificar este dominio en Resend
           to: [firstPassengerEmail, "portalnecocli@gmail.com", operatorEmail],
+          reply_to: firstPassengerEmail,
           subject: `🎟️ Tu Pre-reserva Marítima ha sido confirmada - ${ticketId} - ${operatorName}`,
           html: `
             <div style="font-family: 'Inter', sans-serif; max-w-lg mx-auto bg-white p-8 border border-gray-100 rounded-2xl shadow-sm text-gray-800">
@@ -178,6 +179,20 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
                   <td style="padding: 8px 0; border-bottom: 1px solid #e2e8f0; text-align: right; color: #059669; font-weight: bold;">$${validatedData.totalPrice.toLocaleString("es-CO")} COP</td>
                 </tr>
               </table>
+
+              <div style="margin-bottom: 30px; font-size: 14px; color: #475569; background-color: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <strong style="display: block; margin-bottom: 10px; color: #0f172a;">Detalle de Pasajeros:</strong>
+                <ul style="list-style-type: none; padding: 0; margin: 0;">
+                  ${validatedData.passengers.map(p => `
+                    <li style="padding: 6px 0; border-bottom: 1px dotted #cbd5e1; font-size: 13px;">
+                      <strong>${p.name}</strong> - ${p.docType} ${p.docNum} 
+                      ${p.phone ? `| Tel: ${p.phone}` : ''} 
+                      ${p.email ? `| Correo: ${p.email}` : ''}
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+
               <div style="background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px 16px; margin-bottom: 25px; border-radius: 4px;">
                 <p style="margin: 0; font-size: 13px; color: #92400e;">
                   <strong>🧳 Política de Equipaje:</strong> Tienes 10 kg incluidos por pasajero. El peso excedente tiene un valor de <strong>$2.000 COP</strong> por cada kilo adicional, pagaderos exclusivamente en la taquilla de la naviera.
