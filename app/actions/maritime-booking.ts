@@ -141,8 +141,8 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
       validatedData.operator === "caribe" ? "El Caribe S.A.S." : "Sol y Playa S.A.S.";
     const operatorEmail =
       validatedData.operator === "caribe"
-        ? "reservas@elcaribesas.com"
-        : "reservas@solyplayasas.com"; // TODO: Actualizar correos reales en variables de entorno
+        ? "operadormaritimocaribesas@gmail.com"
+        : "reservastransportessolyplaya@gmail.com"; // TODO: Actualizar correos reales en variables de entorno
 
     if (process.env.RESEND_API_KEY && firstPassengerEmail) {
       try {
