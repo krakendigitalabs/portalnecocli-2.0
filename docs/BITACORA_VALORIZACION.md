@@ -11,8 +11,12 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 ---
 
 ## 📊 Resumen de Valorización Acumulada
-- **Total Horas Invertidas Registradas:** 77.6 hrs
-- **Valorización Total del Software (Mercado):** $13,680 USD
+- **Total Horas Invertidas Registradas:** 90.6 hrs *(incluye 1.5 hrs estimadas de la Sesión #33, por confirmar)*
+- **Valorización Total del Software (Mercado):** $18,170 USD
+- **Última Sesión Registrada:** #34 (15/10/2026)
+
+> [!NOTE]
+> **Conciliación contable (15/10/2026):** Al sumar sesión por sesión se encontró un desfase de **$80 USD** en los acumulados parciales. La Sesión #22-B registró $11,980 en vez de $12,010 (11,930 + 80), y la Sesión #23 ($50) nunca se sumó al acumulado. Los acumulados parciales de cada sesión se conservan como registro histórico. **Los totales de este resumen son la cifra auditada oficial.**
 
 ---
 
@@ -374,7 +378,8 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 
 ---
 
-### 📝 Sesión #24: Control de Calidad, Tarifarios 2026 y Refactorización del Core de Transacciones
+### 📝 Sesión #22-B: Control de Calidad, Tarifarios 2026 y Refactorización del Core de Transacciones
+*(Renumerada el 15/10/2026: antes figuraba como #24, número que pertenece a Neco-Dispatch.)*
 - **Fecha:** 25 de Septiembre de 2026
 - **Agentes Involucrados:** Arquitecto de Software, CISO & Hacker Defensivo, Cronista de Código.
 - **Objetivo:** Auditar deuda técnica, estabilizar el flujo de correos y conectar la base de conocimiento real de la plataforma con la Inteligencia Artificial.
@@ -564,3 +569,62 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 - **Valorización Total Acumulada: $17,230 USD**
 
 > *«Un portal que aspira a atraer turistas internacionales de alto poder adquisitivo debe vestir como tal. Hoy hemos envuelto nuestra robusta ingeniería en un traje hecho a la medida, donde cada pixel inspira exclusividad y confianza.»*
+
+---
+
+### 📅 EL MENSAJERO DE LOS MARES (Sesión #32): Enrutamiento Inteligente y Escrow Naval
+- **⏰ Entrada:** 10:30 AM | **⏰ Salida:** 11:50 AM
+- **⏳ Horas Dedicadas:** 1.33 hrs
+- **📌 Estado:** `Listo a Producción`
+- **🧠 Nivel de Complejidad:** `Media / Alta (CI/CD)`
+- **💰 Valorización del Módulo/Trabajo:** `$350 USD` *(Estructuración de correos transaccionales, listas dinámicas y resolución de despliegue).*
+- **🛠️ Relato de la Jornada:**
+  El motor de reservas marítimas exigía precisión absoluta en sus comunicaciones. Guiados por la necesidad de conectar perfectamente al turista con su naviera, el escuadrón técnico rediseñó el sistema de notificaciones del *Tour de Islas*. El flujo fue bifurcado inteligentemente: los correos ahora detectan si la reserva pertenece a *Caribe SAS* o *Sol y Playa*, enrutando los mensajes a sus respectivos correos corporativos (protegidos ahora bajo las bóvedas seguras de las variables de entorno `.env`). 
+  Para dotar a los operadores del máximo control, la plantilla HTML mutó: el frío contador de pasajeros dio paso a una elegante lista detallada con nombres, documentos y contactos de cada tripulante. Además, se forjó el lazo directo configurando el `replyTo` en Resend, permitiendo a la naviera responder el ticket y contactar mágicamente al cliente. Y aunque el severo Ojo de Vercel (TypeScript) intentó bloquear nuestro avance por un sutil error sintáctico (`reply_to` vs `replyTo`), el Agente 4 lo interceptó en pleno vuelo, aplicando un parche quirúrgico y liberando el despliegue al instante. La flota ya tiene su sistema de mensajería impecable.
+- **📄 Archivos Alterados:** `app/actions/maritime-booking.ts`, `.env.local`.
+
+**💰 Valorización Añadida:**
+- $350 USD (Enrutamiento transaccional avanzado y blindaje de tipos).
+- **Nuevo Valor del Módulo (Comunicaciones Navieras): $350 USD**
+- **Valorización Total Acumulada: $17,580 USD**
+
+> *«No basta con capturar la reserva; hay que saber guiarla hasta el destino. Hoy le hemos dado a las navieras de Necoclí los nombres, los contactos y la voz directa con sus viajeros. El puente naval está operando al 100%.»*
+
+---
+
+### 📅 LA EMBAJADA ANTE EL PALACIO MUNICIPAL (Sesión #33): Pitch Deck Digital B2G en `/gobierno`
+- **⏰ Entrada:** No registrada | **⏰ Salida:** No registrada *(registro retroactivo; el código llegó con el merge del 14/10/2026 a las 22:36)*
+- **⏳ Horas Dedicadas:** 1.5 hrs *(estimado, por confirmar con Yessy)*
+- **📌 Estado:** `Listo a Producción`
+- **🧠 Nivel de Complejidad:** `Media / Estrategia Comercial B2G`
+- **💰 Valorización del Módulo/Trabajo:** `$450 USD` *(Landing de inversión institucional, modelo de regalías y proyección financiera a 5 años; estimado).*
+- **🛠️ Relato de la Jornada:**
+  El Agente 10, Director de Expansión Gubernamental, dejó por un momento los mapas de Necoclí y se puso a preparar la presentación ante la Alcaldía. De ese trabajo salió `/gobierno`: un Pitch Deck Digital que se recorre con el scroll y está pensado para alcaldes, cámaras de comercio y gremios turísticos. Abre con `PitchHero`, que muestra la visión del portal. Sigue `TechStackShowcase`, que presenta en cuatro pilares (Plataforma Inteligente, Pagos 100% Seguros, Coordinación Logística y Conexión de Clase Mundial) el arsenal tecnológico construido en las sesiones anteriores. Después viene la propuesta central: `RoyaltiesExplainer`, el *Pacto Vitalicio*. Portal Necoclí destina el **5% de sus ventas totales** al territorio: **3% para la Ciudad y sus Playas** y **2% para el Gremio Fundador**. Cierra `InvestmentRoi` con una **Proyección a 5 Años** que traduce ese pacto en cifras para el municipio. Este capítulo se escribe tarde porque el código llegó con la fusión de ramas antes de que el Cronista pudiera anotarlo.
+- **📄 Archivos Alterados:** `app/(public)/gobierno/page.tsx`, `components/b2g/pitch-hero.tsx`, `components/b2g/tech-stack-showcase.tsx`, `components/b2g/royalties-explainer.tsx`, `components/b2g/investment-roi.tsx`.
+- **📎 Evidencias:** [gobierno/page.tsx](file:///c:/portal-necocli/app/(public)/gobierno/page.tsx), [PROPUESTA_ALCALDIA_NECOCLI.md](file:///c:/portal-necocli/docs/PROPUESTA_ALCALDIA_NECOCLI.md)
+
+**💰 Valorización Añadida:**
+- $450 USD (Pitch Deck Digital B2G y modelo de regalías; estimado).
+- **Nuevo Valor del Módulo (Expansión B2G): $450 USD**
+- **Valorización Total Acumulada (auditada): $18,110 USD**
+
+> *«Un alcalde no compra código; compra futuro para su pueblo. Hoy le dimos a ese futuro una forma visible y una cifra concreta: el 5%.»*
+
+---
+
+### 📅 LA RECONCILIACIÓN DE LAS RAMAS (Sesión #34): Conflicto de Merge y Auditoría Contable
+- **⏰ Entrada:** 03:27 PM | **⏰ Salida:** 03:45 PM
+- **⏳ Horas Dedicadas:** 0.3 hrs
+- **📌 Estado:** `Listo a Producción`
+- **🧠 Nivel de Complejidad:** `Baja / DevOps & Auditoría`
+- **💰 Valorización del Módulo/Trabajo:** `$60 USD` *(Resolución de conflicto de merge, verificación TypeScript y conciliación de la bitácora).*
+- **🛠️ Relato de la Jornada:**
+  Al fusionar `main` con la rama de trabajo, dos versiones del enrutamiento naviero quedaron en disputa dentro de `maritime-booking.ts`, y los marcadores `<<<<<<<` y `>>>>>>>` bloquearon la compilación. El Agente 4 se quedó con la versión de `HEAD`: los correos de *El Caribe S.A.S.* y *Sol y Playa S.A.S.* se leen desde `CARIBE_SAS_EMAIL` y `SOL_PLAYA_EMAIL`, con las direcciones actuales como respaldo. Así queda cumplido el `TODO` que traía la rama `main`. Mientras tanto, el Agente 7 revisó la bitácora completa y encontró tres fallas: un resumen detenido en $13,680 USD, dos sesiones con el número #24 y $80 USD perdidos entre acumulados parciales. Con la conciliación hecha, los totales vuelven a ser confiables.
+- **📄 Archivos Alterados:** `app/actions/maritime-booking.ts`, `docs/BITACORA_VALORIZACION.md`.
+- **📎 Evidencias:** [maritime-booking.ts](file:///c:/portal-necocli/app/actions/maritime-booking.ts)
+
+**💰 Valorización Añadida:**
+- $60 USD (Resolución de merge y auditoría contable).
+- **Valorización Total Acumulada (auditada): $18,170 USD**
+
+> *«Las ramas de un mismo árbol a veces crecen en direcciones opuestas; el trabajo del jardinero es que vuelvan a dar fruto juntas.»*

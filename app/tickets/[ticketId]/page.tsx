@@ -102,28 +102,35 @@ export default async function EscrowTicketPage({ params }: Props) {
       <style>{`
         @media print {
           * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-          html, body { 
-            background: white !important; 
-            margin: 0 !important; 
-            padding: 0 !important; 
-            height: 100% !important;
-            max-height: 100vh !important;
-            overflow: hidden !important;
+          html, body {
+            background: white !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            height: auto !important;
+            overflow: visible !important;
           }
-          
+
           /* Oculta explícitamente el header y footer global del portal */
-          header, footer, [data-app-shell-header], [data-app-shell-footer] { display: none !important; }
-          
+          header, footer, nav,
+          [data-app-shell-header], [data-app-shell-footer] { display: none !important; }
+
           /* Forzar al layout base a no ocupar espacio extra */
           body > div { min-height: 0 !important; height: auto !important; }
-          main { padding: 0 !important; margin: 0 !important; min-height: 0 !important; background: white !important; }
-          
-          /* Escalar todo al 75% para que quepa en 1 hoja A4 */
+          main {
+            padding: 0 !important;
+            margin: 0 !important;
+            min-height: 0 !important;
+            background: white !important;
+            overflow: visible !important;
+          }
+
+          /* Escalar todo al 72% para que quepa en 1 hoja A4 sin recortar */
           .ticket-wrapper {
             max-width: 100% !important;
             padding: 0 !important;
             margin: 0 auto !important;
-            zoom: 0.75;
+            transform: scale(0.72);
+            transform-origin: top center;
           }
           .ticket-card {
             box-shadow: none !important;
@@ -140,7 +147,7 @@ export default async function EscrowTicketPage({ params }: Props) {
           .qr-img { width: 90px !important; height: 90px !important; }
           @page {
             size: A4 portrait;
-            margin: 6mm;
+            margin: 8mm;
           }
         }
       `}</style>

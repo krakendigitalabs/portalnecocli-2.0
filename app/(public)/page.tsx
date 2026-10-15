@@ -89,11 +89,10 @@ export default async function PublicHomePage() {
                   Turismo Local
                 </span>
                 <h3 className="text-2xl font-bold text-white mb-2 font-tropical">
-                  Aventura en el Golfo
+                  Aventura en Necoclí
                 </h3>
                 <p className="text-sm text-white/75 leading-relaxed">
-                  Playas vírgenes, manglares y el mar dulce más grande del mundo. Tours en lancha,
-                  kayak y avistamiento de ballenas.
+                  Playas vírgenes, manglares y el mar dulce más grande del mundo. Tours en lancha.
                 </p>
               </div>
             </div>
@@ -112,7 +111,7 @@ export default async function PublicHomePage() {
                 </span>
                 <h3 className="text-2xl font-bold text-white mb-2 font-tropical">Historia Viva</h3>
                 <p className="text-sm text-white/75 leading-relaxed">
-                  Malecón, iglesia colonial, cementerio náutico y el Parque del Bebé. Necoclí guarda
+                  Malecón, Casa de nuestras culturas, Cabaña Portal Necocli,Remate
                   siglos de historias junto al mar.
                 </p>
               </div>
