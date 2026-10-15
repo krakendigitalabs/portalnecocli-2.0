@@ -34,8 +34,9 @@ export default function TurismoLocalPage() {
           </div>
           <h2 className="text-2xl font-bold text-ink mb-3">Afíliate como Conductor</h2>
           <p className="text-ink/60 mb-8 flex-1 text-sm">
-            ¿Tienes un motocarro, mototaxi o lancha? Únete a nuestra flota oficial, recibe carreras
-            directo en tu celular y aumenta tus ingresos diarios sin intermediarios físicos.
+            ¿Tienes un motocarro, mototaxi, lancha, chiva o campero? Únete a nuestro servicio de turismo inteligente, recibe carreras
+            directo en tu celular y aumenta tus ingresos diarios trabajando con portal necocli.
+
           </p>
           <Link
             href="/conductores"
@@ -76,7 +77,7 @@ export default function TurismoLocalPage() {
           <h2 className="text-2xl font-bold text-ink mb-3">Tu Billetera Digital</h2>
           <p className="text-ink/60 mb-8 flex-1 text-sm">
             Administra tu saldo prepago, realiza recargas seguras vía Nequi, Bancolombia o PSE para
-            seguir recibiendo carreras, y consulta tu historial financiero.
+            seguir recibiendo servicios, y consulta tu historial financiero.
           </p>
           <Link
             href="/driver/billetera"
@@ -92,7 +93,7 @@ export default function TurismoLocalPage() {
         <h3 className="text-2xl font-bold text-ink mb-4">¿Buscas transporte o domicilios?</h3>
         <p className="text-ink/60 mb-6">
           Si eres turista o local y necesitas solicitar un motocarro, un taxi o pedir un domicilio
-          de los mejores restaurantes, háblale directamente a nuestro guía virtual inteligente.
+          de los mejores restaurantes, háblale directamente a nuestro guía Local Alejandro.
         </p>
         <ChatbotTriggerButton />
       </div>
