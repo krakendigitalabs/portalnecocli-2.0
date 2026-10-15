@@ -375,8 +375,9 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
       }
     }
 
-    let wompiLink;
     // WOMPI DESACTIVADO HASTA NUEVA ORDEN - Pago directo en taquillas
+    // Al reactivar el bloque de abajo, cambiar `const` por `let`.
+    const wompiLink: string | undefined = undefined;
     /*
     if (validatedData.isSolidarityActive) {
        const pubKey = process.env.NEXT_PUBLIC_WOMPI_TEST_KEY || process.env.NEXT_PUBLIC_WOMPI_KEY || "pub_test_XXX";
