@@ -1,6 +1,7 @@
 "use server";
 
 import { z } from "zod";
+import { generateMaritimeTicketPdf } from "@/lib/pdf/maritime-ticket-pdf";
 
 const PassengerSchema = z.object({
   name: z.string().min(2, "Nombre del pasajero requerido (mínimo 2 caracteres)"),
@@ -164,27 +165,6 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
           )
           .join("");
 
-        // Build per-passenger HTML for attached ticket
-        const passengerCardsTicket = validatedData.passengers
-          .map(
-            (p, i) => `
-          <div class="passenger-card">
-            <div class="pname">Pasajero ${i + 1}: ${p.name}</div>
-            <p><strong>Documento:</strong> ${p.docType} ${p.docNum}</p>
-            ${p.phone ? `<p><strong>Teléfono:</strong> ${p.phone}</p>` : ""}
-            ${p.email ? `<p><strong>Correo:</strong> ${p.email}</p>` : ""}
-            <div style="margin-top:6px;">
-              ${p.petFriendly ? `<span class="badge badge-pet">🐾 Viaja con Mascota (Pet Friendly)</span>` : ""}
-              ${p.allergies ? `<span class="badge badge-allergy">⚠️ Tiene Alergias declaradas</span>` : ""}
-            </div>
-          </div>`,
-          )
-          .join("");
-
-        const solidarityRow = validatedData.isSolidarityActive
-          ? `<tr><td>Aporte Solidario Motonecos</td><td>$5.000 COP (Incluido)</td></tr>`
-          : "";
-
         // Payment info per naviera
         const isCaribe = validatedData.operator === "caribe";
         const paymentInfoEmail = isCaribe
@@ -211,114 +191,35 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
   <p style="font-size:12px;color:#4ade80;margin:12px 0 0;">⚠️ Envía el comprobante de pago al WhatsApp de la naviera para confirmar tu reserva.</p>
 </div>`;
 
-        const paymentInfoTicket = isCaribe
-          ? `<div class="payment-box">
-  <h2>💳 Datos de Pago — El Caribe S.A.S. / Viajes Altamar SAS</h2>
-  <p class="payment-note">Para asegurar tu cupo, realiza un abono del <strong>50% o más</strong>:</p>
-  <table class="info">
-    <tr><td>🏦 Banco</td><td>Bancolombia — Cuenta de Ahorros</td></tr>
-    <tr><td>📄 Número de Cuenta</td><td><strong class="acct">55100011232</strong></td></tr>
-    <tr><td>👤 A nombre de</td><td>Viajes Altamar SAS</td></tr>
-    <tr><td>📲 Nequi / Llave</td><td><strong class="acct">@transportenecocli</strong></td></tr>
-  </table>
-  <p class="payment-note" style="margin-top:10px;">⚠️ Envía el comprobante de pago al WhatsApp de la naviera para confirmar tu reserva.</p>
-</div>`
-          : `<div class="payment-box">
-  <h2>💳 Datos de Pago — Transportes Sol y Playa S.A.S.</h2>
-  <p class="payment-note">Para asegurar tu cupo, realiza un abono del <strong>50% o más</strong>:</p>
-  <table class="info">
-    <tr><td>🏦 Banco</td><td>Bancolombia — Cuenta de Ahorros</td></tr>
-    <tr><td>📄 Número de Cuenta</td><td><strong class="acct">73900001145</strong></td></tr>
-    <tr><td>🔑 Número de Llave</td><td><strong class="acct">0048072607</strong></td></tr>
-    <tr><td>👤 A nombre de</td><td>Transportes Sol y Playa S.A.S.</td></tr>
-  </table>
-  <p class="payment-note" style="margin-top:10px;">⚠️ Envía el comprobante de pago al WhatsApp de la naviera para confirmar tu reserva.</p>
-</div>`;
-
-        const attachmentHtml = `<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Tiquete Pre-Reserva - ${ticketId}</title>
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f9ff;color:#1e293b;padding:30px}
-    .ticket{max-width:680px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.1)}
-    .header{background:linear-gradient(135deg,#0369a1,#0ea5e9);color:#fff;padding:28px 32px;text-align:center}
-    .header h1{font-size:26px;font-weight:800}
-    .header p{font-size:13px;opacity:.85;margin-top:6px}
-    .ticket-code{background:#f0f9ff;border:2px dashed #7dd3fc;border-radius:12px;margin:24px 32px;padding:20px;text-align:center}
-    .ticket-code span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:#0369a1;margin-bottom:6px}
-    .ticket-code strong{font-size:30px;color:#0c4a6e;letter-spacing:3px}
-    .section{padding:0 32px 24px}
-    .section h2{font-size:13px;font-weight:700;color:#0369a1;border-bottom:2px solid #e0f2fe;padding-bottom:8px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
-    table.info{width:100%;border-collapse:collapse;font-size:14px}
-    table.info td{padding:9px 6px;border-bottom:1px solid #f1f5f9}
-    table.info td:first-child{font-weight:600;color:#475569;width:46%}
-    table.info td:last-child{color:#0f172a;text-align:right}
-    .passenger-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px;margin-bottom:12px;font-size:14px}
-    .pname{font-size:15px;font-weight:700;color:#0369a1;margin-bottom:8px}
-    .passenger-card p{margin:4px 0;color:#475569}
-    .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;margin-top:6px;margin-right:6px}
-    .badge-pet{background:#ede9fe;color:#6d28d9}
-    .badge-allergy{background:#fee2e2;color:#b91c1c}
-    .footer{background:#f8fafc;border-top:1px solid #e2e8f0;text-align:center;padding:18px 32px;font-size:12px;color:#94a3b8;line-height:1.8}
-    .footer strong{color:#0369a1}
-    .value-highlight{color:#059669;font-weight:700;font-size:15px}
-    .acct{font-size:18px;letter-spacing:1.5px;color:#14532d}
-    .payment-box{background:#f0fdf4;border:2px solid #22c55e;border-radius:12px;padding:20px 22px;margin:0 32px 24px}
-    .payment-box h2{font-size:13px;font-weight:800;color:#15803d;margin:0 0 12px;text-transform:uppercase;letter-spacing:.5px}
-    .payment-note{font-size:13px;color:#166534;margin:0 0 10px;line-height:1.6}
-    .print-btn{display:block;text-align:center;margin:20px auto 0;padding:10px 28px;background:#0369a1;color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-weight:600}
-    @media print{body{padding:0;background:#fff}.ticket{box-shadow:none}.print-btn{display:none}}
-  </style>
-</head>
-<body>
-  <div class="ticket">
-    <div class="header">
-      <h1>🛥️ Portal Necoclí</h1>
-      <p>Tiquete Oficial de Pre-Reserva Marítima</p>
-    </div>
-    <div class="ticket-code">
-      <span>Código de Reserva</span>
-      <strong>${ticketId}</strong>
-    </div>
-    <div class="section">
-      <h2>📍 Detalles del Viaje</h2>
-      <table class="info">
-        <tr><td>Origen</td><td>${validatedData.origin}</td></tr>
-        <tr><td>Naviera</td><td>${operatorName}</td></tr>
-        <tr><td>Destino</td><td>${validatedData.destination}</td></tr>
-        <tr><td>Trayecto</td><td>${validatedData.journeyType === "ida" ? "Solo Ida" : "Ida y Vuelta"}</td></tr>
-        <tr><td>Tipo de Plan</td><td>${validatedData.tripType.toUpperCase()}</td></tr>
-        <tr><td>Fecha de Viaje</td><td>${validatedData.date ?? "Sin fecha"}</td></tr>
-        <tr><td>Total Pasajeros</td><td>${validatedData.passengers.length}</td></tr>
-        <tr><td>Fecha de Reserva</td><td>${registerDate} — ${registerTime}</td></tr>
-        <tr><td>Valor a pagar en taquilla</td><td><span class="value-highlight">$${validatedData.totalPrice.toLocaleString("es-CO")} COP</span></td></tr>
-        ${solidarityRow}
-      </table>
-    </div>
-    <div class="section">
-      <h2>👥 Pasajeros</h2>
-      ${passengerCardsTicket}
-    </div>
-    ${paymentInfoTicket}
-    <div class="section">
-      <h2>🧳 Política de Equipaje</h2>
-      <p style="font-size:13px;color:#92400e;background:#fffbeb;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;line-height:1.6;">
-        Tienes <strong>10 kg incluidos</strong> por pasajero. El peso excedente tiene un valor de <strong>$2.000 COP</strong> por cada kilo adicional, pagaderos exclusivamente en la taquilla de la naviera.
-      </p>
-    </div>
-    <div class="footer">
-      Reserva gestionada por <strong>Portal Necoclí</strong> · Kraken Digital Labs<br/>
-      Operado por <strong>${operatorName}</strong><br/>
-      <a href="https://portalnecocli.com" style="color:#0369a1;text-decoration:none;">portalnecocli.com</a> · reservas@portalnecocli.com
-    </div>
-  </div>
-  <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
-</body>
-</html>`;
+        const ticketPdf = await generateMaritimeTicketPdf({
+          ticketId,
+          operatorName,
+          origin: validatedData.origin,
+          destination: validatedData.destination,
+          journeyLabel: validatedData.journeyType === "ida" ? "Solo Ida" : "Ida y Vuelta",
+          tripType: validatedData.tripType,
+          travelDate: validatedData.date ?? "Sin fecha",
+          registeredAt: `${registerDate} — ${registerTime}`,
+          totalPrice: validatedData.totalPrice,
+          isSolidarityActive: validatedData.isSolidarityActive,
+          passengers: validatedData.passengers,
+          paymentTitle: isCaribe
+            ? "Datos de Pago — El Caribe S.A.S. / Viajes Altamar SAS"
+            : "Datos de Pago — Transportes Sol y Playa S.A.S.",
+          paymentRows: isCaribe
+            ? [
+                { label: "Banco", value: "Bancolombia — Cuenta de Ahorros" },
+                { label: "Número de Cuenta", value: "55100011232", highlight: true },
+                { label: "A nombre de", value: "Viajes Altamar SAS" },
+                { label: "Nequi / Llave", value: "@transportenecocli", highlight: true },
+              ]
+            : [
+                { label: "Banco", value: "Bancolombia — Cuenta de Ahorros" },
+                { label: "Número de Cuenta", value: "73900001145", highlight: true },
+                { label: "Número de Llave", value: "0048072607", highlight: true },
+                { label: "A nombre de", value: "Transportes Sol y Playa S.A.S." },
+              ],
+        });
 
         await resend.emails.send({
           from: "Portal Necoclí <reservas@portalnecocli.com>",
@@ -354,7 +255,7 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
   <div style="margin-bottom:28px;">${passengerRowsEmail}</div>
   ${paymentInfoEmail}
   <div style="background:#f0fdf4;border:1px solid #bbf7d0;padding:14px 16px;margin-bottom:18px;border-radius:8px;">
-    <p style="margin:0;font-size:13px;color:#166534;"><strong>📎 Tiquete Adjunto:</strong> Encontrarás adjunto el archivo <code>tiquete-${ticketId}.html</code> con todos los datos del viaje y los pasajeros. Ábrelo en tu navegador e imprímelo o guárdalo como PDF para presentarlo en taquilla.</p>
+    <p style="margin:0;font-size:13px;color:#166534;"><strong>📎 Tiquete Adjunto:</strong> Encontrarás adjunto el archivo <code>tiquete-${ticketId}.pdf</code> con todos los datos del viaje y los pasajeros. Descárgalo, imprímelo o muéstralo desde tu celular en la taquilla.</p>
   </div>
   <div style="background:#fffbeb;border-left:4px solid #f59e0b;padding:12px 16px;margin-bottom:25px;border-radius:4px;">
     <p style="margin:0;font-size:13px;color:#92400e;"><strong>🧳 Política de Equipaje:</strong> Tienes 10 kg incluidos por pasajero. El peso excedente tiene un valor de <strong>$2.000 COP</strong> por cada kilo adicional, pagaderos exclusivamente en la taquilla de la naviera.</p>
@@ -364,9 +265,9 @@ export async function processMaritimeBooking(formData: MaritimeBookingInput) {
 </div>`,
           attachments: [
             {
-              filename: `tiquete-${ticketId}.html`,
-              content: Buffer.from(attachmentHtml).toString("base64"),
-              contentType: "text/html",
+              filename: `tiquete-${ticketId}.pdf`,
+              content: Buffer.from(ticketPdf).toString("base64"),
+              contentType: "application/pdf",
             },
           ],
         });

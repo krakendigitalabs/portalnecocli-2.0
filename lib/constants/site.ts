@@ -16,6 +16,7 @@ export const navigationLinks = [
   { href: "/turistas", label: "Paquetes" },
   { href: "/experiencias", label: "Experiencias" },
   { href: "/reservas-maritimas", label: "Tour Islas" },
+  { href: "/tours/cuatrimoto", label: "Cuatrimotos" },
   { href: "/turismo-local", label: "Turismo Local" },
   { href: "/contacto", label: "Contacto" },
 ] as const;
