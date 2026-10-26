@@ -8,11 +8,12 @@ const RiderSchema = z.object({
   fullName: z.string().min(3, "Nombre completo requerido (mínimo 3 caracteres)"),
   cedula: z.string().min(5, "Número de cédula requerido"),
   bloodType: z.string().min(1, "Tipo de sangre requerido"),
-  phone: z.string().optional().default(""),
+  phone: z
+    .union([z.string(), z.undefined(), z.null()])
+    .transform((val) => val ?? ""),
   email: z
-    .union([z.string().email("Correo inválido"), z.literal("")])
-    .optional()
-    .default(""),
+    .union([z.string().email("Correo inválido"), z.literal(""), z.undefined(), z.null()])
+    .transform((val) => val ?? ""),
 });
 
 const AtvBookingSchema = z.object({
@@ -38,7 +39,21 @@ const AtvBookingSchema = z.object({
   depositAmount: z.number().min(0, "Monto del depósito inválido"),
 });
 
-export type AtvBookingServerInput = z.infer<typeof AtvBookingSchema>;
+export interface AtvRiderInput {
+  fullName: string;
+  cedula: string;
+  bloodType: string;
+  phone?: string | null;
+  email?: string | null;
+}
+
+export interface AtvBookingServerInput {
+  route: "ruta1" | "ruta2" | "ruta3" | "ruta4";
+  tourDate: string;
+  riders: AtvRiderInput[];
+  totalPrice: number;
+  depositAmount: number;
+}
 
 // ─── Action ──────────────────────────────────────────────────────────────────
 
