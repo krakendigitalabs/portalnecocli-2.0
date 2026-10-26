@@ -185,7 +185,7 @@ export async function processAtvBooking(formData: AtvBookingServerInput) {
   <div style="background:#fffbeb;border:2px solid #f59e0b;border-radius:12px;padding:20px 22px;margin-bottom:22px;">
     <h3 style="font-size:14px;font-weight:800;color:#92400e;margin:0 0 10px;">📲 Cómo pagar tu anticipo</h3>
     <p style="font-size:13px;color:#78350f;margin:0 0 8px;">Envía el <strong>50% del valor total</strong> por Nequi o transferencia:</p>
-    <p style="font-size:15px;font-weight:700;color:#92400e;margin:0;">Nequi: <span style="letter-spacing:1px;">3217511866</span></p>
+    <p style="font-size:15px;font-weight:700;color:#92400e;margin:0;">Nequi: <span style="letter-spacing:1px;">3044554311</span></p>
     <p style="font-size:12px;color:#b45309;margin:10px 0 0;">⚠️ Envía el comprobante al WhatsApp del operador para confirmar tu reserva.</p>
   </div>
   <div style="background:#f0fdf4;border-left:4px solid #22c55e;padding:12px 16px;margin-bottom:25px;border-radius:4px;">
