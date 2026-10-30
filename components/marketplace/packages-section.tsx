@@ -81,6 +81,35 @@ const packages = [
     ],
   },
   {
+    id: "alojamiento-piscina-comidas",
+    title: "Alojamiento con Piscina y 3 Comidas",
+    description:
+      "Disfruta una estadía con acceso a piscina y desayuno, almuerzo y cena incluidos. Elige la opción individual, para pareja o en acomodación múltiple. Precios por persona y noche.",
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1739291954/turismo_necocli_motonecos_1_mmblod.jpg",
+    highlight: "Piscina · Desayuno · Almuerzo · Cena",
+    options: [
+      {
+        id: "piscina_comidas_individual",
+        label: "Individual — $143.000 por persona/noche",
+        price: 143000,
+        defaultGuests: 1,
+      },
+      {
+        id: "piscina_comidas_pareja",
+        label: "Pareja — $286.000 por noche (2 personas)",
+        price: 143000,
+        defaultGuests: 2,
+      },
+      {
+        id: "piscina_comidas_multiple",
+        label: "Acomodación múltiple — $132.000 por persona/noche",
+        price: 132000,
+        defaultGuests: 1,
+      },
+    ],
+  },
+  {
     id: "sol-playa-express",
     title: "Sol y Playa Express",
     description:
