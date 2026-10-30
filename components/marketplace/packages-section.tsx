@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronUp } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BookingForm } from "@/components/marketplace/booking-form";
 import { Container } from "@/components/ui/container";
 
@@ -38,9 +38,10 @@ function PackageImageCarousel({ images, title }: { images: string[]; title: stri
 
       {images.length > 1 && (
         <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20 lg:bottom-4">
-          {images.map((_, idx) => (
+          {images.map((image, idx) => (
             <button
-              key={idx}
+              key={image}
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 setCurrentIndex(idx);
@@ -59,9 +60,9 @@ function PackageImageCarousel({ images, title }: { images: string[]; title: stri
 const packages = [
   {
     id: "alojamiento-basico",
-    title: "Alojamiento Básico",
+    title: "Escape Práctico Necoclí",
     description:
-      "Opción económica y cómoda para hospedaje. Incluye acceso a piscina frente al mar, parqueadero, opción de alimentación a la habitación, WiFi y zonas de descanso. Ideal para el viajero práctico que busca relajarse en Necoclí.",
+      "Alojamiento económico y práctico con WiFi, ideal para descansar y disfrutar Necoclí.",
     images: [
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790716675/hab_sencilla_atuadx.jpg",
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790716687/triple33_ymv8ww.jpg",
@@ -70,62 +71,102 @@ const packages = [
     ],
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1739291954/turismo_necocli_motonecos_1_mmblod.jpg",
-    highlight: "Económico · Piscina frente al mar",
+    highlight: "Económico · Práctico · WiFi",
     options: [
-      { id: "basico_ventilador", label: "Alojamiento - Ventilador", price: 70000 },
-      { id: "basico_aire", label: "Alojamiento - Aire Acondicionado", price: 70000 },
-      { id: "piscina_persona", label: "Alojamiento + Piscina (Por persona)", price: 90000 },
-      { id: "piscina_pareja", label: "Alojamiento + Piscina (Plan Pareja)", price: 175000 },
-      { id: "mar_persona", label: "Vista al Mar (Por persona)", price: 90000 },
-      { id: "mar_pareja", label: "Vista al Mar (Plan Pareja)", price: 175000 },
+      {
+        id: "basico_individual",
+        label: "Individual — $40.000 por persona",
+        price: 40000,
+        defaultGuests: 1,
+      },
+      {
+        id: "basico_pareja",
+        label: "Pareja — $75.000 total (2 personas)",
+        price: 37500,
+        defaultGuests: 2,
+      },
+      {
+        id: "basico_multiple",
+        label: "Acomodación múltiple — $35.000 por persona",
+        price: 35000,
+        defaultGuests: 1,
+      },
     ],
   },
   {
     id: "alojamiento-piscina-comidas",
-    title: "Alojamiento con Piscina y 3 Comidas",
+    title: "Sabor & Sol Sin Preocupaciones",
     description:
-      "Disfruta una estadía con acceso a piscina y desayuno, almuerzo y cena incluidos. Elige la opción individual, para pareja o en acomodación múltiple. Precios por persona y noche.",
+      "Pensión completa con piscina, desayuno, almuerzo y cena. Elige entre los dos bloques de alojamiento y las opciones de dos o tres comidas.",
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1739291954/turismo_necocli_motonecos_1_mmblod.jpg",
     highlight: "Piscina · Desayuno · Almuerzo · Cena",
     options: [
       {
-        id: "piscina_comidas_individual",
-        label: "Individual — $143.000 por persona/noche",
-        price: 143000,
+        id: "piscina_bloque1_individual_3",
+        label: "Bloque 1 — Individual, 3 comidas · $165.000 por persona",
+        price: 165000,
         defaultGuests: 1,
       },
       {
-        id: "piscina_comidas_pareja",
-        label: "Pareja — $286.000 por noche (2 personas)",
-        price: 143000,
+        id: "piscina_bloque1_individual_2",
+        label: "Bloque 1 — Individual, 2 comidas · $154.000 por persona",
+        price: 154000,
+        defaultGuests: 1,
+      },
+      {
+        id: "piscina_bloque1_pareja",
+        label: "Bloque 1 — Pareja, 3 comidas · $330.000 total",
+        price: 165000,
         defaultGuests: 2,
       },
       {
-        id: "piscina_comidas_multiple",
-        label: "Acomodación múltiple — $132.000 por persona/noche",
+        id: "piscina_bloque2_individual_3",
+        label: "Bloque 2 — Individual, 3 comidas · $143.000 por persona",
+        price: 143000,
+        defaultGuests: 1,
+      },
+      {
+        id: "piscina_bloque2_individual_2",
+        label: "Bloque 2 — Individual, 2 comidas · $132.000 por persona",
         price: 132000,
         defaultGuests: 1,
+      },
+      {
+        id: "piscina_bloque2_pareja",
+        label: "Bloque 2 — Pareja, 3 comidas · $286.000 total",
+        price: 143000,
+        defaultGuests: 2,
       },
     ],
   },
   {
     id: "sol-playa-express",
-    title: "Sol y Playa Express",
-    description:
-      "Una escapada completa de 2 noches. Llegás la noche anterior, disfrutás un día de sol en yate con almuerzo incluido, y regresás cómodamente con alojamiento y desayuno. Todo organizado para que solo pienses en disfrutar.",
+    title: "Navega Necoclí: Yate & Mar",
+    description: "Disfruta un día de sol navegando en yate, con almuerzo y refrigerio incluidos.",
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1737932109/Playa_necocli_6_usilb7.jpg",
-    highlight: "2 noches · Yate · Comidas incluidas",
+    highlight: "Día de sol · Yate · Almuerzo y refrigerio",
+    bookingUrl: "https://tours.portalnecocli.com/reservas-maritimas",
     options: [
-      { id: "spe_completo", label: "Paquete Completo (2 noches + Yate + Comidas)", price: 375000 },
+      {
+        id: "navega_necocli",
+        label: "Día de sol en yate — $210.000 por persona",
+        price: 210000,
+        priceUnit: "per_person" as const,
+      },
     ],
   },
   {
     id: "noche-express",
-    title: "Noche Express",
+    title: "Escapada Romántica de Fin de Semana",
     description:
-      "Ideal para parejas que buscan una escapada de fin de semana. Alojamiento con alimento, transporte en motocarro hacia el sitio con piscina y a una cuadra del mar, y regreso al hotel incluido. Disponible sábados y domingos.",
+      "Plan para parejas con alojamiento, transporte, piscina, vista al mar y acceso a playa privada.",
+    details: [
+      "Incluye un desayuno por noche, de 7:30 a. m. a 9:00 a. m.",
+      "Incluye una cena frente a la playa, de 6:30 p. m. a 7:30 p. m.",
+      "Precio del paquete para pareja: $400.000.",
+    ],
     images: [
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790714003/18_doeyfe.jpg",
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790714007/12_yvzosx.jpg",
@@ -134,57 +175,67 @@ const packages = [
     ],
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1744003434/turismo_necocli_57_gqvstk.jpg",
-    highlight: "Sáb & Dom · Pareja · Piscina + A una cuadra del mar",
-    options: [{ id: "nx_pareja", label: "Noche Express — Pareja (Sáb o Dom)", price: 250000 }],
+    highlight: "Fin de semana · Pareja · Piscina · Playa privada",
+    options: [
+      {
+        id: "escapada_romantica_pareja",
+        label: "Pareja — $400.000 total (1 noche)",
+        price: 200000,
+        defaultGuests: 2,
+      },
+    ],
   },
   {
     id: "fin-de-semana",
-    title: "Fin de Semana Completo",
+    title: "Necoclí Imparable: Tour & Playa",
     description:
-      "Sábado y domingo de experiencias. Hotel frente al mar con alimento y piscina, tour local el primer día. El domingo, motocarro al amanecer hacia el sitio con piscina y mar, con transporte de regreso al hotel.",
+      "Dos días de naturaleza y mar para descubrir algunos de los paisajes más especiales de Necoclí.",
+    details: [
+      "Sábado: recorrido por la vereda Peniel, el Árbol Mágico, la Ciénaga del Salado y el río.",
+      "Domingo: día de sol con visita a tres islas, almuerzo y refrigerio.",
+      "Precio: $790.000 por persona.",
+    ],
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1744003480/turismo_30_dzr8jh.jpg",
-    highlight: "2 días · Hotel frente al mar · Tour local",
-    options: [{ id: "fds_completo", label: "Fin de Semana Completo (Sáb + Dom)", price: 500000 }],
-  },
-  {
-    id: "full-necocli-vip",
-    title: "Full Necoclí VIP",
-    description:
-      "La experiencia definitiva en dos días. Día 1: hotel con piscina, desayuno, almuerzo, turismo local y cena frente al mar. Día 2: tour en la naturaleza, día de sol, almuerzo, acceso a piscina y al mar, cena y regreso al hotel.",
-    image:
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1739243210/IMG_20241217_173322_xfanmb.jpg",
-    highlight: "2 días · Todo incluido · Piscina + Mar",
-    options: [{ id: "vip_full", label: "Full VIP — Todo Incluido (2 días)", price: 620000 }],
-  },
-  {
-    id: "en-naturaleza",
-    title: "En Naturaleza",
-    description:
-      "Para el viajero independiente. Alojamiento cómodo en entorno natural, con la libertad de elegir cuántas comidas incluir: desayuno, almuerzo o cena. Arma tu plan perfecto.",
-    image:
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1739291954/turismo_necocli_motonecos_1_mmblod.jpg",
-    highlight: "Flexible · 1 noche · Elige tus comidas",
+    highlight: "2 días · Árbol Mágico · Ciénaga · Tres islas",
     options: [
-      { id: "nat_solo", label: "Solo Alojamiento con Aire (1 noche)", price: 65000 },
-      { id: "nat_1c", label: "Alojamiento con Aire + 1 Comida", price: 82000 },
-      { id: "nat_2c", label: "Alojamiento con Aire + 2 Comidas", price: 99000 },
-      { id: "nat_3c", label: "Alojamiento con Aire + 3 Comidas", price: 116000 },
+      {
+        id: "necocli_imparable",
+        label: "Necoclí Imparable — $790.000 por persona",
+        price: 790000,
+        priceUnit: "per_person" as const,
+      },
     ],
   },
   {
     id: "alojamiento-multiple",
-    title: "Alojamiento Múltiple",
+    title: "Parche Necoclí (Grupos & Familias)",
     description:
       "Perfecto para grupos, familias o mochileros. Precio especial por noche en alojamiento compartido, con la opción de añadir las comidas que necesites a lo largo del día.",
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1744003485/turismo_necocli_35_c81lmu.jpg",
     highlight: "Grupal · Precio especial · Comidas opcionales",
     options: [
-      { id: "mul_solo", label: "Solo Alojamiento Múltiple (1 noche)", price: 50000 },
-      { id: "mul_1c", label: "Alojamiento Múltiple + 1 Comida", price: 67000 },
-      { id: "mul_2c", label: "Alojamiento Múltiple + 2 Comidas", price: 84000 },
-      { id: "mul_3c", label: "Alojamiento Múltiple + Desayuno, Almuerzo y Cena", price: 101000 },
+      {
+        id: "mul_solo",
+        label: "Parche Necoclí — Solo alojamiento múltiple (1 noche)",
+        price: 50000,
+      },
+      {
+        id: "mul_1c",
+        label: "Parche Necoclí — Alojamiento múltiple + 1 comida",
+        price: 67000,
+      },
+      {
+        id: "mul_2c",
+        label: "Parche Necoclí — Alojamiento múltiple + 2 comidas",
+        price: 84000,
+      },
+      {
+        id: "mul_3c",
+        label: "Parche Necoclí — Alojamiento múltiple + 3 comidas",
+        price: 101000,
+      },
     ],
   },
 ];
@@ -262,6 +313,14 @@ export function PackagesSection() {
                       {pkg.description}
                     </p>
 
+                    {"details" in pkg && pkg.details && (
+                      <ul className="mb-8 space-y-2 text-sm text-ink/70">
+                        {pkg.details.map((detail) => (
+                          <li key={detail}>{detail}</li>
+                        ))}
+                      </ul>
+                    )}
+
                     <div className="mt-auto flex flex-col sm:flex-row sm:items-end justify-between pt-6 border-t border-ink/10 gap-4">
                       <div>
                         <p className="text-[10px] font-bold uppercase tracking-widest text-ink/40 mb-1">
@@ -276,29 +335,41 @@ export function PackagesSection() {
                         </p>
                       </div>
 
-                      <button
-                        onClick={() => setOpenId(isOpen ? null : pkg.id)}
-                        className={`inline-flex items-center justify-center px-6 py-3 rounded-full font-bold text-sm tracking-widest uppercase transition-all duration-300 ${
-                          isOpen
-                            ? "bg-ink/5 text-ink hover:bg-ink/10"
-                            : "bg-ink text-white hover:bg-gold hover:text-ink shadow-lg shadow-ink/20 hover:shadow-gold/30 hover:-translate-y-0.5"
-                        }`}
-                      >
-                        {isOpen ? (
-                          <>
-                            <ChevronUp className="w-4 h-4 mr-2" /> Cerrar
-                          </>
-                        ) : (
-                          <>Reservar →</>
-                        )}
-                      </button>
+                      {"bookingUrl" in pkg && pkg.bookingUrl ? (
+                        <a
+                          href={pkg.bookingUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center px-6 py-3 rounded-full font-bold text-sm tracking-widest uppercase transition-all duration-300 bg-ink text-white hover:bg-gold hover:text-ink shadow-lg shadow-ink/20 hover:shadow-gold/30 hover:-translate-y-0.5"
+                        >
+                          Reservar tour de islas →
+                        </a>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setOpenId(isOpen ? null : pkg.id)}
+                          className={`inline-flex items-center justify-center px-6 py-3 rounded-full font-bold text-sm tracking-widest uppercase transition-all duration-300 ${
+                            isOpen
+                              ? "bg-ink/5 text-ink hover:bg-ink/10"
+                              : "bg-ink text-white hover:bg-gold hover:text-ink shadow-lg shadow-ink/20 hover:shadow-gold/30 hover:-translate-y-0.5"
+                          }`}
+                        >
+                          {isOpen ? (
+                            <>
+                              <ChevronUp className="w-4 h-4 mr-2" /> Cerrar
+                            </>
+                          ) : (
+                            <>Reservar →</>
+                          )}
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
 
                 {/* ─ Inline Booking Form ─ */}
                 <AnimatePresence>
-                  {isOpen && (
+                  {isOpen && !("bookingUrl" in pkg && pkg.bookingUrl) && (
                     <motion.div
                       key="form"
                       initial={{ opacity: 0, height: 0 }}
@@ -330,6 +401,27 @@ export function PackagesSection() {
             );
           })}
         </div>
+
+        <aside className="mt-10 rounded-3xl border border-ink/10 bg-white p-6 sm:p-8 text-sm text-ink/70">
+          <h3 className="mb-4 text-lg font-bold text-ink">
+            Información importante para tu estadía
+          </h3>
+          <ul className="space-y-2">
+            <li>El uso de la piscina requiere gorro y ropa de baño adecuada.</li>
+            <li>
+              La entrada al hotel es desde las 9:00 a. m.; las habitaciones se entregan a las 3:00
+              p. m. y deben dejarse a la 1:00 p. m. del día siguiente.
+            </li>
+            <li>
+              Puedes disfrutar de las instalaciones antes de recibir la habitación y después de
+              entregarla.
+            </li>
+            <li>
+              El seguro hotelero para niños de 0 a 4 años cuesta $49.000 e incluye la entrada y la
+              asistencia médica.
+            </li>
+          </ul>
+        </aside>
       </Container>
     </section>
   );

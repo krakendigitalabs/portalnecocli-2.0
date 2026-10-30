@@ -22,6 +22,7 @@ export type PackageOption = {
   label: string;
   price: number;
   defaultGuests?: number;
+  priceUnit?: "per_person_night" | "per_person";
 };
 
 type BookingFormProps = {
@@ -52,7 +53,7 @@ export function BookingForm({
       businessId,
       serviceName: packageOptions.length > 0 ? packageOptions[0].id : baseServiceName,
       routingType,
-      guests: 1,
+      guests: packageOptions[0]?.defaultGuests ?? 1,
       days: 1,
     },
   });
@@ -65,7 +66,9 @@ export function BookingForm({
   const selectedOption = packageOptions.find((opt) => opt.id === selectedOptionId);
   const totalAmount =
     routingType === "CASE_A" && selectedOption
-      ? selectedOption.price * guestsCount * daysCount
+      ? selectedOption.price *
+        guestsCount *
+        (selectedOption.priceUnit === "per_person" ? 1 : daysCount)
       : undefined;
 
   const onSubmit = async (data: FormValues) => {
@@ -168,10 +171,14 @@ export function BookingForm({
         {/* Service Options Select */}
         {packageOptions.length > 0 && (
           <div>
-            <label className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5">
+            <label
+              htmlFor="serviceName"
+              className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5"
+            >
               Opción del Paquete
             </label>
             <select
+              id="serviceName"
               {...register("serviceName", {
                 onChange: (event) => {
                   const selectedOption = packageOptions.find(
@@ -198,10 +205,14 @@ export function BookingForm({
         )}
 
         <div>
-          <label className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5">
+          <label
+            htmlFor="customerName"
+            className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5"
+          >
             Nombre Completo
           </label>
           <input
+            id="customerName"
             {...register("customerName")}
             className="w-full h-12 px-4 rounded-xl border border-ink/10 bg-white focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all"
             placeholder="Ej. Juan Pérez"
@@ -213,10 +224,14 @@ export function BookingForm({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5">
+            <label
+              htmlFor="customerPhone"
+              className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5"
+            >
               Teléfono
             </label>
             <input
+              id="customerPhone"
               {...register("customerPhone")}
               className="w-full h-12 px-4 rounded-xl border border-ink/10 bg-white focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all"
               placeholder="+57 300 000 0000"
@@ -227,10 +242,14 @@ export function BookingForm({
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5">
+            <label
+              htmlFor="customerEmail"
+              className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5"
+            >
               Correo
             </label>
             <input
+              id="customerEmail"
               type="email"
               {...register("customerEmail")}
               className="w-full h-12 px-4 rounded-xl border border-ink/10 bg-white focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all"
@@ -244,10 +263,14 @@ export function BookingForm({
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5">
+            <label
+              htmlFor="reservationDate"
+              className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5"
+            >
               Fecha
             </label>
             <input
+              id="reservationDate"
               type="date"
               {...register("reservationDate")}
               className="w-full h-12 px-4 rounded-xl border border-ink/10 bg-white focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all"
@@ -260,10 +283,14 @@ export function BookingForm({
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5">
+            <label
+              htmlFor="days"
+              className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5"
+            >
               Días / Noches
             </label>
             <input
+              id="days"
               type="number"
               min={1}
               {...register("days", { valueAsNumber: true })}
@@ -275,10 +302,14 @@ export function BookingForm({
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5">
+            <label
+              htmlFor="guests"
+              className="block text-xs font-bold text-ink/70 uppercase tracking-widest mb-1.5"
+            >
               Huéspedes
             </label>
             <input
+              id="guests"
               type="number"
               min={1}
               {...register("guests", { valueAsNumber: true })}
