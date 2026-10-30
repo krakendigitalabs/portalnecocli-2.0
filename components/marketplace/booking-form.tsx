@@ -282,6 +282,7 @@ export function BookingForm({
             )}
           </div>
 
+        {!(selectedOption?.priceUnit === "per_person") && (
           <div>
             <label
               htmlFor="days"
@@ -300,6 +301,7 @@ export function BookingForm({
               <p className="text-coral text-xs mt-1 font-medium">{errors.days.message}</p>
             )}
           </div>
+        )}
 
           <div>
             <label
