@@ -21,6 +21,7 @@ export type PackageOption = {
   id: string;
   label: string;
   price: number;
+  defaultGuests?: number;
 };
 
 type BookingFormProps = {
@@ -43,6 +44,7 @@ export function BookingForm({
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -170,7 +172,17 @@ export function BookingForm({
               Opción del Paquete
             </label>
             <select
-              {...register("serviceName")}
+              {...register("serviceName", {
+                onChange: (event) => {
+                  const selectedOption = packageOptions.find(
+                    (option) => option.id === event.target.value,
+                  );
+
+                  if (selectedOption?.defaultGuests) {
+                    setValue("guests", selectedOption.defaultGuests);
+                  }
+                },
+              })}
               className="w-full h-12 px-4 rounded-xl border border-ink/10 bg-white focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all"
             >
               {packageOptions.map((opt) => (
