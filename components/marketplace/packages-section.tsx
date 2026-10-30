@@ -57,38 +57,61 @@ function PackageImageCarousel({ images, title }: { images: string[]; title: stri
   );
 }
 
+const ISLAS_IMAGES = [
+  "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003509/turismo_necocli_52_paq3dl.jpg",
+  "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003504/turismo_necocli_31_seediu.jpg",
+  "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003449/turismo_necocli_40_rn8ztu.jpg",
+  "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003414/turismo_necocli_60_cu438c.jpg",
+  "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003378/turismo_necocli_69_r6u6o1.jpg",
+  "https://res.cloudinary.com/dwxk79gt0/image/upload/v1743916015/Copia_de_Turismo_necocli_1_vuef4z.png",
+  "https://res.cloudinary.com/dwxk79gt0/image/upload/v1743917706/Copia_de_Copia_de_Turismo_necocli_1_3_ojy0et.png",
+  "https://res.cloudinary.com/dwxk79gt0/image/upload/v1777075436/2_d4xktg.jpg",
+];
+
+const ALOJAMIENTO_IMAGES = [
+  "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790716725/26_habitacion_1_camas_105_yqiizb.jpg",
+  "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790402666/35_tfmand.jpg",
+  "https://res.cloudinary.com/dwxk79gt0/image/upload/v1777075437/5_rgphce.jpg",
+  "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793391209/IMG_20210302_131037019_vlsxuv.jpg",
+  "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793391208/IMG_20210304_112713273_2_tyo3h8.jpg",
+  "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793391018/ele_hyyv1y.jpg",
+  "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793391018/ele1_sflkre.jpg",
+  "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793391018/ele4_ixk7l2.jpg",
+  "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793391018/ele_3_xzhdo4.jpg",
+];
+
+const PISCINA_IMAGE =
+  "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793391208/PISCINA_2_crey3z.jpg";
+
 const packages = [
   {
     id: "alojamiento-basico",
     title: "Escape Práctico Necoclí",
     description:
       "Alojamiento económico y práctico con WiFi, ideal para descansar y disfrutar Necoclí.",
-    images: [
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790716675/hab_sencilla_atuadx.jpg",
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790716687/triple33_ymv8ww.jpg",
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790716721/PERFIL_109_qlweuj.jpg",
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790716754/9_habitacion_1_cama_213_sdhfdo.jpg",
-    ],
-    image:
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1739291954/turismo_necocli_motonecos_1_mmblod.jpg",
+    images: ALOJAMIENTO_IMAGES,
+    image: ALOJAMIENTO_IMAGES[0],
     highlight: "Económico · Práctico · WiFi",
     options: [
       {
         id: "basico_individual",
         label: "Individual — $40.000 por persona",
         price: 40000,
+        priceUnit: "per_person" as const,
         defaultGuests: 1,
       },
       {
         id: "basico_pareja",
         label: "Pareja — $75.000 total (2 personas)",
         price: 37500,
+        priceUnit: "per_person" as const,
         defaultGuests: 2,
       },
       {
         id: "basico_multiple",
         label: "Acomodación múltiple — $35.000 por persona",
         price: 35000,
+        priceUnit: "per_person" as const,
         defaultGuests: 1,
       },
     ],
@@ -97,9 +120,7 @@ const packages = [
     id: "alojamiento-piscina-comidas",
     title: "Sabor & Sol Sin Preocupaciones",
     description: "Día de sol con almuerzo, acceso a piscina y playa privada.",
-    image:
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1739291954/turismo_necocli_motonecos_1_mmblod.jpg",
-    highlight: "Día de sol · Almuerzo · Piscina · Playa privada",
+    image: PISCINA_IMAGE,
     options: [
       {
         id: "sabor_sol_dia",
@@ -113,8 +134,8 @@ const packages = [
     id: "sol-playa-express",
     title: "Navega Necoclí: Yate & Mar",
     description: "Disfruta un día de sol navegando en yate, con almuerzo y refrigerio incluidos.",
-    image:
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1737932109/Playa_necocli_6_usilb7.jpg",
+    images: ISLAS_IMAGES,
+    image: ISLAS_IMAGES[0],
     highlight: "Día de sol · Yate · Almuerzo y refrigerio",
     bookingUrl: "https://tours.portalnecocli.com/reservas-maritimas",
     options: [
@@ -136,14 +157,8 @@ const packages = [
       "Incluye una cena frente a la playa, de 6:30 p. m. a 7:30 p. m.",
       "Precio del paquete para pareja: $400.000.",
     ],
-    images: [
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790714003/18_doeyfe.jpg",
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790714007/12_yvzosx.jpg",
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790714004/13_gwyils.jpg",
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1777075437/5_rgphce.jpg",
-    ],
-    image:
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1744003434/turismo_necocli_57_gqvstk.jpg",
+    images: ALOJAMIENTO_IMAGES,
+    image: ALOJAMIENTO_IMAGES[0],
     highlight: "Fin de semana · Pareja · Piscina · Playa privada",
     options: [
       {
@@ -165,18 +180,8 @@ const packages = [
       "Domingo: día de sol con visita a tres islas, almuerzo y refrigerio.",
       "Precio: $790.000 por persona.",
     ],
-    images: [
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003509/turismo_necocli_52_paq3dl.jpg",
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003504/turismo_necocli_31_seediu.jpg",
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003449/turismo_necocli_40_rn8ztu.jpg",
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003414/turismo_necocli_60_cu438c.jpg",
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003378/turismo_necocli_69_r6u6o1.jpg",
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1743916015/Copia_de_Turismo_necocli_1_vuef4z.png",
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1743917706/Copia_de_Copia_de_Turismo_necocli_1_3_ojy0et.png",
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1777075436/2_d4xktg.jpg",
-    ],
-    image:
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003509/turismo_necocli_52_paq3dl.jpg",
+    images: ISLAS_IMAGES,
+    image: ISLAS_IMAGES[0],
     highlight: "2 días · Árbol Mágico · Ciénaga · Tres islas",
     options: [
       {
@@ -192,8 +197,8 @@ const packages = [
     title: "Parche Necoclí (Grupos & Familias)",
     description:
       "Perfecto para grupos, familias o mochileros. Precio especial por noche en alojamiento compartido, con la opción de añadir las comidas que necesites a lo largo del día.",
-    image:
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1744003485/turismo_necocli_35_c81lmu.jpg",
+    images: ALOJAMIENTO_IMAGES,
+    image: ALOJAMIENTO_IMAGES[0],
     highlight: "Grupal · Precio especial · Comidas opcionales",
     options: [
       {
