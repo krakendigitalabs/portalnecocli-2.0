@@ -96,47 +96,16 @@ const packages = [
   {
     id: "alojamiento-piscina-comidas",
     title: "Sabor & Sol Sin Preocupaciones",
-    description:
-      "Pensión completa con piscina, desayuno, almuerzo y cena. Elige entre los dos bloques de alojamiento y las opciones de dos o tres comidas.",
+    description: "Día de sol con almuerzo, acceso a piscina y playa privada.",
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1739291954/turismo_necocli_motonecos_1_mmblod.jpg",
-    highlight: "Piscina · Desayuno · Almuerzo · Cena",
+    highlight: "Día de sol · Almuerzo · Piscina · Playa privada",
     options: [
       {
-        id: "piscina_bloque1_individual_3",
-        label: "Bloque 1 — Individual, 3 comidas · $165.000 por persona",
-        price: 165000,
-        defaultGuests: 1,
-      },
-      {
-        id: "piscina_bloque1_individual_2",
-        label: "Bloque 1 — Individual, 2 comidas · $154.000 por persona",
-        price: 154000,
-        defaultGuests: 1,
-      },
-      {
-        id: "piscina_bloque1_pareja",
-        label: "Bloque 1 — Pareja, 3 comidas · $330.000 total",
-        price: 165000,
-        defaultGuests: 2,
-      },
-      {
-        id: "piscina_bloque2_individual_3",
-        label: "Bloque 2 — Individual, 3 comidas · $143.000 por persona",
-        price: 143000,
-        defaultGuests: 1,
-      },
-      {
-        id: "piscina_bloque2_individual_2",
-        label: "Bloque 2 — Individual, 2 comidas · $132.000 por persona",
-        price: 132000,
-        defaultGuests: 1,
-      },
-      {
-        id: "piscina_bloque2_pareja",
-        label: "Bloque 2 — Pareja, 3 comidas · $286.000 total",
-        price: 143000,
-        defaultGuests: 2,
+        id: "sabor_sol_dia",
+        label: "Día de sol — $150.000 por persona",
+        price: 150000,
+        priceUnit: "per_person" as const,
       },
     ],
   },
