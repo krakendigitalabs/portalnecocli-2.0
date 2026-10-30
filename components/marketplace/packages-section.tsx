@@ -148,8 +148,9 @@ const packages = [
     options: [
       {
         id: "escapada_romantica_pareja",
-        label: "Pareja — $400.000 total (1 noche)",
+        label: "Pareja — $200.000 por persona ($400.000 total)",
         price: 200000,
+        priceUnit: "per_person" as const,
         defaultGuests: 2,
       },
     ],
@@ -164,8 +165,18 @@ const packages = [
       "Domingo: día de sol con visita a tres islas, almuerzo y refrigerio.",
       "Precio: $790.000 por persona.",
     ],
+    images: [
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003509/turismo_necocli_52_paq3dl.jpg",
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003504/turismo_necocli_31_seediu.jpg",
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003449/turismo_necocli_40_rn8ztu.jpg",
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003414/turismo_necocli_60_cu438c.jpg",
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003378/turismo_necocli_69_r6u6o1.jpg",
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1743916015/Copia_de_Turismo_necocli_1_vuef4z.png",
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1743917706/Copia_de_Copia_de_Turismo_necocli_1_3_ojy0et.png",
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1777075436/2_d4xktg.jpg",
+    ],
     image:
-      "https://res.cloudinary.com/dwxk79gt0/image/upload/q_auto/f_auto/v1744003480/turismo_30_dzr8jh.jpg",
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003509/turismo_necocli_52_paq3dl.jpg",
     highlight: "2 días · Árbol Mágico · Ciénaga · Tres islas",
     options: [
       {
@@ -311,7 +322,7 @@ export function PackagesSection() {
                           rel="noopener noreferrer"
                           className="inline-flex items-center justify-center px-6 py-3 rounded-full font-bold text-sm tracking-widest uppercase transition-all duration-300 bg-ink text-white hover:bg-gold hover:text-ink shadow-lg shadow-ink/20 hover:shadow-gold/30 hover:-translate-y-0.5"
                         >
-                          Reservar tour de islas →
+                          Reservar día de yate →
                         </a>
                       ) : (
                         <button
