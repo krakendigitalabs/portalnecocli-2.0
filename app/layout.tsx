@@ -2,19 +2,21 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "@/app/globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { Permanent_Marker } from "next/font/google";
+import localFont from "next/font/local";
 import Script from "next/script";
 import { AppShell } from "@/components/layout/app-shell";
 import { AiConciergeWidget } from "@/components/marketplace/ai-concierge-widget";
 import { AppProviders } from "@/components/providers/app-providers";
+import { PwaRegistry } from "@/components/pwa-registry";
 import { brand, siteMetadata } from "@/lib/constants/site";
 import { PORTAL_APP_HEADER } from "@/lib/routing/subdomains";
-import { PwaRegistry } from "@/components/pwa-registry";
 
-const tropicalFont = Permanent_Marker({
+const tropicalFont = localFont({
+  src: "./fonts/PermanentMarker-Regular.ttf",
   weight: "400",
-  subsets: ["latin"],
+  style: "normal",
   variable: "--font-tropical",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
