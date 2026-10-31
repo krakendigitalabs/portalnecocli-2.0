@@ -1,21 +1,38 @@
 "use server";
 
+import { FieldValue, getFirestore } from "firebase-admin/firestore";
+import { getServerAuthSession } from "@/lib/auth/server";
 import { getFirebaseAdminApp, hasFirebaseAdminConfig } from "@/lib/firebase/admin";
-import { getFirestore, FieldValue } from "firebase-admin/firestore";
+import type { DriverProfile } from "@/types/driver";
+import type { Ride } from "@/types/ride";
 import {
+  buildCommissionTransaction,
   validateDriverCanAccept,
   validateDriverCanComplete,
-  buildCommissionTransaction,
 } from "./ride-service";
-import type { Ride } from "@/types/ride";
-import type { DriverProfile } from "@/types/driver";
+
+/** Devuelve el uid del conductor autenticado en el servidor; nunca confía en IDs del cliente. */
+async function requireDriverUid(): Promise<string> {
+  const session = await getServerAuthSession();
+  if (!session || !session.user.roles.includes("driver")) {
+    throw new Error("No autorizado");
+  }
+  return session.user.uid;
+}
 
 /**
  * Server Action: Un conductor acepta una carrera en estado OPEN.
  * Usa una transacción atómica para asegurar que no haya race conditions.
  */
-export async function acceptRideAction(rideId: string, driverId: string) {
+// _driverId se conserva por compatibilidad y se ignora: el conductor sale de la sesión.
+export async function acceptRideAction(rideId: string, _driverId?: string) {
   if (!hasFirebaseAdminConfig()) throw new Error("Firebase Admin no configurado");
+  let driverId: string;
+  try {
+    driverId = await requireDriverUid();
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
   const db = getFirestore(getFirebaseAdminApp());
 
   const rideRef = db.collection("rides").doc(rideId);
@@ -63,8 +80,15 @@ export async function acceptRideAction(rideId: string, driverId: string) {
  * Server Action: El conductor recoge al pasajero e inicia el viaje.
  * Cambia el estado a IN_PROGRESS.
  */
-export async function startRideAction(rideId: string, driverId: string) {
+// _driverId se conserva por compatibilidad y se ignora: el conductor sale de la sesión.
+export async function startRideAction(rideId: string, _driverId?: string) {
   if (!hasFirebaseAdminConfig()) throw new Error("Firebase Admin no configurado");
+  let driverId: string;
+  try {
+    driverId = await requireDriverUid();
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
   const db = getFirestore(getFirebaseAdminApp());
 
   const rideRef = db.collection("rides").doc(rideId);
@@ -96,8 +120,15 @@ export async function startRideAction(rideId: string, driverId: string) {
  * Server Action: Un conductor completa una carrera en curso.
  * Ejecuta el cobro de la comisión (10%) de forma atómica.
  */
-export async function completeRideAction(rideId: string, driverId: string) {
+// _driverId se conserva por compatibilidad y se ignora: el conductor sale de la sesión.
+export async function completeRideAction(rideId: string, _driverId?: string) {
   if (!hasFirebaseAdminConfig()) throw new Error("Firebase Admin no configurado");
+  let driverId: string;
+  try {
+    driverId = await requireDriverUid();
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
   const db = getFirestore(getFirebaseAdminApp());
 
   const rideRef = db.collection("rides").doc(rideId);
@@ -152,12 +183,12 @@ export async function completeRideAction(rideId: string, driverId: string) {
   }
 }
 
+import type { RideSource, RideStatus } from "@/types/ride";
 /**
  * Server Action: El AI (o un admin) crea una nueva carrera.
  */
-import { generateRideReference, calculateRidePricing, isNightRate } from "./ride-service";
+import { calculateRidePricing, generateRideReference, isNightRate } from "./ride-service";
 import { lookupMotocarroTariff } from "./tariff-lookup";
-import type { RideStatus, RideSource } from "@/types/ride";
 
 export async function createRideAction(data: {
   origin: string;
@@ -174,9 +205,9 @@ export async function createRideAction(data: {
   if (!hasFirebaseAdminConfig()) throw new Error("Firebase Admin no configurado");
   const db = getFirestore(getFirebaseAdminApp());
 
-  // 1. Buscar tarifa oficial base o usar la estimada por el mapa GPS
+  // 1. Tarifa base desde el servidor (se ignora estimatedFare del cliente)
   const tariff = lookupMotocarroTariff(data.destination);
-  const basePrice = data.estimatedFare ? data.estimatedFare : tariff ? tariff.price : 6600;
+  const basePrice = tariff ? tariff.price : 6600;
   const routeKey = tariff ? tariff.route : "urbano";
 
   // 2. Calcular pricing con regla diurna/nocturna

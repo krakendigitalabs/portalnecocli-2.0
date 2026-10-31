@@ -10,7 +10,14 @@ export type ScopeRequirement = {
   serviceTypes?: BusinessServiceType[];
 };
 
-const userRoles: UserRole[] = ["super_admin", "admin", "business", "operator", "customer"];
+const userRoles: UserRole[] = [
+  "super_admin",
+  "admin",
+  "business",
+  "operator",
+  "driver",
+  "customer",
+];
 const businessServiceTypes: BusinessServiceType[] = [
   "hotel",
   "restaurante",

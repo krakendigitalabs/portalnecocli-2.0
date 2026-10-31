@@ -13,6 +13,7 @@ import {
   getReservationById,
   getReservationByReferenceCode,
 } from "@/data/reservationService";
+import { getServerAuthSession } from "@/lib/auth/server";
 
 type Props = {
   params: Promise<{
@@ -53,14 +54,13 @@ export default async function EscrowTicketPage({ params }: Props) {
     notFound();
   }
 
-  const {
-    lead,
-    business_name,
-    total_amount,
-    reference_code,
-    created_at,
-    id: reservId,
-  } = reservation;
+  const session = await getServerAuthSession();
+  const canViewPii =
+    !!session &&
+    ((!!reservation.customer_id && reservation.customer_id === session.user.uid) ||
+      session.user.roles.some((r) => r === "admin" || r === "super_admin"));
+
+  const { lead, business_name, total_amount, reference_code, created_at } = reservation;
 
   // total_amount is stored directly in COP (not cents)
   const amountFormatted = total_amount.toLocaleString("es-CO");
@@ -81,7 +81,7 @@ export default async function EscrowTicketPage({ params }: Props) {
   // Generate integrity signature: SHA256(reference + amountCents + "COP" + secret)
   let wompiIntegrity = "";
   if (wompiIntegritySecret) {
-    const { createHash } = await import("crypto");
+    const { createHash } = await import("node:crypto");
     const dataToHash = `${wompiRef}${wompiAmountCents}COP${wompiIntegritySecret}`;
     wompiIntegrity = createHash("sha256").update(dataToHash).digest("hex");
   }
@@ -310,18 +310,27 @@ export default async function EscrowTicketPage({ params }: Props) {
                 <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-3">
                   Información del Titular
                 </p>
-                <div className="ticket-holder bg-white border border-slate-200 rounded-[20px] p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
-                  <div>
-                    <p className="font-semibold text-slate-900 text-base">{lead.full_name}</p>
-                    <p className="text-xs text-slate-500 mt-1">{lead.email}</p>
+                {canViewPii ? (
+                  <div className="ticket-holder bg-white border border-slate-200 rounded-[20px] p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
+                    <div>
+                      <p className="font-semibold text-slate-900 text-base">{lead.full_name}</p>
+                      <p className="text-xs text-slate-500 mt-1">{lead.email}</p>
+                    </div>
+                    <div className="sm:text-right bg-slate-50 px-4 py-2 rounded-xl">
+                      <p className="text-[10px] text-slate-400 uppercase font-semibold">Contacto</p>
+                      <p className="font-mono font-medium text-slate-900 text-sm mt-0.5">
+                        {lead.whatsapp ?? lead.phone ?? "—"}
+                      </p>
+                    </div>
                   </div>
-                  <div className="sm:text-right bg-slate-50 px-4 py-2 rounded-xl">
-                    <p className="text-[10px] text-slate-400 uppercase font-semibold">Contacto</p>
-                    <p className="font-mono font-medium text-slate-900 text-sm mt-0.5">
-                      {lead.whatsapp ?? lead.phone ?? "—"}
+                ) : (
+                  <div className="ticket-holder bg-white border border-slate-200 rounded-[20px] p-5 shadow-sm">
+                    <p className="text-xs text-slate-500">
+                      Los datos del titular son privados. Inicia sesión con la cuenta que realizó la
+                      reserva para verlos.
                     </p>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* QR Real + Datos legales — misma fila */}

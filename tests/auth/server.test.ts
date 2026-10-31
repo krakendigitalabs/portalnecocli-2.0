@@ -83,6 +83,47 @@ describe("server auth enforcement", () => {
     }
   });
 
+  it("allows drivers with a valid driver role", async () => {
+    cookiesMock.mockResolvedValue({
+      get: () => ({ value: "session-cookie" }),
+    });
+    verifySessionCookieMock.mockResolvedValue({
+      uid: "driver-1",
+      email: "driver@portalnecocli.com",
+      name: "Driver",
+      picture: null,
+      email_verified: true,
+      roles: ["driver"],
+    });
+
+    const { authorizeServerAccess } = await import("@/lib/auth/server");
+    const result = await authorizeServerAccess({ roles: ["driver"] });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.session.user.uid).toBe("driver-1");
+    }
+  });
+
+  it("blocks customers from driver-only access", async () => {
+    cookiesMock.mockResolvedValue({
+      get: () => ({ value: "session-cookie" }),
+    });
+    verifySessionCookieMock.mockResolvedValue({
+      uid: "customer-1",
+      email: "customer@portalnecocli.com",
+      name: "Customer",
+      picture: null,
+      email_verified: true,
+      roles: ["customer"],
+    });
+
+    const { authorizeServerAccess } = await import("@/lib/auth/server");
+    const result = await authorizeServerAccess({ roles: ["driver"] });
+
+    expect(result).toEqual({ ok: false, status: 403 });
+  });
+
   it("redirects users with insufficient role to forbidden", async () => {
     cookiesMock.mockResolvedValue({
       get: () => ({ value: "session-cookie" }),
