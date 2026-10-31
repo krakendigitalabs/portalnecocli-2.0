@@ -1,38 +1,33 @@
 import { NextResponse } from "next/server";
-import type { ReservationLead } from "@/types/reservation";
+import { z } from "zod";
 
-interface CreateReservationRequestBody {
-  business_id: string;
-  lead: ReservationLead;
-}
+const reservationRequestSchema = z.object({
+  business_id: z.string().trim().min(1).max(128),
+  lead: z
+    .object({
+      full_name: z.string().trim().min(2).max(120),
+      email: z.string().trim().email().max(254),
+      phone: z.string().trim().min(7).max(30),
+      whatsapp: z.string().trim().min(7).max(30),
+    })
+    .passthrough(),
+});
 
 /**
  * POST /api/reservations
  * Reservations stay disabled until a trusted server-side pricing source is available.
  */
 export async function POST(req: Request) {
-  let body: CreateReservationRequestBody;
-
+  let body: unknown;
   try {
-    body = (await req.json()) as CreateReservationRequestBody;
+    body = await req.json();
   } catch {
     return NextResponse.json({ error: "Cuerpo JSON inválido" }, { status: 400 });
   }
 
-  if (
-    !body?.business_id ||
-    !body.lead?.full_name ||
-    !body.lead?.email ||
-    !body.lead?.phone ||
-    !body.lead?.whatsapp
-  ) {
-    return NextResponse.json(
-      {
-        error:
-          "Faltan campos obligatorios: business_id, lead.full_name, lead.email, lead.phone, lead.whatsapp",
-      },
-      { status: 400 },
-    );
+  const parsedBody = reservationRequestSchema.safeParse(body);
+  if (!parsedBody.success) {
+    return NextResponse.json({ error: "Los datos de la reserva no son válidos." }, { status: 400 });
   }
 
   return NextResponse.json(
