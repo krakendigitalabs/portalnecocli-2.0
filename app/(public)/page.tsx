@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { CategoryCard3D } from "@/components/marketplace/category-card-3d";
 import { LogoMarquee } from "@/components/marketplace/logo-marquee";
 import { LuxuryHero } from "@/components/marketplace/luxury-hero";
@@ -7,10 +8,18 @@ import { Container } from "@/components/ui/container";
 import { businessCategories } from "@/data/categories";
 import {
   getFeaturedExperiences,
-  getFeaturedMarketplaceBusinesses,
   getMarketplaceCategories,
   getMarketplaceFilterOptions,
 } from "@/lib/content/marketplace";
+
+export const metadata: Metadata = {
+  title: "Portal Necoclí | Turismo, experiencias y negocios locales",
+  description:
+    "Planea tu visita a Necoclí: descubre experiencias, alojamiento, gastronomía y servicios locales en el Golfo de Urabá.",
+  alternates: {
+    canonical: "https://portalnecocli.com",
+  },
+};
 
 export default async function PublicHomePage() {
   const marketplaceCategories = await getMarketplaceCategories();
@@ -24,7 +33,6 @@ export default async function PublicHomePage() {
         metric: match?.metric,
       };
     });
-  const featuredBusinesses = await getFeaturedMarketplaceBusinesses(6);
   const featuredExperiences = await getFeaturedExperiences(3);
   const filterOptions = await getMarketplaceFilterOptions();
 
@@ -111,8 +119,8 @@ export default async function PublicHomePage() {
                 </span>
                 <h3 className="text-2xl font-bold text-white mb-2 font-tropical">Historia Viva</h3>
                 <p className="text-sm text-white/75 leading-relaxed">
-                  Malecón, Casa de nuestras culturas, Cabaña Portal Necocli,Remate
-                  siglos de historias junto al mar.
+                  Malecón, Casa de nuestras culturas, Cabaña Portal Necocli,Remate siglos de
+                  historias junto al mar.
                 </p>
               </div>
             </div>

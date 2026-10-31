@@ -26,6 +26,7 @@ export function MainHeader({ brandName }: MainHeaderProps) {
               href="https://www.facebook.com/people/Portal-Necocli/100084510412418/"
               target="_blank"
               rel="noreferrer"
+              aria-label="Facebook"
               className="hover:text-green transition-colors"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -36,6 +37,7 @@ export function MainHeader({ brandName }: MainHeaderProps) {
               href="https://www.instagram.com/portalnecocli/?hl=es"
               target="_blank"
               rel="noreferrer"
+              aria-label="Instagram"
               className="hover:text-green transition-colors"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -46,6 +48,7 @@ export function MainHeader({ brandName }: MainHeaderProps) {
               href="https://x.com/Portalnecocli"
               target="_blank"
               rel="noreferrer"
+              aria-label="X"
               className="hover:text-green transition-colors"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -56,6 +59,7 @@ export function MainHeader({ brandName }: MainHeaderProps) {
               href="https://www.tiktok.com/@portalnecocli"
               target="_blank"
               rel="noreferrer"
+              aria-label="TikTok"
               className="hover:text-green transition-colors"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -66,6 +70,7 @@ export function MainHeader({ brandName }: MainHeaderProps) {
               href="https://www.youtube.com/channel/UCrgjIBaQVDFms2WU77ye9tA"
               target="_blank"
               rel="noreferrer"
+              aria-label="YouTube"
               className="hover:text-green transition-colors"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">

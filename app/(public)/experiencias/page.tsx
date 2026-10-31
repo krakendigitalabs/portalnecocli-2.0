@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, ChevronLeft, ChevronRight, X } from "lucide-react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, X, ArrowRight } from "lucide-react";
-import { PackageBookingForm } from "@/components/marketplace/package-booking-form";
+import { useState } from "react";
 import { MagicParticles } from "@/components/magic-particles";
+import { PackageBookingForm } from "@/components/marketplace/package-booking-form";
 
 const SLIDER_DATA = [
   {
@@ -347,7 +347,7 @@ export default function ExperienciasPage() {
 
             return (
               <motion.div
-                key={index}
+                key={slide.title}
                 animate={{
                   x: `${xPos}%`,
                   scale: isCenter ? 1 : 0.85,
@@ -400,6 +400,7 @@ export default function ExperienciasPage() {
                     {/* Botones de Acción */}
                     <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4">
                       <button
+                        type="button"
                         onClick={() => setIsFormOpen(true)}
                         className="flex items-center justify-center gap-2 px-6 py-3 md:px-8 md:py-4 bg-teal-500 hover:bg-teal-400 text-white rounded-full font-bold text-base md:text-lg transition-all duration-300 shadow-lg shadow-teal-500/30 hover:scale-105 w-full sm:w-auto"
                       >
@@ -407,6 +408,7 @@ export default function ExperienciasPage() {
                         <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
                       </button>
                       <button
+                        type="button"
                         onClick={() => setIsDetailsOpen(true)}
                         className="px-6 py-3 md:px-8 md:py-4 bg-white/10 backdrop-blur-lg border border-white/20 text-white rounded-full font-bold text-base md:text-lg hover:bg-white/20 transition-all duration-300 w-full sm:w-auto text-center"
                       >
@@ -421,13 +423,17 @@ export default function ExperienciasPage() {
 
           {/* Controles del Slider */}
           <button
+            type="button"
             onClick={prevSlide}
+            aria-label="Experiencia anterior"
             className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 p-3 md:p-5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white hover:bg-white hover:text-black transition-colors z-30 shadow-2xl"
           >
             <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
           </button>
           <button
+            type="button"
             onClick={nextSlide}
+            aria-label="Siguiente experiencia"
             className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 p-3 md:p-5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white hover:bg-white hover:text-black transition-colors z-30 shadow-2xl"
           >
             <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
@@ -452,7 +458,9 @@ export default function ExperienciasPage() {
               className="relative w-full max-w-2xl bg-neutral-950 rounded-[32px] shadow-2xl flex flex-col overflow-hidden border border-white/10"
             >
               <button
+                type="button"
                 onClick={() => setIsDetailsOpen(false)}
+                aria-label="Cerrar detalles"
                 className="absolute top-4 right-4 p-2 bg-black/40 backdrop-blur-md rounded-full text-white hover:bg-rose-500 transition-colors z-50 shadow-lg"
               >
                 <X className="w-5 h-5" />
@@ -488,6 +496,7 @@ export default function ExperienciasPage() {
                 </p>
 
                 <button
+                  type="button"
                   onClick={() => {
                     setIsDetailsOpen(false);
                     setTimeout(() => setIsFormOpen(true), 300);
@@ -521,7 +530,9 @@ export default function ExperienciasPage() {
             >
               {/* Botón de cerrar fijo en la parte superior del modal */}
               <button
+                type="button"
                 onClick={() => setIsFormOpen(false)}
+                aria-label="Cerrar formulario"
                 className="absolute top-4 right-4 p-2 bg-black/60 backdrop-blur-md rounded-full text-white hover:bg-rose-500 transition-colors z-50 shadow-lg"
               >
                 <X className="w-5 h-5" />
