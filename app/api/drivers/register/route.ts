@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getServerAuthSession } from "@/lib/auth/server";
 import { sendEmail } from "@/lib/email/resend";
 import { escapeHtml } from "@/lib/security/html";
+import { enforceRateLimit, rateLimitPolicies } from "@/lib/security/rate-limit";
 
 const driverRegistrationSchema = z.object({
   full_name: z.string().trim().min(2).max(120),
@@ -23,6 +24,11 @@ const driverRegistrationSchema = z.object({
  * Exige que el usuario esté autenticado. Usa su UID como ID de documento.
  */
 export async function POST(request: Request) {
+  const limited = await enforceRateLimit(request, rateLimitPolicies.driverRegistration);
+  if (limited) {
+    return limited;
+  }
+
   try {
     const session = await getServerAuthSession();
     if (!session) {
