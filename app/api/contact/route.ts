@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
 import { escapeHtml } from "@/lib/security/html";
+import { enforceRateLimit, rateLimitPolicies } from "@/lib/security/rate-limit";
 
 const contactSchema = z.object({
   name: z.string().trim().min(2, "El nombre es requerido").max(120),
@@ -11,6 +12,11 @@ const contactSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  const limited = await enforceRateLimit(req, rateLimitPolicies.contact);
+  if (limited) {
+    return limited;
+  }
+
   try {
     const body = await req.json();
     const data = contactSchema.parse(body);
