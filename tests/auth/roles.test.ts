@@ -75,5 +75,6 @@ describe("auth roles and scopes", () => {
     expect(hasRequiredRole(["business"], ["admin", "business"])).toBe(true);
     expect(hasRequiredRole(["super_admin"], ["super_admin", "admin"])).toBe(true);
     expect(hasRequiredRole(["customer"], ["admin", "operator"])).toBe(false);
+    expect(hasRequiredRole(["driver"], ["driver"])).toBe(true);
   });
 });

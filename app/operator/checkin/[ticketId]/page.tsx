@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { confirmTicketOfflinePayment } from "@/app/actions/ticket-actions";
+import { requireRole } from "@/lib/auth/server";
 import { getFirebaseAdminApp } from "@/lib/firebase/admin";
 
 export default async function OperatorCheckinPage({
@@ -12,6 +13,9 @@ export default async function OperatorCheckinPage({
   params: Promise<{ ticketId: string }>;
 }) {
   const { ticketId } = await params;
+  const session = await requireRole(["operator", "business", "admin", "super_admin"], {
+    nextPath: `/operator/checkin/${ticketId}`,
+  });
   const db = getFirestore(getFirebaseAdminApp());
 
   // Try to find the ticket
@@ -32,6 +36,13 @@ export default async function OperatorCheckinPage({
   }
 
   const reservation = snap.data();
+  const { scope } = session.user;
+  if (
+    !scope.global &&
+    !(reservation?.business_id && scope.businessIds.includes(reservation.business_id))
+  ) {
+    notFound();
+  }
   const isPaid = reservation?.status === "COMPLETED";
 
   // Server action to confirm from operator side
