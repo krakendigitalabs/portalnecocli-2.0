@@ -2,6 +2,26 @@ import { describe, expect, it } from "vitest";
 import { POST } from "@/app/api/reservations/route";
 
 describe("POST /api/reservations", () => {
+  it("rejects malformed lead data", async () => {
+    const response = await POST(
+      new Request("http://localhost/api/reservations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          business_id: "business-1",
+          lead: {
+            full_name: "Tourist",
+            email: "not-an-email",
+            phone: "3000000000",
+            whatsapp: "3000000000",
+          },
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(400);
+  });
+
   it("fails closed until the server can calculate a trusted price", async () => {
     const response = await POST(
       new Request("http://localhost/api/reservations", {

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
+import { escapeHtml } from "@/lib/security/html";
 
 const contactSchema = z.object({
   name: z.string().trim().min(2, "El nombre es requerido").max(120),
@@ -8,19 +9,6 @@ const contactSchema = z.object({
   email: z.string().email("Correo inválido"),
   message: z.string().trim().min(10, "El mensaje debe tener al menos 10 caracteres").max(3000),
 });
-
-function escapeHtml(value: string): string {
-  return value.replace(/[&<>"']/g, (character) => {
-    const entities: Record<string, string> = {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;",
-    };
-    return entities[character];
-  });
-}
 
 export async function POST(req: NextRequest) {
   try {
