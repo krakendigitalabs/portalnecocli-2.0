@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { enforceRateLimit, rateLimitPolicies } from "@/lib/security/rate-limit";
 
 const reservationRequestSchema = z.object({
   business_id: z.string().trim().min(1).max(128),
@@ -18,6 +19,11 @@ const reservationRequestSchema = z.object({
  * Reservations stay disabled until a trusted server-side pricing source is available.
  */
 export async function POST(req: Request) {
+  const limited = await enforceRateLimit(req, rateLimitPolicies.reservations);
+  if (limited) {
+    return limited;
+  }
+
   let body: unknown;
   try {
     body = await req.json();
