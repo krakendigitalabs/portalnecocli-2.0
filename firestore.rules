@@ -17,34 +17,44 @@ service cloud.firestore {
       // Solo el sistema (Server Actions) puede crear rides
       allow create: if false;
 
-      // Un conductor solo puede actualizar el estado de una carrera que él mismo aceptó
-      // o un pasajero puede cancelar su carrera (si está OPEN)
+      // El conductor asignado (valor existente) solo puede cambiar estado y ubicación
+      // en transiciones válidas; el pasajero solo puede cancelar su carrera OPEN.
       allow update: if request.auth != null && (
-        (request.resource.data.driver_id == request.auth.uid && 
-         resource.data.status in ['ACCEPTED', 'IN_PROGRESS'] && 
-         request.resource.data.status in ['IN_PROGRESS', 'COMPLETED', 'CANCELLED'])
+        (resource.data.driver_id == request.auth.uid &&
+         request.resource.data.driver_id == resource.data.driver_id &&
+         request.resource.data.diff(resource.data).affectedKeys()
+           .hasOnly(['status', 'driver_location', 'started_at', 'completed_at', 'cancelled_at', 'cancelled_by', 'cancellation_reason']) &&
+         (
+           !('status' in request.resource.data.diff(resource.data).affectedKeys()) ||
+           (resource.data.status in ['ACCEPTED', 'IN_PROGRESS'] &&
+            request.resource.data.status in ['IN_PROGRESS', 'COMPLETED', 'CANCELLED'])
+         ))
         ||
-        (resource.data.client_uid == request.auth.uid && 
-         resource.data.status == 'OPEN' && 
-         request.resource.data.status == 'CANCELLED')
+        (resource.data.client_uid == request.auth.uid &&
+         resource.data.status == 'OPEN' &&
+         request.resource.data.status == 'CANCELLED' &&
+         request.resource.data.diff(resource.data).affectedKeys()
+           .hasOnly(['status', 'cancelled_at', 'cancelled_by', 'cancellation_reason']))
       );
-      
+
       allow delete: if false;
     }
 
     // --- DRIVERS ---
     match /drivers/{driverId} {
-      // El conductor puede leer su propio perfil, o un admin puede leer todos
+      // El conductor solo puede leer su propio perfil (los admins usan el Admin SDK)
       allow read: if request.auth != null && request.auth.uid == driverId;
 
       // El registro lo hace el Admin SDK (Server Action), por tanto:
       allow create: if false;
 
-      // El conductor puede actualizar ciertos datos, pero NUNCA su wallet_balance
-      allow update: if request.auth != null 
-        && request.auth.uid == driverId 
-        && !('wallet_balance' in request.resource.data.diff(resource.data));
-        
+      // El conductor solo puede editar campos de contacto y disponibilidad; nunca
+      // status, wallet_balance, user_id ni métricas (los gestiona el servidor).
+      allow update: if request.auth != null
+        && request.auth.uid == driverId
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['availability', 'phone', 'whatsapp', 'photo_url', 'vehicle_description', 'updated_at']);
+
       allow delete: if false;
     }
 
