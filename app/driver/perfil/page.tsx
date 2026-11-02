@@ -3,9 +3,18 @@ import { requireAuth } from "@/lib/auth/server";
 import { getDriverProfile } from "@/data/driverService";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, User, Phone, Settings, Star, ShieldCheck, Car } from "lucide-react";
+import {
+  ArrowLeft,
+  Phone,
+  Settings,
+  Star,
+  ShieldCheck,
+  Car,
+  Wallet,
+  Activity,
+  BadgeCheck,
+} from "lucide-react";
 import { LogoutButton } from "./logout-button";
-import Image from "next/image";
 
 import { getFirebaseAdminApp } from "@/lib/firebase/admin";
 import { getFirestore } from "firebase-admin/firestore";
@@ -45,67 +54,92 @@ export default async function DriverProfilePage() {
   const initial = driverProfile.full_name ? driverProfile.full_name.charAt(0).toUpperCase() : "C";
 
   return (
-    <div className="min-h-screen bg-[#1A1D23] text-white pb-24">
-      {/* Header fijo */}
-      <header className="sticky top-0 z-50 bg-[#1A1D23]/95 backdrop-blur-md border-b border-white/5 px-4 py-3 flex items-center gap-3">
+    <div className="relative min-h-screen overflow-hidden bg-[#0D111A] pb-24 text-white">
+      <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-emerald-500/20 blur-[100px]" />
+      <div className="pointer-events-none absolute bottom-24 right-0 h-64 w-64 rounded-full bg-cyan-500/10 blur-[100px]" />
+
+      <header className="sticky top-0 z-50 flex items-center gap-3 border-b border-white/5 bg-[#0D111A]/90 px-4 py-3 backdrop-blur-xl">
         <Link href="/driver" className="p-2 -ml-2 rounded-full hover:bg-white/10 transition">
           <ArrowLeft className="w-5 h-5 text-white/70" />
         </Link>
         <h1 className="text-base font-bold text-white">Mi Perfil</h1>
       </header>
 
-      <main className="max-w-lg mx-auto px-4 pt-6 space-y-6">
-        {/* Avatar y Nombre */}
-        <div className="flex flex-col items-center justify-center pt-4 pb-2">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-4xl font-bold shadow-lg shadow-emerald-500/20 mb-4 border-4 border-[#2A2D35]">
-            {initial}
-          </div>
-          <h2 className="text-2xl font-black">{driverProfile.full_name}</h2>
-          <div className="flex items-center gap-2 mt-2">
-            <span className="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full border border-emerald-500/30">
-              Conductor Activo
-            </span>
-            <span className="flex items-center gap-1 text-yellow-400 text-sm font-bold bg-white/5 px-3 py-1 rounded-full">
-              <Star className="w-3.5 h-3.5 fill-yellow-400" /> 4.9
-            </span>
-          </div>
-        </div>
+      <main className="relative z-10 mx-auto max-w-lg space-y-6 px-4 pt-6">
+        <section className="relative overflow-hidden rounded-3xl border border-emerald-400/25 bg-gradient-to-br from-[#111A2A] via-[#101826] to-[#0D1320] p-6 shadow-2xl shadow-emerald-900/20">
+          <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-emerald-400/20 blur-2xl" />
+          <div className="pointer-events-none absolute -bottom-10 left-6 h-20 w-20 rounded-full bg-cyan-400/15 blur-2xl" />
 
-        {/* Rendimiento Financiero (Ventas Generadas) */}
-        <div className="bg-gradient-to-br from-emerald-900/40 to-[#2A2D35] rounded-3xl p-5 border border-emerald-500/20 space-y-4 shadow-lg shadow-emerald-900/20 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl" />
+          <div className="flex flex-col items-center">
+            <div className="mb-4 flex h-24 w-24 items-center justify-center rounded-[2rem] border border-emerald-300/30 bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-500 text-4xl font-black text-[#042216] shadow-xl shadow-emerald-500/30">
+              {initial}
+            </div>
+            <h2 className="text-center text-2xl font-black tracking-tight">{driverProfile.full_name}</h2>
+            <div className="mt-3 flex items-center gap-2">
+              <span className="inline-flex items-center gap-1 rounded-full border border-emerald-400/30 bg-emerald-400/15 px-3 py-1 text-xs font-bold text-emerald-300">
+                <BadgeCheck className="h-3.5 w-3.5" />
+                Conductor Activo
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full border border-yellow-300/30 bg-yellow-300/10 px-3 py-1 text-xs font-bold text-yellow-300">
+                <Star className="h-3.5 w-3.5 fill-yellow-300" />
+                4.9
+              </span>
+            </div>
+          </div>
 
-          <h3 className="text-sm font-bold text-emerald-400 uppercase tracking-widest border-b border-emerald-500/20 pb-2">
+          <div className="mt-6 grid grid-cols-2 gap-3">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
+              <p className="text-[11px] uppercase tracking-wide text-white/60">Viajes completados</p>
+              <p className="mt-1 text-lg font-black">{totalRides}</p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
+              <p className="text-[11px] uppercase tracking-wide text-white/60">Ganancia total</p>
+              <p className="mt-1 truncate text-lg font-black text-emerald-300">
+                ${totalNet.toLocaleString("es-CO")}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-900/30 via-[#1A2234] to-[#151D2D] p-5 shadow-lg shadow-emerald-900/15">
+          <h3 className="border-b border-emerald-500/20 pb-2 text-sm font-bold uppercase tracking-widest text-emerald-300">
             Rendimiento Histórico
           </h3>
 
-          <div className="grid grid-cols-2 gap-4 pt-2">
-            <div>
-              <p className="text-xs text-white/50 font-semibold mb-1">Ventas Generadas</p>
-              <p className="text-2xl font-black text-white">
+          <div className="grid grid-cols-2 gap-3 pt-4">
+            <article className="rounded-2xl border border-white/10 bg-black/20 p-4">
+              <div className="mb-2 flex items-center gap-2 text-white/60">
+                <Wallet className="h-4 w-4" />
+                <p className="text-xs font-semibold uppercase tracking-wide">Ventas Generadas</p>
+              </div>
+              <p className="text-2xl font-black">
                 ${totalSales.toLocaleString("es-CO")}
               </p>
-              <p className="text-[10px] text-white/40 mt-1">Bruto facturado</p>
-            </div>
-            <div>
-              <p className="text-xs text-white/50 font-semibold mb-1">Tus Ganancias</p>
-              <p className="text-2xl font-black text-emerald-400">
+              <p className="mt-1 text-[10px] text-white/45">Bruto facturado</p>
+            </article>
+            <article className="rounded-2xl border border-emerald-400/25 bg-emerald-500/10 p-4">
+              <div className="mb-2 flex items-center gap-2 text-emerald-200/80">
+                <Activity className="h-4 w-4" />
+                <p className="text-xs font-semibold uppercase tracking-wide">Tus Ganancias</p>
+              </div>
+              <p className="text-2xl font-black text-emerald-300">
                 ${totalNet.toLocaleString("es-CO")}
               </p>
-              <p className="text-[10px] text-white/40 mt-1">Libre para ti</p>
-            </div>
+              <p className="mt-1 text-[10px] text-emerald-200/70">Libre para ti</p>
+            </article>
           </div>
 
-          <div className="bg-black/20 rounded-xl p-3 flex justify-between items-center border border-white/5 mt-2">
+          <div className="mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/20 p-3">
             <span className="text-xs text-white/60 font-semibold">Carreras Completadas</span>
-            <span className="text-sm font-bold text-white bg-white/10 px-3 py-1 rounded-lg">
+            <span className="rounded-lg bg-white/10 px-3 py-1 text-sm font-bold text-white">
               {totalRides} viajes
             </span>
           </div>
-        </div>
+        </section>
 
-        {/* Datos del Conductor */}
-        <div className="bg-[#2A2D35] rounded-3xl p-5 border border-white/5 space-y-4 shadow-lg">
+        <section className="rounded-3xl border border-white/10 bg-[#151A25] p-5 shadow-lg">
+          <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-white/60">Datos del conductor</h3>
+
           <div className="flex items-center gap-4 border-b border-white/5 pb-4">
             <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
               <Phone className="w-5 h-5 text-blue-400" />
@@ -140,20 +174,18 @@ export default async function DriverProfilePage() {
               <p className="font-semibold">CC: {driverProfile.identification_number}</p>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Ajustes Extra */}
-        <div className="bg-[#2A2D35] rounded-3xl p-2 border border-white/5 shadow-lg">
-          <button className="w-full flex items-center justify-between p-4 hover:bg-white/5 rounded-2xl transition">
+        <section className="rounded-3xl border border-white/10 bg-[#151A25] p-2 shadow-lg">
+          <button className="w-full rounded-2xl p-4 transition hover:bg-white/5 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Settings className="w-5 h-5 text-white/60" />
               <span className="font-medium text-white/90">Ajustes de la cuenta</span>
             </div>
             <ArrowLeft className="w-4 h-4 text-white/40 rotate-180" />
           </button>
-        </div>
+        </section>
 
-        {/* Botón de Cierre de Sesión */}
         <LogoutButton />
       </main>
     </div>
