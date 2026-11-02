@@ -211,8 +211,8 @@ export default async function DriverProfilePage() {
         </div>
 
         <div className="bg-[#2A2D35] rounded-3xl p-2 border border-white/5 shadow-lg">
-          <button
-            type="button"
+          <Link
+            href="/driver/perfil/ajustes"
             className="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-white/5 transition"
           >
             <div className="flex items-center gap-3">
@@ -225,7 +225,7 @@ export default async function DriverProfilePage() {
               </div>
             </div>
             <ArrowLeft className="w-4 h-4 text-white/40 rotate-180" />
-          </button>
+          </Link>
         </div>
 
         <LogoutButton />
