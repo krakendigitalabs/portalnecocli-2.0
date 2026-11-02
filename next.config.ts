@@ -32,6 +32,9 @@ const nextConfig: NextConfig = {
       "'unsafe-inline'",
       ...(process.env.NODE_ENV === "production" ? [] : ["'unsafe-eval'"]),
       "https://checkout.wompi.co",
+      "https://apis.google.com",
+      "https://www.gstatic.com",
+      "https://www.googleapis.com",
     ];
     const contentSecurityPolicy = [
       "default-src 'self'",
@@ -42,6 +45,7 @@ const nextConfig: NextConfig = {
       `script-src ${scriptSources.join(" ")}`,
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
+      "media-src 'self' data: blob: https:",
       "font-src 'self' data: https:",
       "connect-src 'self' https: wss:",
       "frame-src 'self' https://checkout.wompi.co https://www.google.com https://*.firebaseapp.com https://*.web.app https://accounts.google.com",

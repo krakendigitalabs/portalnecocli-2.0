@@ -10,7 +10,24 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  // PWA mínima: solo deja pasar las peticiones de red normales
-  // No cacheamos agresivamente para que el dashboard real-time de Firestore funcione perfecto
-  event.respondWith(fetch(event.request));
+  const requestUrl = new URL(event.request.url);
+  const isHttpRequest = requestUrl.protocol === "http:" || requestUrl.protocol === "https:";
+
+  if (event.request.method !== "GET" || !isHttpRequest) {
+    return;
+  }
+
+  // PWA mínima: passthrough de red con fallback para evitar promesas rechazadas
+  event.respondWith(
+    fetch(event.request).catch(() => {
+      if (event.request.mode === "navigate") {
+        return new Response("Sin conexión temporal", {
+          status: 503,
+          headers: { "Content-Type": "text/plain; charset=utf-8" },
+        });
+      }
+
+      return new Response(null, { status: 504, statusText: "Gateway Timeout" });
+    }),
+  );
 });
