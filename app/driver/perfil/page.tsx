@@ -1,23 +1,23 @@
-import type { Metadata } from "next";
-import { requireAuth } from "@/lib/auth/server";
-import { getDriverProfile } from "@/data/driverService";
-import { redirect } from "next/navigation";
-import Link from "next/link";
+import { getFirestore } from "firebase-admin/firestore";
 import {
+  Activity,
   ArrowLeft,
+  BadgeCheck,
+  Car,
   Phone,
   Settings,
-  Star,
   ShieldCheck,
-  Car,
+  Star,
   Wallet,
-  Activity,
-  BadgeCheck,
 } from "lucide-react";
-import { LogoutButton } from "./logout-button";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getDriverProfile } from "@/data/driverService";
+import { requireAuth } from "@/lib/auth/server";
 
 import { getFirebaseAdminApp } from "@/lib/firebase/admin";
-import { getFirestore } from "firebase-admin/firestore";
+import { LogoutButton } from "./logout-button";
 
 export const metadata: Metadata = {
   title: "Perfil del Conductor | Neco-Dispatch",
@@ -74,7 +74,9 @@ export default async function DriverProfilePage() {
             <div className="mb-4 flex h-24 w-24 items-center justify-center rounded-[2rem] border border-emerald-300/30 bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-500 text-4xl font-black text-[#042216] shadow-xl shadow-emerald-500/30">
               {initial}
             </div>
-            <h2 className="text-center text-2xl font-black tracking-tight">{driverProfile.full_name}</h2>
+            <h2 className="text-center text-2xl font-black tracking-tight">
+              {driverProfile.full_name}
+            </h2>
             <div className="mt-3 flex items-center gap-2">
               <span className="inline-flex items-center gap-1 rounded-full border border-emerald-400/30 bg-emerald-400/15 px-3 py-1 text-xs font-bold text-emerald-300">
                 <BadgeCheck className="h-3.5 w-3.5" />
@@ -89,7 +91,9 @@ export default async function DriverProfilePage() {
 
           <div className="mt-6 grid grid-cols-2 gap-3">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
-              <p className="text-[11px] uppercase tracking-wide text-white/60">Viajes completados</p>
+              <p className="text-[11px] uppercase tracking-wide text-white/60">
+                Viajes completados
+              </p>
               <p className="mt-1 text-lg font-black">{totalRides}</p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
@@ -112,9 +116,7 @@ export default async function DriverProfilePage() {
                 <Wallet className="h-4 w-4" />
                 <p className="text-xs font-semibold uppercase tracking-wide">Ventas Generadas</p>
               </div>
-              <p className="text-2xl font-black">
-                ${totalSales.toLocaleString("es-CO")}
-              </p>
+              <p className="text-2xl font-black">${totalSales.toLocaleString("es-CO")}</p>
               <p className="mt-1 text-[10px] text-white/45">Bruto facturado</p>
             </article>
             <article className="rounded-2xl border border-emerald-400/25 bg-emerald-500/10 p-4">
@@ -138,7 +140,9 @@ export default async function DriverProfilePage() {
         </section>
 
         <section className="rounded-3xl border border-white/10 bg-[#151A25] p-5 shadow-lg">
-          <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-white/60">Datos del conductor</h3>
+          <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-white/60">
+            Datos del conductor
+          </h3>
 
           <div className="flex items-center gap-4 border-b border-white/5 pb-4">
             <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
@@ -177,7 +181,10 @@ export default async function DriverProfilePage() {
         </section>
 
         <section className="rounded-3xl border border-white/10 bg-[#151A25] p-2 shadow-lg">
-          <button className="w-full rounded-2xl p-4 transition hover:bg-white/5 flex items-center justify-between">
+          <button
+            type="button"
+            className="w-full rounded-2xl p-4 transition hover:bg-white/5 flex items-center justify-between"
+          >
             <div className="flex items-center gap-3">
               <Settings className="w-5 h-5 text-white/60" />
               <span className="font-medium text-white/90">Ajustes de la cuenta</span>
