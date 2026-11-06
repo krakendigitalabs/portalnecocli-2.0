@@ -4,7 +4,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import { formatBlogDate } from "@/components/blog/blog-card";
+import { ShareButtons } from "@/components/blog/share-buttons";
 import { Container } from "@/components/ui/container";
+import { siteMetadata } from "@/lib/constants/site";
 import { BlogRepo } from "@/lib/data/repositories/blog-repo";
 import { BLOG_CATEGORY_LABELS } from "@/types/blog";
 
@@ -76,6 +78,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="space-y-5 text-lg leading-relaxed text-ink/80 [&_a]:text-gold [&_a]:underline [&_h2]:pt-4 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-ink [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-ink [&_li]:ml-6 [&_ol]:list-decimal [&_ul]:list-disc">
           <ReactMarkdown>{post.content}</ReactMarkdown>
         </div>
+
+        <ShareButtons url={`${siteMetadata.siteUrl}/blog/${post.slug}`} title={post.title} />
 
         {post.tags.length > 0 && (
           <ul className="flex flex-wrap gap-2 border-t border-ink/10 pt-6">

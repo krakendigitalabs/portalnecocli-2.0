@@ -81,7 +81,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="es">
-      <body className={tropicalFont.variable}>
+      <body className={tropicalFont.variable} suppressHydrationWarning>
         <AppProviders>
           {isDashboardApp ? (
             children
