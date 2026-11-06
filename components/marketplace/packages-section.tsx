@@ -60,15 +60,16 @@ function PackageImageCarousel({ images, title }: { images: string[]; title: stri
 const packages = [
   {
     id: "alojamiento-basico",
-    title: "Escape Práctico Necoclí",
+    title: "Opción Económica y Cómoda (Pareja)",
     description:
-      "Alojamiento económico y práctico con WiFi, ideal para descansar y disfrutar Necoclí.",
+      "Tu descanso ideal frente al mar, simple y sin complicaciones. Disfruten de una escapada en pareja práctica, cómoda y accesible en Necoclí: cercanía a la playa, parqueadero privado, WiFi para estar siempre conectados y zonas de descanso para desconectar del trabajo. ¿Prefieren relajarse al máximo? Cuentan con servicio de alimentación directo a la habitación.",
     images: [
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790716725/26_habitacion_1_camas_105_yqiizb.jpg",
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790402666/35_tfmand.jpg",
     ],
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790716725/26_habitacion_1_camas_105_yqiizb.jpg",
-    highlight: "Económico · Práctico · WiFi",
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790716725/26_habitacion_1_camas_105_yqiizb.jpg",
+    highlight: "Económico · Parqueadero privado · WiFi · Cerca a la playa",
     options: [
       {
         id: "basico_individual",
@@ -121,7 +122,8 @@ const packages = [
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737748238/IMG_20240107_161824_soutyq.jpg",
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003361/turismo_necocli_67_tzdjdf.jpg",
     ],
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737748238/IMG_20240107_161824_soutyq.jpg",
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737748238/IMG_20240107_161824_soutyq.jpg",
     highlight: "Día de sol · Yate · Almuerzo y refrigerio",
     bookingUrl: "https://tours.portalnecocli.com/reservas-maritimas",
     options: [
@@ -135,9 +137,9 @@ const packages = [
   },
   {
     id: "noche-express",
-    title: "Escapada Romántica de Fin de Semana",
+    title: "Fin de Semana Completo en Pareja",
     description:
-      "Plan para parejas con alojamiento, transporte, piscina, vista al mar y acceso a playa privada.",
+      "Dos días de experiencias inolvidables frente al mar. Vivan un sábado y domingo perfectos frente a la playa: hotel de ubicación privilegiada con atención de primera clase, piscina y servicio de alimentación incluido para que no tengan que preocuparse por nada. La combinación ideal de confort, excelente servicio y la brisa del mar para renovar energías en pareja.",
     details: [
       "Incluye un desayuno por noche, de 7:30 a. m. a 9:00 a. m.",
       "Incluye una cena frente a la playa, de 6:30 p. m. a 7:30 p. m.",
@@ -175,7 +177,8 @@ const packages = [
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003480/turismo_30_dzr8jh.jpg",
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003509/turismo_necocli_52_paq3dl.jpg",
     ],
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003378/turismo_necocli_69_r6u6o1.jpg",
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003378/turismo_necocli_69_r6u6o1.jpg",
     highlight: "2 días · Árbol Mágico · Ciénaga · Tres islas",
     options: [
       {
@@ -196,7 +199,8 @@ const packages = [
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1793397245/triple33_wbclda.jpg",
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1793397261/IMG_20250719_114130_386_mll98t.jpg",
     ],
-    image: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1793397204/13_habitacion_2_camas_112_cxa1ej.jpg",
+    image:
+      "https://res.cloudinary.com/dwxk79gt0/image/upload/v1793397204/13_habitacion_2_camas_112_cxa1ej.jpg",
     highlight: "Grupal · Precio especial · Comidas opcionales",
     options: [
       {

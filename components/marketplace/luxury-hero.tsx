@@ -61,8 +61,12 @@ export function LuxuryHero() {
         }}
       />
 
-      {/* ─── Spacer para mantener el buscador abajo ─── */}
-      <div className="flex-1" />
+      {/* ─── Headline ─── */}
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-4 text-center">
+        <h1 className="max-w-4xl text-4xl font-extrabold leading-tight text-white drop-shadow-lg sm:text-5xl lg:text-6xl">
+          Vive el Caribe de Urabá: Playas, Islas y Aventura sin intermediarios
+        </h1>
+      </div>
 
       {/* ─── Search bar — anchored to bottom ─── */}
       <motion.div
@@ -161,17 +165,15 @@ export function LuxuryHero() {
                   className="bg-transparent text-white text-sm font-medium outline-none w-full placeholder:text-white/50 [color-scheme:dark]"
                 />
               </div>
-
-              {/* Search button */}
-              <button
-                type="submit"
-                className="ml-2 sm:ml-4 h-11 w-11 shrink-0 rounded-full bg-[#F5C842] hover:bg-[#e6b82e] text-ink flex items-center justify-center shadow-lg transition-all hover:scale-105 active:scale-95"
-                aria-label="Buscar"
-              >
-                <Search className="w-5 h-5" />
-              </button>
             </div>
           </div>
+          <button
+            type="submit"
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-extrabold text-white shadow-xl shadow-coral/40 ring-2 ring-white/70 transition hover:bg-coral/90 active:scale-95"
+          >
+            <Search className="h-5 w-5" />
+            Buscar Experiencias
+          </button>
         </form>
       </motion.div>
 
