@@ -1,35 +1,14 @@
 import type { NextConfig } from "next";
+import { ALLOWED_IMAGE_HOSTNAMES } from "./lib/config/image-hosts";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "res.cloudinary.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "firebasestorage.googleapis.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "placehold.co",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "portalnecocli.com",
-        pathname: "/**",
-      },
-    ],
+    remotePatterns: ALLOWED_IMAGE_HOSTNAMES.map((hostname) => ({
+      protocol: "https" as const,
+      hostname,
+      pathname: "/**",
+    })),
   },
   async headers() {
     const scriptSources = [
