@@ -420,7 +420,7 @@ export const commercialHomeContent: CommercialHomeContent = {
     socialLinks: [
       {
         label: "Facebook",
-        href: "https://www.facebook.com/people/Portal-Necocli/100084510412418/",
+        href: "https://www.facebook.com/profile.php?id=100084510412418",
       },
       {
         label: "Instagram",

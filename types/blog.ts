@@ -1,4 +1,10 @@
-export const BLOG_CATEGORIES = ["turismo", "gastronomia", "transporte", "cultura"] as const;
+export const BLOG_CATEGORIES = [
+  "turismo",
+  "gastronomia",
+  "transporte",
+  "cultura",
+  "eventos",
+] as const;
 
 export type BlogCategory = (typeof BLOG_CATEGORIES)[number];
 
@@ -7,6 +13,7 @@ export const BLOG_CATEGORY_LABELS: Record<BlogCategory, string> = {
   gastronomia: "Gastronomía",
   transporte: "Transporte",
   cultura: "Cultura",
+  eventos: "Eventos",
 };
 
 export type BlogPostStatus = "draft" | "published";

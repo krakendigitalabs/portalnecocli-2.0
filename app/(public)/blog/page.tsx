@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BlogCard } from "@/components/blog/blog-card";
 import { Container } from "@/components/ui/container";
+import { appUrl } from "@/lib/constants/site";
 import { BlogRepo, parseBlogCategory } from "@/lib/data/repositories/blog-repo";
 import { cn } from "@/lib/utils/cn";
 import { BLOG_CATEGORIES, BLOG_CATEGORY_LABELS } from "@/types/blog";
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   title: "Blog y Noticias | Portal Necoclí",
   description:
     "Guías de turismo, gastronomía, transporte y cultura para descubrir Necoclí como un local.",
-  alternates: { canonical: "/blog" },
+  alternates: { canonical: `${appUrl}/blog` },
 };
 
 type BlogPageProps = {

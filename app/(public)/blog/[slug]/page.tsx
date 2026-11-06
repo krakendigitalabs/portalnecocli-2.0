@@ -6,7 +6,7 @@ import ReactMarkdown from "react-markdown";
 import { formatBlogDate } from "@/components/blog/blog-card";
 import { ShareButtons } from "@/components/blog/share-buttons";
 import { Container } from "@/components/ui/container";
-import { siteMetadata } from "@/lib/constants/site";
+import { appUrl } from "@/lib/constants/site";
 import { BlogRepo } from "@/lib/data/repositories/blog-repo";
 import { BLOG_CATEGORY_LABELS } from "@/types/blog";
 
@@ -25,11 +25,12 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   return {
     title: `${post.title} | Blog Portal Necoclí`,
     description: post.excerpt,
-    alternates: { canonical: `/blog/${post.slug}` },
+    alternates: { canonical: `${appUrl}/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: "article",
+      url: `${appUrl}/blog/${post.slug}`,
       publishedTime: post.publishedAt,
       images: [{ url: post.coverImageUrl, alt: post.coverImageAlt }],
     },
@@ -79,7 +80,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <ReactMarkdown>{post.content}</ReactMarkdown>
         </div>
 
-        <ShareButtons url={`${siteMetadata.siteUrl}/blog/${post.slug}`} title={post.title} />
+        <ShareButtons url={`${appUrl}/blog/${post.slug}`} title={post.title} />
 
         {post.tags.length > 0 && (
           <ul className="flex flex-wrap gap-2 border-t border-ink/10 pt-6">
