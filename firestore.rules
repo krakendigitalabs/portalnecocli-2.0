@@ -3,6 +3,13 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // --- BLOG ---
+    // Lectura pública solo de posts publicados; escritura únicamente vía Admin SDK.
+    match /blog_posts/{slug} {
+      allow read: if resource.data.status == 'published';
+      allow write: if false;
+    }
+
     // --- RIDES ---
     match /rides/{rideId} {
       // Un conductor activo puede leer las carreras (para el tablero)
