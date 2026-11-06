@@ -1,29 +1,20 @@
 "use client";
 
 import { Check, Link2, MessageCircle, Share2 } from "lucide-react";
-import { useState } from "react";
-
-type IconProps = { className?: string; "aria-hidden"?: boolean | "true" | "false" };
-
-function FacebookIcon(props: IconProps) {
-  return (
-    <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
-      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z" />
-    </svg>
-  );
-}
-
-function XIcon(props: IconProps) {
-  return (
-    <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  );
-}
+import { useEffect, useState } from "react";
+import { type SocialNetworkId, socialLinks } from "@/lib/constants/social";
+import { FacebookIcon, InstagramIcon, TikTokIcon, XIcon } from "./social-icons";
 
 type ShareButtonsProps = {
   url: string;
   title: string;
+};
+
+const followIcons: Record<SocialNetworkId, typeof FacebookIcon> = {
+  facebook: FacebookIcon,
+  instagram: InstagramIcon,
+  tiktok: TikTokIcon,
+  x: XIcon,
 };
 
 const buttonClass =
@@ -31,6 +22,7 @@ const buttonClass =
 
 export function ShareButtons({ url, title }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
+  const [canNativeShare, setCanNativeShare] = useState(false);
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
 
@@ -42,7 +34,7 @@ export function ShareButtons({ url, title }: ShareButtonsProps) {
     },
     {
       label: "X",
-      href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
+      href: `https://x.com/intent/post?url=${encodedUrl}&text=${encodedTitle}`,
       Icon: XIcon,
     },
     {
@@ -53,7 +45,10 @@ export function ShareButtons({ url, title }: ShareButtonsProps) {
   ];
 
   // Instagram, TikTok y YouTube no tienen URL de compartir web: se usa el menú nativo del dispositivo.
-  const canNativeShare = typeof navigator !== "undefined" && typeof navigator.share === "function";
+  // Se detecta tras el montaje para que el primer render coincida con el HTML del servidor.
+  useEffect(() => {
+    setCanNativeShare(typeof navigator.share === "function");
+  }, []);
 
   async function nativeShare() {
     try {
@@ -103,6 +98,26 @@ export function ShareButtons({ url, title }: ShareButtonsProps) {
           )}
           {copied ? "¡Enlace copiado!" : "Copiar enlace"}
         </button>
+      </div>
+      <p className="pt-2 text-sm font-semibold uppercase tracking-wide text-ink/50">
+        Síguenos en redes
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {socialLinks.map(({ id, label, href }) => {
+          const Icon = followIcons[id];
+          return (
+            <a
+              key={id}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={buttonClass}
+            >
+              <Icon className="h-4 w-4" aria-hidden="true" />
+              {label}
+            </a>
+          );
+        })}
       </div>
     </section>
   );
