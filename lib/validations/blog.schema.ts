@@ -32,7 +32,6 @@ export const BlogPostSchema = z.object({
   content: z.string().min(50),
   coverImageUrl: z
     .string()
-    .url()
     .transform((value) => (isAllowedImageUrl(value) ? value : FALLBACK_IMAGE_URL)),
   coverImageAlt: z.string().min(3).max(200),
   category: z.enum(BLOG_CATEGORIES),

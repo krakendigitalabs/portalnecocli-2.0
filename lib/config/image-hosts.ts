@@ -9,7 +9,12 @@ export const ALLOWED_IMAGE_HOSTNAMES = [
 
 export const FALLBACK_IMAGE_URL = "https://placehold.co/1200x750/png?text=Portal+Necocli";
 
+const LOCAL_IMAGE_PATH_PATTERN = /^\/(?!\/)[\w\-./]+$/;
+
+// Acepta rutas de /public (sin "//" ni "..") y URLs https de hosts autorizados.
 export function isAllowedImageUrl(value: string): boolean {
+  if (LOCAL_IMAGE_PATH_PATTERN.test(value)) return !value.includes("..");
+
   try {
     const url = new URL(value);
     return (

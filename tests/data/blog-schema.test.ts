@@ -23,11 +23,19 @@ describe("BlogPostSchema coverImageUrl", () => {
     expect(BlogPostSchema.parse(basePost).coverImageUrl).toBe(basePost.coverImageUrl);
   });
 
+  it("keeps local /public paths", () => {
+    const coverImageUrl = "/blog/uraba-global-fest-2026.jpg";
+    expect(BlogPostSchema.parse({ ...basePost, coverImageUrl }).coverImageUrl).toBe(coverImageUrl);
+  });
+
   it.each([
     "https://evil.example.com/a.png",
     "http://images.unsplash.com/a.png",
     "https://images.unsplash.com.evil.com/a.png",
-  ])("falls back for disallowed URL %s", (coverImageUrl) => {
+    "//evil.example.com/a.png",
+    "/blog/../../secret.png",
+    "not a url",
+  ])("falls back for disallowed value %s", (coverImageUrl) => {
     expect(BlogPostSchema.parse({ ...basePost, coverImageUrl }).coverImageUrl).toBe(
       FALLBACK_IMAGE_URL,
     );
