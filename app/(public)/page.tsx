@@ -3,6 +3,10 @@ import { CategoryCard3D } from "@/components/marketplace/category-card-3d";
 import { LogoMarquee } from "@/components/marketplace/logo-marquee";
 import { LuxuryHero } from "@/components/marketplace/luxury-hero";
 import { PhotoGallery } from "@/components/marketplace/photo-gallery";
+import { FeaturedExperiences } from "@/components/home/featured-experiences";
+import { SmartBundles } from "@/components/home/smart-bundles";
+import { SocialProofBar } from "@/components/home/social-proof-bar";
+import { WhatsAppAssistWidget } from "@/components/home/whatsapp-assist-widget";
 import { WelcomeModal } from "@/components/marketplace/welcome-modal";
 import { Container } from "@/components/ui/container";
 import { businessCategories } from "@/data/categories";
@@ -40,6 +44,9 @@ export default async function PublicHomePage() {
     <div className="pb-14">
       {/* Luxury Hero full bleed */}
       <LuxuryHero />
+      <SocialProofBar />
+      <FeaturedExperiences />
+      <SmartBundles />
 
       {/* Massive Edge-to-Edge Grid for Categories (WebGL 3D) */}
       <section className="w-full max-w-[2400px] mx-auto px-4 md:px-8 xl:px-12 mt-20 mb-20">
@@ -167,6 +174,7 @@ export default async function PublicHomePage() {
 
       {/* Lead Magnet */}
       <WelcomeModal />
+      <WhatsAppAssistWidget />
     </div>
   );
 }

@@ -195,7 +195,7 @@ export async function processAtvBooking(formData: AtvBookingServerInput) {
     <p style="margin:0;font-size:13px;color:#991b1b;"><strong>⏰ Recuerda:</strong> Las reservas se realizan con mínimo 1 día de anticipación. Tu cupo queda asegurado al enviar el anticipo.</p>
   </div>
   <p style="font-size:14px;color:#64748b;text-align:center;">¡Te esperamos con el casco puesto! Gracias por elegir <a href="https://portalnecocli.com" style="color:#d97706;text-decoration:none;font-weight:600;">Portal Necoclí</a>.</p>
-  <p style="font-size:12px;color:#94a3b8;text-align:center;margin-top:8px;">Gestionado por Kraken Digital Labs · portalnecocli.com</p>
+  <p style="font-size:12px;color:#94a3b8;text-align:center;margin-top:8px;">Gestionado por Kraken Digital Labs · krakendigitalabs.com</p>
 </div>`,
         });
       } catch (emailErr) {
