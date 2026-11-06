@@ -299,7 +299,7 @@ const SLIDER_DATA = [
   },
 ];
 
-export default function ExperienciasPage() {
+export function ExperiencesSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -311,7 +311,7 @@ export default function ExperienciasPage() {
   const currentSlide = SLIDER_DATA[currentIndex];
 
   return (
-    <main className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black" id="experiencias">
       {/* ─── HERO SECTION ─── */}
       <section className="relative w-full bg-black pt-32 pb-20 px-4 md:px-8 overflow-hidden min-h-screen flex flex-col">
         {/* Fondo decorativo sutil */}
@@ -321,9 +321,9 @@ export default function ExperienciasPage() {
         <MagicParticles />
 
         <div className="relative z-10 max-w-7xl mx-auto flex flex-col items-center text-center mb-12">
-          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-[1.1] mb-6 drop-shadow-lg">
+          <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-[1.1] mb-6 drop-shadow-lg">
             Experiencias <span className="text-teal-400">Turísticas</span>
-          </h1>
+          </h2>
           <p className="text-lg md:text-xl text-white/80 font-light leading-relaxed max-w-3xl">
             Descubre la verdadera esencia de Necoclí a través de aventuras diseñadas para cautivar
             tus sentidos. Desde atardeceres dorados hasta volcanes de lodo ancestrales.
@@ -546,6 +546,6 @@ export default function ExperienciasPage() {
           </motion.div>
         )}
       </AnimatePresence>
-    </main>
+    </div>
   );
 }

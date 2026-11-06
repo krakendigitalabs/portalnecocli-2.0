@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
       pathname: "/**",
     })),
   },
+  async redirects() {
+    return [{ source: "/experiencias", destination: "/turistas#experiencias", permanent: false }];
+  },
   async headers() {
     const scriptSources = [
       "'self'",
@@ -28,7 +31,7 @@ const nextConfig: NextConfig = {
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https:",
       "connect-src 'self' https: wss:",
-      "frame-src 'self' https://checkout.wompi.co https://www.google.com https://*.firebaseapp.com https://*.web.app https://accounts.google.com",
+      "frame-src 'self' https://checkout.wompi.co https://www.youtube-nocookie.com https://www.google.com https://*.firebaseapp.com https://*.web.app https://accounts.google.com",
       ...(process.env.NODE_ENV === "production" ? ["upgrade-insecure-requests"] : []),
     ].join("; ");
 
