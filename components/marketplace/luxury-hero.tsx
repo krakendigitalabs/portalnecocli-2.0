@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Calendar, MapPin, Search, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
+import { HeroVideoPlaylist } from "@/components/marketplace/hero-video-playlist";
 
 const DESTINATION_MAP: Record<string, string> = {
   hoteles: "/hoteles",
@@ -33,19 +34,7 @@ export function LuxuryHero() {
   return (
     <section className="relative w-full h-[100svh] overflow-hidden bg-black flex flex-col items-center justify-between py-12 md:py-16">
       {/* ─── Video Background ─── */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-contain object-center"
-        style={{ zIndex: 0 }}
-      >
-        <source
-          src="https://res.cloudinary.com/dwxk79gt0/video/upload/v1755742793/PORTAL_NECOCLI_2025_V1_xq3pnu.mp4"
-          type="video/mp4"
-        />
-      </video>
+      <HeroVideoPlaylist />
 
       {/* ─── Gradient overlays — subtle, only corners & bottom ─── */}
       <div
@@ -61,9 +50,9 @@ export function LuxuryHero() {
         }}
       />
 
-      {/* ─── Headline ─── */}
+      {/* ─── Headline (solo lectores de pantalla/SEO) ─── */}
       <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-4 text-center">
-        <h1 className="max-w-4xl text-4xl font-extrabold leading-tight text-white drop-shadow-lg sm:text-5xl lg:text-6xl">
+        <h1 className="sr-only">
           Vive el Caribe de Urabá: Playas, Islas y Aventura sin intermediarios
         </h1>
       </div>
