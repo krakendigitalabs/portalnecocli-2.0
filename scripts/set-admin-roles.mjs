@@ -72,7 +72,16 @@ const USERS_TO_CONFIGURE = [
     scope: { global: false, tenantId: null, businessIds: [], serviceTypes: [] },
     description: "🌴 Turista — Cuenta de prueba (Yessy)",
   },
+  {
+    email: "motonecos@gmail.com",
+    roles: ["driver"],
+    scope: { global: false, tenantId: null, businessIds: [], serviceTypes: ["transporte"] },
+    description: "🏍️ Conductor Aliado — Motonecos",
+  },
 ];
+
+// Uso opcional: node scripts/set-admin-roles.mjs correo@dominio.com (procesa solo ese correo)
+const onlyEmail = process.argv[2]?.trim().toLowerCase();
 
 // ─────────────────────────────────────────────
 //  EJECUCIÓN
@@ -119,7 +128,11 @@ async function main() {
 
   const results = [];
 
-  for (const config of USERS_TO_CONFIGURE) {
+  const targets = onlyEmail
+    ? USERS_TO_CONFIGURE.filter((config) => config.email.toLowerCase() === onlyEmail)
+    : USERS_TO_CONFIGURE;
+
+  for (const config of targets) {
     const result = await assignRole(config);
     results.push(result);
   }
