@@ -1,4 +1,4 @@
-export const touristPackages = [
+﻿export const touristPackages = [
   {
     id: "alojamiento-basico",
     title: "Opción Económica y Cómoda (Pareja)",
@@ -40,11 +40,10 @@ export const touristPackages = [
     title: "Sabor & Sol Sin Preocupaciones",
     description: "Día de sol con almuerzo, acceso a piscina y playa privada.",
     images: [
-      "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793391209/IMG_20210302_131037019_vlsxuv.jpg",
-      "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793391208/IMG_20210304_112713273_2_tyo3h8.jpg",
-      "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793391208/PISCINA_2_crey3z.jpg",
+      "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793396944/Captura_de_pantalla_2026-10-30_163742_bmlwfd.png",
+      "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793396920/Captura_de_pantalla_2026-10-30_163711_pabdef.png",
     ],
-    image: "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793391208/PISCINA_2_crey3z.jpg",
+    image: "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793396944/Captura_de_pantalla_2026-10-30_163742_bmlwfd.png",
     highlight: "Día de sol · Almuerzo · Piscina · Playa privada",
     options: [
       {
