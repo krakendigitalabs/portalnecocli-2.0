@@ -7,10 +7,12 @@ import { useEffect, useRef, useState } from "react";
 import { ChatMessage, chatWithAlejandro } from "@/lib/actions/ai";
 import { submitConciergeRequest } from "@/lib/actions/concierge";
 import { useAuthSession } from "@/hooks/use-auth-session";
+import { ConciergeNudge } from "@/components/marketplace/concierge-nudge";
 
 export function AiConciergeWidget() {
   const { user } = useAuthSession();
   const [isOpen, setIsOpen] = useState(false);
+  const [isEngaged, setIsEngaged] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "model",
@@ -120,7 +122,14 @@ export function AiConciergeWidget() {
   return (
     <>
       {/* Botón flotante */}
-      <div className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-[9000]">
+      <div
+        className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-[9000]"
+        onMouseEnter={() => setIsEngaged(true)}
+        onMouseLeave={() => setIsEngaged(false)}
+        onFocus={() => setIsEngaged(true)}
+        onBlur={() => setIsEngaged(false)}
+      >
+        {!isOpen && <ConciergeNudge engaged={isEngaged} />}
         <AnimatePresence>
           {!isOpen && (
             <motion.button
@@ -139,11 +148,9 @@ export function AiConciergeWidget() {
               }}
               exit={{ scale: 0, opacity: 0, y: 50 }}
               onClick={() => setIsOpen(true)}
-              className="bg-emerald-600 text-white rounded-full p-4 shadow-2xl hover:bg-emerald-700 transition-colors flex items-center justify-center relative group"
+              className="bg-emerald-600 text-white rounded-full p-4 shadow-2xl hover:bg-emerald-700 hover:scale-110 transition-all flex items-center justify-center relative"
+              aria-label="Abrir chat con la guía local"
             >
-              <div className="absolute -top-10 -left-10 bg-white px-3 py-1 rounded-lg text-emerald-800 text-xs font-medium shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                ¡Habla con Alejandro!
-              </div>
               <div className="relative w-8 h-8 rounded-full overflow-hidden border-2 border-white">
                 <Image
                   src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1754280672/logo_pasiasano_it6yh0.png"

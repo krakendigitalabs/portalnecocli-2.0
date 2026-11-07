@@ -20,7 +20,7 @@ export default function TurismoLocalPage() {
           Turismo Local & Movilidad
         </h1>
         <p className="text-lg text-ink/70 max-w-2xl mx-auto">
-          La primera red inteligente de transporte y domicilios en el Golfo de Urabá. Conectamos a
+          La primera red inteligente de transporte y domicilios en Necoclí. Conectamos a
           turistas y locales con mototaxis, motocarros y lanchas de manera segura, rápida y justa.
         </p>
       </div>

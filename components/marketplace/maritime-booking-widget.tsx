@@ -96,16 +96,21 @@ function Waves({ color = "#00b4d8" }: { color?: string }) {
   );
 }
 
-export function MaritimeBookingWidget() {
+interface MaritimeBookingWidgetProps {
+  initialDate?: string;
+  initialPeople?: number;
+}
+
+export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBookingWidgetProps) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabType>("ruta");
   const [operator, setOperator] = useState<"caribe" | "sol_playa">("caribe");
   const [origin, setOrigin] = useState("Necoclí");
   const [destination, setDestination] = useState("Capurganá");
   const [journeyType, setJourneyType] = useState<"ida" | "ida_vuelta">("ida_vuelta");
-  const [adults, setAdults] = useState(1);
+  const [adults, setAdults] = useState(initialPeople ?? 1);
   const [children, setChildren] = useState(0);
-  const [travelDate, setTravelDate] = useState("");
+  const [travelDate, setTravelDate] = useState(initialDate ?? "");
   const [accommodation, setAccommodation] = useState<AccommodationType>("none");
   const [isSolidarityActive, setIsSolidarityActive] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);

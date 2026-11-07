@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { BookingForm } from "@/components/marketplace/booking-form";
 import { Container } from "@/components/ui/container";
 import { touristPackages as packages } from "@/data/tourist-packages";
+import type { TripPrefill } from "@/lib/utils/trip-search-params";
 
 function PackageImageCarousel({ images, title }: { images: string[]; title: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -58,7 +59,7 @@ function PackageImageCarousel({ images, title }: { images: string[]; title: stri
   );
 }
 
-export function PackagesSection() {
+export function PackagesSection({ prefill }: { prefill?: TripPrefill }) {
   const [openId, setOpenId] = useState<string | null>(null);
 
   return (
@@ -209,6 +210,7 @@ export function PackagesSection() {
                             baseServiceName={`Paquete: ${pkg.title}`}
                             routingType="CASE_A"
                             packageOptions={pkg.options}
+                            prefill={prefill}
                           />
                         </div>
                       </div>

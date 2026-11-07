@@ -37,7 +37,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
       <Container className="space-y-12">
         <div className="space-y-6 text-center">
           <h1 className="text-4xl font-bold tracking-tight text-ink md:text-6xl">
-            El Blog del Golfo
+            El Blog de Necoclí
           </h1>
           <p className="mx-auto max-w-2xl text-xl text-ink/70">
             Descubre guías, tips de viaje y noticias exclusivas sobre Necoclí.

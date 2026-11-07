@@ -54,7 +54,7 @@ const marketplaceCategories: MarketplaceCategory[] = [
     label: "Tours y experiencias",
     shortLabel: "Tours",
     description:
-      "Operadores turísticos, salidas guiadas y actividades para descubrir playa, manglar y golfo.",
+      "Operadores turísticos, salidas guiadas y actividades para descubrir playa y manglar en Necoclí.",
     href: "/tours",
     serviceType: "turismo",
     heroTitle: "Tours y experiencias en Necoclí",

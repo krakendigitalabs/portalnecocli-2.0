@@ -128,7 +128,7 @@ const ITEMS: GalleryItem[] = [
     url: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003480/turismo_30_dzr8jh.jpg",
     title: "Tour en Lancha",
     category: "Experiencias",
-    location: "Golfo de Urabá",
+    location: "Necoclí",
     size: "small",
   },
   {

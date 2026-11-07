@@ -5,12 +5,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import type { AtvRouteDetail } from "@/types/atv-booking";
 import { AtvBookingForm } from "@/components/tours/atv-booking-form";
+import type { TripPrefill } from "@/lib/utils/trip-search-params";
 
 interface AtvRouteCardProps {
   route: AtvRouteDetail;
+  prefill?: TripPrefill;
 }
 
-export function AtvRouteCard({ route }: AtvRouteCardProps) {
+export function AtvRouteCard({ route, prefill }: AtvRouteCardProps) {
   const [showModal, setShowModal] = useState(false);
 
   const badgeColors: Record<string, string> = {
@@ -145,7 +147,7 @@ export function AtvRouteCard({ route }: AtvRouteCardProps) {
 
               {/* Modal body — scrollable */}
               <div className="flex-1 overflow-y-auto p-6">
-                <AtvBookingForm route={route} onClose={() => setShowModal(false)} />
+                <AtvBookingForm route={route} prefill={prefill} onClose={() => setShowModal(false)} />
               </div>
             </motion.div>
           </>

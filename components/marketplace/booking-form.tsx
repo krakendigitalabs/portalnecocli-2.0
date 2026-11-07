@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import { type BookingResponse, processBookingRequest } from "@/lib/actions/booking";
 import { BookingRequestSchema } from "@/lib/validations/schemas";
+import type { TripPrefill } from "@/lib/utils/trip-search-params";
 
 // Extraemos el tipo base de Zod pero modificamos date para el formulario (viene como string en HTML)
 const FormSchema = BookingRequestSchema.extend({
@@ -30,6 +31,7 @@ type BookingFormProps = {
   baseServiceName: string;
   routingType: "CASE_A" | "CASE_B";
   packageOptions?: PackageOption[];
+  prefill?: TripPrefill;
 };
 
 export function BookingForm({
@@ -37,6 +39,7 @@ export function BookingForm({
   baseServiceName,
   routingType,
   packageOptions = [],
+  prefill,
 }: BookingFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [response, setResponse] = useState<BookingResponse | null>(null);
@@ -53,7 +56,8 @@ export function BookingForm({
       businessId,
       serviceName: packageOptions.length > 0 ? packageOptions[0].id : baseServiceName,
       routingType,
-      guests: packageOptions[0]?.defaultGuests ?? 1,
+      guests: prefill?.people ?? packageOptions[0]?.defaultGuests ?? 1,
+      ...(prefill?.date ? { reservationDate: prefill.date } : {}),
       days: 1,
     },
   });
