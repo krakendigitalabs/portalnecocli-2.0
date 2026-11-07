@@ -7,7 +7,10 @@ import { useRef, useState } from "react";
 import { HeroVideoPlaylist } from "@/components/marketplace/hero-video-playlist";
 
 const DESTINATION_MAP: Record<string, string> = {
-  hoteles: "/hoteles",
+  paquetes: "/turistas",
+  islas: "/reservas-maritimas",
+  cuatrimotos: "/tours/cuatrimoto",
+  hoteles: "/turistas",
   tours: "/tours",
   restaurantes: "/restaurantes",
   transporte: "/transporte",
@@ -25,14 +28,17 @@ export function LuxuryHero() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const target = searchData.destination
-      ? (DESTINATION_MAP[searchData.destination] ?? "/hoteles")
-      : "/hoteles";
-    router.push(target);
+    const target = DESTINATION_MAP[searchData.destination] ?? "/turistas";
+    const params = new URLSearchParams();
+    if (searchData.date) params.set("date", searchData.date);
+    if (searchData.guests) params.set("people", searchData.guests);
+    const query = params.toString();
+    const hash = target === "/turistas" ? "#packages" : "";
+    router.push(`${target}${query ? `?${query}` : ""}${hash}`);
   };
 
   return (
-    <section className="relative w-full h-[100svh] overflow-hidden bg-black flex flex-col items-center justify-between py-12 md:py-16">
+    <section className="relative w-full h-[100svh] min-h-[560px] overflow-hidden bg-black flex flex-col items-center justify-between pt-20 pb-24 md:py-16">
       {/* ─── Video Background ─── */}
       <HeroVideoPlaylist />
 
@@ -62,14 +68,14 @@ export function LuxuryHero() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease: "easeOut", delay: 0.45 }}
-        className="relative z-10 w-full px-4 sm:px-6 flex justify-center pb-8 md:pb-4"
+        className="relative z-10 w-full px-4 sm:px-6 flex justify-center pb-[max(1rem,env(safe-area-inset-bottom))] md:pb-4"
       >
         <form ref={formRef} onSubmit={handleSearch} className="w-full max-w-3xl">
           {/* Glass pill wrapper */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center bg-white/[0.14] backdrop-blur-xl border border-white/25 rounded-2xl sm:rounded-full shadow-[0_8px_40px_rgba(0,0,0,0.35)] overflow-hidden">
             {/* — Destino — */}
             <div
-              className={`flex-1 flex items-center gap-3 px-5 py-4 sm:py-3.5 cursor-pointer transition-colors ${focused === "dest" ? "bg-white/[0.18]" : "hover:bg-white/[0.1]"}`}
+              className={`flex-1 flex items-center gap-3 px-5 py-3 sm:py-3.5 cursor-pointer transition-colors ${focused === "dest" ? "bg-white/[0.18]" : "hover:bg-white/[0.1]"}`}
               onClick={() => setFocused("dest")}
             >
               <MapPin className="w-5 h-5 text-[#F5C842] shrink-0" />
@@ -87,6 +93,15 @@ export function LuxuryHero() {
                 >
                   <option value="" className="text-ink">
                     ¿Qué buscas?
+                  </option>
+                  <option value="paquetes" className="text-ink">
+                    🎁 Paquetes
+                  </option>
+                  <option value="islas" className="text-ink">
+                    🏝️ Tour Islas
+                  </option>
+                  <option value="cuatrimotos" className="text-ink">
+                    🏍️ Cuatrimotos
                   </option>
                   <option value="hoteles" className="text-ink">
                     🏨 Hoteles &amp; Hospedajes
@@ -109,7 +124,7 @@ export function LuxuryHero() {
 
             {/* — Fecha — */}
             <div
-              className={`flex-1 flex items-center gap-3 px-5 py-4 sm:py-3.5 cursor-pointer transition-colors ${focused === "date" ? "bg-white/[0.18]" : "hover:bg-white/[0.1]"}`}
+              className={`flex-1 flex items-center gap-3 px-5 py-3 sm:py-3.5 cursor-pointer transition-colors ${focused === "date" ? "bg-white/[0.18]" : "hover:bg-white/[0.1]"}`}
               onClick={() => setFocused("date")}
             >
               <Calendar className="w-5 h-5 text-[#4ECDC4] shrink-0" />
@@ -134,13 +149,13 @@ export function LuxuryHero() {
 
             {/* — Huéspedes + Botón — */}
             <div
-              className={`flex items-center gap-3 px-5 py-4 sm:py-3.5 transition-colors ${focused === "guests" ? "bg-white/[0.18]" : "hover:bg-white/[0.1]"}`}
+              className={`flex items-center gap-3 px-5 py-3 sm:py-3.5 transition-colors ${focused === "guests" ? "bg-white/[0.18]" : "hover:bg-white/[0.1]"}`}
               onClick={() => setFocused("guests")}
             >
               <Users className="w-5 h-5 text-[#4ECDC4] shrink-0" />
               <div className="flex flex-col text-left min-w-[70px]">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-white/60 leading-none mb-1">
-                  Huéspedes
+                  Personas
                 </span>
                 <input
                   type="number"
@@ -158,7 +173,7 @@ export function LuxuryHero() {
           </div>
           <button
             type="submit"
-            className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-extrabold text-white shadow-xl shadow-coral/40 ring-2 ring-white/70 transition hover:bg-coral/90 active:scale-95"
+            className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-coral px-8 py-4 text-base font-extrabold text-white shadow-xl shadow-coral/40 ring-2 ring-white/70 transition hover:bg-coral/90 active:scale-95"
           >
             <Search className="h-5 w-5" />
             Buscar Experiencias

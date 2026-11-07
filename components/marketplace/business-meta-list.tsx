@@ -9,7 +9,7 @@ export function BusinessMetaList({ business }: BusinessMetaListProps) {
   const getBenefits = () => {
     switch (business.serviceType) {
       case "hotel":
-        return "Descanso asegurado, atención prioritaria y ubicación estratégica para tu estadía en el golfo.";
+        return "Descanso asegurado, atención prioritaria y ubicación estratégica para tu estadía en Necoclí.";
       case "turismo":
         return "Conexión directa con la naturaleza, guías expertos locales y rutas seguras.";
       case "restaurante":

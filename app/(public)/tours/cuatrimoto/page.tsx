@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ATV_ROUTES } from "@/data/atv-routes";
 import { AtvRouteCard } from "@/components/tours/atv-route-card";
 import { Container } from "@/components/ui/container";
+import { parseTripSearchParams, type TripSearchParams } from "@/lib/utils/trip-search-params";
 
 export const metadata: Metadata = {
   title: "Tour Cuatrimotos Necoclí | Portal Necoclí",
@@ -9,7 +10,13 @@ export const metadata: Metadata = {
     "Vive una experiencia inolvidable en cuatrimoto por las veredas, pantanos, playas y paisajes de Necoclí. 4 rutas disponibles con póliza incluida. Reserva con solo el 50% de anticipación.",
 };
 
-export default function TourCuatrімotoPage() {
+interface TourCuatrimotoPageProps {
+  searchParams: Promise<TripSearchParams>;
+}
+
+export default async function TourCuatrimotoPage({ searchParams }: TourCuatrimotoPageProps) {
+  const prefill = parseTripSearchParams(await searchParams);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50/60 via-white to-white pb-20">
       {/* ─── Hero ──────────────────────────────────────────────────────── */}
@@ -29,7 +36,7 @@ export default function TourCuatrімotoPage() {
           </h1>
           <p className="text-lg md:text-xl text-white/85 max-w-2xl mx-auto leading-relaxed mb-8">
             Vive una experiencia <strong className="text-yellow-200">inolvidable</strong> en cuatrimoto.
-            Recorre pantanos, veredas, playas y paisajes únicos del golfo de Urabá.
+            Recorre pantanos, veredas, playas y paisajes únicos de Necoclí.
           </p>
 
           {/* Included badges */}
@@ -104,7 +111,7 @@ export default function TourCuatrімotoPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             {ATV_ROUTES.map((route) => (
-              <AtvRouteCard key={route.id} route={route} />
+              <AtvRouteCard key={route.id} route={route} prefill={prefill} />
             ))}
           </div>
         </Container>

@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { MaritimeBookingWidget } from "@/components/marketplace/maritime-booking-widget";
+import { parseTripSearchParams, type TripSearchParams } from "@/lib/utils/trip-search-params";
 
 export const metadata: Metadata = {
   title: "Reservas Marítimas | Portal Necoclí",
@@ -7,7 +8,13 @@ export const metadata: Metadata = {
     "Reserva tus pasajes en lancha y planes de sol hacia Capurganá, Triganá, Acandí y más. Operado por Sol y Playa S.A.S y El Caribe S.A.S.",
 };
 
-export default function ReservasMaritimasPage() {
+interface ReservasMaritimasPageProps {
+  searchParams: Promise<TripSearchParams>;
+}
+
+export default async function ReservasMaritimasPage({ searchParams }: ReservasMaritimasPageProps) {
+  const { date: initialDate, people: initialPeople } = parseTripSearchParams(await searchParams);
+
   return (
     <div className="min-h-screen bg-[#f8fafc] py-12 md:py-20 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto mb-10 text-center">
@@ -20,7 +27,7 @@ export default function ReservasMaritimasPage() {
         </p>
       </div>
 
-      <MaritimeBookingWidget />
+      <MaritimeBookingWidget initialDate={initialDate} initialPeople={initialPeople} />
 
       {/* SEO & Legal Information below the widget */}
       <div className="max-w-4xl mx-auto mt-20 pt-10 border-t border-gray-200">

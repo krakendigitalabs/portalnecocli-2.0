@@ -3,11 +3,14 @@
 import { useState, useTransition } from "react";
 import { processAtvBooking } from "@/app/actions/atv-booking";
 import type { AtvRoute, AtvRouteDetail, AtvRider } from "@/types/atv-booking";
+import type { TripPrefill } from "@/lib/utils/trip-search-params";
 
 const BLOOD_TYPES = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+const MAX_RIDERS = 10;
 
 interface AtvBookingFormProps {
   route: AtvRouteDetail;
+  prefill?: TripPrefill;
   onClose: () => void;
 }
 
@@ -25,10 +28,16 @@ function getTomorrowDate(): string {
   return d.toISOString().split("T")[0] ?? "";
 }
 
-export function AtvBookingForm({ route, onClose }: AtvBookingFormProps) {
+export function AtvBookingForm({ route, prefill, onClose }: AtvBookingFormProps) {
   const [isPending, startTransition] = useTransition();
-  const [riders, setRiders] = useState<AtvRider[]>([emptyRider()]);
-  const [tourDate, setTourDate] = useState(getTomorrowDate());
+  const [riders, setRiders] = useState<AtvRider[]>(() =>
+    Array.from({ length: Math.min(prefill?.people ?? 1, MAX_RIDERS) }, emptyRider),
+  );
+  const [tourDate, setTourDate] = useState(() => {
+    const tomorrow = getTomorrowDate();
+    // La reserva exige mínimo 1 día de anticipación.
+    return prefill?.date && prefill.date >= tomorrow ? prefill.date : tomorrow;
+  });
   const [successTicket, setSuccessTicket] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -45,7 +54,7 @@ export function AtvBookingForm({ route, onClose }: AtvBookingFormProps) {
   }
 
   function addRider() {
-    if (riders.length < 10) {
+    if (riders.length < MAX_RIDERS) {
       setRiders((prev) => [...prev, emptyRider()]);
     }
   }

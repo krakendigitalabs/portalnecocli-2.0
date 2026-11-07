@@ -22,7 +22,7 @@ export async function MainFooter() {
             </div>
             <div>
               <p className="text-white font-bold text-base leading-tight">Portal Necoclí</p>
-              <p className="text-white/45 text-xs">La plataforma turística del Golfo</p>
+              <p className="text-white/45 text-xs">La plataforma turística de Necoclí</p>
             </div>
           </div>
           <div className="flex items-center gap-5">
@@ -209,7 +209,7 @@ export async function MainFooter() {
 
         {/* Derechos */}
         <div className="mt-16 pt-8 border-t border-white/10 text-xs text-white/50 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p>Portal Necoclí 2.0 | La plataforma turística del golfo.</p>
+          <p>Portal Necoclí 2.0 | La plataforma turística de Necoclí.</p>
           <p>
             Copyright &copy; {new Date().getFullYear()}{" "}
             <a

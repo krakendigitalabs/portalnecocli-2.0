@@ -15,7 +15,7 @@ export function WhatsAppAssistWidget() {
       target="_blank"
     >
       <MessageCircle aria-hidden className="h-5 w-5" />
-      <span>¡Habla con Alejandro!</span>
+      <span className="hidden sm:inline">¡Habla con Alejandro!</span>
     </a>
   );
 }

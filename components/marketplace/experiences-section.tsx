@@ -13,7 +13,7 @@ const SLIDER_DATA = [
     tag: "El Paraíso Te Espera",
     title: "Bienvenido a Necoclí",
     description:
-      "Descubre la perla del Golfo de Urabá. Un destino donde la brisa del mar y la calidez de su gente te hacen sentir en casa desde el primer segundo.",
+      "Descubre la perla de Necoclí. Un destino donde la brisa del mar y la calidez de su gente te hacen sentir en casa desde el primer segundo.",
   },
   {
     src: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1790714020/4_xwvtpo.jpg",
@@ -194,7 +194,7 @@ const SLIDER_DATA = [
   {
     src: "https://res.cloudinary.com/dwxk79gt0/image/upload/v1743917706/Copia_de_Copia_de_Turismo_necocli_1_3_ojy0et.png",
     tag: "Turismo Local",
-    title: "Magia del Golfo",
+    title: "Magia de Necoclí",
     description:
       "Recorre las tradiciones y lugares más emblemáticos. Nuestra comunidad te abre las puertas a una experiencia auténtica y llena de calidez humana.",
   },

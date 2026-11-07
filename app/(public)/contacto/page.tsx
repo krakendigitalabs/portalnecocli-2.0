@@ -361,7 +361,7 @@ export default function ContactoPage() {
               </h2>
               <p className="text-white/60 leading-relaxed">
                 Necoclí, Antioquia, Colombia. El destino más vibrante del Caribe colombiano, puerta
-                de acceso al Darién y las islas paradisíacas del Golfo.
+                de acceso al Darién y las islas paradisíacas de Necoclí.
               </p>
               <a
                 href="https://www.google.com/maps/d/viewer?mid=1MeqaIVfxJjigVhzq50ktIl5W4n_z8A4&femb=1&ll=7.338825176265945%2C-76.17668610000001&z=8"

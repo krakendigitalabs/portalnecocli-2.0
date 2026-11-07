@@ -19,7 +19,7 @@ import {
 export const metadata: Metadata = {
   title: "Portal Necoclí | Turismo, experiencias y negocios locales",
   description:
-    "Planea tu visita a Necoclí: descubre experiencias, alojamiento, gastronomía y servicios locales en el Golfo de Urabá.",
+    "Planea tu visita a Necoclí: descubre experiencias, alojamiento, gastronomía y servicios locales en Necoclí.",
   alternates: {
     canonical: "https://portalnecocli.com",
   },
