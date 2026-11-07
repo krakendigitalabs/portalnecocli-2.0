@@ -19,6 +19,8 @@ const nextConfig: NextConfig = {
       "'unsafe-inline'",
       ...(process.env.NODE_ENV === "production" ? [] : ["'unsafe-eval'"]),
       "https://checkout.wompi.co",
+      // Firebase Auth carga gapi para el popup de Google; sin esto falla con auth/internal-error.
+      "https://apis.google.com",
     ];
     const contentSecurityPolicy = [
       "default-src 'self'",
