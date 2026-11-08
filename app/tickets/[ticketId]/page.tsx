@@ -4,11 +4,12 @@
  * Diseño Ultra-Premium Luxury.
  */
 
-import { CheckCircle2, CreditCard, ShieldCheck, Ticket } from "lucide-react";
+import { CheckCircle2, CreditCard, MessageCircle, ShieldCheck, Ticket } from "lucide-react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { PrintTicketButton } from "@/components/checkout/print-ticket-button";
 import {
+  getConciergeRequestByCode,
   getReservationByEscrowId,
   getReservationById,
   getReservationByReferenceCode,
@@ -33,6 +34,11 @@ export async function generateMetadata({ params }: Props) {
 export default async function EscrowTicketPage({ params }: Props) {
   const { ticketId } = await params;
 
+  // Redirección especial si es un tiquete marítimo
+  if (ticketId.startsWith("TKT-MAR-")) {
+    redirect(`/reservas-maritimas/tiquete/${ticketId}`);
+  }
+
   // 1. Try to find by direct reservation ID (from booking flow)
   let reservation = null;
   try {
@@ -50,8 +56,117 @@ export default async function EscrowTicketPage({ params }: Props) {
     }
   }
 
+  // 4. Si no hay reserva formal, buscar en concierge_requests (pre-reservas AI sin pago)
   if (!reservation) {
-    notFound();
+    let conciergeRequest: Record<string, unknown> | null = null;
+    try {
+      conciergeRequest = await getConciergeRequestByCode(ticketId);
+    } catch {
+      conciergeRequest = null;
+    }
+
+    // ── Pantalla de pre-reserva (Concierge o código de reserva previo) ──
+    const refCode = String(conciergeRequest?.referenceCode ?? ticketId);
+    const customerName = String(conciergeRequest?.name ?? "Viajero Portal Necoclí");
+    const requestDetail = String(
+      conciergeRequest?.request ??
+        "Tu pre-reserva fue registrada a través de la plataforma. Nuestro equipo de atención y guías locales está coordinando tu experiencia.",
+    );
+    const price =
+      typeof conciergeRequest?.estimatedPrice === "number" && conciergeRequest.estimatedPrice > 0
+        ? conciergeRequest.estimatedPrice.toLocaleString("es-CO")
+        : null;
+    const whatsappText = encodeURIComponent(
+      `Hola, tengo el código de pre-reserva ${refCode} y quiero confirmar mi plan. Nombre: ${customerName}`,
+    );
+
+    return (
+      <main className="min-h-screen bg-gradient-to-b from-teal-50 to-white py-16 px-4">
+        <div className="max-w-lg mx-auto space-y-6">
+          {/* Encabezado */}
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4">
+              <Ticket className="w-8 h-8 text-teal-600" />
+            </div>
+            <h1 className="text-2xl font-bold text-slate-900">Pre-Reserva Registrada</h1>
+            <p className="text-slate-500 mt-1 text-sm">
+              Tu solicitud fue recibida por el equipo de Portal Necoclí
+            </p>
+          </div>
+
+          {/* Código de referencia */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 text-center shadow-sm">
+            <p className="text-xs uppercase tracking-widest text-slate-400 font-semibold mb-2">
+              Código de Referencia
+            </p>
+            <p className="font-mono text-2xl font-bold text-teal-700 tracking-widest">
+              {refCode}
+            </p>
+            {price && (
+              <div className="mt-4 pt-4 border-t border-slate-100">
+                <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">
+                  Valor Estimado
+                </p>
+                <p className="text-3xl font-black text-slate-900">
+                  <span className="text-teal-500 mr-1">$</span>
+                  {price}
+                  <span className="text-sm font-normal text-slate-400 ml-1">COP</span>
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Detalles del plan */}
+          {requestDetail && (
+            <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5">
+              <p className="text-xs uppercase tracking-widest text-slate-400 font-semibold mb-2">
+                Detalle de tu Solicitud
+              </p>
+              <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">
+                {requestDetail}
+              </p>
+            </div>
+          )}
+
+          {/* Instrucciones de pago */}
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex gap-3">
+            <ShieldCheck className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-bold text-amber-800 mb-1">¿Cómo confirmar tu reserva?</p>
+              <p className="text-sm text-amber-700 leading-relaxed">
+                Nuestro equipo revisará tu solicitud y te contactará para confirmar disponibilidad
+                y precio final. Si ya tienes el precio acordado, puedes contactarnos directamente
+                por WhatsApp con tu código de referencia.
+              </p>
+            </div>
+          </div>
+
+          {/* CTAs */}
+          <div className="flex flex-col gap-3">
+            <a
+              href={`https://wa.me/573217511866?text=${whatsappText}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-2xl transition-all hover:-translate-y-0.5 shadow-lg shadow-green-200"
+            >
+              <MessageCircle className="w-5 h-5" />
+              Confirmar por WhatsApp
+            </a>
+            <Link
+              href="/"
+              className="flex items-center justify-center w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 rounded-2xl transition-all text-sm"
+            >
+              Volver al inicio
+            </Link>
+          </div>
+
+          {/* Footer legal */}
+          <p className="text-center text-xs text-slate-400">
+            Portal Necoclí 2.0 · Kraken Digital Labs S.A.S · NIT: 8128036-5
+          </p>
+        </div>
+      </main>
+    );
   }
 
   const session = await getServerAuthSession();

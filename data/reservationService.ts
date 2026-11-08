@@ -181,6 +181,28 @@ export async function getReservationByReferenceCode(
 }
 
 /**
+ * Obtiene una solicitud de Concierge (AI) por referenceCode.
+ * Estas solicitudes se guardan en la colección `concierge_requests`
+ * y NO tienen una reserva en Firestore `reservations`.
+ */
+export async function getConciergeRequestByCode(
+  referenceCode: string,
+): Promise<Record<string, unknown> | null> {
+  const db = getDb();
+  const snap = await db
+    .collection("concierge_requests")
+    .where("referenceCode", "==", referenceCode)
+    .limit(1)
+    .get();
+
+  if (snap.empty) {
+    return null;
+  }
+
+  return snap.docs[0].data() as Record<string, unknown>;
+}
+
+/**
  * Obtiene una reserva buscando por su escrow_transaction_id.
  * Utilizado para generar el Ticket Digital Oficial.
  */

@@ -3,15 +3,12 @@ import { CategoryCard3D } from "@/components/marketplace/category-card-3d";
 import { LogoMarquee } from "@/components/marketplace/logo-marquee";
 import { LuxuryHero } from "@/components/marketplace/luxury-hero";
 import { PhotoGallery } from "@/components/marketplace/photo-gallery";
-import { FeaturedExperiences } from "@/components/home/featured-experiences";
-import { SmartBundles } from "@/components/home/smart-bundles";
-import { SocialProofBar } from "@/components/home/social-proof-bar";
-import { WhatsAppAssistWidget } from "@/components/home/whatsapp-assist-widget";
 import { WelcomeModal } from "@/components/marketplace/welcome-modal";
 import { Container } from "@/components/ui/container";
 import { businessCategories } from "@/data/categories";
 import {
   getFeaturedExperiences,
+  getFeaturedMarketplaceBusinesses,
   getMarketplaceCategories,
   getMarketplaceFilterOptions,
 } from "@/lib/content/marketplace";
@@ -37,6 +34,7 @@ export default async function PublicHomePage() {
         metric: match?.metric,
       };
     });
+  const featuredBusinesses = await getFeaturedMarketplaceBusinesses(6);
   const featuredExperiences = await getFeaturedExperiences(3);
   const filterOptions = await getMarketplaceFilterOptions();
 
@@ -44,9 +42,6 @@ export default async function PublicHomePage() {
     <div className="pb-14">
       {/* Luxury Hero full bleed */}
       <LuxuryHero />
-      <SocialProofBar />
-      <FeaturedExperiences />
-      <SmartBundles />
 
       {/* Massive Edge-to-Edge Grid for Categories (WebGL 3D) */}
       <section className="w-full max-w-[2400px] mx-auto px-4 md:px-8 xl:px-12 mt-20 mb-20">
@@ -126,8 +121,8 @@ export default async function PublicHomePage() {
                 </span>
                 <h3 className="text-2xl font-bold text-white mb-2 font-tropical">Historia Viva</h3>
                 <p className="text-sm text-white/75 leading-relaxed">
-                  Malecón, Casa de nuestras culturas, Cabaña Portal Necocli,Remate siglos de
-                  historias junto al mar.
+                  Malecón, Casa de nuestras culturas, Cabaña Portal Necocli,Remate
+                  siglos de historias junto al mar.
                 </p>
               </div>
             </div>
@@ -174,7 +169,6 @@ export default async function PublicHomePage() {
 
       {/* Lead Magnet */}
       <WelcomeModal />
-      <WhatsAppAssistWidget />
     </div>
   );
 }

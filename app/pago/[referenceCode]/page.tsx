@@ -1,11 +1,11 @@
-import { ArrowLeft, CheckCircle2, CreditCard, Lock, ShieldCheck } from "lucide-react";
+import { ArrowLeft, CheckCircle2, CreditCard, Lock, MessageCircle, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { PaymentButton } from "@/components/checkout/payment-button";
 import { DirectReservationButton } from "@/components/checkout/direct-reservation-button";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import { getLoyaltyBonuses } from "@/data/loyaltyService";
-import { getReservationByReferenceCode } from "@/data/reservationService";
+import { getConciergeRequestByCode, getReservationByReferenceCode } from "@/data/reservationService";
 import { BonusSelector } from "./bonus-selector";
 
 type Props = {
@@ -19,7 +19,110 @@ export default async function PagoCheckoutPage({ params }: Props) {
   const reservation = await getReservationByReferenceCode(referenceCode);
 
   if (!reservation) {
-    notFound();
+    // Buscar en concierge_requests — solicitudes del AI concierge sin pago formal en Wompi
+    let conciergeReq: Record<string, unknown> | null = null;
+    try {
+      conciergeReq = await getConciergeRequestByCode(referenceCode);
+    } catch {
+      conciergeReq = null;
+    }
+
+    const customerName = String(conciergeReq?.name ?? "Viajero Portal Necoclí");
+    const requestDetail = String(
+      conciergeReq?.request ??
+        "Tu solicitud de pre-reserva fue registrada. Nuestro equipo validará la disponibilidad del servicio con el comercio aliado.",
+    );
+    const price =
+      typeof conciergeReq?.estimatedPrice === "number" && conciergeReq.estimatedPrice > 0
+        ? conciergeReq.estimatedPrice.toLocaleString("es-CO")
+        : null;
+    const whatsappText = encodeURIComponent(
+      `Hola, tengo el código de reserva ${referenceCode} y quiero confirmar y pagar mi plan. Nombre: ${customerName}`,
+    );
+
+    return (
+      <main className="min-h-screen bg-sand/30 py-12 px-4 sm:px-6">
+        <div className="max-w-2xl mx-auto space-y-8">
+          <Link
+            href="/"
+            className="inline-flex items-center text-sm font-semibold text-ink/60 hover:text-ink transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Volver al inicio
+          </Link>
+
+          <SurfaceCard className="rounded-[28px] overflow-hidden p-0 border border-ink/5">
+            <div className="bg-ink p-8 text-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-8 opacity-10">
+                <Lock className="w-48 h-48" />
+              </div>
+              <div className="relative z-10">
+                <p className="text-xs uppercase tracking-[0.2em] font-bold text-teal mb-2">
+                  Confirmar Reserva
+                </p>
+                <h1 className="text-3xl font-extrabold mb-1">Tu Plan a Medida</h1>
+                <p className="text-white/60 font-mono text-sm">Ref. {referenceCode}</p>
+              </div>
+            </div>
+
+            <div className="p-8 space-y-6 bg-white">
+              {requestDetail && (
+                <div>
+                  <h3 className="text-lg font-bold text-ink border-b border-ink/5 pb-4 mb-4">
+                    Detalle de tu Solicitud
+                  </h3>
+                  <p className="text-ink/70 leading-relaxed whitespace-pre-line text-sm">
+                    {requestDetail}
+                  </p>
+                </div>
+              )}
+
+              {price && (
+                <div className="bg-teal/5 border border-teal/20 rounded-2xl p-5 text-center">
+                  <p className="text-xs uppercase tracking-widest text-ink/50 font-bold mb-2">
+                    Valor Estimado
+                  </p>
+                  <p className="text-4xl font-black text-ink">
+                    <span className="text-2xl text-teal mr-1">$</span>
+                    {price}
+                    <span className="text-lg font-bold text-ink/40 ml-1">COP</span>
+                  </p>
+                  <p className="text-xs text-ink/50 mt-2">Sujeto a confirmación final</p>
+                </div>
+              )}
+            </div>
+          </SurfaceCard>
+
+          {/* Aviso escrow / instrucciones */}
+          <div className="bg-amber-50 border border-amber-200 rounded-[24px] p-6 flex gap-4 items-start">
+            <div className="bg-amber-100 p-2 rounded-full shrink-0">
+              <ShieldCheck className="w-6 h-6 text-amber-600" />
+            </div>
+            <div>
+              <h4 className="font-bold text-amber-800 text-sm">¿Cómo confirmar y pagar?</h4>
+              <p className="text-amber-700/80 text-sm mt-1 leading-relaxed">
+                Tu solicitud fue registrada. Contacta a nuestro equipo por WhatsApp con tu código
+                de referencia para confirmar disponibilidad, precio final y método de pago.
+                <br />
+                <strong>Código: {referenceCode}</strong>
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <a
+              href={`https://wa.me/573217511866?text=${whatsappText}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-2xl transition-all hover:-translate-y-0.5 shadow-lg shadow-green-200 text-base"
+            >
+              <MessageCircle className="w-5 h-5" />
+              Confirmar y Garantizar Precio por WhatsApp →
+            </a>
+          </div>
+        </div>
+      </main>
+    );
   }
 
   // Si ya está pagada o completada, no debería estar en esta pasarela

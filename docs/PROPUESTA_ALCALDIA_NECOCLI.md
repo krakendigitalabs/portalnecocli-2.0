@@ -27,7 +27,8 @@ Este portal no nació de la noche a la mañana. Es el resultado de una inversió
 
 ---
 
-## 3. El Pacto Vitalicio: 5% de Regalías (3% Ciudad + 2% Gremio Fundador)
+
+## 3. El Pacto Vitalicio: 5% de Regalías (3% Ciudad + 2% Gremio promotor)
 
 Entendemos que el turismo masivo desgasta nuestros recursos naturales y requiere premiar a quienes innovan. Por ello, Portal Necoclí 2.0 propone un pacto histórico y pionero, destinando de manera **VITALICIA un 5% de las ventas totales** generadas a través de la plataforma, distribuido así:
 
@@ -37,7 +38,7 @@ Fondos etiquetados de manera estricta e innegociable para:
 * 🌿 Embellecimiento y mantenimiento de senderos urbanos y ecológicos.
 * 🗺️ Apertura y señalización de nuevas rutas turísticas.
 
-**B. 2% para el Gremio Fundador (Las 100 Empresas de Fase 1):**
+**B. 2% para el Gremio  (Las 100 Empresas de Fase 1):**
 * Este 2% de las ventas globales del portal se distribuirá como un fondo de retorno o beneficio directo y exclusivo para las 100 empresas pioneras que apoyen esta Fase 1. Es una recompensa económica de por vida por haber creído y fondeado el proyecto desde el día cero.
 
 ---
