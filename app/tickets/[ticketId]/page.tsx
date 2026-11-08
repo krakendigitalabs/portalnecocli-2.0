@@ -147,9 +147,9 @@ export default async function EscrowTicketPage({ params }: Props) {
               href={`https://wa.me/573217511866?text=${whatsappText}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-2xl transition-all hover:-translate-y-0.5 shadow-lg shadow-green-200"
+              className="flex items-center justify-center gap-2 w-full bg-[#16a34a] hover:bg-[#15803d] text-white font-bold py-4 rounded-2xl transition-all hover:-translate-y-0.5 shadow-lg shadow-emerald-900/15"
             >
-              <MessageCircle className="w-5 h-5" />
+              <MessageCircle className="w-5 h-5 text-white" />
               Confirmar por WhatsApp
             </a>
             <Link
