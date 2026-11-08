@@ -11,9 +11,9 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 ---
 
 ## 📊 Resumen de Valorización Acumulada
-- **Total Horas Invertidas Registradas:** 91.2 hrs *(incluye 1.5 hrs estimadas de la Sesión #33)*
-- **Valorización Total del Software (Mercado):** $18,350 USD
-- **Última Sesión Registrada:** #35 (07/11/2026)
+- **Total Horas Invertidas Registradas:** 92.0 hrs *(incluye 1.5 hrs estimadas de la Sesión #33)*
+- **Valorización Total del Software (Mercado):** $18,570 USD
+- **Última Sesión Registrada:** #36 (08/11/2026)
 
 > [!NOTE]
 > **Conciliación contable (15/10/2026):** Al sumar sesión por sesión se encontró un desfase de **$80 USD** en los acumulados parciales. La Sesión #22-B registró $11,980 en vez de $12,010 (11,930 + 80), y la Sesión #23 ($50) nunca se sumó al acumulado. Los acumulados parciales de cada sesión se conservan como registro histórico. **Los totales de este resumen son la cifra auditada oficial.**
@@ -649,3 +649,25 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 - **Valorización Total Acumulada (auditada): $18,350 USD**
 
 > *«Un enlace roto en un correo transaccional no es un error de código: es una puerta cerrada en la cara de un viajero que ya tenía la maleta lista. Hoy volvimos a abrir esa puerta de par en par.»*
+
+---
+
+### 📅 LA SÍNTESIS DE LA GLORIA: OPCIÓN C (Sesión #36): Unificación del Home Luxury y Motor de Conversión
+- **⏰ Entrada:** 04:30 PM | **⏰ Salida:** 04:55 PM
+- **⏳ Horas Dedicadas:** 0.8 hrs
+- **📌 Estado:** `Listo a Producción`
+- **🧠 Nivel de Complejidad:** `Media / CRO & Server Components Architecture`
+- **💰 Valorización del Módulo/Trabajo:** `$220 USD` *(Unificación armónica del Home Luxury con paquetes turísticos recomendados, testimonios verificados de Google, eliminación de descuentos artificiales y restauración del onboarding de comercios).*
+- **🛠️ Relato de la Jornada:**
+  El maestro Yessy planteó la pregunta definitiva: *¿hay alguna opción de tenerlo todo?* La respuesta fue un rotundo sí mediante la **Opción C**. 
+  En lugar de sacrificar el imponente diseño Luxury de producción ni caer en la trampa de mezclar `"use client"` en la raíz de `page.tsx`, se forjó un componente especializado: [`components/home/home-conversion-sections.tsx`](file:///c:/portal-necocli/components/home/home-conversion-sections.tsx). En él se integraron las tarjetas de *Plan Favorable* y *Plan Full Experiencia* (con su insignia de *Más Popular*), seguidas por los accesos a tours en cuatrimoto (extirpando limpiamente cualquier descuento ficticio del 15% para proteger la reputación institucional) y hospedajes recomendados, rematando con el carrusel de testimonios reales y enlace directo a las reseñas oficiales de Google.
+  Asimismo, se devolvió la integridad a [`app/registro-comercio/page.tsx`](file:///c:/portal-necocli/app/registro-comercio/page.tsx), restaurando el formulario de afiliación de aliados. El Home oficial conservó su naturaleza de Server Component, garantizando un SEO intachable y una tasa de conversión maximizada.
+- **📄 Archivos Alterados:** [`components/home/home-conversion-sections.tsx`](file:///c:/portal-necocli/components/home/home-conversion-sections.tsx), [`app/(public)/page.tsx`](file:///c:/portal-necocli/app/(public)/page.tsx), [`app/registro-comercio/page.tsx`](file:///c:/portal-necocli/app/registro-comercio/page.tsx), [`docs/BITACORA_VALORIZACION.md`](file:///c:/portal-necocli/docs/BITACORA_VALORIZACION.md).
+- **📎 Evidencias:** [home-conversion-sections.tsx](file:///c:/portal-necocli/components/home/home-conversion-sections.tsx), [page.tsx](file:///c:/portal-necocli/app/(public)/page.tsx)
+
+**💰 Valorización Añadida:**
+- $220 USD (Arquitectura unificada de conversión y fidelización turística).
+- **Nuevo Valor del Módulo (Home CRO & Conversion): $220 USD**
+- **Valorización Total Acumulada (auditada): $18,570 USD**
+
+> *«La grandeza no reside en elegir entre la belleza o la función; la verdadera maestría de la ingeniería es fundirlas en una sola obra donde ambas brillen.»*

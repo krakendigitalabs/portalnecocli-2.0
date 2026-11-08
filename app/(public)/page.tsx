@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CategoryCard3D } from "@/components/marketplace/category-card-3d";
+import { HomeConversionSections } from "@/components/home/home-conversion-sections";
 import { LogoMarquee } from "@/components/marketplace/logo-marquee";
 import { LuxuryHero } from "@/components/marketplace/luxury-hero";
 import { PhotoGallery } from "@/components/marketplace/photo-gallery";
@@ -61,6 +62,9 @@ export default async function PublicHomePage() {
           ))}
         </div>
       </section>
+
+      {/* Paquetes recomendados, destacados y testimonios de viajeros */}
+      <HomeConversionSections />
 
       <PhotoGallery />
 
