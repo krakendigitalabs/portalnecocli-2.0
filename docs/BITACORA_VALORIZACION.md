@@ -11,9 +11,9 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 ---
 
 ## 📊 Resumen de Valorización Acumulada
-- **Total Horas Invertidas Registradas:** 90.6 hrs *(incluye 1.5 hrs estimadas de la Sesión #33, por confirmar)*
-- **Valorización Total del Software (Mercado):** $18,170 USD
-- **Última Sesión Registrada:** #34 (15/10/2026)
+- **Total Horas Invertidas Registradas:** 91.2 hrs *(incluye 1.5 hrs estimadas de la Sesión #33)*
+- **Valorización Total del Software (Mercado):** $18,350 USD
+- **Última Sesión Registrada:** #35 (07/11/2026)
 
 > [!NOTE]
 > **Conciliación contable (15/10/2026):** Al sumar sesión por sesión se encontró un desfase de **$80 USD** en los acumulados parciales. La Sesión #22-B registró $11,980 en vez de $12,010 (11,930 + 80), y la Sesión #23 ($50) nunca se sumó al acumulado. Los acumulados parciales de cada sesión se conservan como registro histórico. **Los totales de este resumen son la cifra auditada oficial.**
@@ -628,3 +628,24 @@ Este pergamino digital registra estrictamente cada sesión de trabajo en el ento
 - **Valorización Total Acumulada (auditada): $18,170 USD**
 
 > *«Las ramas de un mismo árbol a veces crecen en direcciones opuestas; el trabajo del jardinero es que vuelvan a dar fruto juntas.»*
+
+---
+
+### 📅 EL RESCATE DE LOS ENLACES HUÉRFANOS (Sesión #35): Resolución de 404 en Tickets y Checkout Escrow
+- **⏰ Entrada:** 08:35 PM | **⏰ Salida:** 08:45 PM
+- **⏳ Horas Dedicadas:** 0.6 hrs
+- **📌 Estado:** `Listo a Producción`
+- **🧠 Nivel de Complejidad:** `Media / Routing & Concierge Escrow Integration`
+- **💰 Valorización del Módulo/Trabajo:** `$180 USD` *(Diagnóstico y subsanación de enlaces rotos en correos transaccionales, soporte fallback para solicitudes concierge en `/tickets` y `/pago`, y habilitación de canal WhatsApp directo de cierre).*
+- **🛠️ Relato de la Jornada:**
+  Un cliente recibía el correo de Alejandro (el Guía Virtual) con dos botones de oro: *"Confirmar y Garantizar Precio"* y *"Ver y Descargar mi Ticket"*. Mas al pulsarlos, el desierto del error 404 los recibía. El equipo investigó la causa raíz: los botones apuntaban a `/pago/NEC-XXXX` y `/tickets/NEC-XXXX`. Dichas páginas solo consultaban la colección `reservations` de Firestore (diseñada estrictamente para transacciones pagadas o generadas por pasarela), ignorando las pre-reservas nacientes del módulo AI Concierge alojadas en `concierge_requests`.
+  Se forjó de inmediato en [`data/reservationService.ts`](file:///c:/portal-necocli/data/reservationService.ts) el método `getConciergeRequestByCode`. Seguidamente, se repotenciaron [`app/tickets/[ticketId]/page.tsx`](file:///c:/portal-necocli/app/tickets/[ticketId]/page.tsx) y [`app/pago/[referenceCode]/page.tsx`](file:///c:/portal-necocli/app/pago/[referenceCode]/page.tsx) para que, ante la ausencia de una reserva formal, consulten con gracia las solicitudes de concierge. Ahora, el turista no ve una pantalla rota, sino un comprobante oficial de pre-reserva con su código, el desglose de su plan a medida, precio estimado y un botón directo a WhatsApp con mensaje precargado para garantizar su cupo sin fricción. Todo el proyecto compiló limpio bajo TypeScript estricto y superó con éxito el build de producción.
+- **📄 Archivos Alterados:** [`data/reservationService.ts`](file:///c:/portal-necocli/data/reservationService.ts), [`app/tickets/[ticketId]/page.tsx`](file:///c:/portal-necocli/app/tickets/[ticketId]/page.tsx), [`app/pago/[referenceCode]/page.tsx`](file:///c:/portal-necocli/app/pago/[referenceCode]/page.tsx), [`docs/BITACORA_VALORIZACION.md`](file:///c:/portal-necocli/docs/BITACORA_VALORIZACION.md).
+- **📎 Evidencias:** [tickets/[ticketId]/page.tsx](file:///c:/portal-necocli/app/tickets/[ticketId]/page.tsx), [pago/[referenceCode]/page.tsx](file:///c:/portal-necocli/app/pago/[referenceCode]/page.tsx)
+
+**💰 Valorización Añadida:**
+- $180 USD (Rescate de rutas transaccionales y fallback de Concierge).
+- **Nuevo Valor del Módulo (Experiencia Escrow & Concierge): $180 USD**
+- **Valorización Total Acumulada (auditada): $18,350 USD**
+
+> *«Un enlace roto en un correo transaccional no es un error de código: es una puerta cerrada en la cara de un viajero que ya tenía la maleta lista. Hoy volvimos a abrir esa puerta de par en par.»*
