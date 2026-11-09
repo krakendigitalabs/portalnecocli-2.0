@@ -1,58 +1,154 @@
+"use client";
+
+import { useState } from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import { CategoryCard3D } from "@/components/marketplace/category-card-3d";
-import { HomeConversionSections } from "@/components/home/home-conversion-sections";
 import { LogoMarquee } from "@/components/marketplace/logo-marquee";
 import { LuxuryHero } from "@/components/marketplace/luxury-hero";
 import { PhotoGallery } from "@/components/marketplace/photo-gallery";
 import { WelcomeModal } from "@/components/marketplace/welcome-modal";
 import { Container } from "@/components/ui/container";
 import { businessCategories } from "@/data/categories";
-import {
-  getFeaturedExperiences,
-  getFeaturedMarketplaceBusinesses,
-  getMarketplaceCategories,
-  getMarketplaceFilterOptions,
-} from "@/lib/content/marketplace";
+import { getMarketplaceCategories } from "@/lib/content/marketplace";
+import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Portal Necoclí | Turismo, experiencias y negocios locales",
-  description:
-    "Planea tu visita a Necoclí: descubre experiencias, alojamiento, gastronomía y servicios locales en Necoclí.",
-  alternates: {
-    canonical: "https://portalnecocli.com",
-  },
+// --- INTERFACES ---
+
+interface CommercialCardProps {
+  image: string;
+  label: string;
+  title: string;
+  description: string;
+  colorClass: string;
+}
+
+interface StarOfferCardProps {
+  gallery: string[];
+  tag: string;
+  title: string;
+  description: string;
+  price: string;
+  buttonText: string;
+}
+
+// --- COMPONENTES AUXILIARES ---
+
+const CommercialCard = ({ image, label, title, description, colorClass }: CommercialCardProps) => (
+  <div className="group relative rounded-[32px] overflow-hidden h-[400px] shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+    <Image
+      src={image}
+      alt={title}
+      fill
+      className="object-cover transition-transform duration-700 group-hover:scale-110"
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+    />
+    <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
+    <div className="absolute bottom-0 left-0 right-0 p-8">
+      <span className={`inline-block ${colorClass} text-xs font-bold uppercase tracking-widest px-3.5 py-1 rounded-full mb-3`}>
+        {label}
+      </span>
+      <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2 font-tropical">{title}</h3>
+      <p className="text-sm text-white/80 leading-relaxed">{description}</p>
+    </div>
+  </div>
+);
+
+const StarOfferCard = ({ gallery, tag, title, description, price, buttonText }: StarOfferCardProps) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev === 0 ? gallery.length - 1 : prev - 1));
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev === gallery.length - 1 ? 0 : prev + 1));
+  };
+
+  return (
+    <div className="bg-white rounded-[36px] overflow-hidden shadow-xl border border-gray-100 flex flex-col md:flex-row group hover:shadow-2xl transition-all duration-300">
+      {/* Carrusel de Imágenes Ampliado */}
+      <div className="relative w-full md:w-1/2 h-80 md:h-[380px] bg-slate-100 overflow-hidden">
+        <Image
+          src={gallery[currentIndex]}
+          alt={title}
+          fill
+          className="object-cover transition-all duration-500 group-hover:scale-105"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
+
+        {/* Botones de navegación del carrusel */}
+        <button
+          onClick={prevSlide}
+          aria-label="Imagen anterior"
+          className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-ink p-2.5 rounded-full shadow-md backdrop-blur-sm transition-all hover:scale-110 z-10"
+        >
+          <ChevronLeft size={20} />
+        </button>
+        <button
+          onClick={nextSlide}
+          aria-label="Siguiente imagen"
+          className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-ink p-2.5 rounded-full shadow-md backdrop-blur-sm transition-all hover:scale-110 z-10"
+        >
+          <ChevronRight size={20} />
+        </button>
+
+        {/* Indicadores (Dots) */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+          {gallery.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentIndex(idx)}
+              className={`h-2.5 rounded-full transition-all ${
+                currentIndex === idx ? "w-7 bg-white" : "w-2.5 bg-white/50 hover:bg-white/80"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Contenido textual */}
+      <div className="p-8 md:p-10 md:w-1/2 flex flex-col justify-between">
+        <div>
+          <span className="text-teal font-bold text-xs uppercase tracking-widest">{tag}</span>
+          <h3 className="text-2xl md:text-3xl font-bold text-ink mt-2 mb-3 font-tropical leading-snug">{title}</h3>
+          <p className="text-ink/70 text-base leading-relaxed mb-6">{description}</p>
+        </div>
+        <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+          <div>
+            <p className="text-xs text-ink/40 uppercase font-bold tracking-wider">Desde</p>
+            <p className="text-3xl md:text-4xl font-extrabold text-ink">${price}</p>
+          </div>
+          <Link
+            href="/reservas"
+            className="bg-ink text-white px-7 py-3.5 rounded-full font-bold text-base hover:bg-green transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
+          >
+            {buttonText}
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 };
 
-export default async function PublicHomePage() {
-  const marketplaceCategories = await getMarketplaceCategories();
+export default function PublicHomePage() {
   const homeCategories = businessCategories
-    .filter((category) => category.slug !== "delivery")
-    .map((category) => {
-      const match = marketplaceCategories.find((item) => item.href === category.href);
-
-      return {
-        ...category,
-        metric: match?.metric,
-      };
-    });
-  const featuredBusinesses = await getFeaturedMarketplaceBusinesses(6);
-  const featuredExperiences = await getFeaturedExperiences(3);
-  const filterOptions = await getMarketplaceFilterOptions();
+    .filter((category) => category.slug !== "delivery");
 
   return (
     <div className="pb-14">
-      {/* Luxury Hero full bleed */}
       <LuxuryHero />
 
-      {/* Massive Edge-to-Edge Grid for Categories (WebGL 3D) */}
+      {/* Categorías Principales */}
       <section className="w-full max-w-[2400px] mx-auto px-4 md:px-8 xl:px-12 mt-20 mb-20">
         <div className="mb-10 lg:mb-16 px-2 lg:px-4 flex flex-col items-center text-center">
           <h2 className="text-4xl lg:text-6xl font-bold tracking-tight text-ink mb-6">
             Empresas recomendadas
           </h2>
           <p className="text-xl lg:text-2xl text-ink/70 max-w-3xl">
-            Siente el ecosistema de Necoclí. Cada tarjeta es un portal interactivo hacia tu próxima
-            experiencia premium.
+            Siente la energía de Necoclí. Un toque es suficiente para conectar con las experiencias más exclusivas del mar dulce.
           </p>
         </div>
 
@@ -63,115 +159,152 @@ export default async function PublicHomePage() {
         </div>
       </section>
 
-      {/* Paquetes recomendados, destacados y testimonios de viajeros */}
-      <HomeConversionSections />
+      {/* SECCIÓN DE OFERTAS Y PASADÍAS EN CARRUSEL */}
+      <section className="py-24 bg-slate-50">
+        <Container className="max-w-6xl">
+          <div className="text-center mb-14">
+            <p className="text-teal font-bold uppercase tracking-widest text-xs mb-3">
+              Días de Sol & Navegación
+            </p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-ink">
+              Experiencias Destacadas del Día
+            </h2>
+          </div>
+
+          <div className="grid gap-10">
+            <StarOfferCard
+              tag="Día de sol · Almuerzo · Piscina · Playa privada"
+              title="Sabor & Sol Sin Preocupaciones"
+              description="Día de sol con almuerzo, transporte, acceso a piscina y playa privada. El descanso que mereces en el paraíso."
+              price="150.000"
+              buttonText="Reservar →"
+              gallery={[
+                "https://res.cloudinary.com/dwxk79gt0/image/upload/v1739291734/turismo_necocli_111_hwcnic.jpg",
+                "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196680/Captura_de_pantalla_2026-11-08_224534_p8sa9y.png",
+                "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196179/Captura_de_pantalla_2026-11-08_223907_s1fzvu.png"
+              ]}
+            />
+            <StarOfferCard
+              tag="Día de sol · Katamaran · Almuerzo y refrigerio"
+              title="Navega Necoclí: Katamaran & Mar"
+              description="Disfruta un día de sol navegando en Katamaran, con almuerzo y refrigerio incluidos. Una experiencia maravillosa."
+              price="210.000"
+              buttonText="Reservar día de Katamaran →"
+              gallery={[
+                "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196172/Captura_de_pantalla_2026-11-08_224455_rie1tc.png",
+                "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196177/Captura_de_pantalla_2026-11-08_224102_cfwvf8.png",
+                "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196179/Captura_de_pantalla_2026-11-08_223954_fn5d7w.png"
+              ]}
+            />
+          </div>
+        </Container>
+      </section>
+
+      {/* SECCIÓN DE OPINIONES */}
+      <section className="py-24 bg-white">
+        <Container className="max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-ink mb-4">Opiniones de la Comunidad</h2>
+            <p className="text-ink/60 text-lg max-w-2xl mx-auto">
+              Lo que dicen nuestros viajeros. Experiencias reales de personas que ya vivieron la magia del golfo de Urabá.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Juan Pérez",
+                role: "Viajero Verificado",
+                text: "La organización fue impecable. El transporte marítimo puntual y el guía muy atento. ¡100% recomendado para viajar en familia!"
+              },
+              {
+                name: "María García",
+                role: "Viajero Verificado",
+                text: "El plan Full es la mejor inversión. No tuvimos que preocuparnos por nada, todo estaba coordinado y disfrutamos sin estrés."
+              },
+              {
+                name: "Carlos Ruiz",
+                role: "Viajero Verificado",
+                text: "Necoclí es hermoso y el portal hizo que planear el viaje fuera muy sencillo. La atención y el respaldo brindan total confianza."
+              }
+            ].map((review, i) => (
+              <div key={i} className="p-8 rounded-[32px] bg-slate-50 border border-gray-100 relative">
+                <div className="flex gap-1 text-gold mb-4">
+                  {[...Array(5)].map((_, index) => <Star key={index} size={16} fill="currentColor" />)}
+                </div>
+                <p className="text-ink/80 italic mb-6 leading-relaxed">“{review.text}”</p>
+                <div>
+                  <p className="font-bold text-ink">{review.name}</p>
+                  <p className="text-xs text-ink/40 uppercase font-bold">{review.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <Link href="https://google.com" target="_blank" className="text-ink font-bold hover:text-green transition-colors inline-flex items-center justify-center gap-2">
+              Ver todas las reseñas en Google →
+            </Link>
+          </div>
+        </Container>
+      </section>
 
       <PhotoGallery />
-
       <LogoMarquee />
 
-      {/* ─── Sección comercial de invitación ─── */}
+      {/* Sección Comercial Final */}
       <section className="py-20 bg-white">
         <Container className="max-w-6xl">
-          {/* Header */}
           <div className="text-center mb-16">
-            <p className="text-teal font-bold tracking-[0.2em] uppercase text-xs mb-3">
-              Necoclí · Colombia
-            </p>
+            <p className="text-teal font-bold tracking-[0.2em] uppercase text-xs mb-3">Necoclí · Colombia</p>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-ink mb-5 leading-tight">
               Necoclí te espera —<br />
               <span className="text-green">¿Cuándo vienes?</span>
             </h2>
             <p className="text-lg md:text-xl text-ink/60 max-w-2xl mx-auto leading-relaxed">
               Un destino que mezcla mar dulce, cultura viva y sabores únicos del Caribe colombiano.
-              Aquí cada día es una experiencia irrepetible.
             </p>
           </div>
 
-          {/* 3 cards comerciales */}
           <div className="grid gap-6 md:grid-cols-3">
-            {/* Turismo local */}
-            <div className="group relative rounded-[32px] overflow-hidden h-[380px] shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-              <img
-                src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1739291734/turismo_necocli_111_hwcnic.jpg"
-                alt="Turismo local en Necoclí"
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-7">
-                <span className="inline-block bg-teal/90 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">
-                  Turismo Local
-                </span>
-                <h3 className="text-2xl font-bold text-white mb-2 font-tropical">
-                  Aventura en Necoclí
-                </h3>
-                <p className="text-sm text-white/75 leading-relaxed">
-                  Playas vírgenes, manglares y el mar dulce más grande del mundo. Tours en lancha.
-                </p>
-              </div>
-            </div>
-
-            {/* Sitios culturales */}
-            <div className="group relative rounded-[32px] overflow-hidden h-[380px] shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-              <img
-                src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003485/turismo_necocli_35_c81lmu.jpg"
-                alt="Sitios culturales de Necoclí"
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-7">
-                <span className="inline-block bg-gold/90 text-ink text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">
-                  Cultura & Patrimonio
-                </span>
-                <h3 className="text-2xl font-bold text-white mb-2 font-tropical">Historia Viva</h3>
-                <p className="text-sm text-white/75 leading-relaxed">
-                  Malecón, Casa de nuestras culturas, Cabaña Portal Necocli,Remate
-                  siglos de historias junto al mar.
-                </p>
-              </div>
-            </div>
-
-            {/* Gastronomía */}
-            <div className="group relative rounded-[32px] overflow-hidden h-[380px] shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-              <img
-                src="https://res.cloudinary.com/dwxk79gt0/image/upload/v1754277470/plato_4_akdkbk.jpg"
-                alt="Gastronomía de Necoclí"
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-7">
-                <span className="inline-block bg-coral/90 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3">
-                  Gastronomía
-                </span>
-                <h3 className="text-2xl font-bold text-white mb-2 font-tropical">
-                  Sabores del Caribe
-                </h3>
-                <p className="text-sm text-white/75 leading-relaxed">
-                  Langosta, pargo frito, cazuela de mariscos y cocadas artesanales. El mar llega
-                  directo a tu plato en Necoclí.
-                </p>
-              </div>
-            </div>
+            <CommercialCard
+              label="Playas de Necocli"
+              title="Aventura en Necoclí"
+              description="Playas doradas, el encanto del mar dulce y momentos inolvidables en familia."
+              image="https://res.cloudinary.com/dwxk79gt0/image/upload/v1739291734/turismo_necocli_111_hwcnic.jpg"
+              colorClass="bg-teal/90 text-white"
+            />
+            <CommercialCard
+              label="Islas Hermosas"
+              title="Historia Viva"
+              description="Sapzurro, Capurganá, La Miel, Playa Soledad y Bahía Aguacate: rincones vírgenes donde el tiempo se detiene."
+              image="https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003485/turismo_necocli_35_c81lmu.jpg"
+              colorClass="bg-gold/90 text-ink"
+            />
+            <CommercialCard
+              label="Gastronomía"
+              title="Sabores del Caribe"
+              description="Sabor a mar en minutos: disfruta de langosta fresca, pargo frito, pulpo y cazuelas artesanales."
+              image="https://res.cloudinary.com/dwxk79gt0/image/upload/v1754277470/plato_4_akdkbk.jpg"
+              colorClass="bg-coral/90 text-white"
+            />
           </div>
 
-          {/* CTA central */}
           <div className="mt-14 text-center">
-            <a
+            <Link
               href="/turistas"
               className="inline-flex items-center gap-3 bg-green text-white font-bold text-base px-8 py-4 rounded-full shadow-lg shadow-green/25 hover:bg-green/90 transition-all hover:-translate-y-1 active:scale-95"
             >
-              🌊 Planea tu viaje a Necoclí
+              🌊 Programa tu viaje a Necoclí
               <span className="text-lg">→</span>
-            </a>
+            </Link>
             <p className="mt-4 text-sm text-ink/40">
-              Paquetes desde <span className="font-bold text-ink/70">$50.000 COP</span> · Reserva en
-              minutos
+              Paquetes Alojamiento desde <span className="font-bold text-ink/70">$40.000 COP</span> · Reserva en minutos
             </p>
           </div>
         </Container>
       </section>
 
-      {/* Lead Magnet */}
       <WelcomeModal />
     </div>
   );
