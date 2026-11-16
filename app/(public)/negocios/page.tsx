@@ -2,7 +2,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { Suspense } from "react";
 import { MarketplaceListingPage } from "@/components/marketplace/marketplace-listing-page";
 import { getMarketplaceListingData } from "@/lib/content/marketplace";
-import type { MarketplaceSearchParams } from "@/types/marketplace";
+import type { MarketplaceListingData, MarketplaceSearchParams } from "@/types/marketplace";
 
 type Props = {
   searchParams: Promise<MarketplaceSearchParams>;
@@ -44,18 +44,16 @@ export async function generateMetadata(
 // --- COMPONENTE PRINCIPAL ---
 export default async function BusinessesDirectoryPage({ searchParams }: Props) {
   const resolvedParams = await searchParams;
-  let data;
+  let data: MarketplaceListingData | null = null;
   
   try {
     data = await getMarketplaceListingData(resolvedParams);
   } catch (error) {
     console.error("[BusinessesDirectoryPage] Error:", error);
-    data = { businesses: [], categories: [], total: 0, filters: resolvedParams || {} };
+    data = null;
   }
 
-  const hasNoBusinesses = !data || data.total === 0 || data.businesses?.length === 0;
-
-  if (hasNoBusinesses) {
+  if (!data || data.totalCount === 0 || !data.businesses || data.businesses.length === 0) {
     return (
       <div className="w-full max-w-7xl mx-auto px-4 py-24 text-center">
         <div className="inline-block p-4 rounded-full bg-slate-100 mb-4 text-2xl">🔍</div>
