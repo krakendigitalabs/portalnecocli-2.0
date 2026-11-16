@@ -76,6 +76,11 @@ export default async function BusinessDetailPage({ params }: BusinessDetailPageP
 
   const relatedBusinesses = getRelatedBusinessesForDetail(business);
   const listingHref = getMarketplaceListingHref(business.serviceType);
+
+  // Validación de categoría para visualización de precios
+  const categoryLower = (business.category || business.propertyType || "").toLowerCase();
+  const isHotel = categoryLower.includes("hotel") || categoryLower.includes("hospedaje") || categoryLower.includes("alojamiento");
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -94,6 +99,7 @@ export default async function BusinessDetailPage({ params }: BusinessDetailPageP
     url: `${siteMetadata.siteUrl}/negocios/${business.slug}`,
     sameAs: business.socialLinks?.map((link) => link.href),
   };
+
   const breadcrumbStructuredData = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -147,7 +153,7 @@ export default async function BusinessDetailPage({ params }: BusinessDetailPageP
               <Star className="w-4 h-4 fill-slate-900 text-slate-900" />
               <span className="font-semibold text-slate-900">{business.rating || "4.8"}</span>
               <span className="text-slate-500 underline cursor-pointer hover:text-slate-900 ml-1">
-                {business.reviewCount || Math.floor(Math.random() * 100) + 20} evaluaciones
+                {business.reviewCount || 120} evaluaciones
               </span>
             </div>
 
@@ -245,7 +251,6 @@ export default async function BusinessDetailPage({ params }: BusinessDetailPageP
               </p>
 
               <div className="w-full h-[400px] bg-slate-100 rounded-3xl border border-slate-200 flex items-center justify-center overflow-hidden relative group">
-                {/* Patrón sutil simulando un mapa */}
                 <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]" />
                 <div className="text-center z-10 p-8 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl transition-transform group-hover:scale-105 duration-500 border border-slate-100">
                   <div className="w-14 h-14 bg-teal-50 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -269,7 +274,8 @@ export default async function BusinessDetailPage({ params }: BusinessDetailPageP
           <div className="relative">
             <div className="sticky top-28 space-y-6">
               <Card className="rounded-[28px] border-slate-200/60 p-6 md:p-8 shadow-2xl shadow-slate-200/50 bg-white">
-                {business.priceRange || business.numericPrice ? (
+                {/* PRECIO ADAPTATIVO: SOLO MOSTRAR PRECIO SI ES HOTEL */}
+                {isHotel && (business.priceRange || business.numericPrice) ? (
                   <div className="mb-6 flex items-end gap-1.5">
                     <span className="text-[1.75rem] font-bold text-slate-900 leading-none">
                       {business.numericPrice
@@ -278,7 +284,13 @@ export default async function BusinessDetailPage({ params }: BusinessDetailPageP
                     </span>
                     <span className="text-slate-500 font-medium">COP / noche</span>
                   </div>
-                ) : null}
+                ) : (
+                  <div className="mb-6">
+                    <span className="inline-block px-3 py-1.5 bg-teal-50 text-teal-700 text-xs font-bold uppercase rounded-full tracking-wide">
+                      Servicio Directo / Cotización
+                    </span>
+                  </div>
+                )}
 
                 <BusinessAccessLinks business={business} />
 
