@@ -7,9 +7,7 @@ import {
   CheckCircle2,
   CreditCard,
   MapPin,
-  Phone,
   Printer,
-  QrCode,
   ShieldCheck,
   Ship,
   Users,
@@ -112,7 +110,6 @@ export function MaritimeBoardingPass({
   accommodation,
   totalPrice,
   isSolidarityActive,
-  createdAt,
 }: MaritimeBoardingPassProps) {
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -146,6 +143,7 @@ export function MaritimeBoardingPass({
       {/* Print Button (hidden in print) */}
       <div className="no-print flex justify-end mb-4">
         <button
+          type="button"
           onClick={handlePrint}
           className="flex items-center gap-2 bg-[#0f2e21] text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-[#1a5c40] transition-colors"
         >
@@ -184,7 +182,7 @@ export function MaritimeBoardingPass({
                 className="object-contain mb-3 brightness-0 invert"
               />
               <p className={`text-xs font-bold uppercase tracking-widest ${tripAccent} mb-1`}>
-                TIQUETE DE PRE-RESERVA · PAGO EN TAQUILLA
+                TIQUETE DE PRE-RESERVA · CONFIRMACIÓN POR NAVIERA
               </p>
               <h2 className="text-white text-2xl font-bold">{TRIP_LABELS[tripType]}</h2>
             </div>
@@ -273,7 +271,7 @@ export function MaritimeBoardingPass({
               <div className="space-y-2">
                 {passengers.map((p, i) => (
                   <div
-                    key={i}
+                    key={p.docNum ? `p-${p.docNum}` : `passenger-${i + 1}`}
                     className="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2"
                   >
                     <div className="flex items-center gap-2">
@@ -311,7 +309,7 @@ export function MaritimeBoardingPass({
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-1">
-                    Total a Pagar en Taquilla
+                    Total Estimado de la Reserva
                   </p>
                   <p className="text-3xl font-black text-[#0f2e21]">
                     ${totalPrice.toLocaleString("es-CO")}{" "}
@@ -380,12 +378,14 @@ export function MaritimeBoardingPass({
 
         {/* INSTRUCTIONS STUB */}
         <div className="px-6 py-4 bg-gray-50 flex items-start gap-3">
-          <CreditCard className="w-4 h-4 text-gray-400 shrink-0 mt-0.5" />
-          <p className="text-[11px] text-gray-500 leading-relaxed">
-            Presenta este tiquete (digital o impreso) en la taquilla de la naviera. El escaneo del
-            código QR confirmará tu identidad y cupo. Preséntate con{" "}
-            <strong>30 minutos de anticipación</strong>. Niños de 2 años en adelante pagan tarifa
-            completa.
+          <CreditCard className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+          <p className="text-[11px] text-gray-600 leading-relaxed">
+            <strong>1. Pre-reserva generada:</strong> Un asesor de la naviera te contactará para
+            asentar los datos de los pasajeros.
+            <strong> 2. Asegura tu cupo:</strong> Consigna a las cuentas bancarias oficiales de la
+            naviera para garantizar tu embarque al 100%; el pago presencial en taquilla está sujeto
+            a disponibilidad y alto riesgo de que se agoten los puestos. Niños desde los 2 años
+            cumplidos abonan tarifa plena (DIMAR).
           </p>
         </div>
       </motion.div>
