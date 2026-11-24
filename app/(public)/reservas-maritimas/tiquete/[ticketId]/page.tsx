@@ -1,5 +1,8 @@
 import { Metadata } from "next";
-import { MaritimeBoardingPass } from "@/components/marketplace/maritime-boarding-pass";
+import {
+  MaritimeBoardingPass,
+  type TripType,
+} from "@/components/marketplace/maritime-boarding-pass";
 
 export const metadata: Metadata = {
   title: "Tu Tiquete Marítimo | Portal Necoclí",
@@ -32,7 +35,7 @@ export default async function MaritimeTicketPage({ params, searchParams }: PageP
 
   const props = {
     ticketId,
-    tripType: (sp.tripType as any) ?? "ruta",
+    tripType: (sp.tripType as TripType) ?? "ruta",
     destination: sp.destination ?? "Capurganá",
     date: sp.date,
     passengers,
@@ -45,10 +48,10 @@ export default async function MaritimeTicketPage({ params, searchParams }: PageP
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#e8f5ef] to-[#f0f9ff] py-16 px-4">
       <div className="max-w-2xl mx-auto mb-10 text-center">
-        <h1 className="text-3xl font-bold text-[#0f2e21] mb-2">¡Tu Pre-reserva está Lista!</h1>
+        <h1 className="text-3xl font-bold text-[#0f2e21] mb-2">¡Tu Pre-reserva está Registrada!</h1>
         <p className="text-gray-600">
-          Guarda o imprime este tiquete. Preséntalo en la taquilla de la naviera para confirmar tu
-          embarque y pagar.
+          Un asesor de la naviera se comunicará contigo para asentar tus datos. Recuerda que
+          realizar el pago a sus cuentas oficiales garantiza tu cupo al 100%.
         </p>
       </div>
       <MaritimeBoardingPass {...props} />

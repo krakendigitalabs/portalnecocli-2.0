@@ -101,9 +101,8 @@ const StarOfferCard = ({ gallery, tag, title, description, price, buttonText }: 
             <button
               key={idx}
               onClick={() => setCurrentIndex(idx)}
-              className={`h-2.5 rounded-full transition-all ${
-                currentIndex === idx ? "w-7 bg-white" : "w-2.5 bg-white/50 hover:bg-white/80"
-              }`}
+              className={`h-2.5 rounded-full transition-all ${currentIndex === idx ? "w-7 bg-white" : "w-2.5 bg-white/50 hover:bg-white/80"
+                }`}
             />
           ))}
         </div>
