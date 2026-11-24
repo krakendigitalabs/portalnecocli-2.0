@@ -1,19 +1,7 @@
-"use client";
-
-import { useState } from "react";
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { CategoryCard3D } from "@/components/marketplace/category-card-3d";
-import { LogoMarquee } from "@/components/marketplace/logo-marquee";
-import { LuxuryHero } from "@/components/marketplace/luxury-hero";
-import { PhotoGallery } from "@/components/marketplace/photo-gallery";
-import { WelcomeModal } from "@/components/marketplace/welcome-modal";
-import { Container } from "@/components/ui/container";
-import { businessCategories } from "@/data/categories";
-import { getMarketplaceCategories } from "@/lib/content/marketplace";
-import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { HomeClient } from "./HomeClient";
 
+<<<<<<< HEAD
 // --- INTERFACES ---
 
 interface CommercialCardProps {
@@ -130,181 +118,26 @@ const StarOfferCard = ({ gallery, tag, title, description, price, buttonText }: 
       </div>
     </div>
   );
+=======
+export const metadata: Metadata = {
+  title: "Portal Necoclí | Turismo, Hoteles, Tours y Experiencias en el Mar Dulce",
+  description:
+    "Descubre lo mejor de Necoclí: reserva hoteles, pasajes marítimos a Capurganá y Triganá, días de sol, gastronomía local y experiencias inolvidables.",
+  alternates: {
+    canonical: "https://portalnecocli.com",
+  },
+  openGraph: {
+    title: "Portal Necoclí | Turismo, Hoteles y Experiencias",
+    description:
+      "Planea tu visita a Necoclí: descubre experiencias, alojamiento, gastronomía y servicios locales.",
+    url: "https://portalnecocli.com",
+    siteName: "Portal Necoclí",
+    locale: "es_CO",
+    type: "website",
+  },
+>>>>>>> origin/main
 };
 
 export default function PublicHomePage() {
-  const homeCategories = businessCategories
-    .filter((category) => category.slug !== "delivery");
-
-  return (
-    <div className="pb-14">
-      <LuxuryHero />
-
-      {/* Categorías Principales */}
-      <section className="w-full max-w-[2400px] mx-auto px-4 md:px-8 xl:px-12 mt-20 mb-20">
-        <div className="mb-10 lg:mb-16 px-2 lg:px-4 flex flex-col items-center text-center">
-          <h2 className="text-4xl lg:text-6xl font-bold tracking-tight text-ink mb-6">
-            Empresas recomendadas
-          </h2>
-          <p className="text-xl lg:text-2xl text-ink/70 max-w-3xl">
-            Siente la energía de Necoclí. Un toque es suficiente para conectar con las experiencias más exclusivas del mar dulce.
-          </p>
-        </div>
-
-        <div className="grid gap-6 md:gap-8 md:grid-cols-2 xl:grid-cols-4 w-full">
-          {homeCategories.map((category) => (
-            <CategoryCard3D category={category} key={category.slug} />
-          ))}
-        </div>
-      </section>
-
-      {/* SECCIÓN DE OFERTAS Y PASADÍAS EN CARRUSEL */}
-      <section className="py-24 bg-slate-50">
-        <Container className="max-w-6xl">
-          <div className="text-center mb-14">
-            <p className="text-teal font-bold uppercase tracking-widest text-xs mb-3">
-              Días de Sol & Navegación
-            </p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-ink">
-              Experiencias Destacadas del Día
-            </h2>
-          </div>
-
-          <div className="grid gap-10">
-            <StarOfferCard
-              tag="Día de sol · Almuerzo · Piscina · Playa privada"
-              title="Sabor & Sol Sin Preocupaciones"
-              description="Día de sol con almuerzo, transporte, acceso a piscina y playa privada. El descanso que mereces en el paraíso."
-              price="150.000"
-              buttonText="Reservar →"
-              gallery={[
-                "https://res.cloudinary.com/dwxk79gt0/image/upload/v1739291734/turismo_necocli_111_hwcnic.jpg",
-                "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196680/Captura_de_pantalla_2026-11-08_224534_p8sa9y.png",
-                "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196179/Captura_de_pantalla_2026-11-08_223907_s1fzvu.png"
-              ]}
-            />
-            <StarOfferCard
-              tag="Día de sol · Katamaran · Almuerzo y refrigerio"
-              title="Navega Necoclí: Katamaran & Mar"
-              description="Disfruta un día de sol navegando en Katamaran, con almuerzo y refrigerio incluidos. Una experiencia maravillosa."
-              price="210.000"
-              buttonText="Reservar día de Katamaran →"
-              gallery={[
-                "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196172/Captura_de_pantalla_2026-11-08_224455_rie1tc.png",
-                "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196177/Captura_de_pantalla_2026-11-08_224102_cfwvf8.png",
-                "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196179/Captura_de_pantalla_2026-11-08_223954_fn5d7w.png"
-              ]}
-            />
-          </div>
-        </Container>
-      </section>
-
-      {/* SECCIÓN DE OPINIONES */}
-      <section className="py-24 bg-white">
-        <Container className="max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-ink mb-4">Opiniones de la Comunidad</h2>
-            <p className="text-ink/60 text-lg max-w-2xl mx-auto">
-              Lo que dicen nuestros viajeros. Experiencias reales de personas que ya vivieron la magia del golfo de Urabá.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Juan Pérez",
-                role: "Viajero Verificado",
-                text: "La organización fue impecable. El transporte marítimo puntual y el guía muy atento. ¡100% recomendado para viajar en familia!"
-              },
-              {
-                name: "María García",
-                role: "Viajero Verificado",
-                text: "El plan Full es la mejor inversión. No tuvimos que preocuparnos por nada, todo estaba coordinado y disfrutamos sin estrés."
-              },
-              {
-                name: "Carlos Ruiz",
-                role: "Viajero Verificado",
-                text: "Necoclí es hermoso y el portal hizo que planear el viaje fuera muy sencillo. La atención y el respaldo brindan total confianza."
-              }
-            ].map((review, i) => (
-              <div key={i} className="p-8 rounded-[32px] bg-slate-50 border border-gray-100 relative">
-                <div className="flex gap-1 text-gold mb-4">
-                  {[...Array(5)].map((_, index) => <Star key={index} size={16} fill="currentColor" />)}
-                </div>
-                <p className="text-ink/80 italic mb-6 leading-relaxed">“{review.text}”</p>
-                <div>
-                  <p className="font-bold text-ink">{review.name}</p>
-                  <p className="text-xs text-ink/40 uppercase font-bold">{review.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-12 text-center">
-            <Link href="https://google.com" target="_blank" className="text-ink font-bold hover:text-green transition-colors inline-flex items-center justify-center gap-2">
-              Ver todas las reseñas en Google →
-            </Link>
-          </div>
-        </Container>
-      </section>
-
-      <PhotoGallery />
-      <LogoMarquee />
-
-      {/* Sección Comercial Final */}
-      <section className="py-20 bg-white">
-        <Container className="max-w-6xl">
-          <div className="text-center mb-16">
-            <p className="text-teal font-bold tracking-[0.2em] uppercase text-xs mb-3">Necoclí · Colombia</p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-ink mb-5 leading-tight">
-              Necoclí te espera —<br />
-              <span className="text-green">¿Cuándo vienes?</span>
-            </h2>
-            <p className="text-lg md:text-xl text-ink/60 max-w-2xl mx-auto leading-relaxed">
-              Un destino que mezcla mar dulce, cultura viva y sabores únicos del Caribe colombiano.
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-3">
-            <CommercialCard
-              label="Playas de Necocli"
-              title="Aventura en Necoclí"
-              description="Playas doradas, el encanto del mar dulce y momentos inolvidables en familia."
-              image="https://res.cloudinary.com/dwxk79gt0/image/upload/v1739291734/turismo_necocli_111_hwcnic.jpg"
-              colorClass="bg-teal/90 text-white"
-            />
-            <CommercialCard
-              label="Islas Hermosas"
-              title="Historia Viva"
-              description="Sapzurro, Capurganá, La Miel, Playa Soledad y Bahía Aguacate: rincones vírgenes donde el tiempo se detiene."
-              image="https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003485/turismo_necocli_35_c81lmu.jpg"
-              colorClass="bg-gold/90 text-ink"
-            />
-            <CommercialCard
-              label="Gastronomía"
-              title="Sabores del Caribe"
-              description="Sabor a mar en minutos: disfruta de langosta fresca, pargo frito, pulpo y cazuelas artesanales."
-              image="https://res.cloudinary.com/dwxk79gt0/image/upload/v1754277470/plato_4_akdkbk.jpg"
-              colorClass="bg-coral/90 text-white"
-            />
-          </div>
-
-          <div className="mt-14 text-center">
-            <Link
-              href="/turistas"
-              className="inline-flex items-center gap-3 bg-green text-white font-bold text-base px-8 py-4 rounded-full shadow-lg shadow-green/25 hover:bg-green/90 transition-all hover:-translate-y-1 active:scale-95"
-            >
-              🌊 Programa tu viaje a Necoclí
-              <span className="text-lg">→</span>
-            </Link>
-            <p className="mt-4 text-sm text-ink/40">
-              Paquetes Alojamiento desde <span className="font-bold text-ink/70">$40.000 COP</span> · Reserva en minutos
-            </p>
-          </div>
-        </Container>
-      </section>
-
-      <WelcomeModal />
-    </div>
-  );
+  return <HomeClient />;
 }
