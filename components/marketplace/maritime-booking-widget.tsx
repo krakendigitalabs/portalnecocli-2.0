@@ -104,11 +104,7 @@ interface MaritimeBookingWidgetProps {
 export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBookingWidgetProps) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabType>("ruta");
-<<<<<<< HEAD
   const [operator, setOperator] = useState<"sol_playa" | "caribe" | "">("");
-=======
-  const [operator, setOperator] = useState<"sol_playa" | "caribe">("sol_playa");
->>>>>>> origin/main
   const [origin, setOrigin] = useState("Necoclí");
   const [destination, setDestination] = useState("Capurganá");
   const [journeyType, setJourneyType] = useState<"ida" | "ida_vuelta">("ida_vuelta");
@@ -475,7 +471,6 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
           <div className="p-5 lg:p-10 space-y-8">
             {/* Search bar row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 md:gap-4">
-<<<<<<< HEAD
               {/* Naviera Selector 50/50 con Zoom Alternado */}
               <div className="col-span-1 sm:col-span-2 lg:col-span-3">
                 <NavieraSelector
@@ -485,8 +480,6 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                 />
               </div>
 
-=======
->>>>>>> origin/main
               {/* Origin */}
               <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 hover:border-sky-500 shadow-sm transition-all relative">
                 <p className="text-xs font-black text-slate-700 uppercase tracking-wider mb-2">
@@ -502,7 +495,6 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                       value={origin}
                       onChange={(e) => handleOriginChange(e.target.value)}
                     >
-<<<<<<< HEAD
                       <option className="bg-white text-slate-900 font-semibold py-2">
                         Necoclí
                       </option>
@@ -512,11 +504,6 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                       <option className="bg-white text-slate-900 font-semibold py-2">
                         Triganá
                       </option>
-=======
-                      <option className="bg-white text-slate-900 font-semibold py-2">Necoclí</option>
-                      <option className="bg-white text-slate-900 font-semibold py-2">Capurganá</option>
-                      <option className="bg-white text-slate-900 font-semibold py-2">Triganá</option>
->>>>>>> origin/main
                       <option className="bg-white text-slate-900 font-semibold py-2">Acandí</option>
                     </select>
                   )}
@@ -526,29 +513,6 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                 </div>
               </div>
 
-<<<<<<< HEAD
-=======
-              {/* Naviera / Operador */}
-              <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 hover:border-sky-500 shadow-sm transition-all relative">
-                <p className="text-xs font-black text-slate-700 uppercase tracking-wider mb-2">
-                  Naviera
-                </p>
-                <select
-                  className="w-full bg-white font-bold text-slate-900 outline-none appearance-none cursor-pointer pr-6 text-sm md:text-base border-0 focus:ring-0"
-                  value={operator}
-                  onChange={(e) => setOperator(e.target.value as "caribe" | "sol_playa")}
-                >
-                  <option value="sol_playa" className="bg-white text-slate-900 font-semibold py-2">
-                    Sol y Playa S.A.S
-                  </option>
-                  <option value="caribe" className="bg-white text-slate-900 font-semibold py-2">
-                    El Caribe S.A.S
-                  </option>
-                </select>
-                <ChevronDown className="w-4 h-4 absolute right-4 bottom-4 text-slate-600 pointer-events-none" />
-              </div>
-
->>>>>>> origin/main
               {/* Destination */}
               <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 hover:border-sky-500 shadow-sm transition-all relative">
                 <p className="text-xs font-black text-slate-700 uppercase tracking-wider mb-2">
@@ -560,7 +524,6 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                   onChange={(e) => setDestination(e.target.value)}
                 >
                   {activeTab === "sol" ? (
-<<<<<<< HEAD
                     operator === "sol_playa" ? (
                       <option
                         value="Día de Sol · 3 Playas (Sapzurro, La Miel y Playa Soledad)"
@@ -635,29 +598,6 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                           <option className="bg-white text-slate-900 font-semibold py-2">
                             Bahía Aguacate
                           </option>
-=======
-                    <option className="bg-white text-slate-900 font-semibold py-2">
-                      Día de Sol: Playa Soledad y Sapzurro
-                    </option>
-                  ) : (
-                    <>
-                      {origin !== "Capurganá" && (
-                        <option className="bg-white text-slate-900 font-semibold py-2">Capurganá</option>
-                      )}
-                      {origin !== "Triganá" && (
-                        <option className="bg-white text-slate-900 font-semibold py-2">Triganá</option>
-                      )}
-                      {origin !== "Acandí" && (
-                        <option className="bg-white text-slate-900 font-semibold py-2">Acandí</option>
-                      )}
-                      {origin !== "Necoclí" && (
-                        <option className="bg-white text-slate-900 font-semibold py-2">Necoclí</option>
-                      )}
-                      {origin === "Necoclí" && (
-                        <>
-                          <option className="bg-white text-slate-900 font-semibold py-2">Playa Soledad</option>
-                          <option className="bg-white text-slate-900 font-semibold py-2">Bahía Aguacate</option>
->>>>>>> origin/main
                         </>
                       )}
                     </>
@@ -680,14 +620,10 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                     <option value="ida" className="bg-white text-slate-900 font-semibold py-2">
                       Ida (Solo ida)
                     </option>
-<<<<<<< HEAD
                     <option
                       value="ida_vuelta"
                       className="bg-white text-slate-900 font-semibold py-2"
                     >
-=======
-                    <option value="ida_vuelta" className="bg-white text-slate-900 font-semibold py-2">
->>>>>>> origin/main
                       Ida y Vuelta
                     </option>
                   </select>
@@ -777,13 +713,9 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                               >
                                 -
                               </button>
-<<<<<<< HEAD
                               <span className="w-5 text-center font-bold text-slate-900">
                                 {adults}
                               </span>
-=======
-                              <span className="w-5 text-center font-bold text-slate-900">{adults}</span>
->>>>>>> origin/main
                               <button
                                 type="button"
                                 onClick={() => setAdults(adults + 1)}
@@ -796,13 +728,9 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                           <div className="flex justify-between items-center">
                             <div>
                               <p className="font-bold text-sm text-slate-900">Niños (2+ años)</p>
-<<<<<<< HEAD
                               <p className="text-xs font-semibold text-amber-700">
                                 Pagan tarifa plena
                               </p>
-=======
-                              <p className="text-xs font-semibold text-amber-700">Pagan tarifa plena</p>
->>>>>>> origin/main
                             </div>
                             <div className="flex items-center gap-3">
                               <button
@@ -812,13 +740,9 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                               >
                                 -
                               </button>
-<<<<<<< HEAD
                               <span className="w-5 text-center font-bold text-slate-900">
                                 {children}
                               </span>
-=======
-                              <span className="w-5 text-center font-bold text-slate-900">{children}</span>
->>>>>>> origin/main
                               <button
                                 type="button"
                                 onClick={() => setChildren(children + 1)}
@@ -864,14 +788,9 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                             </div>
                           </div>
                           <p className="text-xs text-sky-900 font-medium bg-sky-50 rounded-lg px-3 py-2 border border-sky-200">
-<<<<<<< HEAD
                             Para grupos, solo se captura el dato del{" "}
                             <strong className="font-bold text-sky-950">representante</strong>. El
                             operador coordinará el listado completo en taquilla.
-=======
-                            Para grupos, solo se captura el dato del <strong className="font-bold text-sky-950">representante</strong>.
-                            El operador coordinará el listado completo en taquilla.
->>>>>>> origin/main
                           </p>
                         </div>
                       )}
@@ -1000,7 +919,6 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                               handleUpdatePassenger(index, "docType", e.target.value)
                             }
                           >
-<<<<<<< HEAD
                             <option
                               value="CC"
                               className="bg-white text-slate-900 font-semibold py-2"
@@ -1023,18 +941,6 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                               value="PAS"
                               className="bg-white text-slate-900 font-semibold py-2"
                             >
-=======
-                            <option value="CC" className="bg-white text-slate-900 font-semibold py-2">
-                              Cédula de Ciudadanía
-                            </option>
-                            <option value="CE" className="bg-white text-slate-900 font-semibold py-2">
-                              Cédula de Extranjería
-                            </option>
-                            <option value="TI" className="bg-white text-slate-900 font-semibold py-2">
-                              Tarjeta de Identidad
-                            </option>
-                            <option value="PAS" className="bg-white text-slate-900 font-semibold py-2">
->>>>>>> origin/main
                               Pasaporte
                             </option>
                           </select>
@@ -1140,14 +1046,10 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                   >
                     Certifico que los datos ingresados son reales. Entiendo que niños de 2 años en
                     adelante pagan tarifa completa. Este servicio opera bajo la{" "}
-<<<<<<< HEAD
                     <strong className="text-slate-900">
                       Alianza de Confianza Turística Portal Necoclí
                     </strong>
                     .
-=======
-                    <strong className="text-slate-900">Alianza de Confianza Turística Portal Necoclí</strong>.
->>>>>>> origin/main
                   </p>
 
                   <details className="mt-3 group">
@@ -1161,7 +1063,6 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                       </p>
                       <div className="space-y-3">
                         <p>
-<<<<<<< HEAD
                           <strong className="text-slate-900">1. Naturaleza del Servicio:</strong>{" "}
                           Portal Necoclí actúa exclusivamente como corredor tecnológico y canal de
                           enrutamiento para las empresas operadoras marítimas aliadas (ej. Sol y
@@ -1206,43 +1107,6 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                           contacto de manera segura con Portal Necoclí y la empresa operadora final,
                           exclusivamente para los fines logísticos y de coordinación del viaje,
                           conforme a la Ley 1581 de 2012 (Habeas Data).
-=======
-                          <strong className="text-slate-900">1. Naturaleza del Servicio:</strong> Portal Necoclí actúa
-                          exclusivamente como corredor tecnológico y canal de enrutamiento para las
-                          empresas operadoras marítimas aliadas (ej. Sol y Playa S.A.S, El Caribe
-                          S.A.S). La responsabilidad directa sobre la prestación del servicio de
-                          transporte, seguridad, itinerarios y cumplimiento normativo recae
-                          enteramente sobre la naviera operadora.
-                        </p>
-                        <p>
-                          <strong className="text-slate-900">2. Validez de la Pre-reserva:</strong> El tiquete generado a
-                          través de Portal Necoclí garantiza la pre-reserva de su cupo. Para hacer
-                          efectiva la reserva, el pasajero debe presentarse en la taquilla de la
-                          naviera asignada al menos <strong>45 minutos antes</strong> de la hora de
-                          zarpe estipulada para realizar el pago final del servicio y reclamar su
-                          pase de abordar.
-                        </p>
-                        <p>
-                          <strong className="text-slate-900">3. Tarifas y Menores de Edad:</strong> Las tarifas mostradas son
-                          establecidas por la empresa operadora. Por estricta normatividad de
-                          seguridad marítima y seguros de vida (DIMAR), todo niño a partir de los 2
-                          años cumplidos ocupa puesto en la embarcación y debe pagar la tarifa
-                          completa (100%).
-                        </p>
-                        <p>
-                          <strong className="text-slate-900">4. Cambios y Cancelaciones:</strong> Los zarpes están
-                          estrictamente sujetos a las condiciones climáticas y a la autorización de
-                          la Capitanía de Puerto. En caso de cierre temporal de puerto por mal
-                          tiempo, las navieras aliadas reprogramarán el servicio según el orden de
-                          reservas y la disponibilidad inmediata.
-                        </p>
-                        <p>
-                          <strong className="text-slate-900">5. Tratamiento de Datos:</strong> Al generar esta pre-reserva, el
-                          pasajero acepta compartir sus datos de contacto de manera segura con
-                          Portal Necoclí y la empresa operadora final, exclusivamente para los fines
-                          logísticos y de coordinación del viaje, conforme a la Ley 1581 de 2012
-                          (Habeas Data).
->>>>>>> origin/main
                         </p>
                       </div>
                     </div>
@@ -1311,13 +1175,9 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                       ? `Grupo de ${groupSize} pers.`
                       : `${totalPassengers} pasajero${totalPassengers > 1 ? "s" : ""}`}
                   </span>
-<<<<<<< HEAD
                   <span className="font-extrabold text-white text-base">
                     ${getBasePrice().toLocaleString("es-CO")}
                   </span>
-=======
-                  <span className="font-extrabold text-white text-base">${getBasePrice().toLocaleString("es-CO")}</span>
->>>>>>> origin/main
                 </div>
 
                 {getAccommodationPrice() > 0 && (
@@ -1352,11 +1212,7 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                     <span className="text-lg font-bold text-sky-200 ml-1.5">COP</span>
                   </motion.p>
                   <p className="text-xs text-sky-100 font-semibold mt-1.5 mb-4">
-<<<<<<< HEAD
                     Impuestos incluidos · Pre-reserva en línea
-=======
-                    Impuestos incluidos · Pago en taquilla
->>>>>>> origin/main
                   </p>
 
                   <div className="p-3.5 bg-white/15 rounded-xl border border-white/30 text-xs text-white shadow-sm leading-relaxed">
@@ -1365,13 +1221,8 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                     </p>
                     <p className="font-medium text-sky-50">
                       10 kg incluidos por pasajero. El peso excedente tiene un valor de{" "}
-<<<<<<< HEAD
                       <strong className="text-white font-bold">$2.000 COP</strong> por cada kilo
                       adicional (pago exclusivo en taquilla).
-=======
-                      <strong className="text-white font-bold">$2.000 COP</strong> por cada kilo adicional (pago exclusivo en
-                      taquilla).
->>>>>>> origin/main
                     </p>
                   </div>
                 </div>
@@ -1429,17 +1280,11 @@ export function MaritimeBookingWidget({ initialDate, initialPeople }: MaritimeBo
                   <p className="text-xs text-sky-100 font-medium leading-relaxed">
                     Alianza tecnológica Kraken Digital Labs
                     <br />
-<<<<<<< HEAD
                     <strong className="text-white font-bold">Sol y Playa S.A.S</strong> · NIT:
                     901797992-1
                     <br />
                     <strong className="text-white font-bold">El Caribe S.A.S</strong> · NIT:
                     901000756-8
-=======
-                    <strong className="text-white font-bold">Sol y Playa S.A.S</strong> · NIT: 901797992-1
-                    <br />
-                    <strong className="text-white font-bold">El Caribe S.A.S</strong> · NIT: 901000756-8
->>>>>>> origin/main
                   </p>
                 </div>
               </div>
