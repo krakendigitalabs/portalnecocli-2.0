@@ -29,6 +29,7 @@ interface StarOfferCardProps {
   description: string;
   price: string;
   buttonText: string;
+  href: string;
 }
 
 // --- COMPONENTES AUXILIARES ---
@@ -53,7 +54,7 @@ const CommercialCard = ({ image, label, title, description, colorClass }: Commer
   </div>
 );
 
-const StarOfferCard = ({ gallery, tag, title, description, price, buttonText }: StarOfferCardProps) => {
+const StarOfferCard = ({ gallery, tag, title, description, price, buttonText, href }: StarOfferCardProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const prevSlide = () => {
@@ -124,7 +125,7 @@ const StarOfferCard = ({ gallery, tag, title, description, price, buttonText }: 
             <p className="text-3xl md:text-4xl font-extrabold text-ink">${price}</p>
           </div>
           <Link
-            href="/reservas"
+            href={href}
             className="bg-ink text-white px-7 py-3.5 rounded-full font-bold text-base hover:bg-green transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
           >
             {buttonText}
@@ -179,6 +180,7 @@ export function HomeClient() {
               description="Día de sol con transporte, almuerzo, acceso a piscina y playa privada. El descanso que mereces en el paraíso."
               price="150.000"
               buttonText="Reservar →"
+              href="/turistas"
               gallery={[
                 "https://res.cloudinary.com/dwxk79gt0/image/upload/v1739291734/turismo_necocli_111_hwcnic.jpg",
                 "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196680/Captura_de_pantalla_2026-11-08_224534_p8sa9y.png",
@@ -191,6 +193,7 @@ export function HomeClient() {
               description="Disfruta un día de sol navegando en katamarán por 3 islas, con almuerzo y refrigerio incluidos. Una experiencia maravillosa."
               price="210.000"
               buttonText="Reservar día de Yate →"
+              href="/reservas-maritimas"
               gallery={[
                 "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196172/Captura_de_pantalla_2026-11-08_224455_rie1tc.png",
                 "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196177/Captura_de_pantalla_2026-11-08_224102_cfwvf8.png",
