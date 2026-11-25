@@ -249,7 +249,7 @@ export function HomeClient() {
 
           <div className="mt-12 text-center">
             <Link
-              href="https://google.com"
+              href="https://share.google/WVtNBG4FduB8CVJXX"
               target="_blank"
               rel="noopener noreferrer"
               className="text-ink font-bold hover:text-green transition-colors inline-flex items-center justify-center gap-2"
@@ -310,7 +310,7 @@ export function HomeClient() {
               <span className="text-lg">→</span>
             </Link>
             <p className="mt-4 text-sm text-ink/40">
-              Paquetes Alojamiento desde <span className="font-bold text-ink/70">$40.000 COP</span> · Reserva en minutos
+              Paquetes Alojamiento desde <span className="font-bold text-ink/70">$70.000 COP</span> · Reserva en minutos
             </p>
           </div>
 
