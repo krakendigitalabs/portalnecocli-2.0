@@ -1,4 +1,5 @@
 import "server-only";
+import { EDITORIAL_BLOG_POSTS } from "@/data/blog-editorial";
 import { getFirebaseAdminFirestore, hasFirebaseAdminConfig } from "@/lib/firebase/admin";
 import {
   BlogCategoryFilterSchema,
@@ -24,10 +25,34 @@ function parsePosts(docs: FirebaseFirestore.QueryDocumentSnapshot[]): BlogPost[]
   return posts;
 }
 
+function getEditorialPublished(category?: BlogCategory): BlogPost[] {
+  return EDITORIAL_BLOG_POSTS.filter(
+    (post) => post.status === "published" && (!category || post.category === category),
+  );
+}
+
+function mergeAndSortPosts(firestorePosts: BlogPost[], editorialPosts: BlogPost[]): BlogPost[] {
+  const bySlug = new Map<string, BlogPost>();
+
+  for (const post of editorialPosts) {
+    bySlug.set(post.slug, post);
+  }
+  for (const post of firestorePosts) {
+    bySlug.set(post.slug, post);
+  }
+
+  return Array.from(bySlug.values()).sort((a, b) =>
+    b.publishedAt.localeCompare(a.publishedAt),
+  );
+}
+
 export const BlogRepo = {
-  /** Lista posts publicados (más recientes primero), con filtro opcional por categoría. */
   async listPublished(category?: BlogCategory): Promise<BlogPost[]> {
-    if (!hasFirebaseAdminConfig()) return [];
+    const editorialPosts = getEditorialPublished(category);
+
+    if (!hasFirebaseAdminConfig()) {
+      return mergeAndSortPosts([], editorialPosts);
+    }
 
     try {
       let query = getFirebaseAdminFirestore()
@@ -39,19 +64,25 @@ export const BlogRepo = {
       }
 
       const snapshot = await query.get();
+      const firestorePosts = parsePosts(snapshot.docs);
 
-      // Orden en memoria: evita requerir un índice compuesto en Firestore.
-      return parsePosts(snapshot.docs).sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+      return mergeAndSortPosts(firestorePosts, editorialPosts);
     } catch (error) {
       console.error("[blog] Error al listar posts", error);
-      return [];
+      return mergeAndSortPosts([], editorialPosts);
     }
   },
 
-  /** Obtiene un post publicado por slug (ID del documento). */
   async getPublishedBySlug(slug: string): Promise<BlogPost | null> {
     const parsedSlug = BlogSlugSchema.safeParse(slug);
-    if (!parsedSlug.success || !hasFirebaseAdminConfig()) return null;
+    if (!parsedSlug.success) return null;
+
+    const editorialMatch =
+      EDITORIAL_BLOG_POSTS.find(
+        (post) => post.slug === parsedSlug.data && post.status === "published",
+      ) ?? null;
+
+    if (!hasFirebaseAdminConfig()) return editorialMatch;
 
     try {
       const doc = await getFirebaseAdminFirestore()
@@ -59,13 +90,17 @@ export const BlogRepo = {
         .doc(parsedSlug.data)
         .get();
 
-      if (!doc.exists) return null;
+      if (!doc.exists) return editorialMatch;
 
       const result = BlogPostSchema.safeParse({ ...doc.data(), slug: doc.id });
-      return result.success && result.data.status === "published" ? result.data : null;
+      if (result.success && result.data.status === "published") {
+        return result.data;
+      }
+
+      return editorialMatch;
     } catch (error) {
       console.error(`[blog] Error al leer el post ${slug}`, error);
-      return null;
+      return editorialMatch;
     }
   },
 };
