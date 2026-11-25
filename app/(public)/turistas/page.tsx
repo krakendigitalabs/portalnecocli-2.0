@@ -1,9 +1,6 @@
-import { MainFooter } from "@/components/layout/main-footer";
-import { MainHeader } from "@/components/layout/main-header";
 import { ExperiencesSection } from "@/components/marketplace/experiences-section";
 import { ExternalToursSection } from "@/components/marketplace/external-tours-section";
 import { PackagesSection } from "@/components/marketplace/packages-section";
-import { brand } from "@/lib/constants/site";
 import { parseTripSearchParams, type TripSearchParams } from "@/lib/utils/trip-search-params";
 
 export const metadata = {

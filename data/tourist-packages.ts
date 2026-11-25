@@ -1,4 +1,4 @@
-﻿export const touristPackages = [
+export const touristPackages = [
   {
     id: "alojamiento-basico",
     title: "Opción Económica y Cómoda (Pareja)",
@@ -13,23 +13,23 @@
     highlight: "Económico · Parqueadero privado · WiFi · Cerca a la playa",
     options: [
       {
-        id: "basico_individual",
-        label: "Individual — $40.000 por persona",
-        price: 40000,
-        priceUnit: "per_person" as const,
-        defaultGuests: 1,
-      },
-      {
         id: "basico_pareja",
-        label: "Pareja — $75.000 total (2 personas)",
-        price: 37500,
+        label: "Pareja — $70.000 total (2 personas)",
+        price: 70000,
         priceUnit: "per_person" as const,
         defaultGuests: 2,
       },
       {
+        id: "basico_individual",
+        label: "Individual — $70.000 por persona",
+        price: 70000,
+        priceUnit: "per_person" as const,
+        defaultGuests: 1,
+      },
+      {
         id: "basico_multiple",
-        label: "Acomodación múltiple — $35.000 por persona",
-        price: 35000,
+        label: "Acomodación múltiple — $70000 por persona",
+        price: 70000,
         priceUnit: "per_person" as const,
         defaultGuests: 1,
       },
@@ -38,13 +38,15 @@
   {
     id: "alojamiento-piscina-comidas",
     title: "Sabor & Sol Sin Preocupaciones",
-    description: "Día de sol con almuerzo, acceso a piscina y playa privada.",
+    description:
+      "Día de sol con transporte, almuerzo, acceso a piscina y playa privada.",
     images: [
       "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793396944/Captura_de_pantalla_2026-10-30_163742_bmlwfd.png",
       "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793396920/Captura_de_pantalla_2026-10-30_163711_pabdef.png",
     ],
-    image: "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793396944/Captura_de_pantalla_2026-10-30_163742_bmlwfd.png",
-    highlight: "Día de sol · Almuerzo · Piscina · Playa privada",
+    image:
+      "https://res.cloudinary.com/dr50ioh9h/image/upload/v1793396944/Captura_de_pantalla_2026-10-30_163742_bmlwfd.png",
+    highlight: "Día de sol · Transporte · Almuerzo · Piscina · Playa privada",
     options: [
       {
         id: "sabor_sol_dia",
@@ -57,24 +59,26 @@
   {
     id: "sol-playa-express",
     title: "Navega Necoclí: Yate & Mar",
-    description: "Disfruta un día de sol navegando en yate, con almuerzo y refrigerio incluidos.",
+    description:
+      "Disfruta un día de sol navegando en katamarán por 3 islas, con almuerzo y refrigerio incluidos.",
     images: [
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737748238/IMG_20240107_161824_soutyq.jpg",
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003361/turismo_necocli_67_tzdjdf.jpg",
     ],
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1737748238/IMG_20240107_161824_soutyq.jpg",
-    highlight: "Día de sol · Yate · Almuerzo y refrigerio",
+    highlight: "Día de sol · Katamarán 3 islas · Almuerzo y refrigerio",
     bookingUrl: "https://tours.portalnecocli.com/reservas-maritimas",
     options: [
       {
         id: "navega_necocli",
-        label: "Día de sol en yate — $210.000 por persona",
+        label: "Día de sol en katamarán (3 islas) — $210.000 por persona",
         price: 210000,
         priceUnit: "per_person" as const,
       },
     ],
   },
+  /* PAQUETE APAGADO TEMPORALMENTE (descomentar para volver a mostrarlo)
   {
     id: "noche-express",
     title: "Fin de Semana Completo en Pareja",
@@ -102,15 +106,17 @@
       },
     ],
   },
+  */
   {
     id: "fin-de-semana",
     title: "Necoclí Imparable: Tour & Playa",
     description:
-      "Dos días de naturaleza y mar para descubrir algunos de los paisajes más especiales de Necoclí.",
+      "Combina descanso cerca al muelle con una aventura completa de navegación por tres islas en Necoclí.",
     details: [
-      "Sábado: recorrido por la vereda Peniel, el Árbol Mágico, la Ciénaga del Salado y el río.",
+      "Día previo: alojamiento cerca al muelle en Necoclí + 1 alimento.",
       "Domingo: día de sol con visita a tres islas, almuerzo y refrigerio.",
-      "Precio: $790.000 por persona.",
+      "Al regreso del día de sol: 1 alimento adicional incluido.",
+      "Precio: $400.000 por persona.",
     ],
     images: [
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003378/turismo_necocli_69_r6u6o1.jpg",
@@ -119,12 +125,12 @@
     ],
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1744003378/turismo_necocli_69_r6u6o1.jpg",
-    highlight: "2 días · Árbol Mágico · Ciénaga · Tres islas",
+    highlight: "Alojamiento cerca al muelle · 3 Islas · Alimentación incluida",
     options: [
       {
         id: "necocli_imparable",
-        label: "Necoclí Imparable — $790.000 por persona",
-        price: 790000,
+        label: "Necoclí Imparable — $400.000 por persona",
+        price: 400000,
         priceUnit: "per_person" as const,
       },
     ],
@@ -133,7 +139,7 @@
     id: "alojamiento-multiple",
     title: "Parche Necoclí (Grupos & Familias)",
     description:
-      "Perfecto para grupos, familias o mochileros. Precio especial por noche en alojamiento compartido, con la opción de añadir las comidas que necesites a lo largo del día.",
+      "Perfecto para grupos y familias. Precio especial para alojamiento en cabañas privadas con cercanía al mar.",
     images: [
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1793397204/13_habitacion_2_camas_112_cxa1ej.jpg",
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1793397245/triple33_wbclda.jpg",
@@ -141,27 +147,13 @@
     ],
     image:
       "https://res.cloudinary.com/dwxk79gt0/image/upload/v1793397204/13_habitacion_2_camas_112_cxa1ej.jpg",
-    highlight: "Grupal · Precio especial · Comidas opcionales",
+    highlight: "Grupos & Familias · Cabañas privadas · Cerca al mar",
     options: [
       {
-        id: "mul_solo",
-        label: "Parche Necoclí — Solo alojamiento múltiple (1 noche)",
-        price: 50000,
-      },
-      {
-        id: "mul_1c",
-        label: "Parche Necoclí — Alojamiento múltiple + 1 comida",
-        price: 67000,
-      },
-      {
-        id: "mul_2c",
-        label: "Parche Necoclí — Alojamiento múltiple + 2 comidas",
-        price: 84000,
-      },
-      {
-        id: "mul_3c",
-        label: "Parche Necoclí — Alojamiento múltiple + 3 comidas",
-        price: 101000,
+        id: "mul_cabana",
+        label: "Parche Necoclí — Cabaña privada ($80.000 por persona)",
+        price: 80000,
+        priceUnit: "per_person" as const,
       },
     ],
   },

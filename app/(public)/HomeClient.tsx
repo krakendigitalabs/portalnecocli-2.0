@@ -104,9 +104,8 @@ const StarOfferCard = ({ gallery, tag, title, description, price, buttonText }: 
               key={idx}
               onClick={() => setCurrentIndex(idx)}
               aria-label={`Ir a la imagen ${idx + 1} de ${title}`}
-              className={`h-2.5 rounded-full transition-all ${
-                currentIndex === idx ? "w-7 bg-white" : "w-2.5 bg-white/50 hover:bg-white/80"
-              }`}
+              className={`h-2.5 rounded-full transition-all ${currentIndex === idx ? "w-7 bg-white" : "w-2.5 bg-white/50 hover:bg-white/80"
+                }`}
             />
           ))}
         </div>
@@ -175,27 +174,27 @@ export function HomeClient() {
 
           <div className="grid gap-10">
             <StarOfferCard
-              tag="Día de sol · Almuerzo · Piscina · Playa privada"
+              tag="Día de sol · Transporte · Almuerzo · Piscina · Playa privada"
               title="Sabor & Sol Sin Preocupaciones"
-              description="Día de sol con almuerzo, transporte, acceso a piscina y playa privada. El descanso que mereces en el paraíso."
+              description="Día de sol con transporte, almuerzo, acceso a piscina y playa privada. El descanso que mereces en el paraíso."
               price="150.000"
               buttonText="Reservar →"
               gallery={[
                 "https://res.cloudinary.com/dwxk79gt0/image/upload/v1739291734/turismo_necocli_111_hwcnic.jpg",
                 "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196680/Captura_de_pantalla_2026-11-08_224534_p8sa9y.png",
-                "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196179/Captura_de_pantalla_2026-11-08_223907_s1fzvu.png"
+                "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196179/Captura_de_pantalla_2026-11-08_223907_s1fzvu.png",
               ]}
             />
             <StarOfferCard
-              tag="Día de sol · Katamaran · Almuerzo y refrigerio"
-              title="Navega Necoclí: Katamaran & Mar"
-              description="Disfruta un día de sol navegando en Katamaran, con almuerzo y refrigerio incluidos. Una experiencia maravillosa."
+              tag="Día de sol · Katamarán 3 islas · Almuerzo y refrigerio"
+              title="Navega Necoclí: Yate & Mar"
+              description="Disfruta un día de sol navegando en katamarán por 3 islas, con almuerzo y refrigerio incluidos. Una experiencia maravillosa."
               price="210.000"
-              buttonText="Reservar día de Katamaran →"
+              buttonText="Reservar día de Yate →"
               gallery={[
                 "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196172/Captura_de_pantalla_2026-11-08_224455_rie1tc.png",
                 "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196177/Captura_de_pantalla_2026-11-08_224102_cfwvf8.png",
-                "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196179/Captura_de_pantalla_2026-11-08_223954_fn5d7w.png"
+                "https://res.cloudinary.com/dr50ioh9h/image/upload/v1794196179/Captura_de_pantalla_2026-11-08_223954_fn5d7w.png",
               ]}
             />
           </div>
@@ -217,18 +216,18 @@ export function HomeClient() {
               {
                 name: "Juan Pérez",
                 role: "Viajero Verificado",
-                text: "La organización fue impecable. El transporte marítimo puntual y el guía muy atento. ¡100% recomendado para viajar en familia!"
+                text: "La organización fue impecable. El transporte marítimo puntual y el guía muy atento. ¡100% recomendado para viajar en familia!",
               },
               {
                 name: "María García",
                 role: "Viajero Verificado",
-                text: "El plan Full es la mejor inversión. No tuvimos que preocuparnos por nada, todo estaba coordinado y disfrutamos sin estrés."
+                text: "El plan Full es la mejor inversión. No tuvimos que preocuparnos por nada, todo estaba coordinado y disfrutamos sin estrés.",
               },
               {
                 name: "Carlos Ruiz",
                 role: "Viajero Verificado",
-                text: "Necoclí es hermoso y el portal hizo que planear el viaje fuera muy sencillo. La atención y el respaldo brindan total confianza."
-              }
+                text: "Necoclí es hermoso y el portal hizo que planear el viaje fuera muy sencillo. La atención y el respaldo brindan total confianza.",
+              },
             ].map((review, i) => (
               <div key={i} className="p-8 rounded-[32px] bg-slate-50 border border-gray-100 relative">
                 <div className="flex gap-1 text-gold mb-4">
